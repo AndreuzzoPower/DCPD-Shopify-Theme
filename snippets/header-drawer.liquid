@@ -181,9 +181,9 @@
                   <localization-form>
                     {%- form 'localization', id: 'HeaderCountryMobileForm', class: 'localization-form' -%}
                       <div>
-                        <h2 class="visually-hidden" id="HeaderCountryMobileLabel">
+                        <div class="visually-hidden" id="HeaderCountryMobileLabel">
                           {{ 'localization.country_label' | t }}
-                        </h2>
+                        </div>
                         {%- render 'country-localization', localPosition: 'HeaderCountryMobile' -%}
                       </div>
                     {%- endform -%}
@@ -194,9 +194,9 @@
                   <localization-form>
                     {%- form 'localization', id: 'HeaderLanguageMobileForm', class: 'localization-form' -%}
                       <div>
-                        <h2 class="visually-hidden" id="HeaderLanguageMobileLabel">
+                        <div class="visually-hidden" id="HeaderLanguageMobileLabel">
                           {{ 'localization.language_label' | t }}
-                        </h2>
+                        </div>
                         {%- render 'language-localization', localPosition: 'HeaderLanguageMobile' -%}
                       </div>
                     {%- endform -%}
