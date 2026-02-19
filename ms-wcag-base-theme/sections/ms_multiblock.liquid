@@ -1,0 +1,248 @@
+<div class="ms_multiblock bootstrap-scope color-{{ block.settings.color_scheme }}" id="section-{{ section.id }}">
+  <div class="{% if section.settings.section_width == 'full_width' %}container-fluid {% elsif section.settings.section_width == 'default' %}container {% else %} {% endif %}">
+    <div
+      class="group-block row"
+    >
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</div>
+
+{%- render 'ms_section-style' -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    margin-top: {{ section.settings.section_margin_top }}px;
+    margin-bottom: {{ section.settings.section_margin_bottom }}px;
+  }
+  @media all and (min-width: 768px) and (max-width: 991px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.section_padding_top_md }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_md }}px;
+      margin-top: {{ section.settings.section_margin_top_md }}px;
+      margin-bottom: {{ section.settings.section_margin_bottom_md }}px;
+    }
+  }
+  @media all and (max-width: 767px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.section_padding_top_xs }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom_xs }}px;
+      margin-top: {{ section.settings.section_margin_top_xs }}px;
+      margin-bottom: {{ section.settings.section_margin_bottom_xs }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "MS Multiblock",
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+     {
+       "type": "select",
+       "id": "section_width",
+       "label": "Section Width",
+       "options":[
+             {
+                 "label": "Full Width",
+                 "value": "full_width"
+             },
+             {
+                 "label": "Default Width",
+                 "value": "default"
+             },
+             {
+               "label": "Page width",
+               "value": "page_width"
+             }
+         ],
+         "default": "default"
+     },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding desktop"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Padding tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_md",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Padding Top",
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_md",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Padding Bottom",
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Padding mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top_xs",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Padding Top",
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom_xs",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Padding Bottom",
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Margin desktop"
+    },
+    {
+      "type": "range",
+      "id": "section_margin_top",
+      "label": "Margin Top (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_margin_bottom",
+      "label": "Margin Bottom (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Margin tablet"
+    },
+    {
+      "type": "range",
+      "id": "section_margin_top_md",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Margin Top",
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_margin_bottom_md",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Margin Bottom",
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Margin mobile"
+    },
+    {
+      "type": "range",
+      "id": "section_margin_top_xs",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Margin Top",
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_margin_bottom_xs",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "label": "Margin Bottom",
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Multiblock",
+      "category": "Beta"
+    },
+    {
+      "name": "Blocco Singolo",
+      "settings": {
+        "color_scheme": "scheme-3"
+      },
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "text": "<h3>Hello, world!</h3>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>How's it going?<\/p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

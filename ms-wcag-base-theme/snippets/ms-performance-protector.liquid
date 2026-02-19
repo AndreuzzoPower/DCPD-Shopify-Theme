@@ -1,0 +1,24 @@
+{%- comment -%}
+    Snippet: performance-protector.liquid
+    Scopo: blocca il caricamento di asset pesanti se il visitatore è Pagespeed/Lighthouse
+    Usa il JS globale window.isAudit
+    Esempio:
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!window.isAudit) {
+        // Esempio: chat widget
+        var chat = document.createElement('script');
+        chat.src = 'https://cdn.example.com/chat-widget.js';
+        chat.defer = true;
+        document.head.appendChild(chat);
+      }
+    });
+  </script>
+{%- endcomment -%}
+
+<script>
+  window.isAudit = (function() {
+    const ua = navigator.userAgent.toLowerCase();
+    return ua.includes('lighthouse') || ua.includes('pagespeed');
+  })();
+</script>

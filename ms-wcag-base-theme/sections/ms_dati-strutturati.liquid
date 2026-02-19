@@ -1,0 +1,35 @@
+{% if section.settings.dsjson != blank %}
+  <script type="application/ld+json">
+    {{ section.settings.dsjson }}
+  </script>
+{% elsif section.settings.dsjsonta != blank %}
+  <script type="application/ld+json">
+    {{ section.settings.dsjsonta }}
+  </script>
+{% endif %}
+
+{% schema %}
+ {
+   "name": "MS Dati strutturati",
+   "settings": [
+             {
+               "type": "text",
+               "id": "dsjson",
+               "label": "Dati strutturati",
+               "info":"Inserisci il json senza tag script"
+             },
+             {
+               "type": "textarea",
+               "id": "dsjsonta",
+               "label": "Dati strutturati Template",
+               "info":"Se devi gestire i dati strutturati a livello di template utilizza questo campo altrimenti utilizza il campo sopra agganciando come origine dinamica il realtivo metafield. Inserisci il json senza tag script."
+             }
+],
+"presets": [
+	{
+	  "name": "MS Dati strutturati",
+	  "category": "Developer"
+	}
+]
+ }
+{% endschema %}

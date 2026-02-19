@@ -1,0 +1,67 @@
+<title>
+  {% assign today_mese = 'now' | date: '%B' %}
+  {% assign today_anno = 'now' | date: '%Y' %}
+  {% assign today_meseanno = 'now' | date: '%B %Y' %}
+
+  {% assign gennaio = 'dcpd.mesi.gennaio' | t %}
+  {% assign febbraio = 'dcpd.mesi.febbraio' | t %}
+  {% assign marzo = 'dcpd.mesi.marzo' | t %}
+  {% assign aprile = 'dcpd.mesi.aprile' | t %}
+  {% assign maggio = 'dcpd.mesi.maggio' | t %}
+  {% assign giugno = 'dcpd.mesi.giugno' | t %}
+  {% assign luglio = 'dcpd.mesi.luglio' | t %}
+  {% assign agosto = 'dcpd.mesi.agosto' | t %}
+  {% assign settembre = 'dcpd.mesi.settembre' | t %}
+  {% assign ottobre = 'dcpd.mesi.ottobre' | t %}
+  {% assign novembre = 'dcpd.mesi.novembre' | t %}
+  {% assign dicembre = 'dcpd.mesi.dicembre' | t %}
+
+  {% assign today_mese = today_mese
+    | replace: 'January', gennaio
+    | replace: 'February', febbraio
+    | replace: 'March', marzo
+    | replace: 'April', aprile
+    | replace: 'May', maggio
+    | replace: 'June', giugno
+    | replace: 'July', luglio
+    | replace: 'August', agosto
+    | replace: 'September', settembre
+    | replace: 'October', ottobre
+    | replace: 'November', novembre
+    | replace: 'December', dicembre
+  %}
+
+  {% assign today_meseanno = today_meseanno
+    | replace: 'January', gennaio
+    | replace: 'February', febbraio
+    | replace: 'March', marzo
+    | replace: 'April', aprile
+    | replace: 'May', maggio
+    | replace: 'June', giugno
+    | replace: 'July', luglio
+    | replace: 'August', agosto
+    | replace: 'September', settembre
+    | replace: 'October', ottobre
+    | replace: 'November', novembre
+    | replace: 'December', dicembre
+  %}
+  {{
+    page_title
+    | replace: '###MESE###', today_mese
+    | replace: '###ANNO###', today_anno
+    | replace: '###MESEANNO###', today_meseanno
+  }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {% comment %}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {% endcomment %}
+</title>
+{% if page_description %}
+  <meta
+    name="description"
+    content="{{ page_description | escape | replace: '###MESE###', today_mese | replace: '###ANNO###', today_anno | replace: '###MESEANNO###', today_meseanno}}"
+  >
+{% else %}
+  <meta name="description" content="{{ shop.description | escape }}">
+{% endif %} 

@@ -1,0 +1,27 @@
+#cart-notification .cart-notification__links #cart-notification-button:focus-visible,
+.newsletter__wrapper .field input[type="email"]:focus-visible
+{
+    outline: .2rem solid rgba(var(--color-foreground), .5) !important;
+    outline-offset: -.2rem !important;
+    box-shadow: 0 0 .2rem rgba(var(--color-foreground), .3) !important;
+    -webkit-box-shadow: 0 0 .2rem rgba(var(--color-foreground), .3) !important;
+}
+
+#cart-notification .cart-notification__links #cart-notification-button {
+  background: #E0E0E0 !important;
+}
+
+div[class*='ms_multirow'] div[class*='image-with-text'] .button:focus-visible {
+    outline: .2rem solid rgba(var(--color-foreground), .5) !important;
+    outline-offset: -.2rem !important;
+    box-shadow: 0 0 0 .3rem rgb(var(--color-background)), 0 0 0 .5rem rgba(var(--color-foreground), .5), 0 0 .5rem .4rem rgba(var(--color-foreground), .3) !important;
+    -webkit-box-shadow: 0 0 0 .3rem rgb(var(--color-background)), 0 0 0 .5rem rgba(var(--color-foreground), .5), 0 0 .5rem .4rem rgba(var(--color-foreground), .3) !important;
+}
+
+/* BLOG */
+.article-card__info,
+.article__info {display: inline-flex;align-items: center;}
+.article-card__info > span.circle-divider,
+.article__info > span.circle-divider{display: inline-flex;align-items: center;}
+.article-card__info > span > .svg-wrapper,
+.article__info > span > .svg-wrapper{margin-right:5px;}

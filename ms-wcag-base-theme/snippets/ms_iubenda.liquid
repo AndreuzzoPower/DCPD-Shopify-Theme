@@ -1,0 +1,92 @@
+{% assign siteId = settings.iub_siteid %}
+{% assign cookiePolicyId = settings.iub_cookieid %}
+
+{% if siteId and cookiePolicyId %}
+  <script type="text/javascript">
+    var _iub = _iub || [];
+    _iub.csConfiguration = {"askConsentAtCookiePolicyUpdate":true,"countryDetection":true,"enableFadp":true,"enableLgpd":true,"enableUspr":true,"lgpdAppliesGlobally":false,"perPurposeConsent":true,"purposes":"1,2,3,4,5","siteId":{{ siteId }},"cookiePolicyId":{{ cookiePolicyId }},"lang":"it","i18n":{"it":{"banner":{"dynamic":{"body":"<p>Questo sito utilizza cookie o altri strumenti tecnici e, previo consenso, anche cookie di profilazione o altri strumenti di tracciamento, anche di terze parti, per inviarti pubblicità personalizzata e offrirti servizi in linea con le tue preferenze, nonché per il monitoraggio dei comportamenti dei visitatori. Se vuoi saperne di più consulta la <a href=\"https://www.iubenda.com/privacy-policy/40125982/cookie-policy?an=no&amp;s_ck=false&amp;newmarkup=yes\" class=\"iubenda-cs-cookie-policy-lnk\" target=\"_blank\" rel=\"noopener\">Cookie Policy</a></p>\n<p>Per selezionare in modo analitico soltanto alcune finalità, terze parti e cookie è possibile cliccare su <em>“Seleziona le tue preferenze”</em>.</p>\n<p>Chiudendo questo banner tramite l’apposito comando “X” continuerai la navigazione del sito in assenza di cookie o altri strumenti di tracciamento diversi da quelli tecnici.</p>"}}}}, "banner":{ "acceptButtonCaptionColor":"#000000","acceptButtonColor":"#00B8D2","acceptButtonDisplay":true,"closeButtonRejects":true,"customizeButtonDisplay":true,"explicitWithdrawal":true,"fontSizeBody":"13px","listPurposes":true,"position":"float-bottom-center","showTitle":false,"acceptButtonCaption":"Accetta tutti","customizeButtonCaption":"Seleziona le tue preferenze" }};
+
+        <!-- code for Shopify (1 of 2) -->
+        var onPreferenceFirstExpressedCallback = function(consent) {
+            var shopifyPurposes = {
+              "analytics": [4, 's'],
+              "marketing": [5, 'adv'],
+              "preferences": [2, 3],
+              "sale_of_data": ['s', 'sh'],
+            }
+            var expressedConsent = {};
+            Object.keys(shopifyPurposes).forEach(function(purposeItem) {
+              var purposeExpressed = null
+              shopifyPurposes[purposeItem].forEach(item => {
+                if (consent.purposes && typeof consent.purposes[item] === 'boolean') {
+                  purposeExpressed = consent.purposes[item];
+                }
+                if (consent.uspr && typeof consent.uspr[item] === 'boolean' && purposeExpressed !== false) {
+                  purposeExpressed = consent.uspr[item];
+                }
+              })
+
+              if (typeof purposeExpressed === 'boolean') {
+                expressedConsent[purposeItem] = purposeExpressed;
+              }
+            })
+            window.Shopify.customerPrivacy.setTrackingConsent(expressedConsent, function() {});
+        }
+        if (typeof _iub.csConfiguration.callback === 'object') {
+            _iub.csConfiguration.callback.onPreferenceFirstExpressed = onPreferenceFirstExpressedCallback;
+        } else {
+            _iub.csConfiguration.callback = {
+                onPreferenceFirstExpressed: onPreferenceFirstExpressedCallback
+            };
+        }
+  </script>
+
+  <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3494010.js"></script>
+  <script type="text/javascript" src="//cdn.iubenda.com/cs/gpp/stub.js"></script>
+  <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+
+  <!-- code for Shopify (2 of 2) - Tracking API -->
+  <script type="text/javascript">
+    window.Shopify.loadFeatures(
+      [
+        {
+          name: 'consent-tracking-api',
+          version: '0.1',
+        },
+      ],
+      function(error) {
+        if (error) {
+          throw error;
+        }
+      }
+    );
+  </script>
+  {% comment %} Script per caricamento policy in pagina {% endcomment %}
+  <script type="text/javascript">
+    (function (w,d) {
+      var loader = function () {
+        var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+        s.src="https://cdn.iubenda.com/iubenda.js";
+        tag.parentNode.insertBefore(s, tag);
+      };
+      if(w.addEventListener){
+        w.addEventListener("load", loader, false);
+      } else if(w.attachEvent){
+        w.attachEvent("onload", loader);
+      } else {
+        w.onload = loader;
+      }
+    })(window, document);
+  </script>
+  <style>
+    /* Banner */
+    .iubenda-cs-rationale *,
+    #iubenda-cs-banner .iubenda-banner-content:not(.iubenda-custom-content) *,
+    #iubenda-cs-banner [class*=" iub"],
+    #iubenda-cs-banner [class^=iub] {font-family "D-DIN Condensed" !important;}
+    .iubenda-banner-content p,
+    /* Contenuto pagina */
+    #iubenda_policy.iubenda_vip_policy.iubenda_fixed_policy .iub_container{padding:0 !important}
+    #iubenda_policy .iub_container{margin:0 !important}
+  </style>
+{% endif %}

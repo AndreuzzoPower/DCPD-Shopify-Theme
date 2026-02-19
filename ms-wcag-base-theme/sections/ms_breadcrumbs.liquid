@@ -1,0 +1,505 @@
+{% comment %}
+  ### REQUISITI ###
+  1) Creare un metafield nei prodotti > product.metafields.custom.breadcrumbs_custom
+  2) Creare un metafield nelle collections > collection.metafields.custom.breadcrumbs_custom
+  Entrambi devono essere di tipo "Collection" / "Elenco"
+  Per funzionare il link passato al prodotto non deve avere la collection altrimenti verrà presa questa.
+{% endcomment %}
+
+{% comment %} VARS {% endcomment %}
+{%- assign u = shop.url -%}
+{% comment %} Utilizza tutte le categorie associate al prodotto. Questo è secondario rispetto al metafield quindi se presente il metafield viene visualizzato quello {% endcomment %}
+{%- assign prod-use-all-cat = section.settings.show_all_collections -%}
+{%- comment %} Elenco categorie che non compariranno se prod-use-all-cat è a true {%- endcomment %}
+{%- assign prod-use-all-cat-filter = section.settings.collections_banned | split: ',' -%}
+{%- assign prod-show-cat-handle = section.settings.show_cat_handle -%}
+{% comment %}
+  Utilizza l'alberatura di un menu per le breadcrunbs di categoria
+  Se lasciato vuoto non viene attivata questa opzione altrimenti inserisci l'handle del menu di riferimento
+{% endcomment %}
+{%- assign cat-use-menu = section.settings.menu_handle -%}
+
+{%- unless template == 'index' or template == 'list-collections' or template == '404' or template == blank -%}
+  {% capture separator %} 
+     <span class="ms_breadcrumb_separator">{{ section.settings.separator }}</span> 
+   {% endcapture %}
+  {%- assign t = template | split: '.' | first -%}
+  <div class="ms-breadcrumb-wrapper {{ section.settings.wrapperclass | escape }}">
+    <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+      <span class="ms_breadcrumb_link"
+        ><a href="{{ routes.root_url }}">{{ section.settings.home_lbl | escape }}</a></span
+      >
+      {% capture ms_schema %} 
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ u | append:routes.root_url}}"
+        }
+      {% endcapture %}
+      {%- case t -%}
+        {%- when 'page' -%}
+          {{ separator }}
+          <span class="ms_breadcrumb_current" aria-current="page">{{ page.title }}</span>
+          {% capture ms_schema %} 
+             {{ ms_schema }}
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": "{{ page.title }}",
+              "item": "{{ u | append:page.url }}"
+            }
+          {% endcapture %}
+        {%- when 'product' -%}
+          {% assign product-position = 2 -%}
+          {% comment %}Posizione di default, se non ho categorie{% endcomment %}
+          {% comment %}Se ho l'url della{% endcomment %}
+          {% comment %}Se ho l'url della collection nell'url{% endcomment %}
+          {%- if collection.url -%}
+            {{ separator }}
+            <span class="ms_breadcrumb_link">{{ collection.title | link_to: collection.url }}</span>
+            {% capture ms_schema %} 
+            ,{
+              "@type": "ListItem",
+              "position": 2,
+              "name": "{{ collection.title }}",
+              "item": "{{ u | append:collection.url }}"
+            }
+            {% endcapture %}
+            {% assign product-position = 3 %}
+          {%- else -%}
+            {% comment %}Verifico se ho metafielads pagina settati{% endcomment %}
+            {%- if product.metafields.custom.breadcrumbs_custom_page != blank -%}
+              {% assign pos = 2 %}
+              {% assign custom_page = product.metafields.custom.breadcrumbs_custom_page.value %}
+              {{ separator }}
+              <span class="ms_breadcrumb_link">{{ custom_page.title | link_to: custom_page.url }}</span>
+              {% capture ms_schema %} 
+                   {{ ms_schema }}
+                  ,{
+                    "@type": "ListItem",
+                    "position": {{ pos }},
+                    "name": "{{ custom_page.title }}",
+                    "item": "{{ u | append:custom_page.url }}"
+                  }
+                 {% endcapture %}
+              {% assign product-position = 3 %}
+              {% comment %}Verifico se ho metafielads collection settati{% endcomment %}
+            {%- elsif product.metafields.custom.breadcrumbs_custom != blank -%}
+              {% assign pos = 1 %}
+              {% for bcc in product.metafields.custom.breadcrumbs_custom.value %}
+                {% assign pos = pos | plus: 1 %}
+                {% if prod-show-cat-handle %}
+                  {% assign coll-title = bcc.handle | replace: '-', ' ' | replace: '_', ' ' | capitalize %}
+                {% else %}
+                  {% assign coll-title = bcc.title | split: '|' | last %}
+                {% endif %}
+                {{ separator }}
+                <span class="ms_breadcrumb_link">{{ coll-title | link_to: bcc.url }}</span>
+                {% capture ms_schema %} 
+                   {{ ms_schema }}
+                  ,{
+                    "@type": "ListItem",
+                    "position": {{ pos }},
+                    "name": "{{ coll-title }}",
+                    "item": "{{ u | append:bcc.url }}"
+                  }
+                 {% endcapture %}
+              {% endfor %}
+              {% assign pos = pos | plus: 1 %}
+              {% assign product-position = pos %}
+            {%- elsif prod-use-all-cat -%}
+              {% assign pos = 1 %}
+              {% for collection in product.collections %}
+                {% comment %} unless che non stampa bestseller (eventuali altre categorie) {% endcomment %}
+                {% unless prod-use-all-cat-filter contains collection.handle
+                  or collection.handle contains '-sale'
+                  or collection.handle contains 'sales-'
+                  or collection.handle contains 'saldi'
+                  or collection.handle contains 'verkauf'
+                %}
+                  {% assign pos = pos | plus: 1 %}
+                  {% if prod-show-cat-handle %}
+                    {% assign coll-title = collection.handle | replace: '-', ' ' | replace: '_', ' ' | capitalize %}
+                  {% else %}
+                    {% assign coll-title = collection.title | split: '|' | last %}
+                  {% endif %}
+                  {{ separator }}
+                  <span class="ms_breadcrumb_link">{{ coll-title | link_to: collection.url }}</span>
+                  {% capture ms_schema %} 
+                     {{ ms_schema }}
+                    ,{
+                      "@type": "ListItem",
+                      "position": {{ pos }},
+                      "name": "{{ coll-title }}",
+                      "item": "{{ u | append:collection.url }}"
+                    }
+                   {% endcapture %}
+                {% endunless %}
+              {% endfor %}
+              {% assign pos = pos | plus: 1 %}
+              {% assign product-position = pos %}
+            {%- endif -%}
+          {%- endif -%}
+          {{ separator }}
+          <span class="ms_breadcrumb_current" aria-current="page">{{ product.title }}</span>
+          {% capture ms_schema %} 
+            {%- if product-position > 1 -%}
+              {{ ms_schema }}
+            {%- endif -%}
+            ,{
+              "@type": "ListItem",
+              "position": {{ product-position }},
+              "name": "{{ product.title }}",
+              "item": "{{ u | append:product.url }}"
+            }
+          {% endcapture %}
+        {%- when 'collection' and collection.handle -%}
+          {% assign collection-position = 2 %}
+          {%- if collection.metafields.custom.breadcrumbs_custom != blank -%}
+            {% assign pos = 1 %}
+            {% for bccc in collection.metafields.custom.breadcrumbs_custom.value %}
+              {% assign pos = pos | plus: 1 %}
+              {% if prod-show-cat-handle %}
+                {% assign coll-title = bccc.handle | replace: '-', ' ' | replace: '_', ' ' %}
+              {% else %}
+                {% assign coll-title = bccc.title | split: '|' | last %}
+              {% endif %}
+              {{ separator }}
+              <span class="ms_breadcrumb_link">{{ coll-title | link_to: bccc.url }}</span>
+              {% capture ms_schema %} 
+                   {{ ms_schema }}
+                  ,{
+                    "@type": "ListItem",
+                    "position": {{ pos }},
+                    "name": "{{ coll-title }}",
+                    "item": "{{ u | append:bccc.url }}"
+                  }
+                 {% endcapture %}
+            {% endfor %}
+            {% assign pos = pos | plus: 1 %}
+            {% assign collection-position = pos %}
+          {%- elsif cat-use-menu -%}
+            {% assign found = false %}
+            {% assign collection-position = 2 %}
+            {%- for link in linklists[cat-use-menu].links -%}
+              {% if found == true %}
+                {% break %}
+              {% endif %}
+              {% capture currentBC %}
+                    {{ separator }}
+                    <span class="ms_breadcrumb_link">{{ link.title | link_to: link.url }}</span>
+                  {% endcapture %}
+              {% capture ms_schema_1 %} 
+                      ,{
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "{{ link.title }}",
+                        "item": "{{ u | append:link.url }}"
+                      }
+                  {% endcapture %}
+              {% assign currentHandle = link.url | split: '/collections/' | last %}
+              {% if currentHandle == collection.handle %}
+                {% comment %} Se lo trovo al primo livello blocco il ciclo{% endcomment %}
+                {% break %}
+              {% endif %}
+
+              {% comment %} ... Passo al secondo livello{% endcomment %}
+              {% if link.links != blank %}
+                {%- for link-lev-2 in link.links -%}
+                  {% capture currentBC-lev-2 %}
+                        {{ separator }}
+                        <span class="ms_breadcrumb_link">{{ link-lev-2.title | link_to: link-lev-2.url }}</span>
+                      {% endcapture %}
+                  {% capture ms_schema_2 %} 
+                           ,{
+                             "@type": "ListItem",
+                             "position": 3,
+                             "name": "{{ link-lev-2.title }}",
+                             "item": "{{ u | append:link-lev-2.url }}"
+                           }
+                      {% endcapture %}
+                  {% assign currentHandle = link-lev-2.url | split: '/collections/' | last %}
+                  {% if currentHandle == collection.handle %}
+                    {{ currentBC }}
+                    {% assign found = true %}
+                    {% assign collection-position = 3 %}
+                    {% capture ms_schema %} 
+                           {{ ms_schema }}{{ ms_schema_1 }}
+                         {% endcapture %}
+                    {% break %}
+                  {% endif %}
+
+                  {% comment %} ... Passo al terzo livello{% endcomment %}
+                  {% if link-lev-2.links != blank %}
+                    {%- for link-lev-3 in link-lev-2.links -%}
+                      {% capture currentBC-lev-3 %}
+                            {{ separator }}
+                            <span class="ms_breadcrumb_link">{{ link-lev-3.title | link_to: link-lev-3.url }}</span>
+                          {% endcapture %}
+                      {% capture ms_schema_3 %} 
+                              ,{
+                                "@type": "ListItem",
+                                "position": 4,
+                                "name": "{{ link-lev-3.title }}",
+                                "item": "{{ u | append:link-lev-3.url }}"
+                              }
+                          {% endcapture %}
+                      {% assign currentHandle = link-lev-3.url | split: '/collections/' | last %}
+                      {% if currentHandle == collection.handle %}
+                        {{ currentBC -}}
+                        {{- currentBC-lev-2 }}
+                        {% assign found = true %}
+                        {% assign collection-position = 4 %}
+                        {% capture ms_schema %} 
+                               {{ ms_schema }}{{ ms_schema_1 }}{{ ms_schema_2 }}
+                             {% endcapture %}
+                        {% break %}
+                      {% endif %}
+
+                      {% comment %} ... Passo al quarto livello{% endcomment %}
+                      {% if link-lev-3.links != blank %}
+                        {%- for link-lev-4 in link-lev-3.links -%}
+                          {% capture currentBC-lev-4 %}
+                                {{ separator }}
+                                <span class="ms_breadcrumb_link">{{ link-lev-4.title | link_to: link-lev-4.url }}</span>
+                              {% endcapture %}
+                          {% capture ms_schema_4 %} 
+                               ,{
+                                 "@type": "ListItem",
+                                 "position": 5,
+                                 "name": "{{ link-lev-4.title }}",
+                                 "item": "{{ u | append:link-lev-4.url }}"
+                                }
+                              {% endcapture %}
+                          {% assign currentHandle = link-lev-4.url | split: '/collections/' | last %}
+                          {% if currentHandle == collection.handle %}
+                            {{ currentBC -}}
+                            {{- currentBC-lev-2 -}}
+                            {{- currentBC-lev-3 }}
+                            {% assign found = true %}
+                            {% assign collection-position = 5 %}
+                            {% capture ms_schema %} 
+                                   {{ ms_schema }}{{ ms_schema_1 }}{{ ms_schema_2 }}{{ ms_schema_3 }}
+                                 {% endcapture %}
+                            {% break %}
+                          {% endif %}
+                        {%- endfor -%}
+                      {% endif %}
+                      {% comment %} Fine quarto livello{% endcomment %}
+                    {%- endfor -%}
+                  {% endif %}
+                  {% comment %} Fine terzo livello{% endcomment %}
+                {%- endfor -%}
+              {% endif %}
+              {% comment %} Fine secondo livello{% endcomment %}
+            {%- endfor -%}
+          {%- endif -%}
+          {{ separator }}
+          {% if prod-show-cat-handle %}
+            {% assign cur-coll-title = collection.handle | replace: '-', ' ' | replace: '_', ' ' | capitalize %}
+          {% else %}
+            {% assign cur-coll-title = collection.title | split: '|' | last %}
+          {% endif %}
+          <span class="ms_breadcrumb_current" aria-current="page">{{ cur-coll-title }}</span>
+          {% capture ms_schema %} 
+              {%- if collection-position > 1 -%}
+                {{ ms_schema }}
+              {%- endif -%}
+              ,{
+                "@type": "ListItem",
+                "position": {{ collection-position }},
+                "name": "{{ cur-coll-title }}",
+                "item": "{{ u | append:collection.url }}"
+              }
+            {% endcapture %}
+          {%- if current_tags -%}
+          {%- endif -%}
+        {%- when 'blog' -%}
+          {%- if current_tags -%}
+            {{ separator }}
+            <span class="ms_breadcrumb_link">{{ blog.title | link_to: blog.url }}</span>
+            {%- capture tag_url -%}{{ blog.url }}/tagged/{{ current_tags | join: '+' }}{%- endcapture -%}
+            {{ separator }}
+            <span class="ms_breadcrumb_current" aria-current="page">{{- current_tags | join: ' + ' -}}</span>
+          {%- else -%}
+            {{ separator }}
+            <span class="ms_breadcrumb_current" aria-current="page">{{ blog.title }}</span>
+          {%- endif -%}
+          {% capture ms_schema %} 
+            ,{
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{ blog.title }}",
+                "item": "{{  u | append:blog.url }}"
+              }
+          {% endcapture %}
+        {%- when 'article' -%}
+          {{ separator }}
+          <span class="ms_breadcrumb_link">{{ blog.title | link_to: blog.url }}</span>
+          {{ separator }}
+          <span class="ms_breadcrumb_current" aria-current="page">{{ article.title }}</span>
+          {% capture ms_schema %} 
+              ,{
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "{{ blog.title }}",
+                  "item": "{{ u | append:blog.url }}"
+                }
+               ,{
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "{{ article.title }}",
+                  "item": "{{ u | append:article.url }}"
+                }
+            {% endcapture %}
+        {%- else -%}
+          {{ separator }}
+          {% assign current_pt = page_title %}
+          {%- if template contains 'search' -%}
+            {% assign current_pt = 'Search' %}
+            <span class="ms_breadcrumb_current">{{ current_pt }}</span>
+          {%- elsif template contains 'customers' -%}
+            {% assign current_pt = 'Profile' %}
+            <span class="ms_breadcrumb_current">{{ current_pt }}</span>
+          {%- elsif template contains 'cart' -%}
+            {% assign current_pt = 'Cart' %}
+            <span class="ms_breadcrumb_current">{{ current_pt }}</span>
+          {%- else -%}
+            <span class="ms_breadcrumb_current" aria-current="page">{{ current_pt }}</span>
+          {%- endif -%}
+          {% capture ms_schema %} 
+               {{ ms_schema }}
+              ,{
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "{{ current_pt }}",
+                  "item": "{{  u | append:page.url }}"
+                }
+            {% endcapture %}
+      {%- endcase -%}
+    </nav>
+  </div>
+  <style>
+    .ms-breadcrumb-wrapper .breadcrumb {
+        position: relative !important;
+        top: auto !important;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        justify-content: center;
+    }
+    .ms-breadcrumb-wrapper .breadcrumb a:hover{
+       color:#000;
+
+    }
+    .ms-breadcrumb-wrapper .breadcrumb .ms_breadcrumb_link a {
+      font-weight: 400;
+      padding:0;
+      margin:0;
+    }
+    .ms-breadcrumb-wrapper .breadcrumb .ms_breadcrumb_current,
+    .ms-breadcrumb-wrapper .breadcrumb .ms_breadcrumb_separator
+    {
+      color: rgba(0,0,0,0.5);
+    }
+    /* Current site Classes */
+    .breadcrumb{
+      font-size: calc(12px / 18* var(--base-body-size) + 0px);
+      line-height: 1.5;
+      padding: 0 0;
+      margin-bottom: 1rem;
+      list-style: none;
+    }
+    .breadcrumb span {
+      line-height: 1.5;
+      word-break: break-word;
+      flex-shrink: 0;
+    }
+    .breadcrumb span:not(:last-child) {
+      margin-inline-end: 5px;
+    }
+  </style>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+      {{ ms_schema }}
+      ]
+    }
+  </script>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "MS Breadcrumbs",
+	"settings": [
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "text",
+      "id": "home_lbl",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "/"
+    },
+    {
+      "type": "text",
+      "id": "wrapperclass",
+      "label": "Custom CSS wrapper classes"
+    },
+    {
+      "type": "header",
+      "content": "Settings categories"
+    },
+    {
+      "type": "text",
+      "id": "menu_handle",
+      "label": "Categories Menu handle",
+      "info": "Inserisci l'handle del menu che vuoi prendere come alberatura per le breadcrumbs delle categorie.Lascialo vuoto se non vuoi usare questa funzionalità."
+    },
+    {
+      "type": "header",
+      "content": "Settings products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_collections",
+      "label": "Show all collection in product page",
+      "info": "Seleziona se vuoi che nella scheda prodotto vengano mostrate indistintamente tutte le collezioni associate.",
+      "default": false
+    },
+    {
+      "type": "textarea",
+      "id": "collections_banned",
+      "label": "Categories Filter",
+      "info": "Se selezionato mostra tutte le collezioni, inserisci in questa area gli handle delle collections, separate da virgola che non vuoi far apparire nelle BC."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cat_handle",
+      "label": "Show collection handle",
+      "info": "Invece di mostrare il title mostra l'handle.",
+      "default": false
+    }
+  ],
+  "presets": [{
+    "name": "MS Breadcrumbs"
+  }],
+  "disabled_on": {
+    "groups": ["footer"]
+  }
+}
+{% endschema %}

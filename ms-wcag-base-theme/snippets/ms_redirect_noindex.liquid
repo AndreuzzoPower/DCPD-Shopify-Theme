@@ -1,0 +1,59 @@
+{% comment %} FILTRI {% endcomment %}
+{% if template contains 'collection' %}
+  {% for filter in collection.filters %}
+    {% liquid
+      assign total_active_values = total_active_values | plus: filter.active_values.size
+    %}
+
+    {% if filter.type == 'price_range' %}
+      {% if filter.min_value.value != null or filter.max_value.value != null %}
+        {% liquid
+          assign total_active_values = total_active_values | plus: 1
+        %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if current_tags.size > 0 or total_active_values > 0 %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endif %}
+
+{% comment %} COLLECTION DA FILTRARE {% endcomment %}
+{% if template == 'list-collections'
+  or collection.handle == 'bestseller'
+  or collection.handle == 'frontpage'
+  or collection.handle == 'all'
+%}
+  <meta name="robots" content="noindex">
+  <script type="text/javascript">
+    //window.location = "/";
+  </script>
+{% endif %}
+
+{% comment %} NO INDEX {% endcomment %}
+{% if collection.metafields.custom.no_index %}
+  <meta name="robots" content="noindex">
+{% endif %}
+
+{% if template contains 'product' %}
+  {% if product.metafields.custom.no_index %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endif %}
+{% if template contains 'page' %}
+  {% if page.metafields.custom.no_index %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endif %}
+{% if template contains 'blog' %}
+  {% if blog.metafields.custom.no_index %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endif %}
+{% if template contains 'article' %}
+  {% if article.metafields.custom.no_index %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endif %}
+{% comment %}
+{% endcomment %}

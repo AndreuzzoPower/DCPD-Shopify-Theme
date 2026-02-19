@@ -1,0 +1,43 @@
+<script>
+document.addEventListener("mouseover", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) return;
+  const url = link.getAttribute("href");
+  // Filtri base
+  if (
+    !url.startsWith("/") ||             // deve essere link interno relativo
+    url.startsWith("//") ||             // esclude protocol-relative
+    url.includes("#") ||                // esclude anchor link
+    url.startsWith("mailto:") ||        // esclude mail
+    url.startsWith("tel:")              // esclude telefono
+  ) {
+    return;
+  }
+
+  // Esclusione URL "sensibili" (azioni, form, carrello, checkout ecc.)
+  const excludedPatterns = [
+    // WooCommerce
+    "/cart", "/checkout", "/my-account", "/add-to-cart",
+
+    // Shopify
+    "/cart", "/checkout", "/account", "/orders",
+
+    // PrestaShop / Magento / altri comuni
+    "/order", "/login", "/register", "/customer", "/account", "/basket",
+    "/signin", "/signup",
+
+    // Generico
+    "logout", "wishlist", "coupon", "payment"
+  ];
+  if (excludedPatterns.some(pattern => url.includes(pattern))) {
+    return;
+  }
+  // Creazione del <link rel="prerender">
+  if (!document.querySelector(`link[rel="prerender"][href="${url}"]`)) {
+    const linkEl = document.createElement("link");
+    linkEl.rel = "prerender";
+    linkEl.href = url;
+    document.head.appendChild(linkEl);
+  }
+});
+</script>

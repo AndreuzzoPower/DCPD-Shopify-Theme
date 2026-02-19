@@ -1,0 +1,377 @@
+<div class="custom-html bootstrap-scope" id="section-{{ section.id }}">
+  <div class="color-{{ section.settings.color_scheme }} {% if section.settings.section_width == 'full_width' %}container-fluid {% elsif section.settings.section_width == 'default' %}container {% else %} {% endif %}">
+    {% if section.settings.section_title != '' or section.settings.section_sub_title != '' %}
+      <div class="section-title {{ section.settings.title_align }} pb-60">
+        {% if section.settings.section_title != '' %}
+          {{ section.settings.section_title }}
+        {% endif %}
+
+        {% if section.settings.section_sub_title != '' %}
+          <p>{{ section.settings.section_sub_title }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% comment %}
+      <div class="row">
+        <div class="col-12">
+          <div class="custom-html-content">
+            {{ section.settings.custom_html_content }}
+          </div>
+        </div>
+      </div>
+    {% endcomment %}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'section_content' -%}
+        {{ block.settings.custom_content }}
+		{{ block.settings.custom_content_html }}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% comment %}
+{% for block in section.blocks %}
+  {% if block.type == 'section_padding' %}
+    <style>
+      #shopify-section-{{ section.id }} > div > div {
+        padding-top: {{ block.settings.section_padding_top }}px;
+        padding-bottom: {{ block.settings.section_padding_bottom }}px;
+      }
+      @media all and (min-width: 768px) and (max-width: 991px) {
+        #shopify-section-{{ section.id }} > div > div {
+          padding-top: {{ block.settings.section_padding_top_md }}px;
+          padding-bottom: {{ block.settings.section_padding_bottom_md }}px;
+        }
+      }
+      @media all and (max-width: 767px) {
+        #shopify-section-{{ section.id }} > div > div {
+          padding-top: {{ block.settings.section_padding_top_xs }}px;
+          padding-bottom: {{ block.settings.section_padding_bottom_xs }}px;
+        }
+      }
+    </style>
+  {% endif %}
+  {% if block.type == 'section_margin' %}
+    <style>
+      #shopify-section-{{ section.id }} {
+        margin-top: {{ block.settings.section_margin_top }}px;
+        margin-bottom: {{ block.settings.section_margin_bottom }}px;
+      }
+      @media all and (min-width: 768px) and (max-width: 991px) {
+        #shopify-section-{{ section.id }} {
+          margin-top: {{ block.settings.section_margin_top_md }}px;
+          margin-bottom: {{ block.settings.section_margin_bottom_md }}px;
+        }
+      }
+      @media all and (max-width: 767px) {
+        #shopify-section-{{ section.id }} {
+          margin-top: {{ block.settings.section_margin_top_xs }}px;
+          margin-bottom: {{ block.settings.section_margin_bottom_xs }}px;
+        }
+      }
+    </style>
+  {% endif %}
+  {% if block.type == 'section_background' %}
+    <style>
+      #shopify-section-{{ section.id }} > div > div {
+        background-color: {{ block.settings.section_bg_color }};
+        {% if block.settings.section_bg_image != blank %}
+          background-image: url({{ block.settings.section_bg_image | image_url }});
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        {% endif %}
+      }
+    </style>
+  {% endif %}
+{% endfor %}
+{% endcomment %}
+
+{%- render 'ms_section-style' -%}
+
+
+{% schema %}
+ {
+   "name": "MS Custom HTML/LIQUID",
+   "settings": [
+            {
+               "type": "select",
+               "id": "section_width",
+               "label": "Section Width",
+               "options":[
+                    {
+                         "label": "Full Width",
+                         "value": "full_width"
+                    },
+                    {
+                         "label": "Default Width",
+                         "value": "default"
+                    },
+                    {
+                       "label": "Page width",
+                       "value": "page_width"
+                    }
+                 ],
+                "default": "default"
+            },
+    	{
+        "type": "header",
+        "content": "Color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+	{
+		"type": "header",
+           "content": "Section Title"
+    },
+	{
+           "type": "liquid",
+           "id": "section_title",
+           "label": "Title",
+           "default": "New Arrivals"
+    },
+	{
+           "type": "liquid",
+           "id": "section_sub_title",
+           "label": "Subtitle",
+           "default": "Contrary to popular belief, Lorem Ipsum is not simply random text."
+    },
+	{
+			"type": "select",
+			"id": "title_align",
+			"label": "Title Align",
+			"options":[
+				{
+					"label": "Text Left",
+					"value": "text-left"
+				},
+				{
+					"label": "Text Center",
+					"value": "text-center"
+				},
+				{
+					"label": "Text Right",
+					"value": "text-right"
+				}
+			],
+			"default": "text-center"
+    }
+],
+"blocks":[
+   {
+       "type": "section_padding",
+       "name": "Section Padding",
+	   "limit": 1,
+         "settings": [
+           {
+		  "type": "header",
+		  "content": "Large/Desktop Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_top",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_bottom",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Bottom",
+		  "unit": "px",
+		  "default": 100
+		},
+		{
+		  "type": "header",
+		  "content": "Tablet Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_top_md",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_bottom_md",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Bottom",
+		  "unit": "px",
+		  "default": 80
+		},
+		{
+		  "type": "header",
+		  "content": "Mobile Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_top_xs",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_padding_bottom_xs",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Padding Bottom",
+		  "unit": "px",
+		  "default": 60
+		}
+         ]
+    },
+   {
+         "type": "section_margin",
+         "name": "Section Margin",
+	     "limit": 1,
+         "settings": [
+           {
+		  "type": "header",
+		  "content": "Large/Desktop Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_top",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_bottom",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Bottom",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "header",
+		  "content": "Tablet Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_top_md",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_bottom_md",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Bottom",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "header",
+		  "content": "Mobile Device"
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_top_xs",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Top",
+		  "unit": "px",
+		  "default": 0
+		},
+		{
+		  "type": "range",
+		  "id": "section_margin_bottom_xs",
+		  "min": 0,
+		  "max": 150,
+		  "step": 5,
+		  "label": "Margin Bottom",
+		  "unit": "px",
+		  "default": 0
+		}
+         ]
+      },
+   {
+      "type": "section_background",
+      "name": "Section Background",
+	  "limit": 1,
+         "settings": [
+           {
+		  "type": "image_picker",
+		  "id": "section_bg_image",
+		  "label": "BG Image"
+		},
+		{
+		  "type": "color",
+		  "id": "section_bg_color",
+		  "label": "BG Color",
+		  "default": "#ffffff"
+		}
+         ]
+    },
+   {
+      "type": "section_content",
+      "name": "Section Content",
+         "settings": [
+           {
+            "type": "liquid",
+            "id": "custom_content",
+            "label": "Custom LIQUID",
+            "default":"<div class=\"container\"><div class=\"row\"><div class=\"col-12\">Contenuto con codice LIQUID</div></div></div>",
+            "info": "In questa sezione puoi utilizzare anche classi bootstrap. Attenzione ad usare un codice semantico WCAG compliant. Questo contenuto NON viene tradotto dalle app"
+		   },
+		   {
+            "type": "html",
+            "id": "custom_content_html",
+            "label": "Custom HTML",
+            "default":"<div class=\"container\"><div class=\"row\"><div class=\"col-12\">Contenuto</div></div></div>",
+            "info": "In questa sezione puoi utilizzare anche classi bootstrap. Attenzione ad usare un codice semantico WCAG compliant. Questo contenuto viene tradotto dalle app"
+		   }
+         ]
+    },
+],
+"presets": [
+	{
+	  "name": "MS Custom HTML/LIQUID",
+	  "category": "Developer",
+	  "blocks":[
+			{
+				"type": "section_padding"
+			},
+        	{
+				"type": "section_content"
+			}
+		]
+	}
+]
+ }
+{% endschema %}

@@ -1,0 +1,16 @@
+<div class="image-block">
+  <img src="{{ block.settings.block_image | img_url: 'master' }}" alt="">
+</div>
+
+{% schema %}
+{
+  "name": "Image",
+  "settings": [
+       {
+		  "type": "image_picker",
+		  "id": "block_image",
+		  "label": "Image"
+		}
+  ]
+}
+{% endschema %}

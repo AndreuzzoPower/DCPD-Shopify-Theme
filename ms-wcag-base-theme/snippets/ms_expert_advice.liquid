@@ -1,0 +1,398 @@
+{% comment %}
+  Expert Advice — Renders article cards linked to the collection via metafield.
+  Layout: CSS Grid nativo (nessuna libreria esterna).
+  Filtri: vanilla JS con toggle display.
+
+  Accepts:
+  - collection: {Object} Collection object (reads metafields.custom.post_collegati)
+
+  Usage:
+  {% render 'ms_expert_advice', collection: collection %}
+{% endcomment %}
+
+{%- assign ms_posts = collection.metafields.custom.post_collegati.value -%}
+{%- assign count_posts = 0 -%}
+{%- if ms_posts -%}
+  {%- for p in ms_posts -%}
+    {%- assign count_posts = count_posts | plus: 1 -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if count_posts > 0 -%}
+  {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} Collect unique tags for filters {%- endcomment -%}
+  {%- assign ea_show_filters = section.settings.ea_show_filters -%}
+  {%- if ea_show_filters -%}
+    {%- assign all_tags_string = "" -%}
+    {%- for ms_post in ms_posts -%}
+      {%- if ms_post.tags.size > 0 -%}
+        {%- assign current_post_tags = ms_post.tags | join: "," -%}
+        {%- if all_tags_string == "" -%}
+          {%- assign all_tags_string = current_post_tags -%}
+        {%- else -%}
+          {%- assign all_tags_string = all_tags_string | append: "," | append: current_post_tags -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign ea_filters = all_tags_string | split: "," | uniq | compact -%}
+    {%- if ea_filters.size <= 1 -%}
+      {%- assign ea_show_filters = false -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- assign ea_cols_desktop = section.settings.ea_columns_desktop | default: '3' -%}
+  {%- assign ea_cols_mobile = section.settings.ea_columns_mobile | default: '1' -%}
+  {%- assign ea_filter_pos = section.settings.ea_filter_position | default: 'horizontal' -%}
+
+  <style>
+    /* ===== Expert Advice Layout ===== */
+    .ms-ea { padding-top: 2rem; }
+    .ms-ea__layout {
+      display: flex;
+      gap: 3rem;
+      padding-bottom: 2rem;
+    }
+    .ms-ea__layout--horizontal { flex-direction: column; }
+    .ms-ea__layout--vertical .ms-ea__sidebar {
+      flex-shrink: 0;
+      width: 22rem;
+    }
+    .ms-ea__grid-wrapper {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ===== EA Grid (CSS Grid nativo — zero librerie esterne) ===== */
+    .ms-ea__grid {
+      display: grid;
+      grid-template-columns: repeat({{ ea_cols_mobile }}, 1fr);
+      gap: 2rem;
+      padding-bottom: 1rem; /* spazio per l'ombra delle card */
+    }
+    @media screen and (min-width: 750px) {
+      .ms-ea__grid {
+        grid-template-columns: repeat({{ ea_cols_desktop }}, 1fr);
+      }
+    }
+    /* Item nascosto dal filtro */
+    .ms-ea__item--hidden {
+      display: none;
+    }
+    /* Transizione opacità per filtraggio fluido */
+    .ms-ea__item {
+      transition: opacity 0.3s ease;
+    }
+
+    /* ===== EA Filters ===== */
+    .ms-ea__filters-title {
+      font-weight: 600;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .ms-ea__filter-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    /* Horizontal filters */
+    .ms-ea__layout--horizontal .ms-ea__filter-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .ms-ea__filter-item {
+      cursor: pointer;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid rgba(var(--color-foreground), 0.2);
+      border-radius: 2rem;
+      font-size: 1.3rem;
+      line-height: 1.4;
+      color: rgb(var(--color-foreground));
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .ms-ea__filter-item:hover,
+    .ms-ea__filter-item.is-active {
+      background-color: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+      border-color: rgb(var(--color-foreground));
+    }
+    /* Vertical filters */
+    .ms-ea__layout--vertical .ms-ea__filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .ms-ea__layout--vertical .ms-ea__filter-item {
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid rgba(var(--color-foreground), 0.1);
+      padding: 0.8rem 1.2rem 0.8rem 0;
+    }
+    .ms-ea__layout--vertical .ms-ea__filter-item:hover,
+    .ms-ea__layout--vertical .ms-ea__filter-item.is-active {
+      padding-left: 1.2rem;
+      background-color: rgba(var(--color-button), var(--alpha-button-background));
+      color: rgb(var(--color-button-text));
+      border-color: transparent;
+    }
+
+    /* ===== Mobile accordion filters ===== */
+    .ms-ea__filters-toggle {
+      display: none;
+    }
+    @media screen and (max-width: 749px) {
+      .ms-ea__layout { flex-direction: column; }
+      .ms-ea__layout--vertical .ms-ea__sidebar { width: 100%; }
+      .ms-ea__filters-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.4rem;
+        padding: 1rem 1.2rem;
+        background: rgba(var(--color-foreground), 0.04);
+        border: 1px solid rgba(var(--color-foreground), 0.12);
+        border-radius: 0.4rem;
+        margin-bottom: 1.2rem;
+      }
+      .ms-ea__filters-toggle::after {
+        content: "\276F";
+        transition: transform 0.3s;
+        transform: rotate(90deg);
+        font-size: 1.2rem;
+      }
+      .ms-ea__filters-toggle[aria-expanded="true"]::after {
+        transform: rotate(270deg);
+      }
+      .ms-ea__filter-list[data-collapsed="true"] {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease-out;
+      }
+      .ms-ea__filter-list[data-collapsed="false"] {
+        max-height: 500px;
+        transition: max-height 0.35s ease-in;
+      }
+      .ms-ea__filters-title { display: none; }
+    }
+
+    /* ===== EA Card styles (scoped to .ms-ea) ===== */
+    .ms-ea .article-card-wrapper {
+      {% if section.settings.ea_card_border_position == 'all' %}
+        border: {{ section.settings.ea_card_border_width | default: 1 }}px solid {{ section.settings.ea_card_border_color | default: '#e0e0e0' }};
+      {% elsif section.settings.ea_card_border_position == 'bottom' %}
+        border-bottom: {{ section.settings.ea_card_border_width | default: 1 }}px solid {{ section.settings.ea_card_border_color | default: '#e0e0e0' }};
+      {% endif %}
+      {% if section.settings.ea_card_border_radius > 0 %}
+        border-radius: {{ section.settings.ea_card_border_radius }}px;
+      {% endif %}
+      {% if section.settings.ea_card_shadow == 'light' %}
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      {% elsif section.settings.ea_card_shadow == 'medium' %}
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      {% elsif section.settings.ea_card_shadow == 'strong' %}
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+      {% endif %}
+      overflow: hidden;
+    }
+    .ms-ea .card__information {
+      padding-top: {{ section.settings.ea_card_info_padding_top | default: 0 }}px !important;
+      padding-right: {{ section.settings.ea_card_info_padding_right | default: 0 }}px !important;
+      padding-bottom: {{ section.settings.ea_card_info_padding_bottom | default: 0 }}px !important;
+      padding-left: {{ section.settings.ea_card_info_padding_left | default: 0 }}px !important;
+    }
+    .ms-ea .article-card__excerpt { margin-bottom: 0; }
+    {% if section.settings.ea_card_info_vertical %}
+      .ms-ea .article-card__info {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+      .ms-ea .article-card__info .circle-divider::after {
+        display: none !important;
+      }
+    {% endif %}
+  </style>
+
+  <div class="ms-ea page-width">
+    <div class="ms-ea__layout ms-ea__layout--{{ ea_filter_pos }}">
+
+      {%- if ea_show_filters -%}
+        <div class="ms-ea__sidebar">
+          <div
+            class="ms-ea__filters-toggle"
+            role="button"
+            tabindex="0"
+            aria-expanded="false"
+            aria-controls="ea-filter-list-{{ section.id }}"
+          >
+            {{ section.settings.ea_filter_label | default: 'Filtri' }}
+          </div>
+          {%- if ea_filter_pos == 'vertical' -%}
+            <span class="ms-ea__filters-title">{{ section.settings.ea_filter_label | default: 'Filtri' }}</span>
+          {%- endif -%}
+          <ul
+            class="ms-ea__filter-list"
+            id="ea-filter-list-{{ section.id }}"
+            data-collapsed="true"
+          >
+            <li class="ms-ea__filter-item is-active" data-filter="*">Tutti</li>
+            {%- for filter in ea_filters -%}
+              {%- unless filter == '' -%}
+                <li class="ms-ea__filter-item" data-filter=".filter_{{ filter | handleize }}">{{ filter | capitalize }}</li>
+              {%- endunless -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="ms-ea__grid-wrapper">
+        <div class="ms-ea__grid" id="ea-grid-{{ section.id }}">
+          {%- for ms_post in ms_posts -%}
+            {%- comment -%} Resolve blog from article URL {%- endcomment -%}
+            {%- assign ea_blog_handle = ms_post.url | split: '/' | slice: 2, 1 | first -%}
+            {%- assign ea_blog_obj = blogs[ea_blog_handle] -%}
+
+            <div class="ms-ea__item{% for tag in ms_post.tags %} filter_{{ tag | handleize }}{% endfor %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              {%- render 'article-card',
+                article: ms_post,
+                media_height: section.settings.ea_image_height,
+                media_aspect_ratio: ms_post.image.aspect_ratio,
+                show_image: section.settings.ea_show_image,
+                show_date: section.settings.ea_show_date,
+                show_author: section.settings.ea_show_author,
+                show_reading: section.settings.ea_show_reading,
+                show_icons: section.settings.ea_show_icons,
+                show_excerpt: section.settings.ea_show_excerpt,
+                show_blog_name: section.settings.ea_show_blog_name,
+                blog_name: ea_blog_obj.title,
+                blog_url: ea_blog_obj.url,
+                show_tags: section.settings.ea_show_tags,
+                tags_style: section.settings.ea_tags_style
+              -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {%- comment -%} Structured data — ItemList + BlogPosting per articolo {%- endcomment -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": {{ section.settings.ea_tab_advice_label | default: 'Expert Advice' | json }},
+    "numberOfItems": {{ count_posts }},
+    "itemListElement": [
+      {%- for ms_post in ms_posts -%}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "item": {
+            "@type": "BlogPosting",
+            "headline": {{ ms_post.title | json }},
+            "url": "{{ request.origin }}{{ ms_post.url }}"
+            {%- if ms_post.image -%}
+              ,"image": "{{ ms_post.image | image_url: width: 1200 }}"
+            {%- endif -%}
+            ,"datePublished": "{{ ms_post.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}"
+            ,"author": {
+              "@type": "Person",
+              "name": {{ ms_post.author | default: shop.name | json }}
+            }
+            {%- if ms_post.excerpt != blank -%}
+              ,"description": {{ ms_post.excerpt | strip_html | truncate: 200 | json }}
+            {%- endif -%}
+            {%- if ms_post.tags.size > 0 -%}
+              ,"keywords": {{ ms_post.tags | json }}
+            {%- endif -%}
+          }
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+
+  {%- comment -%} Filtri e toggle — vanilla JS puro, nessuna libreria esterna {%- endcomment -%}
+  <script>
+    (function() {
+      var sectionId = '{{ section.id }}';
+
+      function initEA() {
+        var gridEl = document.getElementById('ea-grid-' + sectionId);
+        if (!gridEl) return;
+
+        var allItems = gridEl.querySelectorAll('.ms-ea__item');
+        var filterBtns = document.querySelectorAll('#ea-filter-list-' + sectionId + ' .ms-ea__filter-item');
+
+        /* ── Filtri ── */
+        filterBtns.forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var filterValue = btn.getAttribute('data-filter');
+
+            /* Mostra/nascondi item in base al filtro */
+            allItems.forEach(function(item) {
+              if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
+                item.classList.remove('ms-ea__item--hidden');
+              } else {
+                item.classList.add('ms-ea__item--hidden');
+              }
+            });
+
+            /* Aggiorna classe attiva */
+            filterBtns.forEach(function(b) { b.classList.remove('is-active'); });
+            btn.classList.add('is-active');
+          });
+        });
+      }
+
+      /* ── Mobile filter accordion ── */
+      function initFilterToggle() {
+        var toggle = document.querySelector('.ms-ea__filters-toggle[aria-controls="ea-filter-list-' + sectionId + '"]');
+        var filterList = document.getElementById('ea-filter-list-' + sectionId);
+        if (toggle && filterList) {
+          function toggleFilters() {
+            var expanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', String(!expanded));
+            filterList.setAttribute('data-collapsed', String(expanded));
+          }
+          toggle.addEventListener('click', toggleFilters);
+          toggle.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFilters(); }
+          });
+        }
+      }
+
+      /* ── Esponi callback per tab switch (noop con CSS Grid — non serve re-layout) ── */
+      window._msEARelayout = window._msEARelayout || {};
+      window._msEARelayout[sectionId] = function() {};
+
+      /* ── Init ── */
+      function onReady() {
+        initFilterToggle();
+        initEA();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', onReady);
+      } else {
+        onReady();
+      }
+    })();
+  </script>
+{%- endif -%}

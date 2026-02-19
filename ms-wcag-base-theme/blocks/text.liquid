@@ -1,0 +1,62 @@
+<div class="text-block text-{{ block.settings.alignment }} col-{{ block.settings.mobile_layout }} col-md-{{ block.settings.tablet_layout }} col-lg-{{ block.settings.desktop_layout }} ">
+  {{ block.settings.text }}
+</div>
+
+{% schema %}
+{
+  "name": "Text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info":"Schermi maggiori di 1200 px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info":"Schermi tra 768px e 1200 px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info":"Schermi sotto i 768px"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment"
+    },
+  ]
+}
+{% endschema %}

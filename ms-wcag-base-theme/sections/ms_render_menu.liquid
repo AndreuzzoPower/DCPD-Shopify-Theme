@@ -1,0 +1,440 @@
+{%- comment -%}
+  Renders a navigation menu as a list of styled links.
+  The user selects a navigation menu from Shopify Admin and it gets rendered
+  with configurable style, alignment and layout options.
+  Uses ms_section-style snippet blocks for padding, margin and background.
+{%- endcomment -%}
+
+{%- if section.settings.menu != blank -%}
+  {%- assign menu = linklists[section.settings.menu] -%}
+  {%- if menu.links.size > 0 -%}
+
+    {%- style -%}
+      .ms-render-menu-{{ section.id }} {
+        {% if section.settings.title_alignment == 'center' %}
+          text-align: center;
+        {% elsif section.settings.title_alignment == 'right' %}
+          text-align: right;
+        {% endif %}
+      }
+
+      .ms-render-menu__title {
+        margin-bottom: 1.6rem;
+      }
+
+      .ms-render-menu__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        {% if section.settings.title_alignment == 'center' %}
+          justify-content: center;
+        {% elsif section.settings.title_alignment == 'right' %}
+          justify-content: flex-end;
+        {% endif %}
+      }
+
+      .ms-render-menu__link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.8rem 1.6rem;
+        font-size: 1.4rem;
+        line-height: 1.4;
+        color: rgb(var(--color-foreground));
+        text-decoration: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        white-space: nowrap;
+      }
+
+      {%- case section.settings.style -%}
+        {%- when 'pills' -%}
+          .ms-render-menu__link {
+            border: 1px solid rgba(var(--color-foreground), 0.2);
+            border-radius: 2rem;
+          }
+          .ms-render-menu__link:hover,
+          .ms-render-menu__link--active {
+            background-color: rgb(var(--color-foreground));
+            color: rgb(var(--color-background));
+            border-color: rgb(var(--color-foreground));
+          }
+        {%- when 'buttons' -%}
+          .ms-render-menu__link {
+            border: 1px solid rgba(var(--color-foreground), 0.2);
+            border-radius: 0.4rem;
+          }
+          .ms-render-menu__link:hover,
+          .ms-render-menu__link--active {
+            background-color: rgb(var(--color-foreground));
+            color: rgb(var(--color-background));
+            border-color: rgb(var(--color-foreground));
+          }
+        {%- when 'underline' -%}
+          .ms-render-menu__link {
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            padding: 0.6rem 0.4rem;
+          }
+          .ms-render-menu__link:hover,
+          .ms-render-menu__link--active {
+            border-bottom-color: rgb(var(--color-foreground));
+          }
+        {%- when 'plain' -%}
+          .ms-render-menu__link {
+            padding: 0.4rem 0.8rem;
+            opacity: 0.7;
+          }
+          .ms-render-menu__link:hover,
+          .ms-render-menu__link--active {
+            opacity: 1;
+            text-decoration: underline;
+          }
+      {%- endcase -%}
+    {%- endstyle -%}
+
+    <div class="ms-render-menu-{{ section.id }} color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
+      <div class="{% if section.settings.section_width == 'full_width' %}container-fluid{% elsif section.settings.section_width == 'page_width' %}page-width{% else %}container{% endif %}">
+        {%- if section.settings.show_title and section.settings.title != blank -%}
+         <div class="ms-render-menu__title h3{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+            {{ section.settings.title }}
+          </div>
+        {%- endif -%}
+
+        <nav aria-label="{{ section.settings.title | default: 'Navigazione menu' | escape }}">
+          <ul class="ms-render-menu__list{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+            role="list"
+          >
+            {%- for link in menu.links -%}
+              {%- liquid
+                assign is_active = false
+                if request.path == link.url
+                  assign is_active = true
+                endif
+              -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="ms-render-menu__link{% if is_active %} ms-render-menu__link--active{% endif %}"
+                  {% if is_active %}aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  {%- endif -%}
+{%- endif -%}
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Render Menu",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu navigazione",
+      "info": "Seleziona un menu di navigazione creato in Shopify Admin > Navigazione."
+    },
+    {
+      "type": "header",
+      "content": "Intestazione"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": false,
+      "label": "Mostra titolo"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        {
+          "label": "Full Width",
+          "value": "full_width"
+        },
+        {
+          "label": "Default",
+          "value": "default"
+        },
+        {
+          "label": "Page Width",
+          "value": "page_width"
+        }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Allineamento",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Sinistra"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Destra"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Stile link",
+      "default": "pills",
+      "options": [
+        {
+          "value": "pills",
+          "label": "Pillole (arrotondati)"
+        },
+        {
+          "value": "buttons",
+          "label": "Bottoni (squadrati)"
+        },
+        {
+          "value": "underline",
+          "label": "Sottolineato"
+        },
+        {
+          "value": "plain",
+          "label": "Semplice"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colore"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 15
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 10
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Render Menu",
+      "category": "Navigation",
+      "blocks": [
+        {
+          "type": "section_padding"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

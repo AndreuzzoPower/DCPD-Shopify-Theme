@@ -1,0 +1,1348 @@
+{{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Header: rimuovi margin-top */
+  .article-template header {
+    margin-top: 0;
+  }
+
+  /* Info autore/data/lettura: allineamento icone */
+  .article__info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .article__info > span {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Blocco tag nel singolo articolo */
+  .article-template__tags {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  .article-template__tags-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .article-template__tags-wrapper .article-card__tags {
+    margin-top: 0;
+    align-items: center;
+  }
+  .article-template__tags-icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .article-template__tags-icon .svg-wrapper {
+    width: 18px;
+    height: 18px;
+  }
+  .article-template__tags-label {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.06rem;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.7);
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  /* Blocco nome blog nel singolo articolo */
+  .article-template__blog-name {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .article-template__blog-name-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 1.2rem;
+    border-radius: 2rem;
+    background-color: rgba(var(--color-foreground), 0.08);
+    color: rgb(var(--color-foreground));
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .article-template__blog-name-pill:hover {
+    background-color: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+  }
+  .article-template__blog-name-link {
+    font-size: 1.4rem;
+    color: rgba(var(--color-foreground), 0.7);
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+    transition: color 0.2s ease;
+  }
+  .article-template__blog-name-link:hover {
+    color: rgb(var(--color-foreground));
+  }
+
+  /* Blocco Indice (TOC) */
+  .article-toc {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .article-toc__box {
+    border-style: solid;
+  }
+  .article-toc__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 1rem;
+    user-select: none;
+  }
+  .article-toc__title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .article-toc__toggle-icon {
+    display: inline-flex;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+  .article-toc__toggle-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+  .article-toc[data-collapsed="true"] .article-toc__toggle-icon {
+    transform: rotate(-90deg);
+  }
+  .article-toc[data-collapsed="true"] .article-toc__list {
+    display: none;
+  }
+  .article-toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0 0;
+  }
+  .article-toc__list .article-toc__list {
+    margin-top: 0;
+    padding-left: 1.6rem;
+  }
+  .article-toc__item {
+    margin-bottom: 0.4rem;
+  }
+  /* Link style */
+  .article-toc__link--link {
+    font-size: 1.4rem;
+    color: rgba(var(--color-foreground), 0.75);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    line-height: 1.8;
+  }
+  .article-toc__link--link:hover {
+    color: rgb(var(--color-foreground));
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+  /* Button (pill) style */
+  .article-toc__link--button {
+    display: inline-block;
+    font-size: 1.3rem;
+    line-height: 1;
+    padding: 0.6rem 1.2rem;
+    border-radius: 2rem;
+    border: 1px solid rgba(var(--color-foreground), 0.15);
+    background: rgba(var(--color-foreground), 0.04);
+    color: rgba(var(--color-foreground), 0.75);
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .article-toc__link--button:hover {
+    background: rgba(var(--color-foreground), 0.1);
+    color: rgb(var(--color-foreground));
+    border-color: rgba(var(--color-foreground), 0.3);
+    text-decoration: none;
+  }
+  .article-toc__list--buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .article-toc__list--buttons .article-toc__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding-left: 0;
+  }
+  .article-toc__list--buttons .article-toc__item {
+    margin-bottom: 0;
+  }
+  /* Numbered style */
+  .article-toc__list--numbered {
+    counter-reset: toc-counter;
+  }
+  .article-toc__list--numbered > .article-toc__item {
+    counter-increment: toc-counter;
+  }
+  .article-toc__list--numbered > .article-toc__item > .article-toc__link::before {
+    content: counter(toc-counter) '. ';
+    font-weight: 600;
+    color: rgba(var(--color-foreground), 0.4);
+  }
+
+  /* Blocco Divisore — override di div:empty { display: none } */
+  .article-template__divider {
+    display: block !important;
+    width: 100%;
+  }
+
+  /* Blocco Torna al blog */
+  .article-template__back-block {
+    margin-top: 0;
+  }
+  .article-template__back-block .article-template__link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .article-template__back-block .article-template__back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .article-template__back-block .article-template__back-button .icon-wrap {
+    display: flex;
+  }
+{%- endstyle -%}
+
+<article class="article-template">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when '@app' -%}
+        <div class="page-width page-width--narrow">
+          {% render block %}
+        </div>
+      {%- when 'featured_image' -%}
+        {%- if article.image -%}
+          <div
+            class="article-template__hero-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div
+              class="article-template__hero-{{ block.settings.image_height }} media"
+              {% if block.settings.image_height == 'adapt' and article.image %}
+                style="padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              <img
+                srcset="
+                  {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
+                  {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+                  {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+                  {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+                  {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
+                  {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
+                  {{ article.image | image_url }} {{ article.image.width }}w
+                "
+                sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
+                src="{{ article.image | image_url: width: 1100 }}"
+                loading="eager"
+                fetchpriority="high"
+                width="{{ article.image.width }}"
+                height="{{ article.image.height }}"
+                alt="{{ article.image.alt | escape }}"
+              >
+            </div>
+          </div>
+        {%- endif -%}
+
+      {%- when 'title' -%}
+        <header
+          class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <h1
+            class="article-template__title"
+          >
+            {{ article.title | escape }}
+          </h1>
+          <div class="article__info">
+            {%- if block.settings.blog_show_date -%}
+              <span class="circle-divider caption-with-letter-spacing">
+                  {% if block.settings.show_icons %}
+                    <span class="svg-wrapper">
+                    {{- 'icon-calendar.svg' | inline_asset_content -}}
+                    </span> 
+                  {% endif %}
+                {{- article.published_at | time_tag: format: 'date' -}}
+              </span>
+            {%- endif -%}
+            {%- if block.settings.show_reading -%}
+                {%- assign words_per_minute = 200 -%}
+                {% assign words = article.content | strip_html | split: ' ' | size %}
+                {% assign reading_time = words | divided_by: words_per_minute %}
+                <span class="circle-divider caption-with-letter-spacing" aria-label="Reading time" title="Reading time">
+                  {% if block.settings.show_icons %}
+                    <span class="svg-wrapper">
+                    {{- 'icon-clock.svg' | inline_asset_content -}}
+                    </span> 
+                  {% endif %}
+                  {{ reading_time }} {{ "dcpd.collection.ea_view_min" | t }}
+                </span>
+            {%- endif -%}
+            {%- if block.settings.blog_show_author -%}
+              <span class="caption-with-letter-spacing">
+                {% if block.settings.show_icons %}
+                  <span class="svg-wrapper">
+                    {{- 'icon-quote.svg' | inline_asset_content -}}
+                  </span> 
+                {% endif %}
+                <span>{{ article.author }}</span>
+              </span>
+            {%- endif -%}
+          </div>
+        </header>
+
+      {%- when 'content' -%}
+        <div
+          class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          {{ article.content }}
+        </div>
+
+      {%- when 'share' -%}
+        <div
+          class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          {% assign share_url = request.origin | append: article.url %}
+          {% render 'share-button', block: block, share_link: share_url %}
+        </div>
+
+      {%- when 'table_of_contents' -%}
+        {%- liquid
+          assign toc_selectors = ''
+          if block.settings.include_h2
+            assign toc_selectors = toc_selectors | append: 'h2,'
+          endif
+          if block.settings.include_h3
+            assign toc_selectors = toc_selectors | append: 'h3,'
+          endif
+          if block.settings.include_h4
+            assign toc_selectors = toc_selectors | append: 'h4,'
+          endif
+          if block.settings.include_h5
+            assign toc_selectors = toc_selectors | append: 'h5,'
+          endif
+          assign toc_selectors = toc_selectors | remove_last: ','
+        -%}
+        {%- if toc_selectors != blank -%}
+          <div
+            class="article-toc page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            id="ArticleToc-{{ block.id }}"
+            data-toc-selectors="{{ toc_selectors }}"
+            data-toc-list-style="{{ block.settings.list_style }}"
+            data-toc-link-style="{{ block.settings.link_style }}"
+            data-toc-hierarchy="{{ block.settings.hierarchy }}"
+            data-collapsed="{{ block.settings.start_collapsed }}"
+            {{ block.shopify_attributes }}
+          >
+            <div
+              class="article-toc__box"
+              style="
+                background-color: {{ block.settings.box_bg_color | default: 'rgba(var(--color-foreground), 0.02)' }};
+                padding: {{ block.settings.box_padding_top }}px {{ block.settings.box_padding_right }}px {{ block.settings.box_padding_bottom }}px {{ block.settings.box_padding_left }}px;
+                border-color: {{ block.settings.box_border_color | default: 'rgba(var(--color-foreground), 0.12)' }};
+                border-width: {{ block.settings.box_border_width }}px;
+                border-radius: {{ block.settings.box_border_radius }}px;
+              "
+            >
+              {%- if block.settings.title != blank -%}
+                <div class="article-toc__header" role="button" tabindex="0" aria-expanded="{{ block.settings.start_collapsed | default: false | json | replace: 'true', 'false' | replace: 'false', 'true' }}">
+                  <h2 class="article-toc__title">{{ block.settings.title | escape }}</h2>
+                  {%- if block.settings.collapsible -%}
+                    <span class="article-toc__toggle-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="2 4 6 8 10 4"></polyline>
+                      </svg>
+                    </span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              <nav class="article-toc__list-container" aria-label="Indice dell'articolo"></nav>
+            </div>
+          </div>
+          <script>
+            (function() {
+              function initToc() {
+                var tocEl = document.getElementById('ArticleToc-{{ block.id }}');
+                if (!tocEl) return;
+
+                var contentEl = document.querySelector('.article-template__content');
+                if (!contentEl) { tocEl.style.display = 'none'; return; }
+
+                var selectors = tocEl.getAttribute('data-toc-selectors');
+                if (!selectors) { tocEl.style.display = 'none'; return; }
+
+                var headings = contentEl.querySelectorAll(selectors);
+                if (!headings.length) { tocEl.style.display = 'none'; return; }
+
+                var listStyle = tocEl.getAttribute('data-toc-list-style') || 'bullets';
+                var linkStyle = tocEl.getAttribute('data-toc-link-style') || 'link';
+                var hierarchy = tocEl.getAttribute('data-toc-hierarchy') !== 'false';
+                var listClass = 'article-toc__list';
+                if (listStyle === 'numbered') listClass += ' article-toc__list--numbered';
+                if (linkStyle === 'button') listClass += ' article-toc__list--buttons';
+                var linkClass = 'article-toc__link article-toc__link--' + linkStyle;
+
+                /* Genera slug unico per ID */
+                var usedIds = {};
+                function slugify(text) {
+                  var slug = text.toLowerCase()
+                    .replace(/[àáâãäå]/g, 'a').replace(/[èéêë]/g, 'e')
+                    .replace(/[ìíîï]/g, 'i').replace(/[òóôõö]/g, 'o')
+                    .replace(/[ùúûü]/g, 'u').replace(/[ñ]/g, 'n')
+                    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                  if (!slug) slug = 'section';
+                  var base = slug;
+                  var counter = 1;
+                  while (usedIds[slug]) {
+                    slug = base + '-' + counter;
+                    counter++;
+                  }
+                  usedIds[slug] = true;
+                  return slug;
+                }
+
+                /* Costruisci lista piatta con livello */
+                var items = [];
+                headings.forEach(function(h) {
+                  var level = parseInt(h.tagName.charAt(1), 10);
+                  var text = h.textContent.trim();
+                  if (!text) return;
+                  if (!h.id) h.id = slugify(text);
+                  items.push({ id: h.id, text: text, level: level });
+                });
+
+                if (!items.length) { tocEl.style.display = 'none'; return; }
+
+                /* Costruisci HTML — gerarchico o piatto */
+                function buildHierarchicalList(itemsArr) {
+                  var html = '<ul class="' + listClass + '">';
+                  var i = 0;
+                  while (i < itemsArr.length) {
+                    var item = itemsArr[i];
+                    html += '<li class="article-toc__item">';
+                    html += '<a href="#' + item.id + '" class="' + linkClass + '">' + item.text + '</a>';
+                    var children = [];
+                    var j = i + 1;
+                    while (j < itemsArr.length && itemsArr[j].level > item.level) {
+                      children.push(itemsArr[j]);
+                      j++;
+                    }
+                    if (children.length) {
+                      html += buildHierarchicalList(children);
+                    }
+                    html += '</li>';
+                    i = j;
+                  }
+                  html += '</ul>';
+                  return html;
+                }
+
+                function buildFlatList(itemsArr) {
+                  var html = '<ul class="' + listClass + '">';
+                  for (var i = 0; i < itemsArr.length; i++) {
+                    html += '<li class="article-toc__item">';
+                    html += '<a href="#' + itemsArr[i].id + '" class="' + linkClass + '">' + itemsArr[i].text + '</a>';
+                    html += '</li>';
+                  }
+                  html += '</ul>';
+                  return html;
+                }
+
+                var container = tocEl.querySelector('.article-toc__list-container');
+                container.innerHTML = hierarchy ? buildHierarchicalList(items) : buildFlatList(items);
+
+                /* Smooth scroll */
+                container.querySelectorAll('.article-toc__link').forEach(function(link) {
+                  link.addEventListener('click', function(e) {
+                    var targetId = this.getAttribute('href').substring(1);
+                    var target = document.getElementById(targetId);
+                    if (target) {
+                      e.preventDefault();
+                      var headerOffset = 80;
+                      var elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                      window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+                      history.pushState(null, null, '#' + targetId);
+                    }
+                  });
+                });
+
+                /* Toggle collapsible */
+                {% if block.settings.collapsible %}
+                  var header = tocEl.querySelector('.article-toc__header');
+                  if (header) {
+                    function toggleToc() {
+                      var collapsed = tocEl.getAttribute('data-collapsed') === 'true';
+                      tocEl.setAttribute('data-collapsed', collapsed ? 'false' : 'true');
+                      header.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
+                    }
+                    header.addEventListener('click', toggleToc);
+                    header.addEventListener('keydown', function(e) {
+                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleToc(); }
+                    });
+                  }
+                {% endif %}
+              }
+
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initToc);
+              } else {
+                initToc();
+              }
+            })();
+          </script>
+        {%- endif -%}
+
+      {%- when 'article_tags' -%}
+        {%- if article.tags.size > 0 -%}
+          <div
+            class="article-template__tags page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="article-template__tags-wrapper">
+              {%- if block.settings.show_icon -%}
+                <span class="article-template__tags-icon" aria-hidden="true">
+                  <span class="svg-wrapper">
+                    {{- 'icon-price-tag.svg' | inline_asset_content -}}
+                  </span>
+                </span>
+              {%- endif -%}
+              {%- if block.settings.tags_label != blank -%}
+                <span class="article-template__tags-label">{{ block.settings.tags_label | escape }}</span>
+              {%- endif -%}
+              <nav class="article-card__tags" aria-label="Tag dell'articolo">
+                {%- for tag in article.tags -%}
+                  <a
+                    href="{{ blog.url }}/tagged/{{ tag | handleize }}"
+                    class="article-card__tag article-card__tag--{{ block.settings.tags_style }}"
+                  >
+                    {{ tag }}
+                  </a>
+                {%- endfor -%}
+              </nav>
+            </div>
+          </div>
+        {%- endif -%}
+
+      {%- when 'divider' -%}
+        <style>
+          .article-template__divider--{{ block.id }} {
+            height: {{ block.settings.height_mobile }}px;
+          }
+          @media screen and (min-width: 750px) {
+            .article-template__divider--{{ block.id }} {
+              height: {{ block.settings.height_tablet }}px;
+            }
+          }
+          @media screen and (min-width: 990px) {
+            .article-template__divider--{{ block.id }} {
+              height: {{ block.settings.height_desktop }}px;
+            }
+          }
+        </style>
+        <div
+          class="article-template__divider article-template__divider--{{ block.id }} page-width page-width--narrow"
+          {{ block.shopify_attributes }}
+        ></div>
+
+      {%- when 'blog_name' -%}
+        {%- if blog -%}
+          <div
+            class="article-template__blog-name page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.display_style == 'pill' -%}
+              <a href="{{ blog.url }}" class="article-template__blog-name-pill">
+                {{ blog.title | escape }}
+              </a>
+            {%- else -%}
+              <a href="{{ blog.url }}" class="article-template__blog-name-link">
+                {{ blog.title | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      {%- when 'back_to_blog' -%}
+        <style>
+          .article-template__back-block--{{ block.id }} {
+            text-align: {{ block.settings.alignment }};
+            padding-top: {{ block.settings.padding_top }}px;
+            padding-bottom: {{ block.settings.padding_bottom }}px;
+            {% if block.settings.border_position == 'top' or block.settings.border_position == 'both' %}
+              border-top: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+            {% endif %}
+            {% if block.settings.border_position == 'bottom' or block.settings.border_position == 'both' %}
+              border-bottom: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+            {% endif %}
+          }
+        </style>
+        <div
+          class="article-template__back-block article-template__back-block--{{ block.id }} page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.display_style == 'button' -%}
+            <a href="{{ blog.url }}" class="button article-template__back-button">
+              <span class="icon-wrap">
+                <span class="svg-wrapper">
+                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                </span>
+              </span>
+              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
+            </a>
+          {%- else -%}
+            <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
+              <span class="icon-wrap">
+                <span class="svg-wrapper">
+                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                </span>
+              </span>
+              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+  {%- if blog.comments_enabled? -%}
+    <div class="article-template__comment-wrapper background-secondary">
+      <div
+        id="comments"
+        class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      >
+        {%- if article.comments_count > 0 -%}
+          {%- assign anchorId = '#Comments-' | append: article.id -%}
+
+          <h2 id="Comments-{{ article.id }}" tabindex="-1">
+            {{ 'blogs.article.comments' | t: count: article.comments_count }}
+          </h2>
+          {% paginate article.comments by 5 %}
+            <div class="article-template__comments">
+              {%- if comment.status == 'pending' and comment.content -%}
+                <article id="{{ comment.id }}" class="article-template__comments-comment">
+                  {{ comment.content }}
+                  <footer class="right">
+                    <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span>
+                  </footer>
+                </article>
+              {%- endif -%}
+
+              {%- for comment in article.comments -%}
+                <article id="{{ comment.id }}" class="article-template__comments-comment">
+                  {{ comment.content }}
+                  <footer class="right">
+                    <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span
+                    ><span class="caption-with-letter-spacing">
+                      {{- comment.created_at | time_tag: format: 'date' -}}
+                    </span>
+                  </footer>
+                </article>
+              {%- endfor -%}
+              {% render 'pagination', paginate: paginate, anchor: anchorId %}
+            </div>
+          {% endpaginate %}
+        {%- endif -%}
+        {% form 'new_comment', article %}
+          {%- liquid
+            assign post_message = 'blogs.article.success'
+            if blog.moderated? and comment.status == 'unapproved'
+              assign post_message = 'blogs.article.success_moderated'
+            endif
+          -%}
+          <h2>{{ 'blogs.article.comment_form_title' | t }}</h2>
+          {%- if form.errors -%}
+            <div class="form__message" role="alert">
+              <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
+                <span class="svg-wrapper">
+                  {{- 'icon-error.svg' | inline_asset_content -}}
+                </span>
+                {{ 'templates.contact.form.error_heading' | t }}
+              </h3>
+            </div>
+            <ul class="form-status-list caption-large">
+              {%- for field in form.errors -%}
+                <li>
+                  <a href="#CommentForm-{{ field }}" class="link">
+                    {%- if form.errors.translated_fields[field] contains 'author' -%}
+                      {{ 'blogs.article.name' | t }}
+                    {%- elsif form.errors.translated_fields[field] contains 'body' -%}
+                      {{ 'blogs.article.message' | t }}
+                    {%- else -%}
+                      {{ form.errors.translated_fields[field] }}
+                    {%- endif -%}
+                    {{ form.errors.messages[field] }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- elsif form.posted_successfully? -%}
+            <div class="form-status-list form__message" role="status">
+              <h3 class="form-status" tabindex="-1" autofocus>
+                <span class="svg-wrapper">
+                  {{- 'icon-success.svg' | inline_asset_content -}}
+                </span>
+                {{ post_message | t }}
+              </h3>
+            </div>
+          {%- endif -%}
+
+          <div
+            {% if blog.moderated? == false %}
+              class="article-template__comments-fields"
+            {% endif %}
+          >
+            <div class="article-template__comment-fields">
+              <div class="field field--with-error">
+                <input
+                  type="text"
+                  name="comment[author]"
+                  id="CommentForm-author"
+                  class="field__input"
+                  autocomplete="name"
+                  value="{{ form.author }}"
+                  aria-required="true"
+                  required
+                  {% if form.errors contains 'author' %}
+                    aria-invalid="true"
+                    aria-describedby="CommentForm-author-error"
+                  {% endif %}
+                  placeholder="{{ 'blogs.article.name' | t }}"
+                >
+                <label class="field__label" for="CommentForm-author">
+                  {{- 'blogs.article.name' | t }}
+                  <span aria-hidden="true">*</span></label
+                >
+                {%- if form.errors contains 'author' -%}
+                  <small id="CommentForm-author-error">
+                    <span class="form__message">
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'blogs.article.name' | t }}
+                      {{ form.errors.messages.author }}.</span
+                    >
+                  </small>
+                {%- endif -%}
+              </div>
+              <div class="field field--with-error">
+                <input
+                  type="email"
+                  name="comment[email]"
+                  id="CommentForm-email"
+                  autocomplete="email"
+                  class="field__input"
+                  value="{{ form.email }}"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  aria-required="true"
+                  required
+                  {% if form.errors contains 'email' %}
+                    aria-invalid="true"
+                    aria-describedby="CommentForm-email-error"
+                  {% endif %}
+                  placeholder="{{ 'blogs.article.email' | t }}"
+                >
+                <label class="field__label" for="CommentForm-email">
+                  {{- 'blogs.article.email' | t }}
+                  <span aria-hidden="true">*</span></label
+                >
+                {%- if form.errors contains 'email' -%}
+                  <small id="CommentForm-email-error">
+                    <span class="form__message">
+                      <span class="svg-wrapper">
+                        {{- 'icon-error.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'blogs.article.email' | t }}
+                      {{ form.errors.messages.email }}.</span
+                    >
+                  </small>
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="field field--with-error">
+              <textarea
+                rows="5"
+                name="comment[body]"
+                id="CommentForm-body"
+                class="text-area field__input"
+                aria-required="true"
+                required
+                {% if form.errors contains 'body' %}
+                  aria-invalid="true"
+                  aria-describedby="CommentForm-body-error"
+                {% endif %}
+                placeholder="{{ 'blogs.article.message' | t }}"
+              >{{ form.body }}</textarea>
+              <label class="form__label field__label" for="CommentForm-body">
+                {{- 'blogs.article.message' | t }}
+                <span aria-hidden="true">*</span></label
+              >
+            </div>
+            {%- if form.errors contains 'body' -%}
+              <small id="CommentForm-body-error">
+                <span class="form__message">
+                  <span class="svg-wrapper">
+                    {{- 'icon-error.svg' | inline_asset_content -}}
+                  </span>
+                  {{- 'blogs.article.message' | t }}
+                  {{ form.errors.messages.body }}.</span
+                >
+              </small>
+            {%- endif -%}
+          </div>
+          {%- if blog.moderated? -%}
+            <p class="article-template__comment-warning caption">{{ 'blogs.article.moderated' | t }}</p>
+          {%- endif -%}
+          <input type="submit" class="button" value="{{ 'blogs.article.post' | t }}">
+        {% endform %}
+      </div>
+    </div>
+  {%- endif -%}
+</article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.origin }}{{ article.url }}"
+  },
+  "headline": {{ article.title | json }},
+  "url": "{{ request.origin }}{{ article.url }}",
+  {%- if article.image -%}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ article.image | image_url: width: 1200 }}",
+    "width": {{ article.image.width }},
+    "height": {{ article.image.height }}
+  },
+  {%- endif -%}
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+  "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }}
+    {%- if shop.brand.logo -%}
+    ,"logo": {
+      "@type": "ImageObject",
+      "url": "{{ shop.brand.logo | image_url: width: 600 }}"
+    }
+    {%- endif -%}
+  },
+  {%- if article.excerpt_or_content != blank -%}
+  "description": {{ article.excerpt_or_content | strip_html | truncate: 200 | json }},
+  {%- endif -%}
+  {%- assign sd_words = article.content | strip_html | split: ' ' | size -%}
+  "wordCount": {{ sd_words }},
+  {%- assign sd_reading_time = sd_words | divided_by: 200 -%}
+  {%- if sd_reading_time < 1 -%}{%- assign sd_reading_time = 1 -%}{%- endif -%}
+  "timeRequired": "PT{{ sd_reading_time }}M",
+  "isPartOf": {
+    "@type": "Blog",
+    "name": {{ blog.title | json }},
+    "url": "{{ request.origin }}{{ blog.url }}"
+  },
+  "articleSection": {{ blog.title | json }}
+  {%- if article.tags.size > 0 -%}
+  ,"keywords": {{ article.tags | json }}
+  {%- endif -%}
+}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-article.name",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "featured_image",
+      "name": "t:sections.main-article.blocks.featured_image.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__1.label"
+            },
+            {
+              "value": "small",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__2.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__3.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__4.label"
+            }
+          ],
+          "default": "adapt",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.label"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-article.blocks.title.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_date.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "default": false,
+          "label": "t:sections.main-article.blocks.title.settings.blog_show_author.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_reading",
+          "default": false,
+          "label": "Tempo di lettura"    
+        },  
+        {
+          "type": "checkbox",
+          "id": "show_icons",
+          "default": false,
+          "label": "Mostra icone"    
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "t:sections.main-article.blocks.content.name",
+      "limit": 1
+    },
+    {
+      "type": "share",
+      "name": "t:sections.main-article.blocks.share.name",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "t:sections.main-article.blocks.share.settings.text.label",
+          "default": "t:sections.main-article.blocks.share.settings.text.default"
+        }
+      ]
+    },
+    {
+      "type": "table_of_contents",
+      "name": "Indice",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Indice"
+        },
+        {
+          "type": "header",
+          "content": "Tag da includere"
+        },
+        {
+          "type": "checkbox",
+          "id": "include_h2",
+          "default": true,
+          "label": "H2"
+        },
+        {
+          "type": "checkbox",
+          "id": "include_h3",
+          "default": true,
+          "label": "H3"
+        },
+        {
+          "type": "checkbox",
+          "id": "include_h4",
+          "default": false,
+          "label": "H4"
+        },
+        {
+          "type": "checkbox",
+          "id": "include_h5",
+          "default": false,
+          "label": "H5"
+        },
+        {
+          "type": "header",
+          "content": "Aspetto"
+        },
+        {
+          "type": "select",
+          "id": "list_style",
+          "label": "Stile lista",
+          "default": "bullets",
+          "options": [
+            {
+              "value": "bullets",
+              "label": "Elenco puntato"
+            },
+            {
+              "value": "numbered",
+              "label": "Elenco numerato"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "hierarchy",
+          "default": true,
+          "label": "Indentazione gerarchica",
+          "info": "Attivo: le voci vengono indentate in base al peso del tag (h2 > h3 > h4…). Disattivo: tutte le voci sullo stesso livello."
+        },
+        {
+          "type": "select",
+          "id": "link_style",
+          "label": "Stile voci",
+          "default": "link",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "button",
+              "label": "Bottone (pill)"
+            }
+          ],
+          "info": "Scegli se visualizzare le voci dell'indice come link testuali o come bottoni arrotondati."
+        },
+        {
+          "type": "checkbox",
+          "id": "collapsible",
+          "default": true,
+          "label": "Comprimibile",
+          "info": "Permette di aprire/chiudere l'indice cliccando sul titolo."
+        },
+        {
+          "type": "checkbox",
+          "id": "start_collapsed",
+          "default": false,
+          "label": "Inizia chiuso",
+          "info": "L'indice partirà compresso al caricamento della pagina."
+        },
+        {
+          "type": "header",
+          "content": "Stile contenitore"
+        },
+        {
+          "type": "color",
+          "id": "box_bg_color",
+          "label": "Colore sfondo"
+        },
+        {
+          "type": "range",
+          "id": "box_padding_top",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 20,
+          "unit": "px",
+          "label": "Padding top"
+        },
+        {
+          "type": "range",
+          "id": "box_padding_right",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 24,
+          "unit": "px",
+          "label": "Padding right"
+        },
+        {
+          "type": "range",
+          "id": "box_padding_bottom",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 20,
+          "unit": "px",
+          "label": "Padding bottom"
+        },
+        {
+          "type": "range",
+          "id": "box_padding_left",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "default": 24,
+          "unit": "px",
+          "label": "Padding left"
+        },
+        {
+          "type": "color",
+          "id": "box_border_color",
+          "label": "Colore bordo"
+        },
+        {
+          "type": "range",
+          "id": "box_border_width",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 1,
+          "unit": "px",
+          "label": "Spessore bordo"
+        },
+        {
+          "type": "range",
+          "id": "box_border_radius",
+          "min": 0,
+          "max": 30,
+          "step": 2,
+          "default": 8,
+          "unit": "px",
+          "label": "Raggio bordo"
+        }
+      ]
+    },
+    {
+      "type": "article_tags",
+      "name": "Tag articolo",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "default": true,
+          "label": "Mostra icona",
+          "info": "Mostra l'icona tag prima dell'elenco."
+        },
+        {
+          "type": "text",
+          "id": "tags_label",
+          "label": "Etichetta",
+          "info": "Testo opzionale prima dei tag (es: 'Tag:'). Se vuoto non verrà mostrato."
+        },
+        {
+          "type": "select",
+          "id": "tags_style",
+          "label": "Stile tag",
+          "default": "pill",
+          "options": [
+            {
+              "value": "pill",
+              "label": "Pill"
+            },
+            {
+              "value": "link",
+              "label": "Link"
+            }
+          ],
+          "info": "Scegli come visualizzare i tag: come etichette arrotondate (pill) o link semplici."
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divisore",
+      "settings": [
+        {
+          "type": "range",
+          "id": "height_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "default": 20,
+          "unit": "px",
+          "label": "Altezza desktop"
+        },
+        {
+          "type": "range",
+          "id": "height_tablet",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "default": 16,
+          "unit": "px",
+          "label": "Altezza tablet"
+        },
+        {
+          "type": "range",
+          "id": "height_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "default": 12,
+          "unit": "px",
+          "label": "Altezza mobile"
+        }
+      ]
+    },
+    {
+      "type": "blog_name",
+      "name": "Nome blog",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "select",
+          "id": "display_style",
+          "label": "Stile visualizzazione",
+          "default": "pill",
+          "options": [
+            {
+              "value": "pill",
+              "label": "Pill"
+            },
+            {
+              "value": "link",
+              "label": "Link"
+            }
+          ],
+          "info": "Scegli come visualizzare il nome del blog: come etichetta arrotondata (pill) o come link testuale."
+        }
+      ]
+    },
+    {
+      "type": "back_to_blog",
+      "name": "Torna al blog",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "display_style",
+          "label": "Stile",
+          "default": "link",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "button",
+              "label": "Bottone"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Allineamento",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "Sinistra"
+            },
+            {
+              "value": "center",
+              "label": "Centro"
+            },
+            {
+              "value": "right",
+              "label": "Destra"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Bordo"
+        },
+        {
+          "type": "select",
+          "id": "border_position",
+          "label": "Posizione bordo",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "Nessuno"
+            },
+            {
+              "value": "top",
+              "label": "Solo sopra"
+            },
+            {
+              "value": "bottom",
+              "label": "Solo sotto"
+            },
+            {
+              "value": "both",
+              "label": "Sopra e sotto"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "border_width",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 1,
+          "unit": "px",
+          "label": "Spessore bordo"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Colore bordo",
+          "default": "#e0e0e0"
+        },
+        {
+          "type": "header",
+          "content": "Spaziatura"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "default": 20,
+          "unit": "px",
+          "label": "Padding top"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 60,
+          "step": 4,
+          "default": 20,
+          "unit": "px",
+          "label": "Padding bottom"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

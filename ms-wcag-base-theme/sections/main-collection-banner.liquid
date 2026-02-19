@@ -1,0 +1,1016 @@
+{% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+{{ 'component-collection-hero.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign layout = section.settings.layout | default: 'side_by_side'
+  assign show_image = section.settings.show_collection_image
+  assign show_desc = section.settings.show_collection_description
+  assign text_width = section.settings.desktop_text_width | default: '50'
+  assign text_align = section.settings.text_alignment | default: 'left'
+  assign v_align = section.settings.desktop_vertical_alignment | default: 'center'
+  assign container_type = section.settings.container_type | default: 'contained'
+  assign text_content_width = section.settings.text_content_width | default: '100'
+  assign image_sizing = section.settings.image_sizing | default: 'fixed'
+  assign custom_image = section.settings.custom_image
+  assign has_image = false
+  if show_image
+    if custom_image != blank
+      assign banner_image = custom_image
+      assign has_image = true
+    elsif collection.image
+      assign banner_image = collection.image
+      assign has_image = true
+    endif
+  endif
+  if has_image == false
+    assign layout = 'text_only'
+  endif
+
+  case text_align
+    when 'center'
+      assign text_align_items = 'center'
+    when 'right'
+      assign text_align_items = 'flex-end'
+    else
+      assign text_align_items = 'flex-start'
+  endcase
+
+  assign rm_position = section.settings.readmore_position | default: 'center'
+  assign rm_style = section.settings.readmore_style | default: 'button'
+  assign rm_icon = section.settings.readmore_show_icon
+-%}
+
+{%- style -%}
+  {%- comment -%}
+    ═══════════════════════════════════════════════════════════════
+    SEZIONE 1 — RESET BASE
+    Specificità (1,0,0) per padding-top/bottom → ms_section-style
+    (reso dopo nel DOM con stessa specificità) può sovrascriverli.
+    Tutto il resto usa !important per battere component-collection-hero.css
+    ═══════════════════════════════════════════════════════════════
+  {%- endcomment -%}
+
+  /* 1a. Contenitore esterno — padding top/bottom resettabili da ms_section-style */
+  #section-{{ section.id }} {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: visible !important;
+    width: 100%;
+  }
+
+  /* 1b. Inner — flex column di default (mobile-first) */
+  #section-{{ section.id }} .collection-hero__inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin: 0 auto !important;
+  }
+
+  /* 1c. Text wrapper — reset completo */
+  #section-{{ section.id }} .collection-hero__text-wrapper {
+    text-align: {{ text_align }} !important;
+    padding: 0 !important;
+    flex-basis: auto !important;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* 1d. Allineamento testo propagato a tutti gli elementi interni */
+  #section-{{ section.id }} .collection-hero__description,
+  #section-{{ section.id }} .collection-hero__description *,
+  #section-{{ section.id }} .ms-collections-description__wrapper {
+    text-align: {{ text_align }} !important;
+  }
+
+  /* 1e. Titolo — reset margini/bordi/padding da Dawn */
+  #section-{{ section.id }} .collection-hero__title {
+    margin: 0 0 0.5rem !important;
+    padding: 0 !important;
+    {% unless section.settings.title_separator %}
+      border: none !important;
+    {% endunless %}
+  }
+
+  /* 1f. Descrizione — reset margini/dimensioni da Dawn */
+  #section-{{ section.id }} .collection-hero__description {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0 !important;
+    font-size: 1.6rem !important;
+    line-height: calc(1 + 0.5 / var(--font-body-scale));
+  }
+
+  /* 1g. Snippet ms_collection_description — reset */
+  #section-{{ section.id }} .ms-main-collections-description__wrapper {
+    border-top: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #section-{{ section.id }} .ms-collections-description__wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #section-{{ section.id }} .ms-collections-description__wrapper .rm-link {
+    margin-bottom: 0 !important;
+  }
+
+  /* 1h. Image container — reset da Dawn */
+  #section-{{ section.id }} .collection-hero__image-container {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    position: relative;
+    width: 100%;
+    flex: none;
+    {% if image_sizing == 'natural' %}
+      overflow: visible;
+      background: none !important;
+      height: auto !important;
+    {% else %}
+      overflow: hidden;
+      height: {{ section.settings.image_height | default: 350 }}px;
+    {% endif %}
+  }
+
+  /* 1i. Immagine — override di base.css .media > * (position: absolute) */
+  #section-{{ section.id }} .collection-hero__image-container img {
+    display: block !important;
+    {% if image_sizing == 'natural' %}
+      position: static !important;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+      object-fit: contain;
+    {% else %}
+      position: absolute !important;
+      top: 0; left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      object-position: center center;
+    {% endif %}
+  }
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 2 — SEPARATORE TITOLO
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if section.settings.title_separator and section.settings.show_title %}
+    #section-{{ section.id }} .collection-hero__title {
+      padding-bottom: {{ section.settings.title_separator_spacing | default: 15 }}px !important;
+      margin-bottom: {{ section.settings.title_separator_spacing | default: 15 }}px !important;
+      border-bottom: {{ section.settings.title_separator_thickness | default: 1 }}px
+                      {{ section.settings.title_separator_style | default: 'solid' }}
+                      {{ section.settings.title_separator_color | default: '#e0e0e0' }} !important;
+      box-sizing: border-box !important;
+      max-width: 100% !important;
+      {% if section.settings.title_separator_width == 'full' %}
+        width: 100% !important;
+      {% else %}
+        display: inline-block;
+        width: {{ section.settings.title_separator_width | default: '100' }}% !important;
+      {% endif %}
+    }
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 3 — CONTAINER TYPE
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if container_type == 'contained' %}
+    /* Contenuta: page-width gestisce max-width e padding laterale nativamente */
+    #section-{{ section.id }} .collection-hero__inner {
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+    @media screen and (min-width: 750px) {
+      #section-{{ section.id }} .collection-hero__inner {
+        padding-left: 5rem !important;
+        padding-right: 5rem !important;
+      }
+    }
+  {% elsif container_type == 'fluid' %}
+    /* Fluida: 100% larghezza con padding laterale */
+    #section-{{ section.id }} .collection-hero__inner {
+      max-width: 100% !important;
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+    @media screen and (min-width: 750px) {
+      #section-{{ section.id }} .collection-hero__inner {
+        padding-left: 5rem !important;
+        padding-right: 5rem !important;
+      }
+    }
+  {% elsif container_type == 'full' %}
+    /* Full width: 100% larghezza senza padding */
+    #section-{{ section.id }} .collection-hero__inner {
+      max-width: 100% !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 4 — LAYOUT: SIDE BY SIDE
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if layout == 'side_by_side' or layout == 'side_by_side_reversed' %}
+    @media screen and (min-width: 750px) {
+      #section-{{ section.id }} .collection-hero__inner {
+        flex-direction: {% if layout == 'side_by_side' %}row-reverse{% else %}row{% endif %} !important;
+        align-items: {{ v_align }} !important;
+        gap: 3rem !important;
+      }
+      #section-{{ section.id }} .collection-hero__text-wrapper {
+        flex: 0 0 {{ text_width }}% !important;
+        max-width: {{ text_width }}% !important;
+      }
+      #section-{{ section.id }} .collection-hero__image-container {
+        flex: 1 1 0% !important;
+        width: auto !important;
+        min-width: 0;
+        {% if image_sizing == 'fixed' %}
+          height: auto !important;
+          min-height: {{ section.settings.image_height_desktop | default: 450 }}px;
+          align-self: stretch;
+        {% else %}
+          height: auto !important;
+          align-self: {{ v_align }};
+        {% endif %}
+      }
+      #section-{{ section.id }} .collection-hero__image-container img {
+        width: 100% !important;
+      }
+    }
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 5 — LAYOUT: STACKED
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if layout == 'stacked' %}
+    #section-{{ section.id }} .collection-hero__image-container { order: 1; }
+    #section-{{ section.id }} .collection-hero__text-wrapper { order: 2; }
+  {% endif %}
+  {% if layout == 'stacked_reversed' %}
+    #section-{{ section.id }} .collection-hero__text-wrapper { order: 1; }
+    #section-{{ section.id }} .collection-hero__image-container { order: 2; }
+  {% endif %}
+  {% if layout == 'stacked' or layout == 'stacked_reversed' %}
+    #section-{{ section.id }} .collection-hero__text-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: {{ text_align_items }};
+    }
+    {% if image_sizing == 'fixed' %}
+      @media screen and (min-width: 750px) {
+        #section-{{ section.id }} .collection-hero__image-container {
+          height: {{ section.settings.image_height_desktop | default: 450 }}px !important;
+        }
+      }
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 6 — LAYOUT: OVERLAY
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if layout == 'overlay' %}
+    /* Overlay: azzerare padding laterale dell'inner per evitare che gli
+       elementi assolutamente posizionati sbordino rispetto al padding box */
+    #section-{{ section.id }} .collection-hero__inner {
+      position: relative;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      overflow: hidden;
+      {% if image_sizing == 'fixed' %}
+        min-height: {{ section.settings.image_height | default: 350 }}px;
+      {% endif %}
+    }
+    {% if image_sizing == 'fixed' %}
+      @media screen and (min-width: 750px) {
+        #section-{{ section.id }} .collection-hero__inner {
+          min-height: {{ section.settings.image_height_desktop | default: 450 }}px;
+        }
+      }
+    {% endif %}
+
+    #section-{{ section.id }} .collection-hero__image-container {
+      {% if image_sizing == 'fixed' %}
+        position: absolute !important;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 0;
+        height: 100% !important;
+        width: 100% !important;
+      {% else %}
+        position: relative !important;
+        z-index: 0;
+      {% endif %}
+    }
+
+    #section-{{ section.id }} .collection-hero__overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+      background: {{ section.settings.overlay_color | default: '#000000' }};
+      opacity: {{ section.settings.overlay_opacity | default: 40 | divided_by: 100.0 }};
+    }
+
+    /* Overlay text-wrapper: il padding laterale è gestito qui, non sull'inner */
+    #section-{{ section.id }} .collection-hero__text-wrapper {
+      position: absolute !important;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 2;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: {{ v_align }};
+      align-items: {{ text_align_items }};
+      color: {{ section.settings.overlay_text_color | default: '#ffffff' }};
+      {% if container_type == 'full' %}
+        padding: 3rem 0 !important;
+      {% elsif container_type == 'fluid' %}
+        padding: 3rem 1.5rem !important;
+      {% else %}
+        padding: 3rem 1.5rem !important;
+      {% endif %}
+    }
+    {% if container_type == 'fluid' or container_type == 'contained' %}
+      @media screen and (min-width: 750px) {
+        #section-{{ section.id }} .collection-hero__text-wrapper {
+          padding-left: 5rem !important;
+          padding-right: 5rem !important;
+        }
+      }
+    {% endif %}
+
+    /* Colori testo overlay */
+    #section-{{ section.id }} .collection-hero__title,
+    #section-{{ section.id }} .collection-hero__description,
+    #section-{{ section.id }} .collection-hero__description * {
+      color: {{ section.settings.overlay_text_color | default: '#ffffff' }} !important;
+    }
+
+    /* Titolo e descrizione a piena larghezza nell'overlay (override align-items) */
+    #section-{{ section.id }} .collection-hero__title,
+    #section-{{ section.id }} .collection-hero__description {
+      align-self: stretch !important;
+      width: 100% !important;
+    }
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 7 — LAYOUT: SOLO TESTO
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if layout == 'text_only' %}
+    #section-{{ section.id }} .collection-hero__text-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: {{ text_align_items }};
+    }
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 8 — LARGHEZZA CONTENUTO TESTO (solo descrizione)
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  {% if text_content_width != '100' %}
+    {% if layout == 'text_only' or layout == 'stacked' or layout == 'stacked_reversed' or layout == 'overlay' %}
+      #section-{{ section.id }} .collection-hero__description {
+        max-width: {{ text_content_width }}% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+    {% endif %}
+  {% endif %}
+
+  {%- comment -%}
+    ═══════════════════════════════════════════════
+    SEZIONE 9 — LEGGI DI PIÙ
+    ═══════════════════════════════════════════════
+  {%- endcomment -%}
+  #section-{{ section.id }} .rm-link {
+    display: flex !important;
+    align-items: center;
+    gap: 0.6rem;
+    width: fit-content !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0 !important;
+    margin-left: {% if rm_position == 'center' %}auto{% elsif rm_position == 'right' %}auto{% else %}0{% endif %} !important;
+    margin-right: {% if rm_position == 'center' %}auto{% elsif rm_position == 'left' %}auto{% else %}0{% endif %} !important;
+    text-decoration: none !important;
+  }
+
+  {% if rm_style == 'link' %}
+    #section-{{ section.id }} .rm-link {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      color: rgb(var(--color-foreground)) !important;
+      text-decoration: underline !important;
+      font-size: 1.4rem;
+    }
+    #section-{{ section.id }} .rm-link:hover { opacity: 0.7; }
+  {% endif %}
+
+  {% if rm_style == 'button' %}
+    #section-{{ section.id }} .rm-link {
+      background: rgb(var(--color-foreground)) !important;
+      color: rgb(var(--color-background)) !important;
+      border: 1px solid rgb(var(--color-foreground)) !important;
+      border-radius: 0 !important;
+      padding: 1rem 2.4rem !important;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+    }
+    #section-{{ section.id }} .rm-link:hover {
+      background: rgb(var(--color-background)) !important;
+      color: rgb(var(--color-foreground)) !important;
+    }
+  {% endif %}
+
+  {% if rm_style == 'pill' %}
+    #section-{{ section.id }} .rm-link {
+      background: rgb(var(--color-foreground)) !important;
+      color: rgb(var(--color-background)) !important;
+      border: 1px solid rgb(var(--color-foreground)) !important;
+      border-radius: 30px !important;
+      padding: 1rem 2.4rem !important;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+    }
+    #section-{{ section.id }} .rm-link:hover {
+      background: rgb(var(--color-background)) !important;
+      color: rgb(var(--color-foreground)) !important;
+    }
+  {% endif %}
+
+  {% if rm_icon %}
+    #section-{{ section.id }} .rm-link::after {
+      content: '';
+      display: inline-block;
+      width: 1rem;
+      height: 0.6rem;
+      background: currentColor;
+      -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+      mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+      -webkit-mask-size: contain;
+      mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      transition: transform 0.3s ease;
+    }
+    #section-{{ section.id }} .rm-link[data-clicked="true"]::after {
+      transform: rotate(180deg);
+    }
+  {% endif %}
+{%- endstyle -%}
+
+<div
+  class="collection-hero collection-hero--{{ layout }}{% if has_image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient"
+  id="section-{{ section.id }}"
+>
+  <div class="collection-hero__inner{% if container_type == 'contained' %} page-width{% endif %} {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+
+    {%- comment -%} ── Immagine ── {%- endcomment -%}
+    {%- if has_image -%}
+      <div class="collection-hero__image-container media gradient" aria-hidden="true">
+        {%- if layout == 'overlay' -%}
+          <div class="collection-hero__overlay"></div>
+        {%- endif -%}
+        <img
+          srcset="
+            {%- if banner_image.width >= 165 -%}{{ banner_image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if banner_image.width >= 360 -%}{{ banner_image | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if banner_image.width >= 535 -%}{{ banner_image | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if banner_image.width >= 750 -%}{{ banner_image | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if banner_image.width >= 1070 -%}{{ banner_image | image_url: width: 1070 }} 1070w,{%- endif -%}
+            {%- if banner_image.width >= 1500 -%}{{ banner_image | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {{ banner_image | image_url }} {{ banner_image.width }}w
+          "
+          src="{{ banner_image | image_url: width: 750 }}"
+          sizes="{% if layout == 'overlay' or layout == 'stacked' or layout == 'stacked_reversed' or container_type == 'full' %}100vw{% else %}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px){% endif %}"
+          alt="{{ banner_image.alt | default: collection.title | escape }}"
+          width="{{ banner_image.width }}"
+          height="{{ banner_image.height }}"
+        >
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ── Testo ── {%- endcomment -%}
+    <div class="collection-hero__text-wrapper">
+      {%- if section.settings.show_title -%}
+        <h1 class="collection-hero__title">
+          <span class="visually-hidden">{{ 'sections.collection_template.title' | t }}: </span>
+          {{- collection.title | escape -}}
+        </h1>
+      {%- endif -%}
+
+      {%- if show_desc -%}
+        <div class="collection-hero__description rte">
+          {%- if section.settings.custom_description != blank -%}
+            {{ section.settings.custom_description }}
+          {%- else -%}
+            {% render 'ms_collection_description' %}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "t:sections.main-collection-banner.name",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-collection-banner.settings.paragraph.content"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "side_by_side",
+      "options": [
+        { "value": "side_by_side", "label": "Testo | Immagine" },
+        { "value": "side_by_side_reversed", "label": "Immagine | Testo" },
+        { "value": "stacked", "label": "Immagine sopra, testo sotto" },
+        { "value": "stacked_reversed", "label": "Testo sopra, immagine sotto" },
+        { "value": "overlay", "label": "Testo sovrapposto all'immagine" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "container_type",
+      "label": "Larghezza sezione",
+      "default": "contained",
+      "options": [
+        { "value": "contained", "label": "Contenuta (page-width)" },
+        { "value": "full", "label": "Full width (bordo a bordo)" },
+        { "value": "fluid", "label": "Fluida (con padding laterale)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_text_width",
+      "label": "Proporzione testo/immagine (desktop)",
+      "default": "50",
+      "info": "Valido solo per i layout affiancati (Testo | Immagine).",
+      "options": [
+        { "value": "33", "label": "33% testo / 67% immagine" },
+        { "value": "40", "label": "40% testo / 60% immagine" },
+        { "value": "50", "label": "50% testo / 50% immagine" },
+        { "value": "60", "label": "60% testo / 40% immagine" },
+        { "value": "67", "label": "67% testo / 33% immagine" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_content_width",
+      "label": "Larghezza contenuto testo (desktop)",
+      "default": "100",
+      "info": "Limita la larghezza del blocco testo e lo centra. Valido per: solo testo, impilato, overlay.",
+      "options": [
+        { "value": "100", "label": "100% (piena larghezza)" },
+        { "value": "80", "label": "80%" },
+        { "value": "75", "label": "75%" },
+        { "value": "66", "label": "66%" },
+        { "value": "50", "label": "50%" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Allineamento testo",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_vertical_alignment",
+      "label": "Allineamento verticale (desktop)",
+      "default": "center",
+      "info": "Valido per layout affiancati e overlay.",
+      "options": [
+        { "value": "flex-start", "label": "Alto" },
+        { "value": "center", "label": "Centro" },
+        { "value": "flex-end", "label": "Basso" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Altezza immagine"
+    },
+    {
+      "type": "paragraph",
+      "content": "Si applica a tutti i layout con immagine."
+    },
+    {
+      "type": "select",
+      "id": "image_sizing",
+      "label": "Dimensionamento immagine",
+      "default": "fixed",
+      "options": [
+        { "value": "fixed", "label": "Altezza fissa (con ritaglio)" },
+        { "value": "natural", "label": "Dimensioni naturali (no ritaglio)" }
+      ],
+      "info": "\"Dimensioni naturali\" mostra la foto intera senza ritaglio. La larghezza è sempre al 100%."
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 150,
+      "max": 700,
+      "step": 25,
+      "default": 350,
+      "unit": "px",
+      "label": "Altezza immagine (mobile)",
+      "info": "Si applica solo con \"Altezza fissa\"."
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 200,
+      "max": 900,
+      "step": 25,
+      "default": 450,
+      "unit": "px",
+      "label": "Altezza immagine (desktop)",
+      "info": "Si applica solo con \"Altezza fissa\"."
+    },
+    {
+      "type": "header",
+      "content": "Separatore sotto il titolo"
+    },
+    {
+      "type": "checkbox",
+      "id": "title_separator",
+      "default": false,
+      "label": "Mostra separatore"
+    },
+    {
+      "type": "select",
+      "id": "title_separator_style",
+      "label": "Stile linea",
+      "default": "solid",
+      "options": [
+        { "value": "solid", "label": "Continua" },
+        { "value": "dashed", "label": "Tratteggiata" },
+        { "value": "dotted", "label": "Puntinata" },
+        { "value": "double", "label": "Doppia" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_separator_thickness",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Spessore"
+    },
+    {
+      "type": "color",
+      "id": "title_separator_color",
+      "label": "Colore",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "select",
+      "id": "title_separator_width",
+      "label": "Larghezza",
+      "default": "full",
+      "options": [
+        { "value": "full", "label": "100% (piena)" },
+        { "value": "75", "label": "75%" },
+        { "value": "50", "label": "50%" },
+        { "value": "33", "label": "33%" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_separator_spacing",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "unit": "px",
+      "label": "Spaziatura (sopra e sotto la linea)"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "default": true,
+      "label": "Mostra titolo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "t:sections.main-collection-banner.settings.show_collection_description.label"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_description",
+      "label": "Descrizione personalizzata",
+      "info": "Se compilata, verrà mostrata al posto della descrizione predefinita della collection."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "t:sections.main-collection-banner.settings.show_collection_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Immagine personalizzata",
+      "info": "Se inserita, verrà mostrata al posto dell'immagine predefinita della collection."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Leggi di più"
+    },
+    {
+      "type": "paragraph",
+      "content": "Personalizza il pulsante \"Leggi di più\" della descrizione (solo descrizione predefinita)."
+    },
+    {
+      "type": "select",
+      "id": "readmore_position",
+      "label": "Posizione",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "readmore_style",
+      "label": "Stile",
+      "default": "button",
+      "options": [
+        { "value": "link", "label": "Link" },
+        { "value": "button", "label": "Bottone" },
+        { "value": "pill", "label": "Pill" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "readmore_show_icon",
+      "default": false,
+      "label": "Mostra icona (caret)",
+      "info": "Aggiunge una freccia accanto al testo. Ruota di 180° quando il testo è espanso."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "paragraph",
+      "content": "Queste opzioni si applicano solo al layout \"Testo sovrapposto all'immagine\"."
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Colore overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Opacità overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Colore testo overlay",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

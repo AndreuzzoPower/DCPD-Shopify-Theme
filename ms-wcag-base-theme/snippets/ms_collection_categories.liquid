@@ -1,0 +1,1023 @@
+{% comment %}
+  Snippet unificato per visualizzare categorie e sottocategorie basate su menu
+  Supporta Desktop (Horizontal/Vertical) e Mobile (Drawer)
+  
+  Parametri:
+  - view_type: 'desktop' o 'mobile'
+  - filter_type: tipo di filtro per desktop (horizontal, vertical)
+  - cat_menu: handle del menu da cui prendere le categorie
+  - enable_title_categories: mostra/nasconde il titolo
+  - title_categories: testo del titolo
+  - section_id: ID della sezione
+{% endcomment %}
+
+{%- if cat_menu != blank -%}
+  {%- assign menu = linklists[cat_menu] -%}
+  
+  {%- if menu.links.size > 0 -%}
+    
+    {%- if view_type == 'mobile' -%}
+      {%- comment -%} ==================== VISTA MOBILE/DRAWER ==================== {%- endcomment -%}
+      
+      <div
+        id="Details-Mobile-categories-{{ section_id }}"
+        class="mobile-facets__details js-filter mobile-categories"
+        data-index="mobile-categories"
+      >
+        <div class="mobile-facets__summary focus-inset" role="button" tabindex="0">
+          <div>
+            <span>{{ title_categories }}</span>
+            <span class="mobile-facets__arrow">
+              {{- 'icon-arrow.svg' | inline_asset_content -}}
+            </span>
+          </div>
+        </div>
+        
+        <div
+          id="FacetMobile-categories-{{ section_id }}"
+          class="mobile-facets__submenu gradient"
+        >
+          <button
+            class="mobile-facets__close-button link link--text focus-inset"
+            aria-expanded="true"
+            type="button"
+          >
+            {{- 'icon-arrow.svg' | inline_asset_content -}}
+            <span>{{ title_categories }}</span>
+          </button>
+          
+          <ul class="mobile-facets__list list-unstyled" role="list">
+            {%- for link in menu.links -%}
+              {%- assign is_active = link.active -%}
+              {%- assign has_active_child = link.child_active -%}
+              
+              <li class="mobile-facets__item mobile-categories__item {% if link.links.size > 0 %}mobile-categories__item--parent{% endif %}">
+                {%- if link.links.size > 0 -%}
+                  <div class="mobile-categories__child-details {% if is_active or has_active_child %}is-open{% endif %}">
+                    <div class="mobile-categories__summary" role="button" tabindex="0">
+                      <span class="{% if is_active %}active{% endif %}">{{ link.title }}</span>
+                      <span class="mobile-facets__arrow">
+                        {{- 'icon-arrow.svg' | inline_asset_content -}}
+                      </span>
+                    </div>
+                    <div class="mobile-categories__children">
+                      {%- if link.url != blank and link.url != '#' and link.url != '' -%}
+                        <a href="{{ link.url }}" class="mobile-categories__parent-link link {% if is_active %}active{% endif %}">
+                          {{ 'dcpd.collection.view_all' | t }}
+                        </a>
+                      {%- endif -%}
+                      
+                      <ul class="mobile-categories__child-list list-unstyled" role="list">
+                        {%- for child_link in link.links -%}
+                          {%- assign is_child_active = child_link.active -%}
+                          {%- assign has_active_grandchild = child_link.child_active -%}
+                          
+                          <li class="mobile-categories__child-item {% if child_link.links.size > 0 %}mobile-categories__child-item--parent{% endif %}">
+                            {%- if child_link.links.size > 0 -%}
+                              <div class="mobile-categories__grandchild-details {% if is_child_active or has_active_grandchild %}is-open{% endif %}">
+                                <div class="mobile-categories__child-summary" role="button" tabindex="0">
+                                  <span class="{% if is_child_active %}active{% endif %}">{{ child_link.title }}</span>
+                                  <span class="mobile-facets__arrow mobile-facets__arrow--small">
+                                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                                  </span>
+                                </div>
+                                <div class="mobile-categories__grandchildren">
+                                  {%- if child_link.url != blank and child_link.url != '#' and child_link.url != '' -%}
+                                    <a href="{{ child_link.url }}" class="mobile-categories__parent-link link {% if is_child_active %}active{% endif %}">
+                                      {{ 'dcpd.collection.view_all' | t }}
+                                    </a>
+                                  {%- endif -%}
+                                  
+                                  <ul class="mobile-categories__grandchild-list list-unstyled" role="list">
+                                    {%- for grandchild_link in child_link.links -%}
+                                      {%- assign is_grandchild_active = grandchild_link.active -%}
+                                      <li class="mobile-categories__grandchild-item">
+                                        <a href="{{ grandchild_link.url }}" class="link {% if is_grandchild_active %}active{% endif %}">
+                                          {{ grandchild_link.title }}
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                </div>
+                              </div>
+                            {%- else -%}
+                              <a href="{{ child_link.url }}" class="link {% if is_child_active %}active{% endif %}">
+                                {{ child_link.title }}
+                              </a>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  </div>
+                {%- else -%}
+                  <a href="{{ link.url }}" class="link {% if is_active %}active{% endif %}">
+                    {{ link.title }}
+                  </a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+      
+    {%- else -%}
+      
+      {%- if filter_type == 'horizontal' -%}
+        {%- comment -%} ==================== VISTA DESKTOP ORIZZONTALE ==================== {%- endcomment -%}
+        
+        <details
+          id="Details-categories-{{ section_id }}"
+          class="disclosure-has-popup facets__disclosure js-filter facets-container-categories facets-container-categories--horizontal"
+          data-index="categories"
+        >
+          <summary class="facets__summary caption-large focus-offset">
+            <div>
+              <span>{{ title_categories }}</span>
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </div>
+          </summary>
+          <div class="facets__display facets-categories__display--horizontal">
+            <ul class="facets__list list-unstyled" role="list">
+              {%- for link in menu.links -%}
+                {%- assign is_active = link.active -%}
+                {%- assign has_active_child = link.child_active -%}
+                
+                <li class="list-menu__item facets__item {% if link.links.size > 0 %}facets__item--parent{% endif %}">
+                  {%- if link.links.size > 0 -%}
+                    {%- assign has_valid_link = false -%}
+                    {%- if link.url != blank and link.url != '#' and link.url != '' -%}
+                      {%- assign has_valid_link = true -%}
+                    {%- endif -%}
+                    
+                    <div class="facets__item-wrapper {% if has_valid_link %}has-valid-link{% endif %} {% if is_active or has_active_child %}is-expanded{% endif %}" data-category-index="{{ forloop.index }}">
+                      <div class="facets__item-header">
+                        {%- if has_valid_link -%}
+                          <a href="{{ link.url }}" class="facets__item-link {% if is_active %}active{% endif %}">
+                            {{ link.title }}
+                          </a>
+                          <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </button>
+                        {%- else -%}
+                          <button type="button" class="facets__item-button {% if is_active %}active{% endif %}">
+                            <span>{{ link.title }}</span>
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </button>
+                        {%- endif -%}
+                      </div>
+                      <ul class="facets__item-children list-unstyled" role="list">
+                        {%- for child_link in link.links -%}
+                          {%- assign is_child_active = child_link.active -%}
+                          {%- assign has_active_grandchild = child_link.child_active -%}
+                          
+                          <li class="facets__item-child {% if child_link.links.size > 0 %}facets__item-child--parent{% endif %}">
+                            {%- if child_link.links.size > 0 -%}
+                              {%- assign has_valid_child_link = false -%}
+                              {%- if child_link.url != blank and child_link.url != '#' and child_link.url != '' -%}
+                                {%- assign has_valid_child_link = true -%}
+                              {%- endif -%}
+                              
+                              <div class="facets__item-child-wrapper {% if has_valid_child_link %}has-valid-link{% endif %} {% if is_child_active or has_active_grandchild %}is-expanded{% endif %}" data-child-index="{{ forloop.index }}">
+                                <div class="facets__item-child-header">
+                                  {%- if has_valid_child_link -%}
+                                    <a href="{{ child_link.url }}" class="facets__item-child-link {% if is_child_active %}active{% endif %}">
+                                      {{ child_link.title }}
+                                    </a>
+                                    <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
+                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                    </button>
+                                  {%- else -%}
+                                    <button type="button" class="facets__item-child-button {% if is_child_active %}active{% endif %}">
+                                      <span>{{ child_link.title }}</span>
+                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                    </button>
+                                  {%- endif -%}
+                                </div>
+                                <ul class="facets__item-grandchildren list-unstyled" role="list">
+                                  {%- for grandchild_link in child_link.links -%}
+                                    {%- assign is_grandchild_active = grandchild_link.active -%}
+                                    <li class="facets__item-grandchild">
+                                      <a href="{{ grandchild_link.url }}" class="link {% if is_grandchild_active %}active{% endif %}">
+                                        {{ grandchild_link.title }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            {%- else -%}
+                              <a href="{{ child_link.url }}" class="link {% if is_child_active %}active{% endif %}">
+                                {{ child_link.title }}
+                              </a>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- else -%}
+                    <a href="{{ link.url }}" class="link {% if is_active %}active{% endif %}">
+                      {{ link.title }}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </details>
+        
+      {%- else -%}
+        {%- comment -%} ==================== VISTA DESKTOP VERTICALE ==================== {%- endcomment -%}
+        
+        <div
+          id="Details-categories-{{ section_id }}"
+          class="facets__disclosure-vertical js-filter facets-container-categories facets-container-categories--vertical"
+          data-index="categories"
+        >
+          {%- if enable_title_categories -%}
+            <div class="facets__heading facets__heading--vertical caption-large text-body facets-categories-title">
+              {{ title_categories }}
+            </div>
+          {%- endif -%}
+          
+          <div class="facets__display-vertical">
+            <ul class="facets__list--vertical list-unstyled" role="list">
+              {%- for link in menu.links -%}
+                {%- assign is_active = link.active -%}
+                {%- assign has_active_child = link.child_active -%}
+                
+                <li class="list-menu__item facets__item {% if link.links.size > 0 %}facets__item--parent{% endif %}">
+                  {%- if link.links.size > 0 -%}
+                    {%- assign has_valid_link = false -%}
+                    {%- if link.url != blank and link.url != '#' and link.url != '' -%}
+                      {%- assign has_valid_link = true -%}
+                    {%- endif -%}
+                    
+                    <div class="facets__item-wrapper {% if has_valid_link %}has-valid-link{% endif %} {% if is_active or has_active_child %}is-expanded{% endif %}" data-category-index="{{ forloop.index }}">
+                      <div class="facets__item-header">
+                        {%- if has_valid_link -%}
+                          <a href="{{ link.url }}" class="facets__item-link {% if is_active %}active{% endif %}">
+                            {{ link.title }}
+                          </a>
+                          <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </button>
+                        {%- else -%}
+                          <button type="button" class="facets__item-button {% if is_active %}active{% endif %}">
+                            <span>{{ link.title }}</span>
+                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                          </button>
+                        {%- endif -%}
+                      </div>
+                      <ul class="facets__item-children list-unstyled" role="list">
+                        {%- for child_link in link.links -%}
+                          {%- assign is_child_active = child_link.active -%}
+                          {%- assign has_active_grandchild = child_link.child_active -%}
+                          
+                          <li class="facets__item-child {% if child_link.links.size > 0 %}facets__item-child--parent{% endif %}">
+                            {%- if child_link.links.size > 0 -%}
+                              {%- assign has_valid_child_link = false -%}
+                              {%- if child_link.url != blank and child_link.url != '#' and child_link.url != '' -%}
+                                {%- assign has_valid_child_link = true -%}
+                              {%- endif -%}
+                              
+                              <div class="facets__item-child-wrapper {% if has_valid_child_link %}has-valid-link{% endif %} {% if is_child_active or has_active_grandchild %}is-expanded{% endif %}" data-child-index="{{ forloop.index }}">
+                                <div class="facets__item-child-header">
+                                  {%- if has_valid_child_link -%}
+                                    <a href="{{ child_link.url }}" class="facets__item-child-link {% if is_child_active %}active{% endif %}">
+                                      {{ child_link.title }}
+                                    </a>
+                                    <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
+                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                    </button>
+                                  {%- else -%}
+                                    <button type="button" class="facets__item-child-button {% if is_child_active %}active{% endif %}">
+                                      <span>{{ child_link.title }}</span>
+                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                    </button>
+                                  {%- endif -%}
+                                </div>
+                                <ul class="facets__item-grandchildren list-unstyled" role="list">
+                                  {%- for grandchild_link in child_link.links -%}
+                                    {%- assign is_grandchild_active = grandchild_link.active -%}
+                                    <li class="facets__item-grandchild">
+                                      <a href="{{ grandchild_link.url }}" class="link {% if is_grandchild_active %}active{% endif %}">
+                                        {{ grandchild_link.title }}
+                                      </a>
+                                    </li>
+                                  {%- endfor -%}
+                                </ul>
+                              </div>
+                            {%- else -%}
+                              <a href="{{ child_link.url }}" class="link {% if is_child_active %}active{% endif %}">
+                                {{ child_link.title }}
+                              </a>
+                            {%- endif -%}
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- else -%}
+                    <a href="{{ link.url }}" class="link {% if is_active %}active{% endif %}">
+                      {{ link.title }}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      {%- endif -%}
+      
+    {%- endif -%}
+    
+    <style>
+      /* ==================== STILI ORIZZONTALE ==================== */
+      .facets-container-categories--horizontal {
+        border-top: none !important;
+        order: -1;
+      }
+      
+      .facets-container-categories--horizontal .facets-categories__display--horizontal {
+        padding: 2rem;
+        min-width: 25rem;
+      }
+      
+      .facets-container-categories--horizontal .facets__item > .link,
+      .facets-container-categories--horizontal .facets__item-link,
+      .facets-container-categories--horizontal .facets__item-child-link,
+      .facets-container-categories--horizontal .facets__item-child > .link,
+      .facets-container-categories--horizontal .facets__item-grandchild .link {
+        text-decoration: none !important;
+      }
+      
+      .facets-container-categories--horizontal .facets__item-children {
+        display: none;
+        padding: 0.3rem 0 0.5rem 1.5rem;
+      }
+      
+      .facets-container-categories--horizontal .facets__item-wrapper.is-expanded > .facets__item-children {
+        display: block;
+      }
+      
+      .facets-container-categories--horizontal .facets__item-grandchildren {
+        display: none;
+        padding: 0.3rem 0 0.3rem 1.5rem;
+      }
+      
+      .facets-container-categories--horizontal .facets__item-child-wrapper.is-expanded > .facets__item-grandchildren {
+        display: block;
+      }
+      
+      /* ==================== STILI VERTICALE ==================== */
+      .facets-container-categories--vertical {
+        border-top: none !important;
+      }
+      
+      /* Titolo categorie - usa gli stessi stili di "Filtra:" */
+      .facets-container-categories--vertical .facets-categories-title {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+        margin-bottom: 1rem;
+      }
+      
+      /* ==================== STILI CONDIVISI DESKTOP ==================== */
+      
+      .facets-container-categories .facets__item {
+        padding: 0;
+        margin: 0.5rem 0;
+      }
+      
+      .facets-container-categories .facets__item > .link {
+        display: block;
+        text-decoration: none;
+        color: rgba(var(--color-foreground), 0.85);
+        transition: color 0.15s ease;
+        font-size: 1.4rem;
+      }
+      
+      .facets-container-categories .facets__item > .link:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item > .link.active {
+        font-weight: 600;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-parent {
+        padding: 0;
+      }
+      
+      .facets-container-categories .facets__item-wrapper {
+        width: 100%;
+      }
+      
+      .facets-container-categories .facets__item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0;
+        gap: 1rem;
+      }
+      
+      .facets-container-categories--vertical .facets__item-wrapper.is-expanded {
+        border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+        padding-bottom: 0.5rem;
+        margin-bottom: 0;
+      }
+      
+      .facets-container-categories .facets__item-link {
+        flex: 1;
+        text-decoration: none;
+        color: rgba(var(--color-foreground), 0.85);
+        transition: color 0.15s ease;
+        font-size: 1.4rem;
+      }
+      
+      .facets-container-categories .facets__item-link:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-link.active {
+        font-weight: 600;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        padding: 0;
+        text-align: left;
+        color: rgba(var(--color-foreground), 0.85);
+        cursor: pointer;
+        transition: color 0.15s ease;
+        width: 100%;
+        font-size: 1.4rem;
+        font-family: inherit;
+      }
+      
+      .facets-container-categories .facets__item-button:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-button.active {
+        font-weight: 600;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-toggle {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+        color: rgba(var(--color-foreground), 0.85);
+      }
+      
+      .facets-container-categories .facets__item-toggle svg {
+        width: 1rem;
+        height: 1rem;
+      }
+      
+      .facets-container-categories .facets__item-wrapper.is-expanded .facets__item-toggle {
+        transform: rotate(180deg);
+      }
+      
+      .facets-container-categories .facets__item-button svg {
+        width: 1rem;
+        height: 1rem;
+        transition: transform 0.2s ease;
+      }
+      
+      .facets-container-categories .facets__item-wrapper.is-expanded .facets__item-button svg {
+        transform: rotate(180deg);
+      }
+      
+      /* Children: nascosti di default, visibili solo se il parent ha is-expanded */
+      .facets-container-categories .facets__item-children {
+        display: none;
+        padding: 0.3rem 0 0.5rem 2rem;
+      }
+      
+      .facets-container-categories .facets__item-wrapper.is-expanded > .facets__item-children {
+        display: block;
+      }
+      
+      .facets-container-categories .facets__item-wrapper:not(.is-expanded) > .facets__item-children {
+        display: none !important;
+      }
+      
+      .facets-container-categories .facets__item-child {
+        padding: 0.4rem 0;
+      }
+      
+      .facets-container-categories .facets__item-child > .link {
+        display: block;
+        text-decoration: none;
+        color: rgba(var(--color-foreground), 0.75);
+        transition: color 0.15s ease;
+        font-size: 1.4rem;
+      }
+      
+      .facets-container-categories .facets__item-child > .link:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child > .link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child--parent {
+        padding: 0;
+      }
+      
+      .facets-container-categories .facets__item-child-wrapper {
+        width: 100%;
+      }
+      
+      .facets-container-categories .facets__item-child-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+        gap: 1rem;
+      }
+      
+      .facets-container-categories .facets__item-child-link {
+        flex: 1;
+        text-decoration: none;
+        color: rgba(var(--color-foreground), 0.75);
+        transition: color 0.15s ease;
+        font-size: 1.4rem;
+      }
+      
+      .facets-container-categories .facets__item-child-link:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child-link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child-button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        padding: 0;
+        text-align: left;
+        color: rgba(var(--color-foreground), 0.75);
+        cursor: pointer;
+        transition: color 0.15s ease;
+        width: 100%;
+        font-size: 1.4rem;
+        font-family: inherit;
+      }
+      
+      .facets-container-categories .facets__item-child-button:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child-button.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-child-button svg {
+        width: 0.9rem;
+        height: 0.9rem;
+        transition: transform 0.2s ease;
+      }
+      
+      .facets-container-categories .facets__item-child-wrapper.is-expanded .facets__item-child-button svg {
+        transform: rotate(180deg);
+      }
+      
+      .facets-container-categories .facets__item-child-toggle {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+        color: rgba(var(--color-foreground), 0.75);
+      }
+      
+      .facets-container-categories .facets__item-child-toggle svg {
+        width: 0.9rem;
+        height: 0.9rem;
+      }
+      
+      .facets-container-categories .facets__item-child-wrapper.is-expanded .facets__item-child-toggle {
+        transform: rotate(180deg);
+      }
+      
+      /* Grandchildren: nascosti di default, visibili solo se il parent ha is-expanded */
+      .facets-container-categories .facets__item-grandchildren {
+        display: none;
+        padding: 0.3rem 0 0.3rem 1.5rem;
+      }
+      
+      .facets-container-categories .facets__item-child-wrapper.is-expanded > .facets__item-grandchildren {
+        display: block;
+      }
+      
+      .facets-container-categories .facets__item-child-wrapper:not(.is-expanded) > .facets__item-grandchildren {
+        display: none !important;
+      }
+      
+      .facets-container-categories .facets__item-grandchild {
+        padding: 0.3rem 0;
+      }
+      
+      .facets-container-categories .facets__item-grandchild .link {
+        display: block;
+        text-decoration: none;
+        color: rgba(var(--color-foreground), 0.65);
+        transition: color 0.15s ease;
+        font-size: 1.3rem;
+      }
+      
+      .facets-container-categories .facets__item-grandchild .link:hover {
+        color: rgb(var(--color-foreground));
+      }
+      
+      .facets-container-categories .facets__item-grandchild .link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      /* ==================== STILI MOBILE ==================== */
+      .mobile-categories.is-open > .mobile-facets__submenu {
+        transition: transform 0.4s cubic-bezier(0.29, 0.63, 0.44, 1), visibility 0.4s cubic-bezier(0.29, 0.63, 0.44, 1);
+        transform: translateX(0);
+        visibility: visible;
+      }
+      
+      .mobile-categories .mobile-facets__summary {
+        cursor: pointer;
+      }
+      
+      .mobile-categories .mobile-facets__submenu {
+        overflow-x: hidden;
+      }
+      
+      .mobile-categories .mobile-facets__list {
+        padding: 0 2.5rem;
+      }
+      
+      .mobile-categories__item {
+        padding: 1.5rem 0;
+        border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.04);
+      }
+      
+      .mobile-categories__item > .link {
+        display: block;
+        font-size: 1.4rem;
+        color: rgb(var(--color-foreground));
+        text-decoration: none;
+      }
+      
+      .mobile-categories__item > .link.active {
+        font-weight: 600;
+      }
+      
+      .mobile-categories__item--parent {
+        padding: 0;
+      }
+      
+      .mobile-categories__child-details {
+        border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.04);
+      }
+      
+      .mobile-categories__summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0;
+        cursor: pointer;
+        font-size: 1.4rem;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .mobile-categories__summary span.active {
+        font-weight: 600;
+      }
+      
+      .mobile-categories__summary .mobile-facets__arrow {
+        transform: rotate(-90deg);
+        transition: transform 0.2s ease;
+      }
+      
+      .mobile-categories__child-details.is-open > .mobile-categories__summary .mobile-facets__arrow {
+        transform: rotate(0);
+      }
+      
+      .mobile-categories__child-details > .mobile-categories__children {
+        display: none;
+      }
+      
+      .mobile-categories__child-details.is-open > .mobile-categories__children {
+        display: block;
+      }
+      
+      .mobile-categories__children {
+        padding: 0 0 1.5rem 2rem;
+      }
+      
+      .mobile-categories__parent-link {
+        display: block;
+        padding: 1rem 0;
+        font-size: 1.3rem;
+        color: rgba(var(--color-foreground), 0.75);
+        text-decoration: none;
+        font-style: italic;
+      }
+      
+      .mobile-categories__parent-link.active {
+        font-weight: 600;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .mobile-categories__child-list {
+        padding-top: 0.5rem;
+      }
+      
+      .mobile-categories__child-item {
+        padding: 1rem 0;
+      }
+      
+      .mobile-categories__child-item > .link {
+        display: block;
+        font-size: 1.3rem;
+        color: rgba(var(--color-foreground), 0.85);
+        text-decoration: none;
+      }
+      
+      .mobile-categories__child-item > .link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .mobile-categories__child-item--parent {
+        padding: 0;
+      }
+      
+      .mobile-categories__grandchild-details {
+        padding: 1rem 0;
+      }
+      
+      .mobile-categories__child-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        font-size: 1.3rem;
+        color: rgba(var(--color-foreground), 0.85);
+      }
+      
+      .mobile-categories__child-summary span.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .mobile-facets__arrow--small {
+        width: 1.2rem;
+        height: 1.2rem;
+        transform: rotate(-90deg);
+        transition: transform 0.2s ease;
+      }
+      
+      .mobile-categories__grandchild-details.is-open > .mobile-categories__child-summary .mobile-facets__arrow--small {
+        transform: rotate(0);
+      }
+      
+      .mobile-categories__grandchild-details > .mobile-categories__grandchildren {
+        display: none;
+      }
+      
+      .mobile-categories__grandchild-details.is-open > .mobile-categories__grandchildren {
+        display: block;
+      }
+      
+      .mobile-categories__grandchildren {
+        padding: 0.5rem 0 0 1.5rem;
+      }
+      
+      .mobile-categories__child-link {
+        display: block;
+        padding: 0.8rem 0;
+        font-size: 1.2rem;
+        color: rgba(var(--color-foreground), 0.65);
+        text-decoration: none;
+        font-style: italic;
+      }
+      
+      .mobile-categories__child-link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+      
+      .mobile-categories__grandchild-list {
+        padding-top: 0.5rem;
+      }
+      
+      .mobile-categories__grandchild-item {
+        padding: 0.8rem 0;
+      }
+      
+      .mobile-categories__grandchild-item .link {
+        display: block;
+        font-size: 1.2rem;
+        color: rgba(var(--color-foreground), 0.75);
+        text-decoration: none;
+      }
+      
+      .mobile-categories__grandchild-item .link.active {
+        font-weight: 500;
+        color: rgb(var(--color-foreground));
+      }
+    </style>
+    
+    <script>
+      (function() {
+        function initMobileCategoryToggles() {
+          // Toggle per il wrapper principale mobile (livello 0)
+          document.querySelectorAll('.mobile-categories > .mobile-facets__summary').forEach(function(summary) {
+            var newSummary = summary.cloneNode(true);
+            summary.parentNode.replaceChild(newSummary, summary);
+            
+            newSummary.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              newSummary.parentElement.classList.toggle('is-open');
+            });
+            
+            newSummary.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                newSummary.parentElement.classList.toggle('is-open');
+              }
+            });
+          });
+          
+          // Toggle per categorie figlie mobile (livello 1)
+          document.querySelectorAll('.mobile-categories__child-details > .mobile-categories__summary').forEach(function(summary) {
+            var newSummary = summary.cloneNode(true);
+            summary.parentNode.replaceChild(newSummary, summary);
+            
+            newSummary.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              newSummary.parentElement.classList.toggle('is-open');
+            });
+            
+            newSummary.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                newSummary.parentElement.classList.toggle('is-open');
+              }
+            });
+          });
+          
+          // Toggle per categorie nipoti mobile (livello 2)
+          document.querySelectorAll('.mobile-categories__grandchild-details > .mobile-categories__child-summary').forEach(function(summary) {
+            var newSummary = summary.cloneNode(true);
+            summary.parentNode.replaceChild(newSummary, summary);
+            
+            newSummary.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              newSummary.parentElement.classList.toggle('is-open');
+            });
+            
+            newSummary.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                newSummary.parentElement.classList.toggle('is-open');
+              }
+            });
+          });
+          
+          // Toggle per il close-button nel submenu mobile
+          document.querySelectorAll('.mobile-categories .mobile-facets__close-button').forEach(function(closeBtn) {
+            var newCloseBtn = closeBtn.cloneNode(true);
+            closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+            
+            newCloseBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              var mobileCategories = newCloseBtn.closest('.mobile-categories');
+              if (mobileCategories) {
+                mobileCategories.classList.remove('is-open');
+              }
+            });
+          });
+        }
+        
+        function initCategoryToggles() {
+          // Sincronizza lo stato visuale: rimuovi eventuali inline styles residui
+          document.querySelectorAll('.facets-container-categories .facets__item-children').forEach(function(el) {
+            el.style.removeProperty('display');
+          });
+          document.querySelectorAll('.facets-container-categories .facets__item-grandchildren').forEach(function(el) {
+            el.style.removeProperty('display');
+          });
+          
+          // Toggle per categorie desktop di primo livello
+          var categoryWrappers = document.querySelectorAll('.facets-container-categories .facets__item-wrapper');
+          
+          categoryWrappers.forEach(function(wrapper) {
+            var toggleBtn = wrapper.querySelector(':scope > .facets__item-header > .facets__item-toggle');
+            var button = wrapper.querySelector(':scope > .facets__item-header > .facets__item-button');
+            
+            // Rimuovi listener esistenti clonando e sostituendo
+            if (toggleBtn) {
+              var newToggleBtn = toggleBtn.cloneNode(true);
+              toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+              
+              newToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                wrapper.classList.toggle('is-expanded');
+              });
+            }
+            
+            if (button) {
+              var newButton = button.cloneNode(true);
+              button.parentNode.replaceChild(newButton, button);
+              
+              newButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                wrapper.classList.toggle('is-expanded');
+              });
+            }
+          });
+          
+          // Toggle per sottocategorie desktop di secondo livello
+          var childWrappers = document.querySelectorAll('.facets-container-categories .facets__item-child-wrapper');
+          
+          childWrappers.forEach(function(wrapper) {
+            var toggleBtn = wrapper.querySelector(':scope > .facets__item-child-header > .facets__item-child-toggle');
+            var childButton = wrapper.querySelector(':scope > .facets__item-child-header > .facets__item-child-button');
+            
+            if (toggleBtn) {
+              var newToggleBtn = toggleBtn.cloneNode(true);
+              toggleBtn.parentNode.replaceChild(newToggleBtn, toggleBtn);
+              
+              newToggleBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                wrapper.classList.toggle('is-expanded');
+              });
+            }
+            
+            if (childButton) {
+              var newChildButton = childButton.cloneNode(true);
+              childButton.parentNode.replaceChild(newChildButton, childButton);
+              
+              newChildButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                wrapper.classList.toggle('is-expanded');
+              });
+            }
+          });
+        }
+        
+        function initAllToggles() {
+          initMobileCategoryToggles();
+          initCategoryToggles();
+        }
+        
+        // Inizializza al caricamento
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initAllToggles);
+        } else {
+          initAllToggles();
+        }
+        
+        // Reinizializza dopo aggiornamenti AJAX dei filtri
+        document.addEventListener('shopify:section:load', initAllToggles);
+      })();
+    </script>
+    
+  {%- endif -%}
+{%- endif -%}

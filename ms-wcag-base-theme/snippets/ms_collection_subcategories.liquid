@@ -1,0 +1,185 @@
+{%- comment -%}
+  ms_collection_subcategories.liquid
+  Mostra le sottocategorie della collection corrente basandosi su un menu Shopify.
+
+  Parametri:
+    - cat_menu:       handle del menu (link_list)
+    - sc_alignment:   left | center | right
+    - sc_style:       pill | link | button
+{%- endcomment -%}
+
+{%- assign current_handle = collection.handle -%}
+{%- assign sc_found = false -%}
+{%- assign sc_active_handle = '' -%}
+{%- comment -%} ── Livello 1: la collection corrente è una categoria principale → mostra i suoi figli ── {%- endcomment -%}
+{%- for cat in linklists[cat_menu].links -%}
+  {%- assign cat_handle = cat.url | split: '/' | last -%}
+  {%- if cat_handle == current_handle and cat.links.size > 0 -%}
+    {%- assign sc_found = true -%}
+    {%- assign sc_links = cat.links -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} ── Livello 2: la collection corrente è una sottocategoria → mostra i fratelli ── {%- endcomment -%}
+{%- unless sc_found -%}
+  {%- for cat in linklists[cat_menu].links -%}
+    {%- for sublink in cat.links -%}
+      {%- assign sub_handle = sublink.url | split: '/' | last -%}
+      {%- if sub_handle == current_handle -%}
+        {%- assign sc_found = true -%}
+        {%- assign sc_links = cat.links -%}
+        {%- assign sc_active_handle = current_handle -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if sc_found -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endunless -%}
+
+{%- comment -%} ── Livello 3: la collection corrente è una sotto-sottocategoria → mostra i fratelli di livello 2 ── {%- endcomment -%}
+{%- unless sc_found -%}
+  {%- for cat in linklists[cat_menu].links -%}
+    {%- for sublink in cat.links -%}
+      {%- for subsublink in sublink.links -%}
+        {%- assign subsub_handle = subsublink.url | split: '/' | last -%}
+        {%- if subsub_handle == current_handle -%}
+          {%- assign sc_found = true -%}
+          {%- assign sc_links = sublink.links -%}
+          {%- assign sc_active_handle = current_handle -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if sc_found -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if sc_found -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endunless -%}
+
+{%- if sc_found and sc_links.size > 0 -%}
+  {%- comment -%} ── Mapping allineamento ── {%- endcomment -%}
+  {%- case sc_alignment -%}
+    {%- when 'left' -%}
+      {%- assign sc_justify = 'flex-start' -%}
+    {%- when 'right' -%}
+      {%- assign sc_justify = 'flex-end' -%}
+    {%- else -%}
+      {%- assign sc_justify = 'center' -%}
+  {%- endcase -%}
+
+  <style>
+    .ms-sc {
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .ms-sc__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: {{ sc_justify }};
+    }
+
+    /* ── Dimensioni (pill / button) ── */
+    .ms-sc--size-small .ms-sc__link { padding: 0.4rem 1rem; font-size: 1.2rem; }
+    .ms-sc--size-medium .ms-sc__link { padding: 0.8rem 1.6rem; font-size: 1.4rem; }
+    .ms-sc--size-large .ms-sc__link { padding: 1rem 2.2rem; font-size: 1.6rem; }
+    .ms-sc--size-xlarge .ms-sc__link { padding: 1.4rem 3rem; font-size: 1.8rem; }
+
+    /* ── Stile: Pill ── */
+    .ms-sc--pill .ms-sc__link {
+      display: inline-block;
+      border: 1px dashed rgba(var(--color-foreground), 0.3);
+      border-radius: 30px;
+      color: rgb(var(--color-foreground));
+      text-decoration: none;
+      line-height: 1.4;
+      transition: all 0.3s ease;
+    }
+    .ms-sc--pill .ms-sc__link:hover,
+    .ms-sc--pill .ms-sc__link:focus-visible {
+      border-color: rgb(var(--color-foreground));
+      background: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+    }
+    .ms-sc--pill .ms-sc__link[aria-current="page"] {
+      border-style: solid;
+      border-color: rgb(var(--color-foreground));
+      background: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+    }
+
+    /* ── Stile: Link ── */
+    .ms-sc--link .ms-sc__link {
+      display: inline-block;
+      padding: 0.4rem 0;
+      color: rgb(var(--color-foreground));
+      text-decoration: none;
+      font-size: 1.4rem;
+      line-height: 1.4;
+      position: relative;
+      transition: opacity 0.2s ease;
+    }
+    .ms-sc--link .ms-sc__link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.3s ease;
+    }
+    .ms-sc--link .ms-sc__link:hover::after,
+    .ms-sc--link .ms-sc__link:focus-visible::after {
+      width: 100%;
+    }
+    .ms-sc--link .ms-sc__link[aria-current="page"] {
+      font-weight: 700;
+    }
+    .ms-sc--link .ms-sc__link[aria-current="page"]::after {
+      width: 100%;
+    }
+
+    /* ── Stile: Bottone ── */
+    .ms-sc--button .ms-sc__link {
+      display: inline-block;
+      background: rgb(var(--color-background));
+      color: rgb(var(--color-foreground));
+      text-decoration: none;
+      line-height: 1.4;
+      border: 1px solid rgb(var(--color-foreground));
+      border-radius: 0;
+      transition: all 0.3s ease;
+    }
+    .ms-sc--button .ms-sc__link:hover,
+    .ms-sc--button .ms-sc__link:focus-visible {
+      background: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+    }
+    .ms-sc--button .ms-sc__link[aria-current="page"] {
+      background: rgb(var(--color-foreground));
+      color: rgb(var(--color-background));
+      font-weight: 700;
+    }
+  </style>
+
+  <nav class="ms-sc page-width ms-sc--{{ sc_style | default: 'pill' }} ms-sc--size-{{ sc_size | default: 'medium' }}" aria-label="Sottocategorie">
+    <ul class="ms-sc__list" role="list">
+      {%- for link in sc_links -%}
+        {%- assign link_handle = link.url | split: '/' | last -%}
+        <li class="ms-sc__item">
+          <a
+            href="{{ link.url }}"
+            class="ms-sc__link"
+            {% if link_handle == sc_active_handle %}aria-current="page"{% endif %}
+          >
+            {{- link.title -}}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+{%- endif -%}
