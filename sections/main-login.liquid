@@ -82,13 +82,13 @@
     {%- endif -%}
     {%- form 'customer_login', novalidate: 'novalidate' -%}
       {%- if form.errors -%}
-        <h2 class="form__message" tabindex="-1" autofocus>
+        <div class="form__message" tabindex="-1" autofocus>
           <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
           <span class="svg-wrapper">
             {{- 'icon-error.svg' | inline_asset_content -}}
           </span>
           {{ 'templates.contact.form.error_heading' | t }}
-        </h2>
+        </div>
         {{ form.errors | default_errors }}
       {%- endif -%}
 
@@ -158,7 +158,7 @@
   {%- if shop.checkout.guest_login -%}
     <div>
       <hr>
-      <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
+      <div class="h2">{{ 'customer.login_page.guest_title' | t }}</div>
 
       {%- form 'guest_login' -%}
         <button>

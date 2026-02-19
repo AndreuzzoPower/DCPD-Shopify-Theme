@@ -27,7 +27,7 @@
 
   <div>
     <div>
-      <h2>{{ 'customer.orders.title' | t }}</h2>
+      <div class="h2">{{ 'customer.orders.title' | t }}</div>
 
       {% paginate customer.orders by 20 %}
         {%- if customer.orders.size > 0 -%}
@@ -139,7 +139,7 @@
     </div>
 
     <div>
-      <h2>{{ 'customer.account.details' | t }}</h2>
+      <div class="h2">{{ 'customer.account.details' | t }}</div>
 
       {{ customer.default_address | format_address }}
 

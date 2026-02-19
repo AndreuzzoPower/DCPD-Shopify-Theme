@@ -17,9 +17,9 @@
     {%- endif -%}
     {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
       <div>
-        <h2 id="predictive-search-queries" class="predictive-search__heading text-body caption-with-letter-spacing">
+        <div id="predictive-search-queries" class="predictive-search__heading text-body caption-with-letter-spacing">
           {{- 'templates.search.suggestions' | t -}}
-        </h2>
+        </div>
         <ul
           id="predictive-search-results-queries-list"
           class="predictive-search__results-list list-unstyled"
@@ -64,12 +64,12 @@
     {%- endif -%}
     {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
       <div class="predictive-search__pages-wrapper">
-        <h2
+        <div
           id="predictive-search-pages-desktop"
           class="predictive-search__heading text-body caption-with-letter-spacing"
         >
           {{- 'templates.search.pages' | t -}}
-        </h2>
+        </div>
         <ul
           id="predictive-search-results-pages-list-desktop"
           class="predictive-search__results-list list-unstyled"
@@ -117,12 +117,12 @@
       <div class="predictive-search__result-group">
         {%- if predictive_search.resources.products.size > 0 -%}
           <div>
-            <h2
+            <div
               id="predictive-search-products"
               class="predictive-search__heading text-body caption-with-letter-spacing"
             >
               {{- 'templates.search.products' | t -}}
-            </h2>
+            </div>
             <ul
               id="predictive-search-results-products-list"
               class="predictive-search__results-list list-unstyled"
@@ -170,12 +170,12 @@
         {%- endif -%}
         {%- if predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}
           <div class="predictive-search__pages-wrapper">
-            <h2
+            <div
               id="predictive-search-pages-mobile"
               class="predictive-search__heading text-body caption-with-letter-spacing"
             >
               {{- 'templates.search.pages' | t -}}
-            </h2>
+            </div>
             <ul
               id="predictive-search-results-pages-list-mobile"
               class="predictive-search__results-list list-unstyled"

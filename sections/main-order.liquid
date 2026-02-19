@@ -22,7 +22,7 @@
 
   <div>
     <div>
-      <h2>{{ 'customer.order.title' | t: name: order.name }}</h2>
+      <div class="h2">{{ 'customer.order.title' | t: name: order.name }}</div>
       {%- assign order_date = order.created_at | time_tag: format: 'date_at_time' -%}
       <p>{{ 'customer.order.date_html' | t: date: order_date }}</p>
       {%- if order.cancelled -%}
@@ -320,7 +320,7 @@
     </div>
     <div>
       <div>
-        <h2>{{ 'customer.order.billing_address' | t }}</h2>
+        <div class="h2">{{ 'customer.order.billing_address' | t }}</div>
         <p>
           <strong>{{ 'customer.order.payment_status' | t }}:</strong>
           {{ order.financial_status_label }}
@@ -328,7 +328,7 @@
         {{ order.billing_address | format_address }}
       </div>
       <div>
-        <h2>{{ 'customer.order.shipping_address' | t }}</h2>
+        <div class="h2">{{ 'customer.order.shipping_address' | t }}</div>
         <p>
           <strong>{{ 'customer.order.fulfillment_status' | t }}:</strong>
           {{ order.fulfillment_status_label }}
