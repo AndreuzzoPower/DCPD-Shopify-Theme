@@ -35,7 +35,7 @@
         "separator_icon_color": "",
         "wrapperclass": "",
         "menu_handle": "shop_categorie",
-        "show_all_collections": false,
+        "show_all_collections": true,
         "collections_banned": "",
         "show_cat_handle": false
       }
