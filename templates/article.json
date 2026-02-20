@@ -18,6 +18,14 @@
             "image_height": "adapt"
           }
         },
+        "divider_KPFhzG": {
+          "type": "divider",
+          "settings": {
+            "height_desktop": 20,
+            "height_tablet": 16,
+            "height_mobile": 12
+          }
+        },
         "blog_name_cPmjr6": {
           "type": "blog_name",
           "settings": {
@@ -97,6 +105,7 @@
       },
       "block_order": [
         "featured_image",
+        "divider_KPFhzG",
         "blog_name_cPmjr6",
         "title",
         "article_tags_bpV8cP",
