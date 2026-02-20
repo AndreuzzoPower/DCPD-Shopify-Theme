@@ -71,7 +71,7 @@
       "settings": {}
     },
     "ms_products_from_metafield_erpPzR": {
-      "type": "ms-products-from-metafield",
+      "type": "ms_products-from-metafield",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
