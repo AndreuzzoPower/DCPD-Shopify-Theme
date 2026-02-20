@@ -25,7 +25,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. View All button (desktop)
+   3. View All — Button (default Dawn .button)
    -------------------------------------------------------------------------- */
 .ms-featured-blog .ms-fb__view-all {
   margin-top: 3rem;
@@ -47,7 +47,53 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. Slider overrides
+   4. View All — Pill style
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .ms-fb__view-all-btn--pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  border-radius: 99rem;
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+  border: 1px solid rgb(var(--color-button));
+  font-size: 1.4rem;
+  line-height: 1.2;
+  letter-spacing: 0.1rem;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+}
+
+.ms-featured-blog .ms-fb__view-all-btn--pill:hover {
+  background-color: rgba(var(--color-button), 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   5. View All — Link style
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .ms-fb__view-all-btn--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.ms-featured-blog .ms-fb__view-all-btn--link:hover {
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   6. Slider overrides
    -------------------------------------------------------------------------- */
 .ms-featured-blog .blog__posts.articles-wrapper {
   margin-bottom: 1rem;
@@ -60,14 +106,14 @@
 }
 
 /* --------------------------------------------------------------------------
-   5. Placeholder
+   7. Placeholder
    -------------------------------------------------------------------------- */
 .ms-featured-blog .blog-placeholder-svg {
   height: 100%;
 }
 
 /* --------------------------------------------------------------------------
-   6. Section width helpers
+   8. Section width helpers
    -------------------------------------------------------------------------- */
 .ms-featured-blog.ms-fb--full-width {
   padding-left: 0;
@@ -75,7 +121,28 @@
 }
 
 /* --------------------------------------------------------------------------
-   7. Accessibility — Focus visible
+   9. Card info vertical mode
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .article-card__info--vertical {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.ms-featured-blog .article-card__info--vertical .circle-divider::after {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   10. Estratto — rimuovi margin-bottom
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .article-card__excerpt {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   11. Accessibility — Focus visible
    -------------------------------------------------------------------------- */
 .ms-featured-blog a:focus-visible,
 .ms-featured-blog button:focus-visible {

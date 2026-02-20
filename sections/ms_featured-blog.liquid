@@ -43,7 +43,7 @@
     ── Posts count ──
   endcomment
   assign posts_displayed = section.settings.blog.articles_count
-  if section.settings.post_limit <= section.settings.blog.articles_count or section.settings.post_limit <= 4
+  if section.settings.post_limit <= section.settings.blog.articles_count
     assign posts_exceed_limit = true
     assign posts_displayed = section.settings.post_limit
   endif
@@ -59,12 +59,57 @@
   endif
 
   comment
-    ── Button sizing ──
+    ── Button style + sizing ──
   endcomment
+  assign btn_style = section.settings.button_style | default: 'button'
   assign btn_size_class = ''
 -%}
 
 {%- capture btn_size_class -%}{%- render 'ms_button_size', size: section.settings.button_size -%}{%- endcapture -%}
+
+{%- comment -%} ── Stili dinamici card (dipendono dai settings) ── {%- endcomment -%}
+{%- style -%}
+  /* Bordi card */
+  #section-{{ section.id }} .article-card-wrapper {
+    {%- if section.settings.card_border_position == 'all' -%}
+      border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    {%- elsif section.settings.card_border_position == 'bottom' -%}
+      border-bottom: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    {%- endif -%}
+    {%- if section.settings.card_border_radius > 0 -%}
+      border-radius: {{ section.settings.card_border_radius }}px;
+    {%- endif -%}
+    {%- if section.settings.card_shadow == 'light' -%}
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    {%- elsif section.settings.card_shadow == 'medium' -%}
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    {%- elsif section.settings.card_shadow == 'strong' -%}
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    {%- endif -%}
+    overflow: hidden;
+  }
+
+  /* Padding area info */
+  #section-{{ section.id }} .card__information {
+    padding-top: {{ section.settings.card_info_padding_top }}px !important;
+    padding-right: {{ section.settings.card_info_padding_right }}px !important;
+    padding-bottom: {{ section.settings.card_info_padding_bottom }}px !important;
+    padding-left: {{ section.settings.card_info_padding_left }}px !important;
+  }
+
+  /* Info verticale */
+  {%- if section.settings.card_info_vertical -%}
+    #section-{{ section.id }} .article-card__info {
+      display: flex !important;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3rem;
+    }
+    #section-{{ section.id }} .article-card__info .circle-divider::after {
+      display: none;
+    }
+  {%- endif -%}
+{%- endstyle -%}
 
 <div
   class="ms-featured-blog color-{{ section.settings.color_scheme }} gradient{% if section.settings.heading == blank %} no-heading{% endif %}{% if is_full_width %} ms-fb--full-width{% endif %}"
@@ -102,7 +147,7 @@
     <slider-component class="slider-mobile-gutter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <ul
         id="Slider-{{ section.id }}"
-        class="blog__posts articles-wrapper contains-card contains-card--article{% if settings.blog_card_style == 'standard' %} contains-card--standard{% endif %} grid grid--peek grid--2-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop slider {% if posts_displayed > 2 %}slider--tablet{% else %}slider--mobile{% endif %}"
+        class="blog__posts articles-wrapper contains-card contains-card--article{% if settings.blog_card_style == 'standard' %} contains-card--standard{% endif %} grid grid--peek grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop slider {% if posts_displayed > 2 %}slider--tablet{% else %}slider--mobile{% endif %}"
         role="list"
         aria-label="{{ section.settings.heading | default: 'Blog in evidenza' | strip_html | escape }}"
       >
@@ -119,7 +164,8 @@
               {%- render 'article-card',
                 blog: section.settings.blog,
                 article: article,
-                media_aspect_ratio: 1.66,
+                media_height: section.settings.image_height,
+                media_aspect_ratio: article.image.aspect_ratio,
                 show_image: section.settings.show_image,
                 show_date: section.settings.show_date,
                 show_author: section.settings.show_author,
@@ -129,6 +175,9 @@
                 custom_icon_reading: section.settings.custom_icon_reading,
                 custom_icon_author: section.settings.custom_icon_author,
                 show_excerpt: section.settings.show_excerpt,
+                show_blog_name: section.settings.show_blog_name,
+                blog_name: section.settings.blog.title,
+                blog_url: section.settings.blog.url,
                 show_tags: section.settings.show_tags,
                 tags_style: section.settings.tags_style
               -%}
@@ -225,21 +274,45 @@
       {%- endif -%}
     </slider-component>
 
-    {%- if section.settings.show_view_all and section.settings.post_limit < section.settings.blog.articles_count -%}
+    {%- if section.settings.show_view_all and section.settings.blog != blank and section.settings.post_limit < section.settings.blog.articles_count -%}
       <div
         class="ms-fb__view-all center small-hide medium-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
         {% if settings.animations_reveal_on_scroll %}
           data-cascade
         {% endif %}
       >
-        <a
-          href="{{ section.settings.blog.url }}"
-          id="ViewAll-{{ section.id }}"
-          class="ms-fb__view-all-btn button{{ btn_size_class }}"
-          aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
-        >
-          {{ 'sections.featured_blog.view_all' | t }}
-        </a>
+        {%- liquid
+          assign view_all_text = 'sections.featured_blog.view_all' | t
+        -%}
+        {%- case btn_style -%}
+          {%- when 'pill' -%}
+            <a
+              href="{{ section.settings.blog.url }}"
+              id="ViewAll-{{ section.id }}"
+              class="ms-fb__view-all-btn ms-fb__view-all-btn--pill{{ btn_size_class }}"
+              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+            >
+              {{ view_all_text }}
+            </a>
+          {%- when 'link' -%}
+            <a
+              href="{{ section.settings.blog.url }}"
+              id="ViewAll-{{ section.id }}"
+              class="ms-fb__view-all-btn ms-fb__view-all-btn--link"
+              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+            >
+              {{ view_all_text }}
+            </a>
+          {%- else -%}
+            <a
+              href="{{ section.settings.blog.url }}"
+              id="ViewAll-{{ section.id }}"
+              class="ms-fb__view-all-btn button{{ btn_size_class }}"
+              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+            >
+              {{ view_all_text }}
+            </a>
+        {%- endcase -%}
       </div>
     {%- endif -%}
   </div>
@@ -281,19 +354,31 @@
       "type": "range",
       "id": "post_limit",
       "min": 2,
-      "max": 4,
+      "max": 50,
       "step": 1,
       "default": 3,
       "label": "t:sections.featured-blog.settings.post_limit.label"
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_desktop",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 3,
-      "label": "t:sections.featured-blog.settings.columns_desktop.label"
+      "label": "Colonne desktop",
+      "default": "3",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Colonne mobile",
+      "default": "1",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
     },
     {
       "type": "header",
@@ -351,6 +436,18 @@
       "label": "t:sections.featured-blog.settings.show_image.label"
     },
     {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        { "value": "adapt", "label": "t:sections.main-blog.settings.image_height.options__1.label" },
+        { "value": "small", "label": "t:sections.main-blog.settings.image_height.options__2.label" },
+        { "value": "medium", "label": "t:sections.main-blog.settings.image_height.options__3.label" },
+        { "value": "large", "label": "t:sections.main-blog.settings.image_height.options__4.label" }
+      ],
+      "default": "medium",
+      "label": "t:sections.main-blog.settings.image_height.label"
+    },
+    {
       "type": "checkbox",
       "id": "show_date",
       "default": true,
@@ -373,6 +470,13 @@
       "id": "show_excerpt",
       "default": true,
       "label": "Mostra estratto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog_name",
+      "default": false,
+      "label": "Mostra nome blog",
+      "info": "Visualizza il nome del blog come etichetta (pill) sull'immagine, in alto a sinistra, con link al blog."
     },
     {
       "type": "checkbox",
@@ -420,6 +524,110 @@
     },
     {
       "type": "header",
+      "content": "🎨 Stile card"
+    },
+    {
+      "type": "select",
+      "id": "card_border_position",
+      "label": "Bordi",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "Nessuno" },
+        { "value": "all", "label": "Tutti i lati" },
+        { "value": "bottom", "label": "Solo sotto" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "unit": "px",
+      "label": "Spessore bordo"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Colore bordo",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Raggio bordi (border-radius)"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Ombra card",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "light", "label": "Leggera" },
+        { "value": "medium", "label": "Media" },
+        { "value": "strong", "label": "Forte" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_info_vertical",
+      "default": false,
+      "label": "Info in verticale",
+      "info": "Mostra data, tempo di lettura e autore in colonna anziché in riga."
+    },
+    {
+      "type": "header",
+      "content": "📏 Padding area info"
+    },
+    {
+      "type": "range",
+      "id": "card_info_padding_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "card_info_padding_right",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding right"
+    },
+    {
+      "type": "range",
+      "id": "card_info_padding_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "card_info_padding_left",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding left"
+    },
+    {
+      "type": "header",
       "content": "🔘 Pulsante \"Vedi tutto\""
     },
     {
@@ -428,6 +636,17 @@
       "default": true,
       "label": "t:sections.featured-blog.settings.show_view_all.label",
       "info": "t:sections.featured-blog.settings.show_view_all.info"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Stile pulsante",
+      "options": [
+        { "value": "button", "label": "Bottone" },
+        { "value": "pill", "label": "Pill" },
+        { "value": "link", "label": "Link" }
+      ],
+      "default": "button"
     },
     {
       "type": "select",
@@ -441,7 +660,8 @@
         { "value": "jumbo", "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
       ],
-      "default": "default"
+      "default": "default",
+      "info": "Non applicabile allo stile \"Link\"."
     },
     {
       "type": "header",
