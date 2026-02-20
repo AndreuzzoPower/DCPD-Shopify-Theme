@@ -90,11 +90,20 @@
             "tags_style": "link"
           }
         },
+        "divider_TrWWmq": {
+          "type": "divider",
+          "settings": {
+            "height_desktop": 20,
+            "height_tablet": 16,
+            "height_mobile": 12
+          }
+        },
         "back_to_blog_LccnVB": {
           "type": "back_to_blog",
           "settings": {
             "display_style": "pill",
             "show_icon": true,
+            "button_size": "default",
             "alignment": "center",
             "border_position": "both",
             "border_width": 1,
@@ -122,6 +131,7 @@
         "share",
         "content",
         "article_tags_dBctRa",
+        "divider_TrWWmq",
         "back_to_blog_LccnVB",
         "divider_9jtMMh"
       ],
