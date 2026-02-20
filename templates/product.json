@@ -12,34 +12,29 @@
     "ms_breadcrumbs_4xKfNa": {
       "type": "ms_breadcrumbs",
       "blocks": {
-        "section_padding_nbPccK": {
-          "type": "section_padding",
+        "section_background_7hYHcr": {
+          "type": "section_background",
           "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 0,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 0,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 0
+            "section_bg_color": "#919191"
           }
         }
       },
       "block_order": [
-        "section_padding_nbPccK"
+        "section_background_7hYHcr"
       ],
       "name": "MS Breadcrumbs",
       "settings": {
         "section_width": "default",
-        "color_scheme": "",
+        "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
         "alignment": "left",
         "home_lbl": "Home",
-        "home_icon": "",
+        "home_icon": "icon-house-solid-full.svg",
         "home_icon_color": "",
         "separator": "/",
         "separator_icon": "",
         "separator_icon_color": "",
         "wrapperclass": "",
-        "menu_handle": "",
+        "menu_handle": "shop_categorie",
         "show_all_collections": false,
         "collections_banned": "",
         "show_cat_handle": false
