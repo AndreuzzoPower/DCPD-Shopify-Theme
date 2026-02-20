@@ -30,7 +30,7 @@
         "text_kw8JyG": {
           "type": "text",
           "settings": {
-            "text": "<p>Tanti argomenti interessanti per stuzzicare la tua curiosità.<br/>Torna a trovarci spesso per non perdere contenuti preziosi</p>"
+            "text": "<p>Tanti<strong> argomenti interessanti </strong>per stuzzicare la tua curiosità.<br/>Torna a trovarci spesso per non perdere contenuti preziosi.<br/>Guarda qui sotto gli <strong>ultimi articoli</strong> pubblicati nelle varie categorie o <strong>approfondisci</strong> l'argomento di tua scelta cliccando sulla categoria preferita.</p>"
           }
         }
       },
@@ -74,7 +74,7 @@
         "title_tag": "div",
         "title_custom_class": "",
         "section_width": "page_width",
-        "alignment": "left",
+        "alignment": "center",
         "style": "pills",
         "color_scheme": ""
       }
@@ -103,7 +103,7 @@
         "blog": "",
         "post_limit": 3,
         "columns_desktop": 3,
-        "heading": "Articoli del blog",
+        "heading": "",
         "heading_size": "h1",
         "title_tag": "div",
         "title_custom_class": "",
