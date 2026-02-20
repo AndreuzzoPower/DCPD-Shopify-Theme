@@ -1,0 +1,93 @@
+/* ms_breadcrumbs.css
+ * ═══════════════════════════════════════════════════════════════
+ * Stili per la sezione MS Breadcrumbs
+ * Mobile-first, responsive, WCAG 2.1 AA compliant
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ── Reset & Base ── */
+.ms-breadcrumb__list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 1rem 0;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ms-breadcrumb__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Item ── */
+.ms-breadcrumb__item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  word-break: break-word;
+}
+
+/* ── Separator (CSS-only via ::before) ── */
+.ms-breadcrumb__item + .ms-breadcrumb__item::before {
+  content: var(--ms-breadcrumb-separator, '/');
+  display: inline-block;
+  margin: 0 0.6rem;
+  color: rgba(var(--color-foreground), 0.55);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* ── Links ── */
+.ms-breadcrumb__item a {
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.ms-breadcrumb__item a:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.ms-breadcrumb__item a:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ── Current page (contrasto >= 4.5:1 per WCAG AA) ── */
+.ms-breadcrumb__item--current {
+  color: rgba(var(--color-foreground), 0.65);
+  font-weight: 400;
+}
+
+/* ── Alignment ── */
+.ms-breadcrumb--left .ms-breadcrumb__list {
+  justify-content: flex-start;
+}
+
+.ms-breadcrumb--center .ms-breadcrumb__list {
+  justify-content: center;
+}
+
+.ms-breadcrumb--right .ms-breadcrumb__list {
+  justify-content: flex-end;
+}
+
+/* ── Desktop ── */
+@media (min-width: 750px) {
+  .ms-breadcrumb__item {
+    font-size: 1.3rem;
+  }
+}
