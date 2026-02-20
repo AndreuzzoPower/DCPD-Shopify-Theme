@@ -53,6 +53,7 @@
   assign rm_position = section.settings.readmore_position | default: 'center'
   assign rm_style = section.settings.readmore_style | default: 'button'
   assign rm_icon = section.settings.readmore_show_icon
+  assign rm_custom_icon = section.settings.readmore_custom_icon
 -%}
 
 {%- style -%}
@@ -482,8 +483,13 @@
       width: 1rem;
       height: 0.6rem;
       background: currentColor;
-      -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
-      mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+      {% if rm_custom_icon != blank %}
+        -webkit-mask-image: url('{{ rm_custom_icon | asset_url }}');
+        mask-image: url('{{ rm_custom_icon | asset_url }}');
+      {% else %}
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+        mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+      {% endif %}
       -webkit-mask-size: contain;
       mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -818,6 +824,12 @@
       "default": false,
       "label": "Mostra icona (caret)",
       "info": "Aggiunge una freccia accanto al testo. Ruota di 180° quando il testo è espanso."
+    },
+    {
+      "type": "text",
+      "id": "readmore_custom_icon",
+      "label": "Icona readmore personalizzata (SVG)",
+      "info": "Nome del file SVG negli assets (es. my-caret.svg). Se compilato, sovrascrive l'icona caret predefinita."
     },
     {
       "type": "header",

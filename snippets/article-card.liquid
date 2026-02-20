@@ -11,6 +11,9 @@
   - show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
   - show_badge: {String} The setting either show the blog badge or not.
   - show_icons: {String} The setting either show the icons or not.
+  - custom_icon_date: {String} Custom SVG filename from assets for the date icon.
+  - custom_icon_reading: {String} Custom SVG filename from assets for the reading time icon.
+  - custom_icon_author: {String} Custom SVG filename from assets for the author icon.
   - show_reading: {String} The setting either show the reading time or not.
   - show_excerpt: {Boolean} Show the article excerpt or content preview.
   - show_blog_name: {Boolean} Show the blog name as a pill over the image (top-left).
@@ -152,7 +155,11 @@
               <span class="circle-divider">
                 {% if show_icons %}
                     <span class="svg-wrapper">
+                      {%- if custom_icon_date != blank -%}
+                        {{- custom_icon_date | inline_asset_content -}}
+                      {%- else -%}
                         {{- 'icon-calendar.svg' | inline_asset_content -}}
+                      {%- endif -%}
                     </span> 
                 {% endif %}
                 {{ article.published_at | time_tag: format: 'date' }}
@@ -165,7 +172,11 @@
                 <span class="circle-divider" aria-label="Reading time" title="Reading time">
                   {% if show_icons %}
                     <span class="svg-wrapper">
-                    {{- 'icon-clock.svg' | inline_asset_content -}}
+                    {%- if custom_icon_reading != blank -%}
+                      {{- custom_icon_reading | inline_asset_content -}}
+                    {%- else -%}
+                      {{- 'icon-clock.svg' | inline_asset_content -}}
+                    {%- endif -%}
                     </span> 
                   {% endif %}
                   {{ reading_time }} {{ "dcpd.collection.ea_view_min" | t }}
@@ -175,7 +186,11 @@
               <span class="circle-divider">
                   {% if show_icons %}
                     <span class="svg-wrapper">
-                      {{- 'icon-quote.svg' | inline_asset_content -}}
+                      {%- if custom_icon_author != blank -%}
+                        {{- custom_icon_author | inline_asset_content -}}
+                      {%- else -%}
+                        {{- 'icon-quote.svg' | inline_asset_content -}}
+                      {%- endif -%}
                     </span> 
                   {% endif %}
                   {{ article.author }}

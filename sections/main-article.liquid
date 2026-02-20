@@ -71,7 +71,11 @@
               <span class="circle-divider caption-with-letter-spacing">
                   {% if block.settings.show_icons %}
                     <span class="svg-wrapper">
-                    {{- 'icon-calendar.svg' | inline_asset_content -}}
+                    {%- if block.settings.custom_icon_date != blank -%}
+                      {{- block.settings.custom_icon_date | inline_asset_content -}}
+                    {%- else -%}
+                      {{- 'icon-calendar.svg' | inline_asset_content -}}
+                    {%- endif -%}
                     </span> 
                   {% endif %}
                 {{- article.published_at | time_tag: format: 'date' -}}
@@ -84,7 +88,11 @@
                 <span class="circle-divider caption-with-letter-spacing" aria-label="Reading time" title="Reading time">
                   {% if block.settings.show_icons %}
                     <span class="svg-wrapper">
-                    {{- 'icon-clock.svg' | inline_asset_content -}}
+                    {%- if block.settings.custom_icon_reading != blank -%}
+                      {{- block.settings.custom_icon_reading | inline_asset_content -}}
+                    {%- else -%}
+                      {{- 'icon-clock.svg' | inline_asset_content -}}
+                    {%- endif -%}
                     </span> 
                   {% endif %}
                   {{ reading_time }} {{ "dcpd.collection.ea_view_min" | t }}
@@ -94,7 +102,11 @@
               <span class="caption-with-letter-spacing">
                 {% if block.settings.show_icons %}
                   <span class="svg-wrapper">
-                    {{- 'icon-quote.svg' | inline_asset_content -}}
+                    {%- if block.settings.custom_icon_author != blank -%}
+                      {{- block.settings.custom_icon_author | inline_asset_content -}}
+                    {%- else -%}
+                      {{- 'icon-quote.svg' | inline_asset_content -}}
+                    {%- endif -%}
                   </span> 
                 {% endif %}
                 <span>{{ article.author }}</span>
@@ -316,7 +328,11 @@
               {%- if block.settings.show_icon -%}
                 <span class="article-template__tags-icon" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-price-tag.svg' | inline_asset_content -}}
+                    {%- if block.settings.custom_icon != blank -%}
+                      {{- block.settings.custom_icon | inline_asset_content -}}
+                    {%- else -%}
+                      {{- 'icon-price-tag.svg' | inline_asset_content -}}
+                    {%- endif -%}
                   </span>
                 </span>
               {%- endif -%}
@@ -394,12 +410,18 @@
           class="article-template__back-block article-template__back-block--{{ block.id }} {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
+          {%- liquid
+            assign back_icon_file = 'icon-arrow.svg'
+            if block.settings.custom_icon != blank
+              assign back_icon_file = block.settings.custom_icon
+            endif
+          -%}
           {%- if block.settings.display_style == 'button' -%}
             <a href="{{ blog.url }}" class="button article-template__back-button {%- render 'ms_button_size', size: block.settings.button_size -%}">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {{- back_icon_file | inline_asset_content -}}
                   </span>
                 </span>
               {%- endif -%}
@@ -410,7 +432,7 @@
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {{- back_icon_file | inline_asset_content -}}
                   </span>
                 </span>
               {%- endif -%}
@@ -421,7 +443,7 @@
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {{- back_icon_file | inline_asset_content -}}
                   </span>
                 </span>
               {%- endif -%}
@@ -803,6 +825,24 @@
           "id": "show_icons",
           "default": false,
           "label": "Mostra icone"    
+        },
+        {
+          "type": "text",
+          "id": "custom_icon_date",
+          "label": "Icona data personalizzata (SVG)",
+          "info": "Nome del file SVG negli assets (es. my-calendar.svg). Se compilato, sovrascrive l'icona data predefinita."
+        },
+        {
+          "type": "text",
+          "id": "custom_icon_reading",
+          "label": "Icona lettura personalizzata (SVG)",
+          "info": "Nome del file SVG negli assets (es. my-clock.svg). Se compilato, sovrascrive l'icona tempo di lettura predefinita."
+        },
+        {
+          "type": "text",
+          "id": "custom_icon_author",
+          "label": "Icona autore personalizzata (SVG)",
+          "info": "Nome del file SVG negli assets (es. my-author.svg). Se compilato, sovrascrive l'icona autore predefinita."
         }
       ]
     },
@@ -1065,6 +1105,12 @@
         },
         {
           "type": "text",
+          "id": "custom_icon",
+          "label": "Icona personalizzata (SVG)",
+          "info": "Nome del file SVG negli assets (es. my-tag.svg). Se compilato, sovrascrive l'icona tag predefinita."
+        },
+        {
+          "type": "text",
           "id": "tags_label",
           "label": "Etichetta",
           "info": "Testo opzionale prima dei tag (es: 'Tag:'). Se vuoto non verrà mostrato."
@@ -1218,6 +1264,12 @@
           "default": true,
           "label": "Mostra icona freccia",
           "info": "Mostra o nascondi l'icona freccia a sinistra del testo."
+        },
+        {
+          "type": "text",
+          "id": "custom_icon",
+          "label": "Icona personalizzata (SVG)",
+          "info": "Nome del file SVG negli assets (es. my-arrow.svg). Se compilato, sovrascrive l'icona freccia predefinita."
         },
         {
           "type": "select",

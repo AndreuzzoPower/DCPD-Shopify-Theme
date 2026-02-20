@@ -207,6 +207,9 @@
             show_author: section.settings.show_author,
             show_reading: section.settings.show_reading,
             show_icons: section.settings.show_icons,
+            custom_icon_date: section.settings.custom_icon_date,
+            custom_icon_reading: section.settings.custom_icon_reading,
+            custom_icon_author: section.settings.custom_icon_author,
             show_excerpt: section.settings.show_excerpt,
             show_blog_name: section.settings.show_blog_name,
             blog_name: blog.title,
@@ -408,6 +411,24 @@
       "id": "show_icons",
       "default": false,
       "label": "Mostra icone"
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_date",
+      "label": "Icona data personalizzata (SVG)",
+      "info": "Nome del file SVG negli assets (es. my-calendar.svg). Se compilato, sovrascrive l'icona data predefinita."
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_reading",
+      "label": "Icona lettura personalizzata (SVG)",
+      "info": "Nome del file SVG negli assets (es. my-clock.svg). Se compilato, sovrascrive l'icona tempo di lettura predefinita."
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_author",
+      "label": "Icona autore personalizzata (SVG)",
+      "info": "Nome del file SVG negli assets (es. my-author.svg). Se compilato, sovrascrive l'icona autore predefinita."
     },
     {
       "type": "checkbox",
