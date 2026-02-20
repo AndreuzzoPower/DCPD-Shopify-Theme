@@ -102,6 +102,14 @@
             "padding_top": 40,
             "padding_bottom": 40
           }
+        },
+        "divider_9jtMMh": {
+          "type": "divider",
+          "settings": {
+            "height_desktop": 52,
+            "height_tablet": 16,
+            "height_mobile": 12
+          }
         }
       },
       "block_order": [
@@ -114,7 +122,8 @@
         "share",
         "content",
         "article_tags_dBctRa",
-        "back_to_blog_LccnVB"
+        "back_to_blog_LccnVB",
+        "divider_9jtMMh"
       ],
       "settings": {}
     },
@@ -132,7 +141,7 @@
         "title": "Prodotti in questo articolo",
         "heading_size": "h1",
         "description": "Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione",
-        "show_description": false,
+        "show_description": true,
         "description_style": "body",
         "color_scheme": "",
         "show_view_all": true,
@@ -144,7 +153,7 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
-        "swipe_on_mobile": false
+        "swipe_on_mobile": true
       }
     }
   },
