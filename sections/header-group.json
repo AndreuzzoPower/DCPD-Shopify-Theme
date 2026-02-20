@@ -33,11 +33,22 @@
             "schedule_start": "",
             "schedule_end": ""
           }
+        },
+        "announcement_WNfxe8": {
+          "type": "announcement",
+          "settings": {
+            "text": "Ti diamo il benvenuto nel nostro negozio",
+            "link": "",
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
+          }
         }
       },
       "block_order": [
         "announcement_ErzB9K",
-        "announcement-bar-0"
+        "announcement-bar-0",
+        "announcement_WNfxe8"
       ],
       "settings": {
         "auto_rotate": true,
