@@ -11,22 +11,6 @@
   "sections": {
     "ms_breadcrumbs_WAq6DH": {
       "type": "ms_breadcrumbs",
-      "blocks": {
-        "section_padding_8kUFeY": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 0,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 0,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 0
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_8kUFeY"
-      ],
       "name": "MS Breadcrumbs",
       "settings": {
         "section_width": "default",
@@ -137,9 +121,9 @@
         "back_to_blog_LccnVB": {
           "type": "back_to_blog",
           "settings": {
-            "display_style": "link",
+            "display_style": "pill",
             "show_icon": true,
-            "button_size": "default",
+            "button_size": "jumbo",
             "alignment": "center",
             "border_position": "both",
             "border_width": 1,
