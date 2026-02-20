@@ -85,7 +85,7 @@
       "settings": {
         "blog": "",
         "post_limit": 2,
-        "heading": "Articoli del blog",
+        "heading": "",
         "heading_size": "h1",
         "columns_desktop": 3,
         "show_view_all": true,
