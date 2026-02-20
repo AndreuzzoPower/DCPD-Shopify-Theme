@@ -48,7 +48,7 @@
         "description": "{{ blog.metafields.custom.descrizione | metafield_tag }}",
         "show_tag_cloud": true,
         "layout": "grid",
-        "columns_desktop": "3",
+        "columns_desktop": "2",
         "columns_mobile": "1",
         "articles_per_page": 6,
         "enable_infinite_scroll": true,
