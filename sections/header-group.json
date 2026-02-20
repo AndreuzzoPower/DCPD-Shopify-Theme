@@ -18,21 +18,30 @@
           "type": "announcement",
           "settings": {
             "text": "Ti diamo il benvenuto nel nostro negozio",
-            "link": ""
+            "link": "",
+            "schedule_enabled": false,
+            "schedule_start": "2026-02-20 09:27:00",
+            "schedule_end": "2026-02-20 09:28:00"
           }
         },
         "announcement_feeFeD": {
           "type": "announcement",
           "settings": {
             "text": "Ti diamo il benvenuto nel nostro negozio",
-            "link": ""
+            "link": "",
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
           }
         },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
             "text": "Welcome to our store",
-            "link": ""
+            "link": "",
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
           }
         }
       },
