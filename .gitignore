@@ -13,3 +13,7 @@ node_modules/
 
 # Shopify CLI
 .shopify/
+
+# File interni progetto
+todo.md
+.ai-directives.md
