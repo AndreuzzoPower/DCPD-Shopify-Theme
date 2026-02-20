@@ -37,6 +37,12 @@
       {%- else -%}
         --ms-breadcrumb-separator: '{{ section.settings.separator | replace: "'", "\\'" }}';
       {%- endif -%}
+      {%- if section.settings.home_icon_color != blank -%}
+        --ms-breadcrumb-home-icon-color: {{ section.settings.home_icon_color }};
+      {%- endif -%}
+      {%- if section.settings.separator_icon_color != blank -%}
+        --ms-breadcrumb-separator-icon-color: {{ section.settings.separator_icon_color }};
+      {%- endif -%}
     }
   {%- endstyle -%}
 
@@ -522,6 +528,12 @@
       "info": "Nome del file SVG presente negli assets (es. icon-home.svg). Se compilato, l'icona sostituisce il testo visibile."
     },
     {
+      "type": "color",
+      "id": "home_icon_color",
+      "label": "Colore icona Home",
+      "info": "Lascia vuoto per ereditare il colore del testo."
+    },
+    {
       "type": "text",
       "id": "separator",
       "label": "Separatore testo",
@@ -533,6 +545,12 @@
       "id": "separator_icon",
       "label": "Icona separatore (SVG)",
       "info": "Nome del file SVG presente negli assets (es. icon-chevron-right.svg). Se compilato, sostituisce il separatore testo."
+    },
+    {
+      "type": "color",
+      "id": "separator_icon_color",
+      "label": "Colore icona separatore",
+      "info": "Lascia vuoto per ereditare il colore del testo."
     },
     {
       "type": "text",

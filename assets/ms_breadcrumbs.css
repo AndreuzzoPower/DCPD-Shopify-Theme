@@ -44,20 +44,24 @@
   pointer-events: none;
 }
 
-/* ── Separator: Icona SVG (CSS ::before con background-image) ── */
+/* ── Separator: Icona SVG (mask-image per poterla colorare) ── */
 .ms-breadcrumb--icon-separator .ms-breadcrumb__item + .ms-breadcrumb__item::before {
   content: '';
   display: inline-block;
   width: var(--ms-breadcrumb-separator-size, 0.8em);
   height: var(--ms-breadcrumb-separator-size, 0.8em);
   margin: 0 0.6rem;
-  background-image: var(--ms-breadcrumb-separator-icon);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  -webkit-mask-image: var(--ms-breadcrumb-separator-icon);
+  mask-image: var(--ms-breadcrumb-separator-icon);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  background-color: var(--ms-breadcrumb-separator-icon-color, rgba(var(--color-foreground), 0.55));
   flex-shrink: 0;
   pointer-events: none;
-  opacity: 0.55;
 }
 
 /* ── Links ── */
@@ -93,6 +97,7 @@
   width: 1.4em;
   height: 1.4em;
   flex-shrink: 0;
+  color: var(--ms-breadcrumb-home-icon-color, currentColor);
 }
 
 .ms-breadcrumb__home-icon svg {
