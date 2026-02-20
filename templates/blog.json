@@ -47,7 +47,7 @@
         "title_alignment": "left",
         "description": "",
         "show_tag_cloud": true,
-        "layout": "collage",
+        "layout": "grid",
         "columns_desktop": "3",
         "columns_mobile": "1",
         "articles_per_page": 6,
