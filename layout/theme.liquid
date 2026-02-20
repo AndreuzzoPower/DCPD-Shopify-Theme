@@ -296,6 +296,10 @@
       crossorigin="anonymous"
     ></script>
 
+    {%- comment -%}MS DateTime — Variabile globale data/ora per temporizzazione{%- endcomment -%}
+    {%- render 'ms_datetime' -%}
+    <script src="{{ 'ms_schedule.js' | asset_url }}" defer="defer"></script>
+
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');

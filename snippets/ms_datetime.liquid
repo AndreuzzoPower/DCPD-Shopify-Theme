@@ -1,0 +1,40 @@
+{%- comment -%}
+  ms_datetime.liquid
+  ═══════════════════════════════════════════════════════════════
+  Variabile globale a livello di tema per data/ora corrente.
+  Da includere UNA SOLA VOLTA in layout/theme.liquid.
+
+  Espone:
+  - window.MS_DATETIME.serverTimestamp  → Unix timestamp server (ms)
+  - window.MS_DATETIME.now              → Date object corrente (client-side)
+  - window.MS_DATETIME.isWithin(start, end) → verifica finestra temporale
+
+  Utilizzo in theme.liquid:
+    {%- render 'ms_datetime' -%}
+{%- endcomment -%}
+<script>
+  window.MS_DATETIME = {
+    serverTimestamp: {{ 'now' | date: '%s' }}000,
+    get now() {
+      return new Date();
+    },
+    /**
+     * Verifica se il momento attuale è entro la finestra temporale.
+     * @param {string|null} startStr - "YYYY-MM-DD HH:MM" o null
+     * @param {string|null} endStr - "YYYY-MM-DD HH:MM" o null
+     * @returns {boolean}
+     */
+    isWithin: function(startStr, endStr) {
+      var now = new Date();
+      if (startStr) {
+        var start = new Date(startStr.replace(' ', 'T'));
+        if (isNaN(start.getTime()) || now < start) return false;
+      }
+      if (endStr) {
+        var end = new Date(endStr.replace(' ', 'T'));
+        if (isNaN(end.getTime()) || now > end) return false;
+      }
+      return true;
+    }
+  };
+</script>

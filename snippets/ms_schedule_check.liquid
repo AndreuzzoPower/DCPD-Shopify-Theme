@@ -1,0 +1,49 @@
+{%- comment -%}
+  ms_schedule_check.liquid
+  ═══════════════════════════════════════════════════════════════
+  Snippet riutilizzabile per verificare la temporizzazione di un elemento.
+  Controlla se il momento attuale (server-side) rientra nella finestra temporale.
+
+  Parametri (passati via render):
+  - schedule_enabled : boolean — se la temporizzazione è attiva
+  - schedule_start   : string  — data/ora inizio (formato: "YYYY-MM-DD HH:MM")
+  - schedule_end     : string  — data/ora fine (formato: "YYYY-MM-DD HH:MM")
+
+  Output: "true" se l'elemento deve essere mostrato, "false" altrimenti.
+
+  Utilizzo:
+    {%- capture is_visible -%}
+      {%- render 'ms_schedule_check',
+          schedule_enabled: block.settings.schedule_enabled,
+          schedule_start: block.settings.schedule_start,
+          schedule_end: block.settings.schedule_end
+      -%}
+    {%- endcapture -%}
+    {%- assign is_visible = is_visible | strip -%}
+    {%- if is_visible == 'true' -%}
+      ... mostra contenuto ...
+    {%- endif -%}
+{%- endcomment -%}
+{%- if schedule_enabled != true -%}
+  true
+{%- else -%}
+  {%- assign ms_now_ts = 'now' | date: '%s' | plus: 0 -%}
+  {%- assign ms_can_show = true -%}
+  {%- if schedule_start != blank -%}
+    {%- assign ms_start_ts = schedule_start | date: '%s' | plus: 0 -%}
+    {%- if ms_now_ts < ms_start_ts -%}
+      {%- assign ms_can_show = false -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if schedule_end != blank -%}
+    {%- assign ms_end_ts = schedule_end | date: '%s' | plus: 0 -%}
+    {%- if ms_now_ts > ms_end_ts -%}
+      {%- assign ms_can_show = false -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if ms_can_show -%}
+    true
+  {%- else -%}
+    false
+  {%- endif -%}
+{%- endif -%}
