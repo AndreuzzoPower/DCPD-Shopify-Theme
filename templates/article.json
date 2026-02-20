@@ -12,20 +12,6 @@
     "main": {
       "type": "main-article",
       "blocks": {
-        "article_tags_bpV8cP": {
-          "type": "article_tags",
-          "settings": {
-            "show_icon": true,
-            "tags_label": "",
-            "tags_style": "pill"
-          }
-        },
-        "share_wYXnEN": {
-          "type": "share",
-          "settings": {
-            "share_label": "Condividi"
-          }
-        },
         "featured_image": {
           "type": "featured_image",
           "settings": {
@@ -45,6 +31,14 @@
             "blog_show_author": true,
             "show_reading": true,
             "show_icons": true
+          }
+        },
+        "article_tags_bpV8cP": {
+          "type": "article_tags",
+          "settings": {
+            "show_icon": false,
+            "tags_label": "",
+            "tags_style": "pill"
           }
         },
         "table_of_contents_bieEgb": {
@@ -84,7 +78,7 @@
           "type": "article_tags",
           "settings": {
             "show_icon": true,
-            "tags_label": "Tags",
+            "tags_label": "Tags:",
             "tags_style": "link"
           }
         },
@@ -102,11 +96,10 @@
         }
       },
       "block_order": [
-        "article_tags_bpV8cP",
-        "share_wYXnEN",
         "featured_image",
         "blog_name_cPmjr6",
         "title",
+        "article_tags_bpV8cP",
         "table_of_contents_bieEgb",
         "share",
         "content",
