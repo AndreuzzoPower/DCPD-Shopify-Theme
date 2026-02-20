@@ -1,1 +1,106 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"newsletter_AUNtxG":{"type":"newsletter","blocks":{"heading_FpXjL7":{"type":"heading","settings":{"heading":"Iscriviti alle nostre email","heading_size":"h1"}},"paragraph_GajKXm":{"type":"paragraph","settings":{"text":"<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.<\/p>"}},"email_form_Nd8TDW":{"type":"email_form","settings":{}}},"block_order":["heading_FpXjL7","paragraph_GajKXm","email_form_Nd8TDW"],"name":"t:sections.newsletter.presets.name","settings":{"color_scheme":"","full_width":true,"padding_top":40,"padding_bottom":52}},"footer":{"type":"footer","blocks":{"image_A6JJ6G":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/cropped-favicon-32x32-1-100x100.png","image_width":100,"alignment":"center"}},"brand_information_dUBAQz":{"type":"brand_information","settings":{"show_social":true}},"text_D7QNgh":{"type":"text","settings":{"heading":"Titolo","subtext":"<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.<\/p>"}},"link_list_acCFJB":{"type":"link_list","settings":{"heading":"Link rapidi","menu":"footer"}}},"block_order":["image_A6JJ6G","brand_information_dUBAQz","text_D7QNgh","link_list_acCFJB"],"settings":{"color_scheme":"scheme-1","newsletter_enable":false,"newsletter_heading":"","enable_follow_on_shop":false,"show_social":false,"enable_country_selector":false,"enable_language_selector":false,"payment_enable":true,"show_policy":true,"margin_top":0,"padding_top":36,"padding_bottom":36}}},"order":["newsletter_AUNtxG","footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "newsletter_AUNtxG": {
+      "type": "newsletter",
+      "blocks": {
+        "heading_FpXjL7": {
+          "type": "heading",
+          "settings": {
+            "heading": "Iscriviti alle nostre email",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph_GajKXm": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>"
+          }
+        },
+        "email_form_Nd8TDW": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_FpXjL7",
+        "paragraph_GajKXm",
+        "email_form_Nd8TDW"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "image_A6JJ6G": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
+            "image_width": 100,
+            "alignment": "center"
+          }
+        },
+        "brand_information_dUBAQz": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "text_D7QNgh": {
+          "type": "text",
+          "settings": {
+            "heading": "Titolo",
+            "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
+          }
+        },
+        "link_list_acCFJB": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Link rapidi",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "image_A6JJ6G",
+        "brand_information_dUBAQz",
+        "text_D7QNgh",
+        "link_list_acCFJB"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "newsletter_enable": false,
+        "newsletter_heading": "",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": true,
+        "show_policy": true,
+        "margin_top": 0,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "newsletter_AUNtxG",
+    "footer"
+  ]
+}
