@@ -28,7 +28,7 @@
         "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
         "alignment": "left",
         "home_lbl": "Home",
-        "separator": "/",
+        "separator": ">",
         "wrapperclass": "",
         "menu_handle": "",
         "show_all_collections": false,
@@ -38,6 +38,22 @@
     },
     "banner": {
       "type": "main-collection-banner",
+      "blocks": {
+        "section_padding_qcQ7zK": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 0
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_qcQ7zK"
+      ],
       "settings": {
         "layout": "side_by_side",
         "container_type": "contained",
