@@ -77,13 +77,19 @@
   -%}
 
   <div class="color-{{ section.settings.color_scheme }} isolate gradient" id="section-{{ section.id }}">
+    {%- comment -%}
+      Wrapper larghezza: contiene titolo + slider.
+      page-width è applicato QUI (e non sul slider) perché Dawn sovrascrive
+      max-width su .slider-component-desktop.page-width (component-slider.css:136).
+    {%- endcomment -%}
+    {%- if sw_pw_class != blank -%}<div class="{{ sw_pw_class }}">{%- endif -%}
     <div
       class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if is_full_width %} collection--full-width{% endif %}"
       id="collection-{{ section.id }}"
       data-id="{{ section.id }}"
     >
 
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin {{ sw_pw_class }}{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider and is_full_width %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
         {%- if section.settings.title != blank -%}
           <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{ section.settings.title }}
@@ -99,7 +105,7 @@
       <slider-component
         data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
         data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
-        class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} {{ sw_pw_class }}{% endif %}{% if show_desktop_slider == false and is_full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
+        class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
       >
         <ul
           id="Slider-{{ section.id }}"
@@ -157,6 +163,7 @@
         {{ 'mask-arch.svg' | inline_asset_content }}
       {%- endif -%}
     </div>
+    {%- if sw_pw_class != blank -%}</div>{%- endif -%}
   </div>
 
   {%- render 'ms_section-style' -%}
