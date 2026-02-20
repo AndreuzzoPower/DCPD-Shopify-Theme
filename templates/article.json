@@ -9,6 +9,42 @@
  */
 {
   "sections": {
+    "ms_breadcrumbs_WAq6DH": {
+      "type": "ms_breadcrumbs",
+      "blocks": {
+        "section_padding_8kUFeY": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 0,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 0
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_8kUFeY"
+      ],
+      "name": "MS Breadcrumbs",
+      "settings": {
+        "section_width": "default",
+        "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
+        "alignment": "left",
+        "home_lbl": "Home",
+        "home_icon": "icon-house-solid-full.svg",
+        "home_icon_color": "",
+        "separator": "/",
+        "separator_icon": "",
+        "separator_icon_color": "",
+        "wrapperclass": "",
+        "menu_handle": "",
+        "show_all_collections": false,
+        "collections_banned": "",
+        "show_cat_handle": false
+      }
+    },
     "main": {
       "type": "main-article",
       "blocks": {
@@ -168,6 +204,7 @@
     }
   },
   "order": [
+    "ms_breadcrumbs_WAq6DH",
     "main",
     "ms_products_from_metafield_erpPzR"
   ]
