@@ -162,6 +162,17 @@
       },
       {
         "type": "range",
+        "id": "page_width_narrow",
+        "min": 400,
+        "max": 1200,
+        "step": 50,
+        "default": 750,
+        "unit": "px",
+        "label": "Larghezza contenuto stretto",
+        "info": "Controlla la larghezza massima per i contenuti con layout \"stretto\" (es. articoli, pagine). Non deve superare la larghezza pagina."
+      },
+      {
+        "type": "range",
         "id": "spacing_sections",
         "min": 0,
         "max": 100,

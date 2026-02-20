@@ -4,15 +4,26 @@
 
 <article class="article-template">
   {%- for block in section.blocks -%}
+    {%- liquid
+      assign ms_bw = block.settings.section_width | default: 'narrow'
+      case ms_bw
+        when 'narrow'
+          assign ms_bw_class = 'page-width page-width--narrow'
+        when 'page_width'
+          assign ms_bw_class = 'page-width'
+        when 'full_width'
+          assign ms_bw_class = ''
+      endcase
+    -%}
     {%- case block.type -%}
       {%- when '@app' -%}
-        <div class="page-width page-width--narrow">
+        <div class="{{ ms_bw_class }}">
           {% render block %}
         </div>
       {%- when 'featured_image' -%}
         {%- if article.image -%}
           <div
-            class="article-template__hero-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+            class="article-template__hero-container{% if ms_bw_class != blank %} {{ ms_bw_class }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
             {{ block.shopify_attributes }}
           >
             <div
@@ -45,7 +56,7 @@
 
       {%- when 'title' -%}
         <header
-          class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+          class="{{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
           {{ block.shopify_attributes }}
         >
           <h1
@@ -92,7 +103,7 @@
 
       {%- when 'content' -%}
         <div
-          class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          class="article-template__content {{ ms_bw_class }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
           {{ article.content }}
@@ -100,7 +111,7 @@
 
       {%- when 'share' -%}
         <div
-          class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          class="article-template__social-sharing {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
           {% assign share_url = request.origin | append: article.url %}
@@ -126,7 +137,7 @@
         -%}
         {%- if toc_selectors != blank -%}
           <div
-            class="article-toc page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            class="article-toc {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             id="ArticleToc-{{ block.id }}"
             data-toc-selectors="{{ toc_selectors }}"
             data-toc-list-style="{{ block.settings.list_style }}"
@@ -296,7 +307,7 @@
       {%- when 'article_tags' -%}
         {%- if article.tags.size > 0 -%}
           <div
-            class="article-template__tags page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            class="article-template__tags {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {{ block.shopify_attributes }}
           >
             <div class="article-template__tags-wrapper">
@@ -341,14 +352,14 @@
           }
         </style>
         <div
-          class="article-template__divider article-template__divider--{{ block.id }} page-width page-width--narrow"
+          class="article-template__divider article-template__divider--{{ block.id }} {{ ms_bw_class }}"
           {{ block.shopify_attributes }}
         ></div>
 
       {%- when 'blog_name' -%}
         {%- if blog -%}
           <div
-            class="article-template__blog-name page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            class="article-template__blog-name {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {{ block.shopify_attributes }}
           >
             {%- if block.settings.display_style == 'pill' -%}
@@ -378,7 +389,7 @@
           }
         </style>
         <div
-          class="article-template__back-block article-template__back-block--{{ block.id }} page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          class="article-template__back-block article-template__back-block--{{ block.id }} {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
           {%- if block.settings.display_style == 'button' -%}
@@ -419,10 +430,21 @@
     {%- endcase -%}
   {%- endfor -%}
   {%- if blog.comments_enabled? -%}
+    {%- liquid
+      assign cw = section.settings.comments_width | default: 'narrow'
+      case cw
+        when 'narrow'
+          assign comments_bw_class = 'page-width page-width--narrow'
+        when 'page_width'
+          assign comments_bw_class = 'page-width'
+        when 'full_width'
+          assign comments_bw_class = ''
+      endcase
+    -%}
     <div class="article-template__comment-wrapper background-secondary">
       <div
         id="comments"
-        class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        class="{{ comments_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
       >
         {%- if article.comments_count > 0 -%}
           {%- assign anchorId = '#Comments-' | append: article.id -%}
@@ -673,6 +695,20 @@
   "name": "t:sections.main-article.name",
   "tag": "section",
   "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "comments_width",
+      "label": "Larghezza sezione commenti",
+      "default": "narrow",
+      "options": [
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "full_width", "label": "Piena larghezza" }
+      ],
+      "info": "Controlla la larghezza della sezione commenti sotto l'articolo."
+    }
+  ],
   "blocks": [
     {
       "type": "@app"
@@ -682,6 +718,18 @@
       "name": "t:sections.main-article.blocks.featured_image.name",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "full_width",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
         {
           "type": "select",
           "id": "image_height",
@@ -714,6 +762,18 @@
       "limit": 1,
       "settings": [
         {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
+        {
           "type": "checkbox",
           "id": "blog_show_date",
           "default": true,
@@ -742,13 +802,39 @@
     {
       "type": "content",
       "name": "t:sections.main-article.blocks.content.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        }
+      ]
     },
     {
       "type": "share",
       "name": "t:sections.main-article.blocks.share.name",
       "limit": 2,
       "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
         {
           "type": "text",
           "id": "share_label",
@@ -762,6 +848,18 @@
       "name": "Indice",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
         {
           "type": "text",
           "id": "title",
@@ -936,6 +1034,18 @@
       "limit": 2,
       "settings": [
         {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
+        {
           "type": "checkbox",
           "id": "show_icon",
           "default": true,
@@ -971,6 +1081,18 @@
       "type": "divider",
       "name": "Divisore",
       "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
         {
           "type": "range",
           "id": "height_desktop",
@@ -1010,6 +1132,18 @@
       "settings": [
         {
           "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
+        {
+          "type": "select",
           "id": "display_style",
           "label": "Stile visualizzazione",
           "default": "pill",
@@ -1032,6 +1166,18 @@
       "name": "Torna al blog",
       "limit": 1,
       "settings": [
+        {
+          "type": "select",
+          "id": "section_width",
+          "label": "Larghezza blocco",
+          "default": "narrow",
+          "options": [
+            { "value": "narrow", "label": "Stretta (narrow)" },
+            { "value": "page_width", "label": "Larghezza pagina" },
+            { "value": "full_width", "label": "Piena larghezza" }
+          ],
+          "info": "Controlla la larghezza massima di questo blocco."
+        },
         {
           "type": "select",
           "id": "display_style",
