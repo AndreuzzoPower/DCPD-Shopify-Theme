@@ -93,13 +93,13 @@
         "back_to_blog_LccnVB": {
           "type": "back_to_blog",
           "settings": {
-            "display_style": "link",
+            "display_style": "pill",
             "alignment": "center",
-            "border_position": "none",
+            "border_position": "both",
             "border_width": 1,
             "border_color": "#e0e0e0",
-            "padding_top": 20,
-            "padding_bottom": 20
+            "padding_top": 40,
+            "padding_bottom": 40
           }
         }
       },
