@@ -179,7 +179,7 @@
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
         "title_width": "narrow",
-        "slider_width": "full_width",
+        "slider_width": "page_fluid",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
