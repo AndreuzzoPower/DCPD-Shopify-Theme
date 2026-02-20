@@ -382,7 +382,7 @@
           {{ block.shopify_attributes }}
         >
           {%- if block.settings.display_style == 'button' -%}
-            <a href="{{ blog.url }}" class="button article-template__back-button">
+            <a href="{{ blog.url }}" class="button article-template__back-button {%- render 'ms_button_size', size: block.settings.button_size -%}">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
                   <span class="svg-wrapper">
@@ -393,7 +393,7 @@
               {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
             </a>
           {%- elsif block.settings.display_style == 'pill' -%}
-            <a href="{{ blog.url }}" class="article-template__back-pill">
+            <a href="{{ blog.url }}" class="article-template__back-pill {%- render 'ms_button_size', size: block.settings.button_size -%}">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
                   <span class="svg-wrapper">
@@ -1058,6 +1058,21 @@
           "default": true,
           "label": "Mostra icona freccia",
           "info": "Mostra o nascondi l'icona freccia a sinistra del testo."
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Dimensione pulsante",
+          "info": "Attivo solo per stile \"Bottone\" e \"Pill\". \"Predefinita\" usa il valore globale.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
         },
         {
           "type": "select",

@@ -222,7 +222,7 @@
                     {% else %}
                       role="link" aria-disabled="true"
                     {% endif %}
-                    class="button {% if block.settings.button_style_secondary %}button--secondary{% else %}button--primary{% endif %}"
+                    class="button {% if block.settings.button_style_secondary %}button--secondary{% else %}button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size -%}"
                   >
                     {{- block.settings.button_label | escape -}}
                   </a>
@@ -515,6 +515,21 @@
           "id": "button_style_secondary",
           "label": "t:sections.slideshow.blocks.slide.settings.secondary_style.label",
           "default": false
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Dimensione pulsante",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
         },
         {
           "type": "header",

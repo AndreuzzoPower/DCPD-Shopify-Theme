@@ -17,7 +17,31 @@
   <h1 class="title">
     {{ 'templates.404.title' | t }}
   </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
+  <a href="{{ routes.all_products_collection_url }}" class="button {%- render 'ms_button_size', size: section.settings.button_size -%}">
     {{ 'general.continue_shopping' | t }}
   </a>
 </div>
+
+{% schema %}
+{
+  "name": "Pagina 404",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

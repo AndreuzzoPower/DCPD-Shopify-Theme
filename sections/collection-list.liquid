@@ -164,7 +164,7 @@
       >
         <a
           href="{{ routes.collections_url }}"
-          class="button"
+          class="button {%- render 'ms_button_size', size: section.settings.button_size -%}"
           id="ViewAllButton-{{ section.id }}"
           aria-labelledby="ViewAllButton-{{ section.id }} SectionHeading-{{ section.id }}"
         >
@@ -265,6 +265,21 @@
       "default": false,
       "label": "t:sections.collection-list.settings.show_view_all.label",
       "info": "t:sections.collection-list.settings.show_view_all.info"   
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante \"Vedi tutto\"",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
     },
     {
       "type": "header",

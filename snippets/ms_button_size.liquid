@@ -1,0 +1,28 @@
+{%- comment -%}
+  Snippet: ms_button_size.liquid
+  Descrizione: Restituisce la classe CSS per la dimensione del pulsante.
+               Se il parametro `size` è 'default' o vuoto, usa il valore globale
+               definito in settings.ms_buttons_default_size.
+               Se anche quello è vuoto, fallback a 'medium' (Dawn default).
+
+  Parametri:
+    - size (string): 'small', 'medium', 'large', 'jumbo', 'extra_jumbo', 'default' o blank
+
+  Output: es. "button--size-small", "button--size-large", ecc.
+
+  Uso:
+    {%- render 'ms_button_size', size: block.settings.button_size -%}
+    → Restituisce la stringa della classe da inserire nell'attributo class.
+{%- endcomment -%}
+
+{%- liquid
+  if size == blank or size == 'default'
+    assign effective_size = settings.ms_buttons_default_size | default: 'medium'
+  else
+    assign effective_size = size
+  endif
+
+  assign effective_size = effective_size | replace: '_', '-'
+
+  echo 'button--size-' | append: effective_size
+-%}

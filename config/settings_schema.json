@@ -1,9 +1,9 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Dawn",
-    "theme_version": "15.3.0",
-    "theme_author": "Shopify",
+    "theme_name": "DCPD / MS Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Andrea Cabrelle",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
     "theme_support_url": "https://support.shopify.com/"
   },
@@ -235,6 +235,39 @@
   {
     "name": "t:settings_schema.buttons.name",
     "settings": [
+      {
+        "type": "header",
+        "content": "Dimensioni pulsante"
+      },
+      {
+        "type": "select",
+        "id": "ms_buttons_default_size",
+        "label": "Dimensione predefinita pulsanti",
+        "info": "Le singole sezioni possono sovrascrivere questo valore.",
+        "default": "medium",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium (default)"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "jumbo",
+            "label": "Jumbo"
+          },
+          {
+            "value": "extra_jumbo",
+            "label": "Extra Jumbo"
+          }
+        ]
+      },
       {
         "type": "header",
         "content": "t:settings_schema.global.settings.header__border.content"

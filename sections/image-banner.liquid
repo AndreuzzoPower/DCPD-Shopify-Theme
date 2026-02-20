@@ -198,7 +198,7 @@
                   {% else %}
                     href="{{ block.settings.button_link_1 }}"
                   {% endif %}
-                  class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}"
+                  class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size_1 -%}"
                 >
                   {{- block.settings.button_label_1 | escape -}}
                 </a>
@@ -210,7 +210,7 @@
                   {% else %}
                     href="{{ block.settings.button_link_2 }}"
                   {% endif %}
-                  class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
+                  class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size_2 -%}"
                 >
                   {{- block.settings.button_label_2 | escape -}}
                 </a>
@@ -519,6 +519,21 @@
           "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label"
         },
         {
+          "type": "select",
+          "id": "button_size_1",
+          "label": "Dimensione pulsante 1",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
         "type": "header",
         "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
         },
@@ -539,6 +554,21 @@
           "id": "button_style_secondary_2",
           "default": false,
           "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_2.label"
+        },
+        {
+          "type": "select",
+          "id": "button_size_2",
+          "label": "Dimensione pulsante 2",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
         }
       ]
     },

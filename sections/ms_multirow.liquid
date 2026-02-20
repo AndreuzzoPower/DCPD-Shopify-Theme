@@ -120,7 +120,7 @@
                     {% else %}
                       href="{{ block.settings.button_link }}"
                     {% endif %}
-                    class="button button--{{ section.settings.button_style }}"
+                    class="button button--{{ section.settings.button_style }} {%- render 'ms_button_size', size: section.settings.button_size -%}"
                     tabindex="0"
                   >
                     {{ block.settings.button_label | escape }}
@@ -280,6 +280,21 @@
       ],
       "default": "secondary",
       "label": "t:sections.multirow.settings.button_style.label"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
     },
     {
       "type": "select",

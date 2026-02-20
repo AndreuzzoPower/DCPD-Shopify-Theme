@@ -181,7 +181,7 @@
     <div class="center{% if show_mobile_slider %} small-hide medium-hide{% endif %}">
       {%- if section.settings.button_label != blank -%}
         <a
-          class="button button--primary"
+          class="button button--primary {%- render 'ms_button_size', size: section.settings.button_size -%}"
           {% if section.settings.button_link == blank %}
             role="link" aria-disabled="true"
           {% else %}
@@ -357,7 +357,22 @@
       "type": "url",
       "id": "button_link",
       "label": "t:sections.multicolumn.settings.button_link.label"
-    },    
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
     {
       "type": "header",
       "content": "t:sections.multicolumn.settings.header_layout.content"

@@ -255,6 +255,7 @@
     <link href="{{ 'ms_custom.css' | asset_url }}" rel="stylesheet">
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'ms_button-sizes.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}

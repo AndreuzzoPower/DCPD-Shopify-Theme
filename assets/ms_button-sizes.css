@@ -1,0 +1,131 @@
+/* ms_button-sizes.css
+ * ═══════════════════════════════════════════════════════════════
+ * Sistema di sizing standard per i pulsanti del tema DCPD.
+ * 5 taglie: small, medium, large, jumbo, extra-jumbo.
+ *
+ * "medium" corrisponde al default Dawn (.button).
+ * Le classi usano doppia specificità (.button.button--size-*)
+ * per sovrascrivere le regole base di Dawn senza !important.
+ *
+ * Mobile-first: le taglie jumbo e extra-jumbo si ridimensionano
+ * su schermi piccoli per evitare overflow.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════
+   SMALL
+   ═══════════════════════════════════════ */
+
+.button.button--size-small {
+  font-size: 1.3rem;
+  letter-spacing: 0.06rem;
+  padding: 0.8rem 2rem;
+  min-height: calc(3.6rem + var(--buttons-border-width, 0px) * 2);
+  min-width: calc(8rem + var(--buttons-border-width, 0px) * 2);
+}
+
+/* ═══════════════════════════════════════
+   MEDIUM (Dawn default — nessun override)
+   Classe presente solo per esplicitezza,
+   non sovrascrive nulla.
+   ═══════════════════════════════════════ */
+
+.button.button--size-medium {
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  padding: 0 3rem;
+  min-height: calc(4.5rem + var(--buttons-border-width, 0px) * 2);
+  min-width: calc(12rem + var(--buttons-border-width, 0px) * 2);
+}
+
+/* ═══════════════════════════════════════
+   LARGE
+   ═══════════════════════════════════════ */
+
+.button.button--size-large {
+  font-size: 1.6rem;
+  letter-spacing: 0.1rem;
+  padding: 1.2rem 3.6rem;
+  min-height: calc(5.2rem + var(--buttons-border-width, 0px) * 2);
+  min-width: calc(14rem + var(--buttons-border-width, 0px) * 2);
+}
+
+/* ═══════════════════════════════════════
+   JUMBO
+   ═══════════════════════════════════════ */
+
+.button.button--size-jumbo {
+  font-size: 1.8rem;
+  letter-spacing: 0.1rem;
+  padding: 1.4rem 4.4rem;
+  min-height: calc(6rem + var(--buttons-border-width, 0px) * 2);
+  min-width: calc(16rem + var(--buttons-border-width, 0px) * 2);
+}
+
+/* ═══════════════════════════════════════
+   EXTRA JUMBO
+   ═══════════════════════════════════════ */
+
+.button.button--size-extra-jumbo {
+  font-size: 2rem;
+  letter-spacing: 0.12rem;
+  padding: 1.8rem 5.2rem;
+  min-height: calc(7rem + var(--buttons-border-width, 0px) * 2);
+  min-width: calc(18rem + var(--buttons-border-width, 0px) * 2);
+}
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE
+   Le taglie più grandi si adattano su mobile
+   per evitare overflow orizzontale.
+   ═══════════════════════════════════════ */
+
+/* ═══════════════════════════════════════
+   PILL SIZING
+   Classi applicabili agli elementi pill
+   (back-pill, blog-name-pill, ecc.)
+   ═══════════════════════════════════════ */
+
+.button--size-small:not(.button) {
+  font-size: 1.1rem;
+  padding: 0.3rem 0.8rem;
+}
+
+.button--size-medium:not(.button) {
+  font-size: 1.3rem;
+  padding: 0.4rem 1.2rem;
+}
+
+.button--size-large:not(.button) {
+  font-size: 1.4rem;
+  padding: 0.6rem 1.6rem;
+}
+
+.button--size-jumbo:not(.button) {
+  font-size: 1.6rem;
+  padding: 0.8rem 2rem;
+}
+
+.button--size-extra-jumbo:not(.button) {
+  font-size: 1.8rem;
+  padding: 1rem 2.4rem;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE
+   Le taglie più grandi si adattano su mobile
+   per evitare overflow orizzontale.
+   ═══════════════════════════════════════ */
+
+@media screen and (max-width: 749px) {
+  .button.button--size-jumbo,
+  .button.button--size-extra-jumbo {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    min-width: 0;
+  }
+
+  .button.button--size-extra-jumbo {
+    font-size: 1.8rem;
+  }
+}

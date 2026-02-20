@@ -145,7 +145,7 @@
                       {% else %}
                         href="{{ block.settings.button_link }}"
                       {% endif %}
-                      class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %}"
+                      class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size -%}"
                       {{ block.shopify_attributes }}
                     >
                       {{ block.settings.button_label | escape }}
@@ -492,6 +492,21 @@
           "id": "button_style_secondary",
           "default": false,
           "label": "t:sections.image-with-text.blocks.button.settings.outline_button.label"
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Dimensione pulsante",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
         }
       ]
     },
