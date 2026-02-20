@@ -32,7 +32,7 @@
         "menu": "menu-categorie-blog",
         "show_title": true,
         "title": "Esplora le Categorie",
-        "title_tag": "h6",
+        "title_tag": "div",
         "title_custom_class": "",
         "section_width": "page_width",
         "alignment": "center",
