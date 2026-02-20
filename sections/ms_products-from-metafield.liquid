@@ -38,23 +38,46 @@
   {%- endif -%}
 
   {%- liquid
-    assign sw = section.settings.section_width | default: 'page_width'
+    comment
+      ── Larghezza TITOLO ──
+    endcomment
+    assign tw = section.settings.title_width | default: 'page_width'
+    if tw == 'default'
+      assign tw = 'page_width'
+    endif
+    case tw
+      when 'narrow'
+        assign title_pw_class = 'page-width page-width--narrow'
+      when 'page_fluid'
+        assign title_pw_class = 'page-width page-width--fluid'
+      when 'full_width'
+        assign title_pw_class = ''
+      else
+        assign title_pw_class = 'page-width'
+    endcase
+
+    comment
+      ── Larghezza SLIDER / GRIGLIA ──
+      is_slider_full_width serve per le classi Dawn (collection--full-width,
+      slider-component-full-width, title-wrapper--self-padded-tablet-down).
+    endcomment
+    assign sw = section.settings.slider_width | default: 'page_width'
     if sw == 'default'
       assign sw = 'page_width'
     endif
-    assign is_full_width = false
+    assign is_slider_full_width = false
     if sw == 'full_width'
-      assign is_full_width = true
+      assign is_slider_full_width = true
     endif
     case sw
       when 'narrow'
-        assign sw_pw_class = 'page-width page-width--narrow'
+        assign slider_pw_class = 'page-width page-width--narrow'
       when 'page_fluid'
-        assign sw_pw_class = 'page-width page-width--fluid'
+        assign slider_pw_class = 'page-width page-width--fluid'
       when 'full_width'
-        assign sw_pw_class = ''
+        assign slider_pw_class = ''
       else
-        assign sw_pw_class = 'page-width'
+        assign slider_pw_class = 'page-width'
     endcase
 
     assign products_to_show = section.settings.products_to_show
@@ -77,19 +100,15 @@
   -%}
 
   <div class="color-{{ section.settings.color_scheme }} isolate gradient" id="section-{{ section.id }}">
-    {%- comment -%}
-      Wrapper larghezza: contiene titolo + slider.
-      page-width è applicato QUI (e non sul slider) perché Dawn sovrascrive
-      max-width su .slider-component-desktop.page-width (component-slider.css:136).
-    {%- endcomment -%}
-    {%- if sw_pw_class != blank -%}<div class="{{ sw_pw_class }}">{%- endif -%}
     <div
-      class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if is_full_width %} collection--full-width{% endif %}"
+      class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if is_slider_full_width %} collection--full-width{% endif %}"
       id="collection-{{ section.id }}"
       data-id="{{ section.id }}"
     >
 
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider and is_full_width %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
+      {%- comment -%} ── TITOLO / TESTO — wrapper indipendente ── {%- endcomment -%}
+      {%- if title_pw_class != blank -%}<div class="{{ title_pw_class }}">{%- endif -%}
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider and tw == 'full_width' %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
         {%- if section.settings.title != blank -%}
           <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{ section.settings.title }}
@@ -101,11 +120,19 @@
           </div>
         {%- endif -%}
       </div>
+      {%- if title_pw_class != blank -%}</div>{%- endif -%}
 
+      {%- comment -%}
+        ── SLIDER / GRIGLIA — wrapper indipendente ──
+        page-width è applicato sul wrapper (e non sullo slider) perché Dawn
+        sovrascrive max-width su .slider-component-desktop.page-width
+        (component-slider.css:136).
+      {%- endcomment -%}
+      {%- if slider_pw_class != blank -%}<div class="{{ slider_pw_class }}">{%- endif -%}
       <slider-component
         data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
         data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
-        class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
+        class="slider-mobile-gutter{% if is_slider_full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
       >
         <ul
           id="Slider-{{ section.id }}"
@@ -158,12 +185,12 @@
           </div>
         {%- endif -%}
       </slider-component>
+      {%- if slider_pw_class != blank -%}</div>{%- endif -%}
 
       {%- if section.settings.image_shape == 'arch' -%}
         {{ 'mask-arch.svg' | inline_asset_content }}
       {%- endif -%}
     </div>
-    {%- if sw_pw_class != blank -%}</div>{%- endif -%}
   </div>
 
   {%- render 'ms_section-style' -%}
@@ -205,8 +232,20 @@
     },
     {
       "type": "select",
-      "id": "section_width",
-      "label": "Larghezza sezione",
+      "id": "title_width",
+      "label": "Larghezza titolo / testo",
+      "options": [
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "select",
+      "id": "slider_width",
+      "label": "Larghezza carosello / griglia",
       "options": [
         { "value": "narrow", "label": "Stretta (narrow)" },
         { "value": "page_width", "label": "Larghezza pagina" },

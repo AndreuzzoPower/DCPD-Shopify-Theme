@@ -178,7 +178,8 @@
       "settings": {
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
-        "section_width": "full_width",
+        "title_width": "narrow",
+        "slider_width": "full_width",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
