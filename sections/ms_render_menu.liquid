@@ -1,109 +1,44 @@
 {%- comment -%}
-  Renders a navigation menu as a list of styled links.
-  The user selects a navigation menu from Shopify Admin and it gets rendered
-  with configurable style, alignment and layout options.
-  Uses ms_section-style snippet blocks for padding, margin and background.
+  MS Render Menu
+  ═══════════════════════════════════════════════════════════════
+  Renderizza un menu di navigazione come lista di link stilizzati.
+  L'utente seleziona un menu da Shopify Admin e viene renderizzato
+  con stile, allineamento e layout configurabili.
+  CSS dedicato: assets/ms_render-menu.css
+  Blocchi ms_section-style per padding, margin e background.
 {%- endcomment -%}
+
+{{ 'ms_render-menu.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.menu != blank -%}
   {%- assign menu = linklists[section.settings.menu] -%}
   {%- if menu.links.size > 0 -%}
 
-    {%- style -%}
-      .ms-render-menu-{{ section.id }} {
-        {% if section.settings.title_alignment == 'center' %}
-          text-align: center;
-        {% elsif section.settings.title_alignment == 'right' %}
-          text-align: right;
-        {% endif %}
-      }
+    {%- liquid
+      assign title_tag = section.settings.title_tag | default: 'div'
+      assign title_classes = 'ms-render-menu__title h3'
+      if section.settings.title_custom_class != blank
+        assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
+      endif
+    -%}
 
-      .ms-render-menu__title {
-        margin-bottom: 1.6rem;
-      }
+    <div
+      class="ms-render-menu ms-render-menu--align-{{ section.settings.alignment }} ms-render-menu--{{ section.settings.style }} color-{{ section.settings.color_scheme }} gradient"
+      id="section-{{ section.id }}"
+    >
+      {%- if section.settings.section_width != 'full_width' -%}
+        <div class="page-width">
+      {%- endif -%}
 
-      .ms-render-menu__list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        {% if section.settings.title_alignment == 'center' %}
-          justify-content: center;
-        {% elsif section.settings.title_alignment == 'right' %}
-          justify-content: flex-end;
-        {% endif %}
-      }
-
-      .ms-render-menu__link {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.8rem 1.6rem;
-        font-size: 1.4rem;
-        line-height: 1.4;
-        color: rgb(var(--color-foreground));
-        text-decoration: none;
-        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        white-space: nowrap;
-      }
-
-      {%- case section.settings.style -%}
-        {%- when 'pills' -%}
-          .ms-render-menu__link {
-            border: 1px solid rgba(var(--color-foreground), 0.2);
-            border-radius: 2rem;
-          }
-          .ms-render-menu__link:hover,
-          .ms-render-menu__link--active {
-            background-color: rgb(var(--color-foreground));
-            color: rgb(var(--color-background));
-            border-color: rgb(var(--color-foreground));
-          }
-        {%- when 'buttons' -%}
-          .ms-render-menu__link {
-            border: 1px solid rgba(var(--color-foreground), 0.2);
-            border-radius: 0.4rem;
-          }
-          .ms-render-menu__link:hover,
-          .ms-render-menu__link--active {
-            background-color: rgb(var(--color-foreground));
-            color: rgb(var(--color-background));
-            border-color: rgb(var(--color-foreground));
-          }
-        {%- when 'underline' -%}
-          .ms-render-menu__link {
-            border-bottom: 2px solid transparent;
-            border-radius: 0;
-            padding: 0.6rem 0.4rem;
-          }
-          .ms-render-menu__link:hover,
-          .ms-render-menu__link--active {
-            border-bottom-color: rgb(var(--color-foreground));
-          }
-        {%- when 'plain' -%}
-          .ms-render-menu__link {
-            padding: 0.4rem 0.8rem;
-            opacity: 0.7;
-          }
-          .ms-render-menu__link:hover,
-          .ms-render-menu__link--active {
-            opacity: 1;
-            text-decoration: underline;
-          }
-      {%- endcase -%}
-    {%- endstyle -%}
-
-    <div class="ms-render-menu-{{ section.id }} color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
-      <div class="{% if section.settings.section_width == 'full_width' %}container-fluid{% elsif section.settings.section_width == 'page_width' %}page-width{% else %}container{% endif %}">
         {%- if section.settings.show_title and section.settings.title != blank -%}
-         <div class="ms-render-menu__title h3{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+          <{{ title_tag }} class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{ section.settings.title }}
-          </div>
+          </{{ title_tag }}>
         {%- endif -%}
 
         <nav aria-label="{{ section.settings.title | default: 'Navigazione menu' | escape }}">
-          <ul class="ms-render-menu__list{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+          <ul
+            class="ms-render-menu__list{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
             role="list"
           >
             {%- for link in menu.links -%}
@@ -119,13 +54,16 @@
                   class="ms-render-menu__link{% if is_active %} ms-render-menu__link--active{% endif %}"
                   {% if is_active %}aria-current="page"{% endif %}
                 >
-                  {{ link.title }}
+                  {{- link.title -}}
                 </a>
               </li>
             {%- endfor -%}
           </ul>
         </nav>
-      </div>
+
+      {%- if section.settings.section_width != 'full_width' -%}
+        </div>
+      {%- endif -%}
     </div>
 
   {%- endif -%}
@@ -165,47 +103,51 @@
       "label": "Titolo"
     },
     {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "div"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti (h3) vengono mantenute."
+    },
+    {
       "type": "header",
       "content": "Layout"
     },
     {
       "type": "select",
       "id": "section_width",
-      "label": "Larghezza sezione",
+      "label": "Section Width",
       "options": [
-        {
-          "label": "Full Width",
-          "value": "full_width"
-        },
-        {
-          "label": "Default",
-          "value": "default"
-        },
-        {
-          "label": "Page Width",
-          "value": "page_width"
-        }
+        { "label": "Full Width", "value": "full_width" },
+        { "label": "Default Width", "value": "default" },
+        { "label": "Page width", "value": "page_width" }
       ],
       "default": "page_width"
     },
     {
       "type": "select",
-      "id": "title_alignment",
+      "id": "alignment",
       "label": "Allineamento",
       "default": "left",
       "options": [
-        {
-          "value": "left",
-          "label": "Sinistra"
-        },
-        {
-          "value": "center",
-          "label": "Centro"
-        },
-        {
-          "value": "right",
-          "label": "Destra"
-        }
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
       ]
     },
     {
@@ -218,22 +160,10 @@
       "label": "Stile link",
       "default": "pills",
       "options": [
-        {
-          "value": "pills",
-          "label": "Pillole (arrotondati)"
-        },
-        {
-          "value": "buttons",
-          "label": "Bottoni (squadrati)"
-        },
-        {
-          "value": "underline",
-          "label": "Sottolineato"
-        },
-        {
-          "value": "plain",
-          "label": "Semplice"
-        }
+        { "value": "pills", "label": "Pillole (arrotondati)" },
+        { "value": "buttons", "label": "Bottoni (squadrati)" },
+        { "value": "underline", "label": "Sottolineato" },
+        { "value": "plain", "label": "Semplice" }
       ]
     },
     {
@@ -428,7 +358,7 @@
   "presets": [
     {
       "name": "MS Render Menu",
-      "category": "Navigation",
+      "category": "Navigazione",
       "blocks": [
         {
           "type": "section_padding"
