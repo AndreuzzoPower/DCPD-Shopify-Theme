@@ -62,7 +62,10 @@
             "blog_show_date": true,
             "blog_show_author": true,
             "show_reading": true,
-            "show_icons": true
+            "show_icons": true,
+            "custom_icon_date": "",
+            "custom_icon_reading": "",
+            "custom_icon_author": ""
           }
         },
         "article_tags_bpV8cP": {
@@ -70,6 +73,7 @@
           "settings": {
             "section_width": "narrow",
             "show_icon": false,
+            "custom_icon": "",
             "tags_label": "",
             "tags_style": "pill"
           }
@@ -116,6 +120,7 @@
           "settings": {
             "section_width": "narrow",
             "show_icon": true,
+            "custom_icon": "",
             "tags_label": "Tags:",
             "tags_style": "link"
           }
@@ -135,6 +140,7 @@
             "section_width": "narrow",
             "display_style": "pill",
             "show_icon": true,
+            "custom_icon": "/FA/regular/address-book.svg",
             "button_size": "jumbo",
             "alignment": "center",
             "border_position": "both",
