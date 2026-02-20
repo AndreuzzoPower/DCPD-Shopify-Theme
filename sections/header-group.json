@@ -11,8 +11,8 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
+    "ms_announcement-bar": {
+      "type": "ms_announcement-bar",
       "blocks": {
         "announcement_ErzB9K": {
           "type": "announcement",
@@ -81,7 +81,7 @@
     }
   },
   "order": [
-    "announcement-bar",
+    "ms_announcement-bar",
     "header"
   ]
 }
