@@ -20,15 +20,29 @@
 {%- unless template == 'index' or template == 'list-collections' or template == '404' or template == blank -%}
 
   {%- comment -%}Stile dinamico: separatore personalizzabile{%- endcomment -%}
+  {%- liquid
+    assign has_separator_icon = false
+    if section.settings.separator_icon != blank
+      assign has_separator_icon = true
+    endif
+    assign has_home_icon = false
+    if section.settings.home_icon != blank
+      assign has_home_icon = true
+    endif
+  -%}
   {%- style -%}
     #section-{{ section.id }} {
-      --ms-breadcrumb-separator: '{{ section.settings.separator | escape }}';
+      {%- if has_separator_icon -%}
+        --ms-breadcrumb-separator-icon: url('{{ section.settings.separator_icon | asset_url }}');
+      {%- else -%}
+        --ms-breadcrumb-separator: '{{ section.settings.separator | replace: "'", "\\'" }}';
+      {%- endif -%}
     }
   {%- endstyle -%}
 
   {%- assign t = template | split: '.' | first -%}
 
-  <div id="section-{{ section.id }}" class="ms-breadcrumb ms-breadcrumb--{{ section.settings.alignment }} color-{{ section.settings.color_scheme }} gradient {{ section.settings.wrapperclass | escape }}">
+  <div id="section-{{ section.id }}" class="ms-breadcrumb ms-breadcrumb--{{ section.settings.alignment }} {% if has_separator_icon %}ms-breadcrumb--icon-separator{% else %}ms-breadcrumb--text-separator{% endif %} color-{{ section.settings.color_scheme }} gradient {{ section.settings.wrapperclass | escape }}">
     {%- if section.settings.section_width != 'full_width' -%}
       <div class="page-width">
     {%- endif -%}
@@ -37,7 +51,16 @@
       <ol class="ms-breadcrumb__list">
         {%- comment -%}═══ Home ═══{%- endcomment -%}
         <li class="ms-breadcrumb__item">
-          <a href="{{ routes.root_url }}">{{ section.settings.home_lbl | escape }}</a>
+          <a href="{{ routes.root_url }}"{% if has_home_icon %} aria-label="{{ section.settings.home_lbl | escape }}"{% endif %}>
+            {%- if has_home_icon -%}
+              <span class="ms-breadcrumb__home-icon" aria-hidden="true">
+                {{- section.settings.home_icon | inline_asset_content -}}
+              </span>
+              <span class="visually-hidden">{{ section.settings.home_lbl | escape }}</span>
+            {%- else -%}
+              {{- section.settings.home_lbl | escape -}}
+            {%- endif -%}
+          </a>
         </li>
 
         {%- comment -%}═══ Schema JSON-LD: Home ═══{%- endcomment -%}
@@ -489,14 +512,27 @@
       "type": "text",
       "id": "home_lbl",
       "label": "Etichetta Home",
-      "default": "Home"
+      "default": "Home",
+      "info": "Testo per il link alla homepage. Visibile anche come testo accessibile se si usa un'icona."
+    },
+    {
+      "type": "text",
+      "id": "home_icon",
+      "label": "Icona Home (SVG)",
+      "info": "Nome del file SVG presente negli assets (es. icon-home.svg). Se compilato, l'icona sostituisce il testo visibile."
     },
     {
       "type": "text",
       "id": "separator",
-      "label": "Separatore",
+      "label": "Separatore testo",
       "default": "/",
-      "info": "Carattere visualizzato tra gli elementi del breadcrumb (es. /, ›, >, »)"
+      "info": "Carattere tra gli elementi (es. /, ›, >, »). Ignorato se è impostata un'icona separatore."
+    },
+    {
+      "type": "text",
+      "id": "separator_icon",
+      "label": "Icona separatore (SVG)",
+      "info": "Nome del file SVG presente negli assets (es. icon-chevron-right.svg). Se compilato, sostituisce il separatore testo."
     },
     {
       "type": "text",
