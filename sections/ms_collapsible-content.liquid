@@ -88,7 +88,7 @@
                     role="listitem"
                   >
                     <summary id="Summary-{{ block.id }}-{{ section.id }}">
-                      {% render 'icon-accordion', icon: block.settings.icon %}
+                      {% render 'icon-accordion', icon: block.settings.icon, custom_icon: block.settings.custom_icon %}
                       <div class="accordion__title inline-richtext h4">
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
                       </div>
@@ -464,6 +464,12 @@
           ],
           "default": "check_mark",
           "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.label"
+        },
+        {
+          "type": "text",
+          "id": "custom_icon",
+          "label": "Icona personalizzata (SVG)",
+          "info": "Nome del file SVG presente in assets (es. my-icon.svg). Se compilato, sovrascrive l'icona selezionata sopra."
         },
         {
           "type": "richtext",

@@ -28,11 +28,11 @@
     assign heading_3_empty = true
   endif
 
-  if heading_1_empty == false and block.settings.icon_1 != 'none' or block.settings.image_1 != null
+  if heading_1_empty == false and block.settings.icon_1 != 'none' or block.settings.image_1 != null or block.settings.custom_icon_1 != blank
     assign text_only_all_items = false
-  elsif heading_2_empty == false and block.settings.icon_2 != 'none' or block.settings.image_2 != null
+  elsif heading_2_empty == false and block.settings.icon_2 != 'none' or block.settings.image_2 != null or block.settings.custom_icon_2 != blank
     assign text_only_all_items = false
-  elsif heading_3_empty == false and block.settings.icon_3 != 'none' or block.settings.image_3 != null
+  elsif heading_3_empty == false and block.settings.icon_3 != 'none' or block.settings.image_3 != null or block.settings.custom_icon_3 != blank
     assign text_only_all_items = false
   endif
 -%}
@@ -43,7 +43,7 @@
   {%- unless heading_1_empty -%}
     <li class="icon-with-text__item">
       {%- if block.settings.image_1 == null -%}
-        {%- render 'icon-accordion', icon: block.settings.icon_1 -%}
+        {%- render 'icon-accordion', icon: block.settings.icon_1, custom_icon: block.settings.custom_icon_1 -%}
       {%- else -%}
         <img
           src="{{ block.settings.image_1 | image_url }}"
@@ -65,7 +65,7 @@
   {%- unless heading_2_empty -%}
     <li class="icon-with-text__item">
       {%- if block.settings.image_2 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_2 -%}
+        {% render 'icon-accordion', icon: block.settings.icon_2, custom_icon: block.settings.custom_icon_2 -%}
       {%- else -%}
         <img
           src="{{ block.settings.image_2 | image_url }}"
@@ -87,7 +87,7 @@
   {%- unless heading_3_empty -%}
     <li class="icon-with-text__item">
       {%- if block.settings.image_3 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_3 -%}
+        {% render 'icon-accordion', icon: block.settings.icon_3, custom_icon: block.settings.custom_icon_3 -%}
       {%- else -%}
         <img
           src="{{ block.settings.image_3 | image_url }}"
