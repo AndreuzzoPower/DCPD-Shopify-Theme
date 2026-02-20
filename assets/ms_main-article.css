@@ -1,0 +1,342 @@
+/* ms_main-article.css
+ * ═══════════════════════════════════════════════════════════════
+ * Stili custom per la sezione main-article
+ * Complementa section-blog-post.css (Dawn base)
+ * Mobile-first, responsive, WCAG 2.1 AA compliant
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════ */
+
+.article-template header {
+  margin-top: 0;
+}
+
+/* ═══════════════════════════════════════
+   INFO AUTORE / DATA / LETTURA
+   ═══════════════════════════════════════ */
+
+.article__info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.article__info > span {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════
+   BLOCCO TAG ARTICOLO
+   ═══════════════════════════════════════ */
+
+.article-template__tags {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.article-template__tags-wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.article-template__tags-wrapper .article-card__tags {
+  margin-top: 0;
+  align-items: center;
+}
+
+.article-template__tags-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.article-template__tags-icon .svg-wrapper {
+  width: 18px;
+  height: 18px;
+}
+
+.article-template__tags-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.7);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════
+   BLOCCO NOME BLOG
+   ═══════════════════════════════════════ */
+
+.article-template__blog-name {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.article-template__blog-name-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 1.2rem;
+  border-radius: 2rem;
+  background-color: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.article-template__blog-name-pill:hover {
+  background-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.article-template__blog-name-pill:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.article-template__blog-name-link {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  transition: color 0.2s ease;
+}
+
+.article-template__blog-name-link:hover {
+  color: rgb(var(--color-foreground));
+}
+
+/* ═══════════════════════════════════════
+   BLOCCO INDICE (TOC)
+   ═══════════════════════════════════════ */
+
+.article-toc {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.article-toc__box {
+  border-style: solid;
+}
+
+.article-toc__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  gap: 1rem;
+  user-select: none;
+}
+
+.article-toc__header:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.article-toc__title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.article-toc__toggle-icon {
+  display: inline-flex;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.article-toc__toggle-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.article-toc[data-collapsed="true"] .article-toc__toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.article-toc[data-collapsed="true"] .article-toc__list {
+  display: none;
+}
+
+.article-toc__list {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0;
+}
+
+.article-toc__list .article-toc__list {
+  margin-top: 0;
+  padding-left: 1.6rem;
+}
+
+.article-toc__item {
+  margin-bottom: 0.4rem;
+}
+
+/* TOC — Link style */
+.article-toc__link--link {
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.75);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: 1.8;
+}
+
+.article-toc__link--link:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.article-toc__link--link:focus-visible,
+.article-toc__link--button:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+/* TOC — Button (pill) style */
+.article-toc__link--button {
+  display: inline-block;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  background: rgba(var(--color-foreground), 0.04);
+  color: rgba(var(--color-foreground), 0.75);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.article-toc__link--button:hover {
+  background: rgba(var(--color-foreground), 0.1);
+  color: rgb(var(--color-foreground));
+  border-color: rgba(var(--color-foreground), 0.3);
+  text-decoration: none;
+}
+
+.article-toc__list--buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.article-toc__list--buttons .article-toc__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-left: 0;
+}
+
+.article-toc__list--buttons .article-toc__item {
+  margin-bottom: 0;
+}
+
+/* TOC — Numbered style */
+.article-toc__list--numbered {
+  counter-reset: toc-counter;
+}
+
+.article-toc__list--numbered > .article-toc__item {
+  counter-increment: toc-counter;
+}
+
+.article-toc__list--numbered > .article-toc__item > .article-toc__link::before {
+  content: counter(toc-counter) '. ';
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+/* ═══════════════════════════════════════
+   BLOCCO DIVISORE
+   ═══════════════════════════════════════ */
+
+/* Override di div:empty { display: none } */
+.article-template__divider {
+  display: block !important;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════
+   BLOCCO TORNA AL BLOG
+   ═══════════════════════════════════════ */
+
+.article-template__back-block {
+  margin-top: 0;
+}
+
+/* Icona freccia: punta a sinistra in tutti gli stili */
+.article-template__back-block .icon-wrap {
+  display: flex;
+  align-items: center;
+  transform: rotate(180deg);
+  flex-shrink: 0;
+}
+
+.article-template__back-block .icon-wrap .svg-wrapper {
+  display: flex;
+  width: 1em;
+  height: 1em;
+}
+
+/* Link style */
+.article-template__back-block .article-template__link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Button style */
+.article-template__back-block .article-template__back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Pill style — coerente con .article-template__blog-name-pill */
+.article-template__back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 2rem;
+  background-color: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.article-template__back-pill:hover {
+  background-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.article-template__back-pill:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+/* Focus visible per button e link */
+.article-template__back-block .article-template__back-button:focus-visible,
+.article-template__back-block .article-template__link:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
