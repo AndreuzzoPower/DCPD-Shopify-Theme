@@ -30,8 +30,8 @@
       "name": "MS Render Menu",
       "settings": {
         "menu": "menu-categorie-blog",
-        "show_title": false,
-        "title": "",
+        "show_title": true,
+        "title": "Esplora le Categorie",
         "title_tag": "div",
         "title_custom_class": "",
         "section_width": "page_width",
