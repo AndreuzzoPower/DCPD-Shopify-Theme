@@ -1,1 +1,107 @@
-{"sections":{"main":{"type":"main-article","blocks":{"featured_image":{"type":"featured_image","settings":{"image_height":"adapt"}},"title":{"type":"title","settings":{"blog_show_date":true,"blog_show_author":true,"show_reading":true,"show_icons":true}},"share":{"type":"share","settings":{"share_label":"Share"}},"content":{"type":"content","settings":{}}},"block_order":["featured_image","title","share","content"],"settings":{}},"ms_products_from_metafield_erpPzR":{"type":"ms-products-from-metafield","name":"t:sections.featured-collection.presets.name","settings":{"mf":"{{ article.metafields.custom.prodotti_correlati.value }}","products_to_show":25,"title":"Prodotti correlati","heading_size":"h1","description":"Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione","show_description":false,"description_style":"body","columns_desktop":4,"enable_desktop_slider":true,"enable_desktop_slider_autoplay":false,"desktop_slider_autoplay_velocita":3,"full_width":false,"show_view_all":true,"view_all_style":"solid","color_scheme":"","image_ratio":"adapt","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"quick_add":"none","columns_mobile":"2","swipe_on_mobile":false}}},"order":["main","ms_products_from_metafield_erpPzR"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "adapt"
+          }
+        },
+        "table_of_contents_bieEgb": {
+          "type": "table_of_contents",
+          "settings": {
+            "title": "Indice",
+            "include_h2": true,
+            "include_h3": true,
+            "include_h4": false,
+            "include_h5": false,
+            "list_style": "bullets",
+            "hierarchy": true,
+            "link_style": "link",
+            "collapsible": true,
+            "start_collapsed": false,
+            "box_bg_color": "",
+            "box_padding_top": 20,
+            "box_padding_right": 24,
+            "box_padding_bottom": 20,
+            "box_padding_left": 24,
+            "box_border_color": "",
+            "box_border_width": 1,
+            "box_border_radius": 8
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": true,
+            "show_reading": true,
+            "show_icons": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "featured_image",
+        "table_of_contents_bieEgb",
+        "title",
+        "share",
+        "content"
+      ],
+      "settings": {}
+    },
+    "ms_products_from_metafield_erpPzR": {
+      "type": "ms-products-from-metafield",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
+        "products_to_show": 25,
+        "title": "Prodotti correlati",
+        "heading_size": "h1",
+        "description": "Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "enable_desktop_slider_autoplay": false,
+        "desktop_slider_autoplay_velocita": 3,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ms_products_from_metafield_erpPzR"
+  ]
+}
