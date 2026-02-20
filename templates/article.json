@@ -35,12 +35,14 @@
         "featured_image": {
           "type": "featured_image",
           "settings": {
+            "section_width": "full_width",
             "image_height": "small"
           }
         },
         "divider_KPFhzG": {
           "type": "divider",
           "settings": {
+            "section_width": "narrow",
             "height_desktop": 20,
             "height_tablet": 16,
             "height_mobile": 12
@@ -49,12 +51,14 @@
         "blog_name_cPmjr6": {
           "type": "blog_name",
           "settings": {
+            "section_width": "narrow",
             "display_style": "pill"
           }
         },
         "title": {
           "type": "title",
           "settings": {
+            "section_width": "narrow",
             "blog_show_date": true,
             "blog_show_author": true,
             "show_reading": true,
@@ -64,6 +68,7 @@
         "article_tags_bpV8cP": {
           "type": "article_tags",
           "settings": {
+            "section_width": "narrow",
             "show_icon": false,
             "tags_label": "",
             "tags_style": "pill"
@@ -72,6 +77,7 @@
         "table_of_contents_bieEgb": {
           "type": "table_of_contents",
           "settings": {
+            "section_width": "narrow",
             "title": "Indice dei contenuti",
             "include_h2": true,
             "include_h3": true,
@@ -95,16 +101,20 @@
         "share": {
           "type": "share",
           "settings": {
+            "section_width": "narrow",
             "share_label": "Share"
           }
         },
         "content": {
           "type": "content",
-          "settings": {}
+          "settings": {
+            "section_width": "narrow"
+          }
         },
         "article_tags_dBctRa": {
           "type": "article_tags",
           "settings": {
+            "section_width": "narrow",
             "show_icon": true,
             "tags_label": "Tags:",
             "tags_style": "link"
@@ -113,6 +123,7 @@
         "divider_TrWWmq": {
           "type": "divider",
           "settings": {
+            "section_width": "narrow",
             "height_desktop": 20,
             "height_tablet": 16,
             "height_mobile": 12
@@ -121,6 +132,7 @@
         "back_to_blog_LccnVB": {
           "type": "back_to_blog",
           "settings": {
+            "section_width": "narrow",
             "display_style": "pill",
             "show_icon": true,
             "button_size": "jumbo",
@@ -135,6 +147,7 @@
         "divider_9jtMMh": {
           "type": "divider",
           "settings": {
+            "section_width": "narrow",
             "height_desktop": 52,
             "height_tablet": 16,
             "height_mobile": 12
@@ -155,7 +168,9 @@
         "back_to_blog_LccnVB",
         "divider_9jtMMh"
       ],
-      "settings": {}
+      "settings": {
+        "comments_width": "narrow"
+      }
     },
     "ms_products_from_metafield_erpPzR": {
       "type": "ms_products-from-metafield",
@@ -163,7 +178,7 @@
       "settings": {
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
-        "section_width": "full_width",
+        "section_width": "narrow",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
