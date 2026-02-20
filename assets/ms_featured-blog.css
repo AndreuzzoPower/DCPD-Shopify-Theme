@@ -1,0 +1,84 @@
+/* ==========================================================================
+   MS Featured Blog — Stili personalizzati
+   Sezione: sections/ms_featured-blog.liquid
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Reset & Base
+   -------------------------------------------------------------------------- */
+.ms-featured-blog {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.ms-featured-blog *,
+.ms-featured-blog *::before,
+.ms-featured-blog *::after {
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   2. Title wrapper
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .ms-fb__title {
+  margin: 0 0 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   3. View All button (desktop)
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .ms-fb__view-all {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .ms-featured-blog .ms-fb__view-all {
+    margin-top: 5rem;
+  }
+}
+
+.ms-featured-blog .ms-fb__view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. Slider overrides
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .blog__posts.articles-wrapper {
+  margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 990px) {
+  .ms-featured-blog .blog__posts.articles-wrapper {
+    margin-bottom: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Placeholder
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .blog-placeholder-svg {
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   6. Section width helpers
+   -------------------------------------------------------------------------- */
+.ms-featured-blog.ms-fb--full-width {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. Accessibility — Focus visible
+   -------------------------------------------------------------------------- */
+.ms-featured-blog a:focus-visible,
+.ms-featured-blog button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
