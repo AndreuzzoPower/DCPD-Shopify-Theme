@@ -17,6 +17,68 @@
         "padding_bottom": 28
       }
     },
+    "rich_text_ezAqEK": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_HDELaw": {
+          "type": "heading",
+          "settings": {
+            "heading": "BLOG",
+            "heading_size": "h1"
+          }
+        },
+        "text_kw8JyG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tanti argomenti interessanti per stuzzicare la tua curiosità.<br/>Torna a trovarci spesso per non perdere contenuti preziosi</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_HDELaw",
+        "text_kw8JyG"
+      ],
+      "name": "MS Rich text",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "ms_render_menu_3gr93w": {
+      "type": "ms_render_menu",
+      "blocks": {
+        "section_padding_pa4eB4": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 20,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 15,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 10
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_pa4eB4"
+      ],
+      "name": "MS Render Menu",
+      "settings": {
+        "menu": "menu-categorie-blog",
+        "show_title": false,
+        "title": "",
+        "title_tag": "div",
+        "title_custom_class": "",
+        "section_width": "page_width",
+        "alignment": "left",
+        "style": "pills",
+        "color_scheme": ""
+      }
+    },
     "featured_blog_wAhLNA": {
       "type": "featured-blog",
       "name": "t:sections.featured-blog.presets.name",
@@ -38,6 +100,8 @@
   },
   "order": [
     "main",
+    "rich_text_ezAqEK",
+    "ms_render_menu_3gr93w",
     "featured_blog_wAhLNA"
   ]
 }
