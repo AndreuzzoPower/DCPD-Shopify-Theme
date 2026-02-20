@@ -30,7 +30,7 @@
         "home_lbl": "Home",
         "home_icon": "icon-house-solid-full.svg",
         "home_icon_color": "",
-        "separator": ">",
+        "separator": "/",
         "separator_icon": "",
         "separator_icon_color": "",
         "wrapperclass": "",
