@@ -298,6 +298,7 @@
 .article-template__back-block .article-template__link {
   display: inline-flex;
   align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
 }
 

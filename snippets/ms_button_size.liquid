@@ -8,11 +8,13 @@
   Parametri:
     - size (string): 'small', 'medium', 'large', 'jumbo', 'extra_jumbo', 'default' o blank
 
-  Output: es. "button--size-small", "button--size-large", ecc.
+  Output: es. " button--size-small", " button--size-large", ecc.
+          NOTA: l'output inizia con uno SPAZIO per evitare che {%- (trim sinistro)
+          fonda la classe con quella precedente nell'attributo class="...".
 
   Uso:
     {%- render 'ms_button_size', size: block.settings.button_size -%}
-    → Restituisce la stringa della classe da inserire nell'attributo class.
+    → Restituisce la stringa della classe (con spazio iniziale) da inserire nell'attributo class.
 {%- endcomment -%}
 
 {%- liquid
@@ -24,5 +26,5 @@
 
   assign effective_size = effective_size | replace: '_', '-'
 
-  echo 'button--size-' | append: effective_size
+  echo ' button--size-' | append: effective_size
 -%}
