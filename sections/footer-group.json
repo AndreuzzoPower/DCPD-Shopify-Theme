@@ -52,14 +52,14 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
-            "image_width": 100,
+            "image_width": 50,
             "alignment": "center"
           }
         },
         "brand_information_dUBAQz": {
           "type": "brand_information",
           "settings": {
-            "show_social": true
+            "show_social": false
           }
         },
         "text_D7QNgh": {
