@@ -9,6 +9,33 @@
  */
 {
   "sections": {
+    "ms_breadcrumbs_mLwNkm": {
+      "type": "ms_breadcrumbs",
+      "blocks": {
+        "section_background_fqPBLN": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#919191"
+          }
+        }
+      },
+      "block_order": [
+        "section_background_fqPBLN"
+      ],
+      "name": "MS Breadcrumbs",
+      "settings": {
+        "section_width": "default",
+        "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
+        "alignment": "left",
+        "home_lbl": "Home",
+        "separator": "/",
+        "wrapperclass": "",
+        "menu_handle": "",
+        "show_all_collections": false,
+        "collections_banned": "",
+        "show_cat_handle": false
+      }
+    },
     "banner": {
       "type": "main-collection-banner",
       "settings": {
@@ -95,19 +122,6 @@
         "enable_sorting": true,
         "padding_top": 36,
         "padding_bottom": 36
-      }
-    },
-    "ms_breadcrumbs_mLwNkm": {
-      "type": "ms_breadcrumbs",
-      "name": "MS Breadcrumbs",
-      "settings": {
-        "home_lbl": "Home",
-        "separator": "/",
-        "wrapperclass": "",
-        "menu_handle": "",
-        "show_all_collections": false,
-        "collections_banned": "",
-        "show_cat_handle": false
       }
     }
   },
