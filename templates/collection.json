@@ -1,1 +1,119 @@
-{"sections":{"banner":{"type":"main-collection-banner","settings":{"show_collection_description":true,"show_collection_image":true,"color_scheme":"scheme-1"}},"product-grid":{"type":"main-collection-product-grid","settings":{"products_per_page":16,"columns_desktop":4,"columns_mobile":"2","color_scheme":"scheme-1","image_ratio":"adapt","image_shape":"default","show_secondary_image":false,"show_vendor":false,"show_rating":false,"quick_add":"none","menu_categories":"shop_categorie","enable_menu_categories":true,"enable_title_categories":true,"title_categories":"Categorie","enable_orr_subcategories":true,"enable_filtering":true,"filter_type":"drawer","enable_sorting":true,"padding_top":36,"padding_bottom":36}}},"order":["banner","product-grid"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "layout": "side_by_side",
+        "container_type": "contained",
+        "desktop_text_width": "50",
+        "text_content_width": "100",
+        "text_alignment": "left",
+        "desktop_vertical_alignment": "center",
+        "image_sizing": "fixed",
+        "image_height": 350,
+        "image_height_desktop": 450,
+        "title_separator": false,
+        "title_separator_style": "solid",
+        "title_separator_thickness": 1,
+        "title_separator_color": "#e0e0e0",
+        "title_separator_width": "full",
+        "title_separator_spacing": 15,
+        "show_title": true,
+        "show_collection_description": true,
+        "custom_description": "",
+        "show_collection_image": true,
+        "color_scheme": "scheme-1",
+        "readmore_position": "center",
+        "readmore_style": "button",
+        "readmore_show_icon": false,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40,
+        "overlay_text_color": "#ffffff"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 16,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_infinite_scroll": false,
+        "ea_enable": true,
+        "ea_tab_products_label": "Prodotti",
+        "ea_tab_advice_label": "Expert Advice",
+        "ea_show_filters": true,
+        "ea_filter_position": "horizontal",
+        "ea_filter_label": "Filtri",
+        "ea_columns_desktop": "3",
+        "ea_columns_mobile": "1",
+        "ea_show_image": true,
+        "ea_image_height": "medium",
+        "ea_show_date": true,
+        "ea_show_author": true,
+        "ea_show_reading": true,
+        "ea_show_icons": false,
+        "ea_show_excerpt": true,
+        "ea_show_blog_name": false,
+        "ea_show_tags": false,
+        "ea_tags_style": "pill",
+        "ea_card_border_position": "none",
+        "ea_card_border_width": 1,
+        "ea_card_border_color": "#e0e0e0",
+        "ea_card_border_radius": 0,
+        "ea_card_shadow": "none",
+        "ea_card_info_vertical": false,
+        "ea_card_info_padding_top": 0,
+        "ea_card_info_padding_right": 0,
+        "ea_card_info_padding_bottom": 0,
+        "ea_card_info_padding_left": 0,
+        "menu_categories": "shop_categorie",
+        "enable_menu_categories": true,
+        "enable_title_categories": true,
+        "title_categories": "Categorie",
+        "enable_orr_subcategories": true,
+        "subcategories_alignment": "center",
+        "subcategories_style": "pill",
+        "subcategories_size": "medium",
+        "enable_filtering": true,
+        "filter_type": "drawer",
+        "enable_sorting": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ms_breadcrumbs_mLwNkm": {
+      "type": "ms_breadcrumbs",
+      "name": "MS Breadcrumbs",
+      "settings": {
+        "home_lbl": "Home",
+        "separator": "/",
+        "wrapperclass": "",
+        "menu_handle": "",
+        "show_all_collections": false,
+        "collections_banned": "",
+        "show_cat_handle": false
+      }
+    }
+  },
+  "order": [
+    "ms_breadcrumbs_mLwNkm",
+    "banner",
+    "product-grid"
+  ]
+}
