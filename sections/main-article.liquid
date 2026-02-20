@@ -596,6 +596,31 @@
               border-bottom: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
             {% endif %}
           }
+          .article-template__back-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1.6rem;
+            border-radius: 2rem;
+            background-color: rgba(var(--color-foreground), 0.08);
+            color: rgb(var(--color-foreground));
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.4;
+            text-decoration: none;
+            transition: background-color 0.2s ease, color 0.2s ease;
+          }
+          .article-template__back-pill:hover {
+            background-color: rgb(var(--color-foreground));
+            color: rgb(var(--color-background));
+          }
+          .article-template__back-pill:focus-visible {
+            outline: 2px solid rgb(var(--color-foreground));
+            outline-offset: 2px;
+          }
+          .article-template__back-pill .icon-wrap {
+            display: flex;
+          }
         </style>
         <div
           class="article-template__back-block article-template__back-block--{{ block.id }} page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -603,7 +628,16 @@
         >
           {%- if block.settings.display_style == 'button' -%}
             <a href="{{ blog.url }}" class="button article-template__back-button">
-              <span class="icon-wrap">
+              <span class="icon-wrap" aria-hidden="true">
+                <span class="svg-wrapper">
+                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                </span>
+              </span>
+              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
+            </a>
+          {%- elsif block.settings.display_style == 'pill' -%}
+            <a href="{{ blog.url }}" class="article-template__back-pill">
+              <span class="icon-wrap" aria-hidden="true">
                 <span class="svg-wrapper">
                   {{- 'icon-arrow.svg' | inline_asset_content -}}
                 </span>
@@ -612,7 +646,7 @@
             </a>
           {%- else -%}
             <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
-              <span class="icon-wrap">
+              <span class="icon-wrap" aria-hidden="true">
                 <span class="svg-wrapper">
                   {{- 'icon-arrow.svg' | inline_asset_content -}}
                 </span>
@@ -1246,6 +1280,10 @@
             {
               "value": "link",
               "label": "Link"
+            },
+            {
+              "value": "pill",
+              "label": "Pill (arrotondato)"
             },
             {
               "value": "button",
