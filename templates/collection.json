@@ -60,7 +60,7 @@
       ],
       "settings": {
         "layout": "side_by_side",
-        "container_type": "contained",
+        "section_width": "page_width",
         "desktop_text_width": "50",
         "text_content_width": "100",
         "text_alignment": "left",

@@ -20,14 +20,29 @@
       if section.settings.title_custom_class != blank
         assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
       endif
+
+      assign sw = section.settings.section_width | default: 'page_width'
+      if sw == 'default'
+        assign sw = 'page_width'
+      endif
+      case sw
+        when 'narrow'
+          assign sw_class = 'page-width page-width--narrow'
+        when 'page_fluid'
+          assign sw_class = 'page-width page-width--fluid'
+        when 'full_width'
+          assign sw_class = ''
+        else
+          assign sw_class = 'page-width'
+      endcase
     -%}
 
     <div
       class="ms-render-menu ms-render-menu--align-{{ section.settings.alignment }} ms-render-menu--{{ section.settings.style }} color-{{ section.settings.color_scheme }} gradient"
       id="section-{{ section.id }}"
     >
-      {%- if section.settings.section_width != 'full_width' -%}
-        <div class="page-width">
+      {%- if sw_class != blank -%}
+        <div class="{{ sw_class }}">
       {%- endif -%}
 
         {%- if section.settings.show_title and section.settings.title != blank -%}
@@ -61,7 +76,7 @@
           </ul>
         </nav>
 
-      {%- if section.settings.section_width != 'full_width' -%}
+      {%- if sw_class != blank -%}
         </div>
       {%- endif -%}
     </div>
@@ -131,11 +146,12 @@
     {
       "type": "select",
       "id": "section_width",
-      "label": "Section Width",
+      "label": "Larghezza sezione",
       "options": [
-        { "label": "Full Width", "value": "full_width" },
-        { "label": "Default Width", "value": "default" },
-        { "label": "Page width", "value": "page_width" }
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
     },

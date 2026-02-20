@@ -8,7 +8,22 @@
   assign text_width = section.settings.desktop_text_width | default: '50'
   assign text_align = section.settings.text_alignment | default: 'left'
   assign v_align = section.settings.desktop_vertical_alignment | default: 'center'
-  assign container_type = section.settings.container_type | default: 'contained'
+  assign raw_sw = section.settings.section_width | default: 'page_width'
+  comment
+    Retrocompatibilità: mappa i vecchi valori container_type ai nuovi
+  endcomment
+  case raw_sw
+    when 'contained' or 'default' or 'page_width'
+      assign container_type = 'contained'
+    when 'full' or 'full_width'
+      assign container_type = 'full'
+    when 'fluid' or 'page_fluid'
+      assign container_type = 'fluid'
+    when 'narrow'
+      assign container_type = 'contained'
+    else
+      assign container_type = 'contained'
+  endcase
   assign text_content_width = section.settings.text_content_width | default: '100'
   assign image_sizing = section.settings.image_sizing | default: 'fixed'
   assign custom_image = section.settings.custom_image
@@ -485,7 +500,7 @@
   class="collection-hero collection-hero--{{ layout }}{% if has_image %} collection-hero--with-image{% endif %} color-{{ section.settings.color_scheme }} gradient"
   id="section-{{ section.id }}"
 >
-  <div class="collection-hero__inner{% if container_type == 'contained' %} page-width{% endif %} {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+  <div class="collection-hero__inner{% if container_type == 'contained' %} page-width{% if raw_sw == 'narrow' %} page-width--narrow{% endif %}{% endif %} {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
 
     {%- comment -%} ── Immagine ── {%- endcomment -%}
     {%- if has_image -%}
@@ -565,13 +580,14 @@
     },
     {
       "type": "select",
-      "id": "container_type",
+      "id": "section_width",
       "label": "Larghezza sezione",
-      "default": "contained",
+      "default": "page_width",
       "options": [
-        { "value": "contained", "label": "Contenuta (page-width)" },
-        { "value": "full", "label": "Full width (bordo a bordo)" },
-        { "value": "fluid", "label": "Fluida (con padding laterale)" }
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
       ]
     },
     {

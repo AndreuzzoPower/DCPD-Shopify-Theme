@@ -1,5 +1,21 @@
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_bs_class = 'container'
+    when 'page_fluid'
+      assign sw_bs_class = 'container-fluid'
+    when 'full_width'
+      assign sw_bs_class = ''
+    else
+      assign sw_bs_class = 'container'
+  endcase
+-%}
 <div class="custom-html bootstrap-scope" id="section-{{ section.id }}">
-  <div class="color-{{ section.settings.color_scheme }} {% if section.settings.section_width == 'full_width' %}container-fluid {% elsif section.settings.section_width == 'default' %}container {% else %} {% endif %}">
+  <div class="color-{{ section.settings.color_scheme }} {{ sw_bs_class }}">
     {% if section.settings.section_title != '' or section.settings.section_sub_title != '' %}
       <div class="section-title {{ section.settings.title_align }} pb-60">
         {% if section.settings.section_title != '' %}
@@ -97,22 +113,14 @@
             {
                "type": "select",
                "id": "section_width",
-               "label": "Section Width",
+               "label": "Larghezza sezione",
                "options":[
-                    {
-                         "label": "Full Width",
-                         "value": "full_width"
-                    },
-                    {
-                         "label": "Default Width",
-                         "value": "default"
-                    },
-                    {
-                       "label": "Page width",
-                       "value": "page_width"
-                    }
+                    { "value": "narrow", "label": "Stretta (narrow)" },
+                    { "value": "page_width", "label": "Larghezza pagina" },
+                    { "value": "page_fluid", "label": "Larghezza fluida" },
+                    { "value": "full_width", "label": "Piena larghezza" }
                  ],
-                "default": "default"
+                "default": "page_width"
             },
     	{
         "type": "header",

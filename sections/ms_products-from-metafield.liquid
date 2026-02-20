@@ -38,10 +38,24 @@
   {%- endif -%}
 
   {%- liquid
+    assign sw = section.settings.section_width | default: 'page_width'
+    if sw == 'default'
+      assign sw = 'page_width'
+    endif
     assign is_full_width = false
-    if section.settings.section_width == 'full_width'
+    if sw == 'full_width'
       assign is_full_width = true
     endif
+    case sw
+      when 'narrow'
+        assign sw_pw_class = 'page-width page-width--narrow'
+      when 'page_fluid'
+        assign sw_pw_class = 'page-width page-width--fluid'
+      when 'full_width'
+        assign sw_pw_class = ''
+      else
+        assign sw_pw_class = 'page-width'
+    endcase
 
     assign products_to_show = section.settings.products_to_show
     if products_count > products_to_show
@@ -69,7 +83,7 @@
       data-id="{{ section.id }}"
     >
 
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin {{ sw_pw_class }}{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
         {%- if section.settings.title != blank -%}
           <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{ section.settings.title }}
@@ -85,7 +99,7 @@
       <slider-component
         data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
         data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
-        class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and is_full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
+        class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} {{ sw_pw_class }}{% endif %}{% if show_desktop_slider == false and is_full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
       >
         <ul
           id="Slider-{{ section.id }}"
@@ -185,11 +199,12 @@
     {
       "type": "select",
       "id": "section_width",
-      "label": "Section Width",
+      "label": "Larghezza sezione",
       "options": [
-        { "label": "Full Width", "value": "full_width" },
-        { "label": "Default Width", "value": "default" },
-        { "label": "Page width", "value": "page_width" }
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
     },
