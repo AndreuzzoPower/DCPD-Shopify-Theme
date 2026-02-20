@@ -94,6 +94,7 @@
           "type": "back_to_blog",
           "settings": {
             "display_style": "pill",
+            "show_icon": true,
             "alignment": "center",
             "border_position": "both",
             "border_width": 1,
@@ -123,7 +124,7 @@
       "settings": {
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
-        "section_width": "page_width",
+        "section_width": "default",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
