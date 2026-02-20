@@ -101,9 +101,9 @@
         "back_to_blog_LccnVB": {
           "type": "back_to_blog",
           "settings": {
-            "display_style": "pill",
+            "display_style": "button",
             "show_icon": true,
-            "button_size": "default",
+            "button_size": "extra_jumbo",
             "alignment": "center",
             "border_position": "both",
             "border_width": 1,
