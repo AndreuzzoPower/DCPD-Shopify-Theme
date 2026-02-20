@@ -45,7 +45,7 @@
       "settings": {
         "show_title": true,
         "title_alignment": "left",
-        "description": "",
+        "description": "{{ blog.metafields.custom.descrizione | metafield_tag }}",
         "show_tag_cloud": true,
         "layout": "grid",
         "columns_desktop": "3",
