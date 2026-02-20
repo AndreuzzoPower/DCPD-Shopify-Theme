@@ -19,7 +19,7 @@
           "settings": {
             "text": "Ti diamo il benvenuto nel nostro negozio",
             "link": "",
-            "schedule_enabled": false,
+            "schedule_enabled": true,
             "schedule_start": "2026-02-20 09:30",
             "schedule_end": "2026-02-20 09:31"
           }
