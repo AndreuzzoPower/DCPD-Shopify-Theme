@@ -74,10 +74,18 @@
 
 /* ═══════════════════════════════════════
    PILL SHAPE
-   border-radius arrotondato per lo stile "pill"
+   border-radius arrotondato per lo stile "pill".
+   Override di border-radius su button, :before e :after
+   per sovrascrivere le CSS variables Dawn
+   (--buttons-radius / --buttons-radius-outset).
    ═══════════════════════════════════════ */
 
 .button.button--pill {
+  border-radius: 50px;
+}
+
+.button.button--pill::before,
+.button.button--pill::after {
   border-radius: 50px;
 }
 
