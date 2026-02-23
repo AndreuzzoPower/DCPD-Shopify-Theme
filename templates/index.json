@@ -190,7 +190,9 @@
         "title_pmjWCx": {
           "type": "title",
           "settings": {
-            "heading_size": "h1"
+            "heading_size": "h1",
+            "title_tag": "h2",
+            "title_custom_class": ""
           }
         },
         "price_taGfQJ": {
@@ -233,8 +235,9 @@
       ],
       "name": "MS featured product",
       "settings": {
-        "product": "multi-variante-test",
+        "section_width": "full_width",
         "color_scheme": "",
+        "product": "multi-variante-test",
         "media_size": "medium",
         "constrain_to_viewport": true,
         "media_fit": "cover",
