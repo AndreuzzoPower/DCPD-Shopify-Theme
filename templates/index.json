@@ -115,7 +115,7 @@
         "title_tag": "h2",
         "title_custom_class": "",
         "columns_desktop": 4,
-        "enable_desktop_slider": false,
+        "enable_desktop_slider": true,
         "enable_autoplay": false,
         "autoplay_speed": 3,
         "columns_mobile": "1",
