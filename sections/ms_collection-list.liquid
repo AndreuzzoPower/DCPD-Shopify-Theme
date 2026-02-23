@@ -76,7 +76,28 @@
   if columns > 3
     assign columns = 3
   endif
+
+  assign grid_align = section.settings.grid_alignment | default: 'left'
 -%}
+
+{%- if grid_align != 'left' -%}
+  {%- liquid
+    case grid_align
+      when 'center'
+        assign justify_val = 'center'
+      when 'right'
+        assign justify_val = 'flex-end'
+    endcase
+  -%}
+  {%- style -%}
+    #section-{{ section.id }} .collection-list:not(.slider) {
+      justify-content: {{ justify_val }};
+    }
+    #section-{{ section.id }} .collection-list:not(.slider) > .grid__item {
+      flex-grow: 0;
+    }
+  {%- endstyle -%}
+{%- endif -%}
 
 <div
   class="color-{{ section.settings.color_scheme }} gradient"
@@ -296,6 +317,18 @@
       "step": 1,
       "default": 3,
       "label": "t:sections.collection-list.settings.columns_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "grid_alignment",
+      "label": "Allineamento griglia",
+      "info": "Allineamento degli elementi nell'ultima riga quando non riempiono tutte le colonne. Applicato solo in modalità griglia.",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ]
     },
     {
       "type": "checkbox",
