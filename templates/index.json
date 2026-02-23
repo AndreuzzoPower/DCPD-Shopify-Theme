@@ -21,19 +21,19 @@
         "featured_collection_EyXfd8": {
           "type": "featured_collection",
           "settings": {
-            "collection": ""
+            "collection": "prova-1"
           }
         },
         "featured_collection_rTL389": {
           "type": "featured_collection",
           "settings": {
-            "collection": ""
+            "collection": "prova-2"
           }
         },
         "featured_collection_D3N7Wc": {
           "type": "featured_collection",
           "settings": {
-            "collection": ""
+            "collection": "altra-cat"
           }
         }
       },
@@ -45,15 +45,21 @@
       ],
       "name": "MS Elenco collezioni",
       "settings": {
+        "section_width": "page_width",
         "title": "Collezioni",
         "heading_size": "h1",
-        "image_ratio": "square",
+        "title_tag": "h2",
+        "title_custom_class": "",
         "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "enable_autoplay": false,
+        "autoplay_speed": 3,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "image_ratio": "square",
         "color_scheme": "",
         "show_view_all": false,
-        "button_size": "default",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false
+        "button_size": "default"
       }
     }
   },
