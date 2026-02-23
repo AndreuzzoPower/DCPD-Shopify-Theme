@@ -1,14 +1,14 @@
 /* ms_button-sizes.css
  * ═══════════════════════════════════════════════════════════════
- * Sistema di sizing standard per i pulsanti del tema DCPD.
+ * Sistema di sizing per i pulsanti del tema DCPD.
  * 5 taglie: small, medium, large, jumbo, extra-jumbo.
  *
- * "medium" corrisponde al default Dawn (.button).
+ * Tutti i valori sono controllati dalle CSS custom properties
+ * definite in theme.liquid (--btn-{size}-fs, --btn-{size}-pv, ecc.)
+ * e personalizzabili dalle impostazioni del tema.
+ *
  * Le classi usano doppia specificità (.button.button--size-*)
  * per sovrascrivere le regole base di Dawn senza !important.
- *
- * Mobile-first: le taglie jumbo e extra-jumbo si ridimensionano
- * su schermi piccoli per evitare overflow.
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -17,23 +17,21 @@
    ═══════════════════════════════════════ */
 
 .button.button--size-small {
-  font-size: 1.3rem;
-  letter-spacing: 0.06rem;
-  padding: 0.8rem 2rem;
-  min-height: calc(3.6rem + var(--buttons-border-width, 0px) * 2);
+  font-size: var(--btn-small-fs, 1.3rem);
+  letter-spacing: var(--btn-small-ls, 0.06rem);
+  padding: var(--btn-small-pv, 0.8rem) var(--btn-small-ph, 2rem);
+  min-height: calc(var(--btn-small-fs, 1.3rem) + var(--btn-small-pv, 0.8rem) * 2 + var(--buttons-border-width, 0px) * 2);
   min-width: calc(8rem + var(--buttons-border-width, 0px) * 2);
 }
 
 /* ═══════════════════════════════════════
-   MEDIUM (Dawn default — nessun override)
-   Classe presente solo per esplicitezza,
-   non sovrascrive nulla.
+   MEDIUM (Dawn default)
    ═══════════════════════════════════════ */
 
 .button.button--size-medium {
-  font-size: 1.5rem;
-  letter-spacing: 0.1rem;
-  padding: 0 3rem;
+  font-size: var(--btn-medium-fs, 1.5rem);
+  letter-spacing: var(--btn-medium-ls, 0.1rem);
+  padding: var(--btn-medium-pv, 0rem) var(--btn-medium-ph, 3rem);
   min-height: calc(4.5rem + var(--buttons-border-width, 0px) * 2);
   min-width: calc(12rem + var(--buttons-border-width, 0px) * 2);
 }
@@ -43,10 +41,10 @@
    ═══════════════════════════════════════ */
 
 .button.button--size-large {
-  font-size: 1.6rem;
-  letter-spacing: 0.1rem;
-  padding: 1.2rem 3.6rem;
-  min-height: calc(5.2rem + var(--buttons-border-width, 0px) * 2);
+  font-size: var(--btn-large-fs, 1.6rem);
+  letter-spacing: var(--btn-large-ls, 0.1rem);
+  padding: var(--btn-large-pv, 1.2rem) var(--btn-large-ph, 3.6rem);
+  min-height: calc(var(--btn-large-fs, 1.6rem) + var(--btn-large-pv, 1.2rem) * 2 + var(--buttons-border-width, 0px) * 2);
   min-width: calc(14rem + var(--buttons-border-width, 0px) * 2);
 }
 
@@ -55,10 +53,10 @@
    ═══════════════════════════════════════ */
 
 .button.button--size-jumbo {
-  font-size: 1.8rem;
-  letter-spacing: 0.1rem;
-  padding: 1.4rem 4.4rem;
-  min-height: calc(6rem + var(--buttons-border-width, 0px) * 2);
+  font-size: var(--btn-jumbo-fs, 1.8rem);
+  letter-spacing: var(--btn-jumbo-ls, 0.1rem);
+  padding: var(--btn-jumbo-pv, 1.4rem) var(--btn-jumbo-ph, 4.4rem);
+  min-height: calc(var(--btn-jumbo-fs, 1.8rem) + var(--btn-jumbo-pv, 1.4rem) * 2 + var(--buttons-border-width, 0px) * 2);
   min-width: calc(16rem + var(--buttons-border-width, 0px) * 2);
 }
 
@@ -67,23 +65,18 @@
    ═══════════════════════════════════════ */
 
 .button.button--size-extra-jumbo {
-  font-size: 2rem;
-  letter-spacing: 0.12rem;
-  padding: 1.8rem 5.2rem;
-  min-height: calc(7rem + var(--buttons-border-width, 0px) * 2);
+  font-size: var(--btn-xjumbo-fs, 2rem);
+  letter-spacing: var(--btn-xjumbo-ls, 0.12rem);
+  padding: var(--btn-xjumbo-pv, 1.8rem) var(--btn-xjumbo-ph, 5.2rem);
+  min-height: calc(var(--btn-xjumbo-fs, 2rem) + var(--btn-xjumbo-pv, 1.8rem) * 2 + var(--buttons-border-width, 0px) * 2);
   min-width: calc(18rem + var(--buttons-border-width, 0px) * 2);
 }
-
-/* ═══════════════════════════════════════
-   MOBILE RESPONSIVE
-   Le taglie più grandi si adattano su mobile
-   per evitare overflow orizzontale.
-   ═══════════════════════════════════════ */
 
 /* ═══════════════════════════════════════
    PILL SIZING
    Classi applicabili agli elementi pill
    (back-pill, blog-name-pill, ecc.)
+   Usano valori proporzionalmente ridotti.
    ═══════════════════════════════════════ */
 
 .button--size-small:not(.button) {
@@ -126,6 +119,6 @@
   }
 
   .button.button--size-extra-jumbo {
-    font-size: 1.8rem;
+    font-size: var(--btn-jumbo-fs, 1.8rem);
   }
 }

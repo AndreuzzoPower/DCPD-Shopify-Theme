@@ -196,6 +196,27 @@
         --buttons-shadow-blur-radius: {{ settings.buttons_shadow_blur }}px;
         --buttons-border-offset: {% if settings.buttons_radius > 0 or settings.buttons_shadow_opacity > 0 %}0.3{% else %}0{% endif %}px;
 
+        --btn-small-fs: {{ settings.ms_btn_small_font_size | divided_by: 10.0 }}rem;
+        --btn-small-pv: {{ settings.ms_btn_small_padding_v | divided_by: 10.0 }}rem;
+        --btn-small-ph: {{ settings.ms_btn_small_padding_h | divided_by: 10.0 }}rem;
+        --btn-small-ls: {{ settings.ms_btn_small_letter_spacing | divided_by: 10.0 }}rem;
+        --btn-medium-fs: {{ settings.ms_btn_medium_font_size | divided_by: 10.0 }}rem;
+        --btn-medium-pv: {{ settings.ms_btn_medium_padding_v | divided_by: 10.0 }}rem;
+        --btn-medium-ph: {{ settings.ms_btn_medium_padding_h | divided_by: 10.0 }}rem;
+        --btn-medium-ls: {{ settings.ms_btn_medium_letter_spacing | divided_by: 10.0 }}rem;
+        --btn-large-fs: {{ settings.ms_btn_large_font_size | divided_by: 10.0 }}rem;
+        --btn-large-pv: {{ settings.ms_btn_large_padding_v | divided_by: 10.0 }}rem;
+        --btn-large-ph: {{ settings.ms_btn_large_padding_h | divided_by: 10.0 }}rem;
+        --btn-large-ls: {{ settings.ms_btn_large_letter_spacing | divided_by: 10.0 }}rem;
+        --btn-jumbo-fs: {{ settings.ms_btn_jumbo_font_size | divided_by: 10.0 }}rem;
+        --btn-jumbo-pv: {{ settings.ms_btn_jumbo_padding_v | divided_by: 10.0 }}rem;
+        --btn-jumbo-ph: {{ settings.ms_btn_jumbo_padding_h | divided_by: 10.0 }}rem;
+        --btn-jumbo-ls: {{ settings.ms_btn_jumbo_letter_spacing | divided_by: 10.0 }}rem;
+        --btn-xjumbo-fs: {{ settings.ms_btn_xjumbo_font_size | divided_by: 10.0 }}rem;
+        --btn-xjumbo-pv: {{ settings.ms_btn_xjumbo_padding_v | divided_by: 10.0 }}rem;
+        --btn-xjumbo-ph: {{ settings.ms_btn_xjumbo_padding_h | divided_by: 10.0 }}rem;
+        --btn-xjumbo-ls: {{ settings.ms_btn_xjumbo_letter_spacing | divided_by: 10.0 }}rem;
+
         --inputs-radius: {{ settings.inputs_radius }}px;
         --inputs-border-width: {{ settings.inputs_border_thickness }}px;
         --inputs-border-opacity: {{ settings.inputs_border_opacity | divided_by: 100.0 }};

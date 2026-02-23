@@ -670,6 +670,226 @@
       },
       {
         "type": "header",
+        "content": "Small"
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_small_font_size",
+        "min": 10,
+        "max": 22,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 13
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_small_padding_v",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding verticale",
+        "default": 8
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_small_padding_h",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding orizzontale",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_small_letter_spacing",
+        "min": 0,
+        "max": 4,
+        "step": 0.2,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 0.6
+      },
+      {
+        "type": "header",
+        "content": "Medium (default Dawn)"
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_medium_font_size",
+        "min": 10,
+        "max": 22,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_medium_padding_v",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding verticale",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_medium_padding_h",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding orizzontale",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_medium_letter_spacing",
+        "min": 0,
+        "max": 4,
+        "step": 0.2,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Large"
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_large_font_size",
+        "min": 10,
+        "max": 26,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_large_padding_v",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding verticale",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_large_padding_h",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding orizzontale",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_large_letter_spacing",
+        "min": 0,
+        "max": 4,
+        "step": 0.2,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Jumbo"
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_jumbo_font_size",
+        "min": 12,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_jumbo_padding_v",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding verticale",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_jumbo_padding_h",
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding orizzontale",
+        "default": 44
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_jumbo_letter_spacing",
+        "min": 0,
+        "max": 4,
+        "step": 0.2,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Extra Jumbo"
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_xjumbo_font_size",
+        "min": 14,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_xjumbo_padding_v",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding verticale",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_xjumbo_padding_h",
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "unit": "px",
+        "label": "Padding orizzontale",
+        "default": 52
+      },
+      {
+        "type": "range",
+        "id": "ms_btn_xjumbo_letter_spacing",
+        "min": 0,
+        "max": 4,
+        "step": 0.2,
+        "unit": "px",
+        "label": "Letter spacing",
+        "default": 1.2
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.global.settings.header__border.content"
       },
       {
