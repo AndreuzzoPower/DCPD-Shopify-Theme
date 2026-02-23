@@ -4,13 +4,17 @@
 
   Parametri:
     - type (string): 'button' (default), 'pill', 'link'
-    - secondary (boolean): true = contorno (sfondo trasparente + bordo)
+    - secondary (boolean): true = contorno (sfondo trasparente + bordo visibile)
     - size (string): valore per ms_button_size ('default', 'small', 'medium', ecc.)
 
   Output:
-    - type 'button': "button button--primary/secondary button--size-*"
-    - type 'pill':   "button button--pill button--primary/secondary button--size-*"
-    - type 'link':   "link underlined-link"
+    - type 'button':           "button [button--outline] button--size-*"
+    - type 'pill':             "button button--pill [button--outline] button--size-*"
+    - type 'link':             "link underlined-link"
+    - secondary true aggiunge "button--outline" (bg trasparente + bordo).
+      Il bordo segue la forma (rettangolare o pill).
+    - secondary false: pulsante pieno (colori primari di default).
+    - Per type 'link', secondary è ignorato.
 {%- endcomment -%}
 
 {%- liquid
@@ -24,9 +28,7 @@
       echo ' button--pill'
     endif
     if secondary
-      echo ' button--secondary'
-    else
-      echo ' button--primary'
+      echo ' button--outline'
     endif
     render 'ms_button_size', size: size
   endif

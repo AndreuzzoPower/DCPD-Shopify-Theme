@@ -90,6 +90,27 @@
 }
 
 /* ═══════════════════════════════════════
+   OUTLINE STYLE
+   Sfondo trasparente + bordo visibile.
+   Il bordo segue la forma del pulsante
+   (rettangolare o pill) grazie al
+   border-radius ereditato.
+   ═══════════════════════════════════════ */
+
+.button.button--outline {
+  --alpha-button-background: 0;
+  --color-button-text: var(--color-button);
+}
+
+.button.button--outline::after {
+  --border-opacity: 1;
+}
+
+.button.button--outline:hover {
+  --alpha-button-background: 0.1;
+}
+
+/* ═══════════════════════════════════════
    PILL SIZING
    Classi applicabili agli elementi pill
    (back-pill, blog-name-pill, ecc.)
