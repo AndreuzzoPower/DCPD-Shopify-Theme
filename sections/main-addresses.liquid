@@ -111,9 +111,7 @@
               >
                 {{ all_country_option_tags }}
               </select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </div>
           </div>
           <div id="AddressProvinceContainerNew" style="display: none">
@@ -125,9 +123,7 @@
                 data-default="{{ form.province }}"
                 autocomplete="address-level1"
               ></select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </div>
           </div>
           <div class="field">
@@ -274,9 +270,7 @@
                   >
                     {{ all_country_option_tags }}
                   </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                 </div>
               </div>
               <div id="AddressProvinceContainer_{{ form.id }}" style="display:none;">
@@ -290,9 +284,7 @@
                     data-default="{{ form.province }}"
                     autocomplete="address-level1"
                   ></select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                 </div>
               </div>
               <div class="field">
@@ -341,9 +333,7 @@
             {%- if paginate.previous -%}
               <li>
                 <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                 </a>
               </li>
             {%- endif -%}
@@ -369,9 +359,7 @@
             {%- if paginate.next -%}
               <li>
                 <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                 </a>
               </li>
             {%- endif -%}

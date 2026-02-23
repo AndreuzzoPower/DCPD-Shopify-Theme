@@ -90,9 +90,7 @@
                       <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
                         <span class="active-facets__button-inner button button--tertiary">
                           {{ filter.label | escape }}: {{ value.label | escape }}
-                          <span class="svg-wrapper">
-                            {{- 'icon-close-small.svg' | inline_asset_content -}}
-                          </span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                           <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                         </span>
                       </a>
@@ -106,9 +104,7 @@
                         <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
                           <span class="active-facets__button-inner button button--tertiary">
                             {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                            <span class="svg-wrapper">
-                              {{- 'icon-close-small.svg' | inline_asset_content -}}
-                            </span>
+                            {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                             <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                           </span>
                         </a>
@@ -163,7 +159,7 @@
                             {{ 'products.facets.filter_and_operator_subtitle' | t }}
                           </span>
                         {%- endif -%}
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                       </div>
                     </summary>
                     <div
@@ -278,7 +274,7 @@
                                     {{- 'square.svg' | inline_asset_content -}}
 
                                     <div class="svg-wrapper">
-                                      {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
                                     </div>
                                   {%- endif -%}
 
@@ -319,7 +315,7 @@
                     <summary class="facets__summary caption-large focus-offset">
                       <div>
                         <span>{{ filter.label | escape }}</span>
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                       </div>
                     </summary>
                     <div
@@ -356,9 +352,7 @@
                     <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
                       <span class="active-facets__button-inner button button--tertiary">
                         {{ filter.label | escape }}: {{ value.label | escape }}
-                        <span class="svg-wrapper">
-                          {{- 'icon-close-small.svg' | inline_asset_content -}}
-                        </span>
+                        {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                         <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                       </span>
                     </a>
@@ -372,9 +366,7 @@
                       <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
                         <span class="active-facets__button-inner button button--tertiary">
                           {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                          <span class="svg-wrapper">
-                            {{- 'icon-close-small.svg' | inline_asset_content -}}
-                          </span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                           <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                         </span>
                       </a>
@@ -422,9 +414,7 @@
                       </option>
                     {%- endfor -%}
                   </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                 </div>
               </div>
             </div>
@@ -458,9 +448,7 @@
     <details class="mobile-facets__disclosure disclosure-has-popup">
       <summary class="mobile-facets__open-wrapper focus-offset">
         <span class="mobile-facets__open{% if filter_type == 'drawer' and enable_filtering == false %} medium-hide large-up-hide{% endif %}">
-          <span class="svg-wrapper">
-            {{- 'icon-filter.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_filter -%}
           <span class="mobile-facets__open-label button-label medium-hide large-up-hide">
             {%- if enable_filtering and enable_sorting -%}
               {{ 'products.facets.filter_and_sort' | t }}
@@ -477,9 +465,7 @@
           </span>
         </span>
         <span tabindex="0" class="mobile-facets__close">
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_close -%}
         </span>
       </summary>
       <facet-filters-form>
@@ -552,7 +538,7 @@
                           <div>
                             <span>{{ filter.label | escape }}</span>
                             <span class="mobile-facets__arrow">
-                              {{- 'icon-arrow.svg' | inline_asset_content -}}
+                              {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                             </span>
                           </div>
                         </summary>
@@ -565,7 +551,7 @@
                             aria-expanded="true"
                             type="button"
                           >
-                            {{- 'icon-arrow.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                             <span>{{ filter.label | escape }}</span>
                             {%- if filter.operator == 'AND' -%}
                               <span class="facets__and-helptext">
@@ -658,7 +644,7 @@
                                     {%- else -%}
                                       <span class="mobile-facets__highlight"></span>
                                       {{- 'square.svg' | inline_asset_content -}}
-                                      {{- 'icon-checkmark.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
                                     {%- endif %}
 
                                     {{ text_value }}
@@ -694,7 +680,7 @@
                           <div>
                             <span>{{ filter.label | escape }}</span>
                             <span class="mobile-facets__arrow">
-                              {{- 'icon-arrow.svg' | inline_asset_content -}}
+                              {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                             </span>
                           </div>
                         </summary>
@@ -707,7 +693,7 @@
                             aria-expanded="true"
                             type="button"
                           >
-                            {{- 'icon-arrow.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                             {{ filter.label | escape }}
                           </button>
 
@@ -766,9 +752,7 @@
                             </option>
                           {%- endfor -%}
                         </select>
-                        <span class="svg-wrapper">
-                          {{- 'icon-caret.svg' | inline_asset_content -}}
-                        </span>
+                        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                       </div>
                     </div>
                   </div>
@@ -812,9 +796,7 @@
           <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
             <span class="active-facets__button-inner button button--tertiary">
               {{ filter.label | escape }}: {{ value.label | escape }}
-              <span class="svg-wrapper">
-                {{- 'icon-close-small.svg' | inline_asset_content -}}
-              </span>
+              {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
               <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
             </span>
           </a>
@@ -829,9 +811,7 @@
             <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
               <span class="active-facets__button-inner button button--tertiary">
                 {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                <span class="svg-wrapper">
-                  {{- 'icon-close-small.svg' | inline_asset_content -}}
-                </span>
+                {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                 <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
               </span>
             </a>
@@ -873,9 +853,7 @@
                   </option>
                 {%- endfor -%}
               </select>
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </div>
           </div>
         </div>
@@ -921,9 +899,7 @@
                 <a href="{{ value.url_to_remove }}" class="active-facets__button active-facets__button--light">
                   <span class="active-facets__button-inner button button--tertiary">
                     {{ filter.label | escape }}: {{ value.label | escape }}
-                    <span class="svg-wrapper">
-                      {{- 'icon-close-small.svg' | inline_asset_content -}}
-                    </span>
+                    {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                     <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                   </span>
                 </a>
@@ -938,9 +914,7 @@
                   <a href="{{ filter.url_to_remove }}" class="active-facets__button active-facets__button--light">
                     <span class="active-facets__button-inner button button--tertiary">
                       {{ min | default: 0 | money }} - {{ max | default: filter.range_max | money }}
-                      <span class="svg-wrapper">
-                        {{- 'icon-close-small.svg' | inline_asset_content -}}
-                      </span>
+                      {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
                       <span class="visually-hidden">{{ 'products.facets.clear_filter' | t }}</span>
                     </span>
                   </a>

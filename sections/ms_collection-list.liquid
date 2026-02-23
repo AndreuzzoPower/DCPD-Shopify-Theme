@@ -242,9 +242,7 @@
             name="previous"
             aria-label="{{ 'general.slider.previous_slide' | t }}"
           >
-            <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
@@ -258,9 +256,7 @@
             name="next"
             aria-label="{{ 'general.slider.next_slide' | t }}"
           >
-            <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
         </div>
       {%- endif -%}
@@ -511,10 +507,10 @@
       "label": "Mostra icona nel link"
     },
     {
-      "type": "image_picker",
+      "type": "text",
       "id": "card_custom_icon",
       "label": "Icona personalizzata",
-      "info": "Se presente, sovrascrive l'icona freccia di default. Consigliato: SVG o PNG trasparente di piccole dimensioni."
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-arrow-right). Se compilato, sovrascrive la freccia di default."
     },
     {
       "type": "select",

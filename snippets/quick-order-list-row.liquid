@@ -215,7 +215,7 @@
               "
               class="quantity-popover__info-button quantity-popover__info-button--icon-only button button--tertiary small-hide medium-hide no-js-hidden"
             >
-              {{- 'icon-info.svg' | inline_asset_content -}}
+              {%- render 'ms_icon', icon: settings.ms_icon_info -%}
             </button>
             <div
               class="global-settings-popup quantity-popover__info"
@@ -248,7 +248,7 @@
                 type="button"
                 aria-label="{{ 'accessibility.close' | t }}"
               >
-                {{- 'icon-close.svg' | inline_asset_content -}}
+                {%- render 'ms_icon', icon: settings.ms_icon_close -%}
               </button>
               {%- if variant.quantity_price_breaks.size > 0 -%}
                 <volume-pricing class="parent-display">
@@ -294,9 +294,7 @@
               aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}"
               data-target="remove-{{ variant.id }}"
             >
-              <span class="svg-wrapper">
-                {{- 'icon-remove.svg' | inline_asset_content -}}
-              </span>
+              {%- render 'ms_icon', icon: settings.ms_icon_remove -%}
             </button>
           </div>
         {% endif %}
@@ -307,7 +305,7 @@
           class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary large-up-hide"
           aria-expanded="false"
         >
-          {{- 'icon-info.svg' | inline_asset_content -}}
+          {%- render 'ms_icon', icon: settings.ms_icon_info -%}
           <span>
             {%- if has_vol_pricing -%}
               {{ 'products.product.volume_pricing.note' | t }}
@@ -323,9 +321,7 @@
         role="alert"
       >
         <small class="variant-item__error-text"></small>
-        <span class="svg-wrapper">
-          {{- 'icon-error.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
       </div>
     </quantity-popover>
   </td>
@@ -442,7 +438,7 @@
   <td>
     <div class="variant-item__error" id="Quick-order-list-item-error-desktop-{{ variant.id }}" role="alert">
       <small class="variant-item__error-text"></small>
-      <span class="svg-wrapper">{{ 'icon-error.svg' | inline_asset_content }}</span>
+      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
     </div>
   </td>
   <td></td>

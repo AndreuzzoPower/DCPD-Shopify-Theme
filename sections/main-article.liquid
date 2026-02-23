@@ -70,13 +70,11 @@
             {%- if block.settings.blog_show_date -%}
               <span class="circle-divider caption-with-letter-spacing">
                   {% if block.settings.show_icons %}
-                    <span class="svg-wrapper">
                     {%- if block.settings.custom_icon_date != blank -%}
-                      {{- block.settings.custom_icon_date | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: block.settings.custom_icon_date -%}
                     {%- else -%}
-                      {{- 'icon-calendar.svg' | inline_asset_content -}}
-                    {%- endif -%}
-                    </span> 
+                      {%- render 'ms_icon', icon: settings.ms_icon_calendar -%}
+                    {%- endif -%} 
                   {% endif %}
                 {{- article.published_at | time_tag: format: 'date' -}}
               </span>
@@ -87,13 +85,11 @@
                 {% assign reading_time = words | divided_by: words_per_minute %}
                 <span class="circle-divider caption-with-letter-spacing" aria-label="Reading time" title="Reading time">
                   {% if block.settings.show_icons %}
-                    <span class="svg-wrapper">
                     {%- if block.settings.custom_icon_reading != blank -%}
-                      {{- block.settings.custom_icon_reading | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: block.settings.custom_icon_reading -%}
                     {%- else -%}
-                      {{- 'icon-clock.svg' | inline_asset_content -}}
-                    {%- endif -%}
-                    </span> 
+                      {%- render 'ms_icon', icon: settings.ms_icon_clock -%}
+                    {%- endif -%} 
                   {% endif %}
                   {{ reading_time }} {{ "dcpd.collection.ea_view_min" | t }}
                 </span>
@@ -101,13 +97,11 @@
             {%- if block.settings.blog_show_author -%}
               <span class="caption-with-letter-spacing">
                 {% if block.settings.show_icons %}
-                  <span class="svg-wrapper">
                     {%- if block.settings.custom_icon_author != blank -%}
-                      {{- block.settings.custom_icon_author | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: block.settings.custom_icon_author -%}
                     {%- else -%}
-                      {{- 'icon-quote.svg' | inline_asset_content -}}
-                    {%- endif -%}
-                  </span> 
+                      {%- render 'ms_icon', icon: settings.ms_icon_quote -%}
+                    {%- endif -%} 
                 {% endif %}
                 <span>{{ article.author }}</span>
               </span>
@@ -327,13 +321,11 @@
             <div class="article-template__tags-wrapper">
               {%- if block.settings.show_icon -%}
                 <span class="article-template__tags-icon" aria-hidden="true">
-                  <span class="svg-wrapper">
                     {%- if block.settings.custom_icon != blank -%}
-                      {{- block.settings.custom_icon | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: block.settings.custom_icon -%}
                     {%- else -%}
-                      {{- 'icon-price-tag.svg' | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: settings.ms_icon_price_tag -%}
                     {%- endif -%}
-                  </span>
                 </span>
               {%- endif -%}
               {%- if block.settings.tags_label != blank -%}
@@ -411,7 +403,7 @@
           {{ block.shopify_attributes }}
         >
           {%- liquid
-            assign back_icon_file = 'icon-arrow.svg'
+            assign back_icon_file = settings.ms_icon_arrow
             if block.settings.custom_icon != blank
               assign back_icon_file = block.settings.custom_icon
             endif
@@ -420,9 +412,7 @@
             <a href="{{ blog.url }}" class="button article-template__back-button {%- render 'ms_button_size', size: block.settings.button_size -%}">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
-                  <span class="svg-wrapper">
-                    {{- back_icon_file | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: back_icon_file -%}
                 </span>
               {%- endif -%}
               {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
@@ -431,9 +421,7 @@
             <a href="{{ blog.url }}" class="article-template__back-pill {%- render 'ms_button_size', size: block.settings.button_size -%}">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
-                  <span class="svg-wrapper">
-                    {{- back_icon_file | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: back_icon_file -%}
                 </span>
               {%- endif -%}
               {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
@@ -442,9 +430,7 @@
             <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
               {%- if block.settings.show_icon -%}
                 <span class="icon-wrap" aria-hidden="true">
-                  <span class="svg-wrapper">
-                    {{- back_icon_file | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: back_icon_file -%}
                 </span>
               {%- endif -%}
               {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
@@ -515,9 +501,7 @@
           {%- if form.errors -%}
             <div class="form__message" role="alert">
               <h3 class="form-status caption-large text-body" tabindex="-1" autofocus>
-                <span class="svg-wrapper">
-                  {{- 'icon-error.svg' | inline_asset_content -}}
-                </span>
+                {%- render 'ms_icon', icon: settings.ms_icon_error -%}
                 {{ 'templates.contact.form.error_heading' | t }}
               </h3>
             </div>
@@ -540,9 +524,7 @@
           {%- elsif form.posted_successfully? -%}
             <div class="form-status-list form__message" role="status">
               <h3 class="form-status" tabindex="-1" autofocus>
-                <span class="svg-wrapper">
-                  {{- 'icon-success.svg' | inline_asset_content -}}
-                </span>
+                {%- render 'ms_icon', icon: settings.ms_icon_success -%}
                 {{ post_message | t }}
               </h3>
             </div>
@@ -577,9 +559,7 @@
                 {%- if form.errors contains 'author' -%}
                   <small id="CommentForm-author-error">
                     <span class="form__message">
-                      <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
-                      </span>
+                      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
                       {{- 'blogs.article.name' | t }}
                       {{ form.errors.messages.author }}.</span
                     >
@@ -611,9 +591,7 @@
                 {%- if form.errors contains 'email' -%}
                   <small id="CommentForm-email-error">
                     <span class="form__message">
-                      <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
-                      </span>
+                      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
                       {{- 'blogs.article.email' | t }}
                       {{ form.errors.messages.email }}.</span
                     >
@@ -643,9 +621,7 @@
             {%- if form.errors contains 'body' -%}
               <small id="CommentForm-body-error">
                 <span class="form__message">
-                  <span class="svg-wrapper">
-                    {{- 'icon-error.svg' | inline_asset_content -}}
-                  </span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_error -%}
                   {{- 'blogs.article.message' | t }}
                   {{ form.errors.messages.body }}.</span
                 >
@@ -830,19 +806,19 @@
           "type": "text",
           "id": "custom_icon_date",
           "label": "Icona data personalizzata (SVG)",
-          "info": "Nome del file SVG negli assets (es. my-calendar.svg). Se compilato, sovrascrive l'icona data predefinita."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "text",
           "id": "custom_icon_reading",
           "label": "Icona lettura personalizzata (SVG)",
-          "info": "Nome del file SVG negli assets (es. my-clock.svg). Se compilato, sovrascrive l'icona tempo di lettura predefinita."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "text",
           "id": "custom_icon_author",
           "label": "Icona autore personalizzata (SVG)",
-          "info": "Nome del file SVG negli assets (es. my-author.svg). Se compilato, sovrascrive l'icona autore predefinita."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         }
       ]
     },
@@ -1107,7 +1083,7 @@
           "type": "text",
           "id": "custom_icon",
           "label": "Icona personalizzata (SVG)",
-          "info": "Nome del file SVG negli assets (es. my-tag.svg). Se compilato, sovrascrive l'icona tag predefinita."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "text",
@@ -1269,7 +1245,7 @@
           "type": "text",
           "id": "custom_icon",
           "label": "Icona personalizzata (SVG)",
-          "info": "Nome del file SVG negli assets (es. my-arrow.svg). Se compilato, sovrascrive l'icona freccia predefinita."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "select",

@@ -244,6 +244,395 @@
     ]
   },
   {
+    "name": "Icone",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Libreria icone"
+      },
+      {
+        "type": "select",
+        "id": "ms_icon_library",
+        "label": "Libreria di icone",
+        "options": [
+          { "label": "Nessuna (solo SVG)", "value": "none" },
+          { "label": "Font Awesome 6 Free", "value": "font-awesome" },
+          { "label": "Bootstrap Icons", "value": "bootstrap-icons" },
+          { "label": "Lineicons", "value": "lineicons" },
+          { "label": "Remix Icon", "value": "remixicon" }
+        ],
+        "default": "none",
+        "info": "Seleziona la libreria di icone esterna. Se un campo icona contiene .svg verra caricato il file dagli assets, altrimenti sara usato come classe della libreria selezionata (es. fa-solid fa-house)."
+      },
+      {
+        "type": "header",
+        "content": "Icone di navigazione"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_arrow",
+        "label": "Freccia",
+        "default": "icon-arrow.svg",
+        "info": "Link, pulsanti, breadcrumbs. File .svg = asset, altrimenti classe libreria."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_caret",
+        "label": "Caret (freccia piccola)",
+        "default": "icon-caret.svg",
+        "info": "Slider, accordion, dropdown."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_close",
+        "label": "Chiusura",
+        "default": "icon-close.svg",
+        "info": "Pulsanti di chiusura modali, popup, drawer."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_close_small",
+        "label": "Chiusura piccola",
+        "default": "icon-close-small.svg",
+        "info": "Tag filtri, chip rimovibili."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_hamburger",
+        "label": "Menu hamburger",
+        "default": "icon-hamburger.svg",
+        "info": "Pulsante apertura menu mobile."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_home",
+        "label": "Home",
+        "default": "icon-house-solid-full.svg",
+        "info": "Icona home per breadcrumbs."
+      },
+      {
+        "type": "header",
+        "content": "Icone azioni"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_plus",
+        "label": "Piu (+)",
+        "default": "icon-plus.svg",
+        "info": "Quantita, accordion apertura."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_minus",
+        "label": "Meno (-)",
+        "default": "icon-minus.svg",
+        "info": "Quantita, accordion chiusura."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_zoom",
+        "label": "Zoom",
+        "default": "icon-zoom.svg",
+        "info": "Zoom immagini prodotto."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_filter",
+        "label": "Filtro",
+        "default": "icon-filter.svg",
+        "info": "Pulsante apertura filtri."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_share",
+        "label": "Condividi",
+        "default": "icon-share.svg",
+        "info": "Pulsante condivisione."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_copy",
+        "label": "Copia",
+        "default": "icon-copy.svg",
+        "info": "Pulsante copia link."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_remove",
+        "label": "Rimuovi",
+        "default": "icon-remove.svg",
+        "info": "Rimuovi elemento dal carrello."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_reset",
+        "label": "Reset",
+        "default": "icon-reset.svg",
+        "info": "Reset filtri."
+      },
+      {
+        "type": "header",
+        "content": "Icone di stato"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_checkmark",
+        "label": "Spunta (checkmark)",
+        "default": "icon-checkmark.svg",
+        "info": "Conferme, selezioni completate."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_error",
+        "label": "Errore",
+        "default": "icon-error.svg",
+        "info": "Errori nei form, validazione."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_success",
+        "label": "Successo",
+        "default": "icon-success.svg",
+        "info": "Messaggi di successo."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_tick",
+        "label": "Tick",
+        "default": "icon-tick.svg",
+        "info": "Disponibilita prodotto."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_info",
+        "label": "Info",
+        "default": "icon-info.svg",
+        "info": "Tooltip, informazioni aggiuntive."
+      },
+      {
+        "type": "header",
+        "content": "Icone e-commerce"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_cart",
+        "label": "Carrello",
+        "default": "icon-cart.svg",
+        "info": "Icona carrello nell'header."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_cart_empty",
+        "label": "Carrello vuoto",
+        "default": "icon-cart-empty.svg",
+        "info": "Carrello quando e vuoto."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_account",
+        "label": "Account",
+        "default": "icon-account.svg",
+        "info": "Icona utente/account."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_discount",
+        "label": "Sconto",
+        "default": "icon-discount.svg",
+        "info": "Codici sconto, promozioni."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_price_tag",
+        "label": "Etichetta prezzo",
+        "default": "icon-price-tag.svg",
+        "info": "Tag prezzo, etichette."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_inventory",
+        "label": "Stato inventario",
+        "default": "icon-inventory-status.svg",
+        "info": "Disponibilita magazzino."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_lock",
+        "label": "Lucchetto",
+        "default": "icon-padlock.svg",
+        "info": "Checkout sicuro, pagina password."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_truck",
+        "label": "Spedizione",
+        "default": "icon-truck.svg",
+        "info": "Informazioni spedizione."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_return",
+        "label": "Reso",
+        "default": "icon-return.svg",
+        "info": "Politica resi."
+      },
+      {
+        "type": "header",
+        "content": "Icone contenuti"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_calendar",
+        "label": "Calendario",
+        "default": "icon-calendar.svg",
+        "info": "Data pubblicazione articoli."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_clock",
+        "label": "Orologio",
+        "default": "icon-clock.svg",
+        "info": "Tempo di lettura."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_quote",
+        "label": "Citazione",
+        "default": "icon-quote.svg",
+        "info": "Blockquote, testimonial."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_heart",
+        "label": "Cuore",
+        "default": "icon-heart.svg",
+        "info": "Preferiti, wishlist."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_eye",
+        "label": "Occhio",
+        "default": "icon-eye.svg",
+        "info": "Visualizzazioni, quick view."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_star",
+        "label": "Stella",
+        "default": "icon-star.svg",
+        "info": "Valutazioni, recensioni."
+      },
+      {
+        "type": "header",
+        "content": "Icone media"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_play",
+        "label": "Play",
+        "default": "icon-play.svg",
+        "info": "Riproduzione video."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_pause",
+        "label": "Pausa",
+        "default": "icon-pause.svg",
+        "info": "Pausa video/slideshow."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_3d_model",
+        "label": "Modello 3D",
+        "default": "icon-3d-model.svg",
+        "info": "Visualizzatore modelli 3D."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_search",
+        "label": "Ricerca",
+        "default": "icon-search.svg",
+        "info": "Icona lente di ricerca."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_unavailable",
+        "label": "Non disponibile",
+        "default": "icon-unavailable.svg",
+        "info": "Prodotto non disponibile."
+      },
+      {
+        "type": "header",
+        "content": "Icona pulsanti"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_button",
+        "label": "Icona pulsanti (unica per tutti)",
+        "default": "icon-arrow.svg",
+        "info": "Icona universale mostrata nei pulsanti con freccia."
+      },
+      {
+        "type": "header",
+        "content": "Icone social"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_facebook",
+        "label": "Facebook",
+        "default": "icon-facebook.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_instagram",
+        "label": "Instagram",
+        "default": "icon-instagram.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_youtube",
+        "label": "YouTube",
+        "default": "icon-youtube.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_tiktok",
+        "label": "TikTok",
+        "default": "icon-tiktok.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_twitter",
+        "label": "Twitter / X",
+        "default": "icon-twitter.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_pinterest",
+        "label": "Pinterest",
+        "default": "icon-pinterest.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_snapchat",
+        "label": "Snapchat",
+        "default": "icon-snapchat.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_tumblr",
+        "label": "Tumblr",
+        "default": "icon-tumblr.svg"
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_vimeo",
+        "label": "Vimeo",
+        "default": "icon-vimeo.svg"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.buttons.name",
     "settings": [
       {
@@ -1520,5 +1909,5 @@
         "label": "Privacy ID"
       }      
     ]
-  },  
+  }
 ]

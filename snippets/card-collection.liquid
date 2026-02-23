@@ -11,7 +11,7 @@
   - custom_image: {Object} Image picker object. If provided, overrides the collection featured_image (optional)
   - custom_label: {String} Custom text label. If provided, overrides the collection title (optional)
   - show_icon: {Boolean} Whether to show the arrow icon next to the link (optional, default true)
-  - custom_icon: {Object} Image picker object for a custom icon. If provided, replaces the default arrow SVG (optional)
+  - custom_icon: {String} Nome file SVG (es. my-icon.svg) o classe libreria icone (es. fa-solid fa-arrow-right). Se compilato, sovrascrive la freccia di default (optional)
 
   Usage:
   {% render 'card-collection' %}
@@ -118,9 +118,9 @@
                 {%- if card_collection.description == blank and show_icon -%}
                   <span class="icon-wrap">
                     {%- if custom_icon != blank -%}
-                      <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                      {%- render 'ms_icon', icon: custom_icon -%}
                     {%- else -%}
-                      {{- 'icon-arrow.svg' | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                     {%- endif -%}
                   </span>
                 {%- endif %}
@@ -132,9 +132,9 @@
                 {%- if show_icon -%}
                   <span class="icon-wrap">
                     {%- if custom_icon != blank -%}
-                      <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                      {%- render 'ms_icon', icon: custom_icon -%}
                     {%- else -%}
-                      {{- 'icon-arrow.svg' | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                     {%- endif -%}
                   </span>
                 {%- endif -%}
@@ -164,9 +164,9 @@
               {%- if show_icon and card_image or show_icon and card_collection.description == blank -%}
                 <span class="icon-wrap">
                   {%- if custom_icon != blank -%}
-                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                    {%- render 'ms_icon', icon: custom_icon -%}
                   {%- else -%}
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                   {%- endif -%}
                 </span>
               {%- endif %}
@@ -178,9 +178,9 @@
               {%- if show_icon -%}
                 <span class="icon-wrap">
                   {%- if custom_icon != blank -%}
-                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                    {%- render 'ms_icon', icon: custom_icon -%}
                   {%- else -%}
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                   {%- endif -%}
                 </span>
               {%- endif -%}
@@ -198,9 +198,9 @@
               {%- if show_icon -%}
                 <span class="icon-wrap">
                   {%- if custom_icon != blank -%}
-                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                    {%- render 'ms_icon', icon: custom_icon -%}
                   {%- else -%}
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                   {%- endif -%}
                 </span>
               {%- endif -%}

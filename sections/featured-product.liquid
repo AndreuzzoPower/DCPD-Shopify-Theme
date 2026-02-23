@@ -233,9 +233,7 @@
                           <span class="visually-hidden">
                             {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
                           </span>
-                          <span class="svg-wrapper">
-                            {{- 'icon-minus.svg' | inline_asset_content -}}
-                          </span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_minus -%}
                         </button>
                         <input
                           class="quantity__input"
@@ -257,9 +255,7 @@
                           <span class="visually-hidden">
                             {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
                           </span>
-                          <span class="svg-wrapper">
-                            {{- 'icon-plus.svg' | inline_asset_content -}}
-                          </span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_plus -%}
                         </button>
                       </quantity-input>
                       {%- liquid
@@ -492,7 +488,7 @@
               class="link product__view-details animate-arrow"
             >
               {{ 'products.product.view_full_details' | t }}
-              {{- 'icon-arrow.svg' | inline_asset_content -}}
+              {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
             </a>
           </section>
         </div>
@@ -964,7 +960,7 @@
           "type": "text",
           "id": "custom_icon_1",
           "label": "Icona 1 personalizzata (SVG)",
-          "info": "Nome del file SVG presente in assets. Se compilato, sovrascrive l'icona selezionata sopra."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "image_picker",
@@ -1166,7 +1162,7 @@
           "type": "text",
           "id": "custom_icon_2",
           "label": "Icona 2 personalizzata (SVG)",
-          "info": "Nome del file SVG presente in assets. Se compilato, sovrascrive l'icona selezionata sopra."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "image_picker",
@@ -1368,7 +1364,7 @@
           "type": "text",
           "id": "custom_icon_3",
           "label": "Icona 3 personalizzata (SVG)",
-          "info": "Nome del file SVG presente in assets. Se compilato, sovrascrive l'icona selezionata sopra."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "image_picker",

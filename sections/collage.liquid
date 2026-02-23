@@ -217,9 +217,7 @@
                           {% endif %}
                         >
                           <span class="deferred-media__poster-button motion-reduce">
-                            <span class="svg-wrapper">
-                              {{- 'icon-play.svg' | inline_asset_content -}}
-                            </span>
+                            {%- render 'ms_icon', icon: settings.ms_icon_play -%}
                           </span>
 
                           {%- if block.settings.cover_image != blank -%}
@@ -274,9 +272,7 @@
                         class="modal-video__toggle"
                         aria-label="{{ 'accessibility.close' | t }}"
                       >
-                        <span class="svg-wrapper">
-                          {{- 'icon-close.svg' | inline_asset_content -}}
-                        </span>
+                        {%- render 'ms_icon', icon: settings.ms_icon_close -%}
                       </button>
                       <div class="modal-video__content-info">
                         <deferred-media class="modal-video__video template-popup">

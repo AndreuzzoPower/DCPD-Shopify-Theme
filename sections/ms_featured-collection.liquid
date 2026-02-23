@@ -151,9 +151,7 @@
             aria-label="{{ 'general.slider.previous_slide' | t }}"
             aria-controls="Slider-{{ section.id }}"
           >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
@@ -168,9 +166,7 @@
             aria-label="{{ 'general.slider.next_slide' | t }}"
             aria-controls="Slider-{{ section.id }}"
           >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
         </div>
       {%- endif -%}

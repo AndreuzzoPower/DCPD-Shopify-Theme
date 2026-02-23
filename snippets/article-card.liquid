@@ -154,13 +154,11 @@
             {%- if show_date -%}
               <span class="circle-divider">
                 {% if show_icons %}
-                    <span class="svg-wrapper">
-                      {%- if custom_icon_date != blank -%}
-                        {{- custom_icon_date | inline_asset_content -}}
-                      {%- else -%}
-                        {{- 'icon-calendar.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </span> 
+                    {%- if custom_icon_date != blank -%}
+                      {%- render 'ms_icon', icon: custom_icon_date -%}
+                    {%- else -%}
+                      {%- render 'ms_icon', icon: settings.ms_icon_calendar -%}
+                    {%- endif -%}
                 {% endif %}
                 {{ article.published_at | time_tag: format: 'date' }}
               </span>
@@ -171,13 +169,11 @@
                 {% assign reading_time = words | divided_by: words_per_minute %}
                 <span class="circle-divider" aria-label="Reading time" title="Reading time">
                   {% if show_icons %}
-                    <span class="svg-wrapper">
                     {%- if custom_icon_reading != blank -%}
-                      {{- custom_icon_reading | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: custom_icon_reading -%}
                     {%- else -%}
-                      {{- 'icon-clock.svg' | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: settings.ms_icon_clock -%}
                     {%- endif -%}
-                    </span> 
                   {% endif %}
                   {{ reading_time }} {{ "dcpd.collection.ea_view_min" | t }}
                 </span>
@@ -185,13 +181,11 @@
             {%- if show_author -%}
               <span class="circle-divider">
                   {% if show_icons %}
-                    <span class="svg-wrapper">
-                      {%- if custom_icon_author != blank -%}
-                        {{- custom_icon_author | inline_asset_content -}}
-                      {%- else -%}
-                        {{- 'icon-quote.svg' | inline_asset_content -}}
-                      {%- endif -%}
-                    </span> 
+                    {%- if custom_icon_author != blank -%}
+                      {%- render 'ms_icon', icon: custom_icon_author -%}
+                    {%- else -%}
+                      {%- render 'ms_icon', icon: settings.ms_icon_quote -%}
+                    {%- endif -%}
                   {% endif %}
                   {{ article.author }}
               </span>

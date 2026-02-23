@@ -13,9 +13,7 @@
   {%- if settings.social_facebook_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_facebook_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-facebook.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_facebook -%}
         <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
       </a>
     </li>
@@ -23,9 +21,7 @@
   {%- if settings.social_instagram_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_instagram_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-instagram.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_instagram -%}
         <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
       </a>
     </li>
@@ -33,9 +29,7 @@
   {%- if settings.social_youtube_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_youtube_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-youtube.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_youtube -%}
         <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
       </a>
     </li>
@@ -43,9 +37,7 @@
   {%- if settings.social_tiktok_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_tiktok_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-tiktok.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_tiktok -%}
         <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
       </a>
     </li>
@@ -53,9 +45,7 @@
   {%- if settings.social_twitter_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_twitter_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-twitter.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_twitter -%}
         <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
       </a>
     </li>
@@ -63,9 +53,7 @@
   {%- if settings.social_pinterest_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_pinterest_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-pinterest.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_pinterest -%}
         <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
       </a>
     </li>
@@ -73,9 +61,7 @@
   {%- if settings.social_snapchat_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_snapchat_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-snapchat.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_snapchat -%}
         <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
       </a>
     </li>
@@ -83,9 +69,7 @@
   {%- if settings.social_tumblr_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_tumblr_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-tumblr.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_tumblr -%}
         <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
       </a>
     </li>
@@ -93,9 +77,7 @@
   {%- if settings.social_vimeo_link != blank -%}
     <li class="list-social__item">
       <a href="{{ settings.social_vimeo_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-vimeo.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_vimeo -%}
         <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
       </a>
     </li>

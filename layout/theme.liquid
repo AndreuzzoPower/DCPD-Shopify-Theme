@@ -253,6 +253,19 @@
     <link href="{{ 'bootstrap-isolated.css' | asset_url }}" rel="stylesheet">
     {{ 'bootstrap.bundle.min.js' | asset_url | script_tag }}
 
+    {%- comment -%}MS Icons — Libreria icone esterna (se selezionata){%- endcomment -%}
+    {%- case settings.ms_icon_library -%}
+      {%- when 'font-awesome' -%}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+      {%- when 'bootstrap-icons' -%}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+      {%- when 'lineicons' -%}
+        <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css">
+      {%- when 'remixicon' -%}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+    {%- endcase -%}
+    {{ 'ms_icons.css' | asset_url | stylesheet_tag }}
+
     <link href="{{ 'ms_custom.css' | asset_url }}" rel="stylesheet">
 
     {{ 'base.css' | asset_url | stylesheet_tag }}

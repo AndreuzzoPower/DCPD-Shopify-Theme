@@ -64,6 +64,19 @@
   pointer-events: none;
 }
 
+/* ── Separator: Classe libreria icone (iniettato via JS) ── */
+.ms-breadcrumb--class-separator .ms-breadcrumb__separator-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0 0.6rem;
+  font-size: 0.8em;
+  color: var(--ms-breadcrumb-separator-icon-color, rgba(var(--color-foreground), 0.55));
+  pointer-events: none;
+  list-style: none;
+}
+
 /* ── Links ── */
 .ms-breadcrumb__item a {
   color: rgb(var(--color-foreground));

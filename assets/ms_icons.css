@@ -1,0 +1,31 @@
+/* ==========================================================================
+   MS Icons — Stili per il sistema centralizzato icone
+   Supporto SVG inline + librerie icone esterne (Font Awesome, Bootstrap Icons, etc.)
+   ========================================================================== */
+
+.svg-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.svg-wrapper svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.ms-icon-lib {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.ms-icon-lib i {
+  font-size: inherit;
+  line-height: inherit;
+}

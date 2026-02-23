@@ -167,7 +167,7 @@
               name="previous"
               aria-label="{{ 'accessibility.previous_slide' | t }}"
             >
-              <span class="svg-wrapper" aria-hidden="true">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </button>
             <div class="slider-counter caption" aria-hidden="true">
               <span class="slider-counter--current">1</span>
@@ -180,7 +180,7 @@
               name="next"
               aria-label="{{ 'accessibility.next_slide' | t }}"
             >
-              <span class="svg-wrapper" aria-hidden="true">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </button>
           </div>
         {%- endif -%}

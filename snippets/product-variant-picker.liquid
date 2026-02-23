@@ -79,9 +79,7 @@
                 picker_type: picker_type
               %}
             </select>
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </div>
         </div>
       {%- endif -%}

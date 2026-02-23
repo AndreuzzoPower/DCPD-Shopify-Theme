@@ -300,9 +300,7 @@
             name="previous"
             aria-label="{{ 'general.slider.previous_slide' | t }}"
           >
-            <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
@@ -316,9 +314,7 @@
             name="next"
             aria-label="{{ 'general.slider.next_slide' | t }}"
           >
-            <span class="svg-wrapper" aria-hidden="true">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
         </div>
       {%- endif -%}
@@ -605,19 +601,19 @@
       "type": "text",
       "id": "custom_icon_date",
       "label": "Icona data personalizzata (SVG)",
-      "info": "Nome del file SVG negli assets (es. my-icon.svg). Se compilato, sovrascrive l'icona predefinita."
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
     },
     {
       "type": "text",
       "id": "custom_icon_reading",
       "label": "Icona tempo lettura personalizzata (SVG)",
-      "info": "Nome del file SVG negli assets (es. my-icon.svg). Se compilato, sovrascrive l'icona predefinita."
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
     },
     {
       "type": "text",
       "id": "custom_icon_author",
       "label": "Icona autore personalizzata (SVG)",
-      "info": "Nome del file SVG negli assets (es. my-icon.svg). Se compilato, sovrascrive l'icona predefinita."
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
     },
     {
       "type": "header",

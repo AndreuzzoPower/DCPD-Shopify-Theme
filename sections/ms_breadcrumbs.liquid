@@ -22,8 +22,12 @@
   {%- comment -%}Stile dinamico: separatore personalizzabile{%- endcomment -%}
   {%- liquid
     assign has_separator_icon = false
+    assign separator_is_svg = false
     if section.settings.separator_icon != blank
       assign has_separator_icon = true
+      if section.settings.separator_icon contains '.svg'
+        assign separator_is_svg = true
+      endif
     endif
     assign has_home_icon = false
     if section.settings.home_icon != blank
@@ -32,9 +36,9 @@
   -%}
   {%- style -%}
     #section-{{ section.id }} {
-      {%- if has_separator_icon -%}
+      {%- if has_separator_icon and separator_is_svg -%}
         --ms-breadcrumb-separator-icon: url('{{ section.settings.separator_icon | asset_url }}');
-      {%- else -%}
+      {%- elsif has_separator_icon == false -%}
         --ms-breadcrumb-separator: '{{ section.settings.separator | replace: "'", "\\'" }}';
       {%- endif -%}
       {%- if section.settings.home_icon_color != blank -%}
@@ -65,7 +69,7 @@
     endcase
   -%}
 
-  <div id="section-{{ section.id }}" class="ms-breadcrumb ms-breadcrumb--{{ section.settings.alignment }} {% if has_separator_icon %}ms-breadcrumb--icon-separator{% else %}ms-breadcrumb--text-separator{% endif %} color-{{ section.settings.color_scheme }} gradient {{ section.settings.wrapperclass | escape }}">
+  <div id="section-{{ section.id }}" class="ms-breadcrumb ms-breadcrumb--{{ section.settings.alignment }} {% if has_separator_icon and separator_is_svg %}ms-breadcrumb--icon-separator{% elsif has_separator_icon %}ms-breadcrumb--class-separator{% else %}ms-breadcrumb--text-separator{% endif %} color-{{ section.settings.color_scheme }} gradient {{ section.settings.wrapperclass | escape }}">
     {%- if sw_class != blank -%}
       <div class="{{ sw_class }}">
     {%- endif -%}
@@ -77,7 +81,7 @@
           <a href="{{ routes.root_url }}"{% if has_home_icon %} aria-label="{{ section.settings.home_lbl | escape }}"{% endif %}>
             {%- if has_home_icon -%}
               <span class="ms-breadcrumb__home-icon" aria-hidden="true">
-                {{- section.settings.home_icon | inline_asset_content -}}
+                {%- render 'ms_icon', icon: section.settings.home_icon -%}
               </span>
               <span class="visually-hidden">{{ section.settings.home_lbl | escape }}</span>
             {%- else -%}
@@ -488,6 +492,23 @@
     }
   </script>
 
+  {%- if has_separator_icon and separator_is_svg == false -%}
+    <script>
+      (function(){
+        var c = document.querySelector('#section-{{ section.id }} .ms-breadcrumb--class-separator .ms-breadcrumb__list');
+        if (!c) return;
+        var items = c.querySelectorAll('.ms-breadcrumb__item + .ms-breadcrumb__item');
+        items.forEach(function(el){
+          var s = document.createElement('li');
+          s.className = 'ms-breadcrumb__separator-inline';
+          s.setAttribute('aria-hidden', 'true');
+          s.innerHTML = '<i class="{{ section.settings.separator_icon | escape }}"></i>';
+          el.parentNode.insertBefore(s, el);
+        });
+      })();
+    </script>
+  {%- endif -%}
+
   {%- render 'ms_section-style' -%}
 {%- endunless -%}
 
@@ -542,8 +563,8 @@
     {
       "type": "text",
       "id": "home_icon",
-      "label": "Icona Home (SVG)",
-      "info": "Nome del file SVG presente negli assets (es. icon-home.svg). Se compilato, l'icona sostituisce il testo visibile."
+      "label": "Icona Home",
+      "info": "File .svg = asset del tema, altrimenti classe libreria icone (es. fa-solid fa-house). Se compilato, sostituisce il testo visibile."
     },
     {
       "type": "color",
@@ -561,8 +582,8 @@
     {
       "type": "text",
       "id": "separator_icon",
-      "label": "Icona separatore (SVG)",
-      "info": "Nome del file SVG presente negli assets (es. icon-chevron-right.svg). Se compilato, sostituisce il separatore testo."
+      "label": "Icona separatore",
+      "info": "File .svg = asset del tema, altrimenti classe libreria icone (es. fa-solid fa-chevron-right). Se compilato, sostituisce il separatore testo."
     },
     {
       "type": "color",

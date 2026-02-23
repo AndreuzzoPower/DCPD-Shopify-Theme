@@ -54,6 +54,10 @@
   assign rm_style = section.settings.readmore_style | default: 'button'
   assign rm_icon = section.settings.readmore_show_icon
   assign rm_custom_icon = section.settings.readmore_custom_icon
+  assign rm_icon_is_svg = false
+  if rm_custom_icon contains '.svg'
+    assign rm_icon_is_svg = true
+  endif
 -%}
 
 {%- style -%}
@@ -477,28 +481,40 @@
   {% endif %}
 
   {% if rm_icon %}
-    #section-{{ section.id }} .rm-link::after {
-      content: '';
-      display: inline-block;
-      width: 1rem;
-      height: 0.6rem;
-      background: currentColor;
-      {% if rm_custom_icon != blank %}
-        -webkit-mask-image: url('{{ rm_custom_icon | asset_url }}');
-        mask-image: url('{{ rm_custom_icon | asset_url }}');
-      {% else %}
-        -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
-        mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
-      {% endif %}
-      -webkit-mask-size: contain;
-      mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      transition: transform 0.3s ease;
-    }
-    #section-{{ section.id }} .rm-link[data-clicked="true"]::after {
-      transform: rotate(180deg);
-    }
+    {% if rm_custom_icon == blank or rm_icon_is_svg %}
+      #section-{{ section.id }} .rm-link::after {
+        content: '';
+        display: inline-block;
+        width: 1rem;
+        height: 0.6rem;
+        background: currentColor;
+        {% if rm_custom_icon != blank and rm_icon_is_svg %}
+          -webkit-mask-image: url('{{ rm_custom_icon | asset_url }}');
+          mask-image: url('{{ rm_custom_icon | asset_url }}');
+        {% else %}
+          -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='currentColor' fill-rule='evenodd' d='M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708' clip-rule='evenodd'/%3E%3C/svg%3E");
+        {% endif %}
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        transition: transform 0.3s ease;
+      }
+      #section-{{ section.id }} .rm-link[data-clicked="true"]::after {
+        transform: rotate(180deg);
+      }
+    {% else %}
+      #section-{{ section.id }} .rm-link .rm-icon-class {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0.4rem;
+        transition: transform 0.3s ease;
+      }
+      #section-{{ section.id }} .rm-link[data-clicked="true"] .rm-icon-class {
+        transform: rotate(180deg);
+      }
+    {% endif %}
   {% endif %}
 {%- endstyle -%}
 
@@ -555,6 +571,34 @@
 
   </div>
 </div>
+
+{%- if rm_icon and rm_custom_icon != blank and rm_icon_is_svg == false -%}
+  <script>
+    (function(){
+      var sid = '#section-{{ section.id }}';
+      var cls = '{{ rm_custom_icon | escape }}';
+      function inject(){
+        var links = document.querySelectorAll(sid + ' .rm-link');
+        links.forEach(function(l){
+          if (l.querySelector('.rm-icon-class')) return;
+          var s = document.createElement('span');
+          s.className = 'rm-icon-class';
+          s.setAttribute('aria-hidden', 'true');
+          s.innerHTML = '<i class="' + cls + '"></i>';
+          l.appendChild(s);
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ setTimeout(inject, 200); });
+      } else {
+        setTimeout(inject, 200);
+      }
+      var obs = new MutationObserver(function(){ inject(); });
+      var target = document.querySelector(sid);
+      if (target) obs.observe(target, { childList: true, subtree: true });
+    })();
+  </script>
+{%- endif -%}
 
 {%- render 'ms_section-style' -%}
 
@@ -828,8 +872,8 @@
     {
       "type": "text",
       "id": "readmore_custom_icon",
-      "label": "Icona readmore personalizzata (SVG)",
-      "info": "Nome del file SVG negli assets (es. my-caret.svg). Se compilato, sovrascrive l'icona caret predefinita."
+      "label": "Icona readmore personalizzata",
+      "info": "File .svg = asset del tema, altrimenti classe libreria icone (es. fa-solid fa-chevron-down). Se compilato, sovrascrive l'icona caret predefinita."
     },
     {
       "type": "header",

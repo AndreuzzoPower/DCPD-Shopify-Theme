@@ -1,0 +1,38 @@
+{%- comment -%}
+  Snippet: ms_icon.liquid
+  Sistema centralizzato di rendering icone.
+
+  Parametri:
+    - icon (string, obbligatorio): nome file SVG in assets (es. 'icon-arrow.svg')
+                                    OPPURE classe della libreria icone (es. 'fa-solid fa-house').
+                                    Se contiene '.svg' → carica SVG da assets.
+                                    Altrimenti → renderizza come <i class="...">.
+    - class (string, opzionale): classi CSS aggiuntive.
+    - aria_hidden (boolean, opzionale): default true.
+    - aria_label (string, opzionale): label accessibilità (rende aria_hidden false).
+{%- endcomment -%}
+
+{%- if icon == blank -%}
+  {%- break -%}
+{%- endif -%}
+
+{%- liquid
+  assign icon_str = icon | strip
+  assign is_svg = false
+  if icon_str contains '.svg'
+    assign is_svg = true
+  endif
+
+  assign hide_aria = true
+  if aria_hidden == false or aria_label != blank
+    assign hide_aria = false
+  endif
+-%}
+
+{%- if is_svg -%}
+  <span class="svg-wrapper{% if class != blank %} {{ class }}{% endif %}"{% if hide_aria %} aria-hidden="true"{% endif %}{% if aria_label != blank %} role="img" aria-label="{{ aria_label }}"{% endif %}>
+    {{- icon_str | inline_asset_content -}}
+  </span>
+{%- else -%}
+  <i class="{{ icon_str }}{% if class != blank %} {{ class }}{% endif %}"{% if hide_aria %} aria-hidden="true"{% endif %}{% if aria_label != blank %} role="img" aria-label="{{ aria_label }}"{% endif %}></i>
+{%- endif -%}

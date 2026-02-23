@@ -21,9 +21,7 @@
   {%- form 'create_customer', novalidate: 'novalidate' -%}
     {%- if form.errors -%}
       <div class="form__message" tabindex="-1" autofocus>
-        <span class="svg-wrapper">
-          {{- 'icon-error.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
         {{ 'templates.contact.form.error_heading' | t }}
       </div>
       <ul>
@@ -95,9 +93,7 @@
     </div>
     {%- if form.errors contains 'email' -%}
       <span id="RegisterForm-email-error" class="form__message">
-        <span class="svg-wrapper">
-          {{- 'icon-error.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
         {{ form.errors.translated_fields.email | capitalize }}
         {{ form.errors.messages.email }}.
       </span>
@@ -120,9 +116,7 @@
     </div>
     {%- if form.errors contains 'password' -%}
       <span id="RegisterForm-password-error" class="form__message">
-        <span class="svg-wrapper">
-          {{- 'icon-error.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
         {{ form.errors.translated_fields.password | capitalize }}
         {{ form.errors.messages.password }}.
       </span>

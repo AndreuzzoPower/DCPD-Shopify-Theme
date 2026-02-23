@@ -231,9 +231,7 @@
         <span data-predictive-search-search-for-text>
           {{- 'templates.search.search_for' | t: terms: predictive_search.terms -}}
         </span>
-        <span class="svg-wrapper">
-          {{- 'icon-arrow.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
       </button>
     </div>
   </div>

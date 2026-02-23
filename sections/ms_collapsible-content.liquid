@@ -92,7 +92,7 @@
                       <div class="accordion__title inline-richtext h4">
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
                       </div>
-                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                     </summary>
                     <div
                       class="accordion__content rte"
@@ -469,7 +469,7 @@
           "type": "text",
           "id": "custom_icon",
           "label": "Icona personalizzata (SVG)",
-          "info": "Nome del file SVG presente in assets (es. my-icon.svg). Se compilato, sovrascrive l'icona selezionata sopra."
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
         },
         {
           "type": "richtext",

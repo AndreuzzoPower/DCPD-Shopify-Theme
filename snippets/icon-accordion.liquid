@@ -2,12 +2,12 @@
   Snippet: icon-accordion.liquid
   Parametri:
     - icon (string): valore dal select Dawn (es. 'apple', 'check_mark', 'none').
-    - custom_icon (string, opzionale): nome file SVG presente in assets (es. 'my-icon.svg').
+    - custom_icon (string, opzionale): nome file SVG o classe libreria icone.
                                        Se compilato, sovrascrive il valore di `icon`.
 {%- endcomment -%}
 {%- if custom_icon != blank -%}
-  <span class="svg-wrapper" aria-hidden="true">{{ custom_icon | inline_asset_content }}</span>
+  {%- render 'ms_icon', icon: custom_icon -%}
 {%- elsif icon != blank and icon != 'none' -%}
   {%- assign file = icon | replace: '_', '-' | prepend: 'icon-' | append: '.svg' -%}
-  <span class="svg-wrapper" aria-hidden="true">{{ file | inline_asset_content }}</span>
+  {%- render 'ms_icon', icon: file -%}
 {%- endif -%}

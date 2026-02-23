@@ -95,9 +95,7 @@
                     <ul role="list" aria-label="{{ 'customer.order.discount' | t }}">
                       {%- for discount_allocation in line_item.line_level_discount_allocations -%}
                         <li>
-                          <span class="svg-wrapper">
-                            {{- 'icon-discount.svg' | inline_asset_content -}}
-                          </span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_discount -%}
                           {{- discount_allocation.discount_application.title | escape }} (-
                           {{- discount_allocation.amount | money -}}
                           )
@@ -237,9 +235,7 @@
                 <td id="RowDiscount" role="rowheader" scope="row" colspan="4">
                   {{ 'customer.order.discount' | t }}
                   <span class="cart-discount">
-                    <span class="svg-wrapper">
-                      {{- 'icon-discount.svg' | inline_asset_content -}}
-                    </span>
+                    {%- render 'ms_icon', icon: settings.ms_icon_discount -%}
                     {{- discount_application.title | escape -}}
                   </span>
                 </td>
@@ -247,9 +243,7 @@
                   <div>
                     <span>-{{ discount_application.total_allocated_amount | money }}</span>
                     <span class="cart-discount">
-                      <span class="svg-wrapper">
-                        {{- 'icon-discount.svg' | inline_asset_content -}}
-                      </span>
+                      {%- render 'ms_icon', icon: settings.ms_icon_discount -%}
                       {{- discount_application.title | escape -}}
                     </span>
                   </div>

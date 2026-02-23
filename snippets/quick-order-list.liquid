@@ -146,9 +146,7 @@
                   class="{% if items_in_cart == 0 %}hidden{% endif %}"
                 >
                   <button class="button button--tertiary" type="button">
-                    <span class="svg-wrapper">
-                      {{- 'icon-remove.svg' | inline_asset_content -}}
-                    </span>
+                    {%- render 'ms_icon', icon: settings.ms_icon_remove -%}
                     <span class="text-body">{{ 'sections.quick_order_list.remove_all' | t }}</span>
                   </button>
                 </quick-order-list-remove-all-button>
@@ -156,9 +154,7 @@
             </div>
             <span class="quick-order-list__message caption-large" role="status">
               <span class="quick-order-list__message-icon hidden">
-                <span class="svg-wrapper">
-                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                </span>
+                {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
               </span>
               <span class="quick-order-list__message-text"></span>
             </span>
@@ -237,9 +233,7 @@
                   data-action="confirm"
                 >
                   <button class="button button--tertiary" type="button">
-                    <span class="svg-wrapper">
-                      {{- 'icon-remove.svg' | inline_asset_content -}}
-                    </span>
+                    {%- render 'ms_icon', icon: settings.ms_icon_remove -%}
 
                     <span class="text-body">{{ 'sections.quick_order_list.remove_all' | t }}</span>
                   </button>
@@ -248,9 +242,7 @@
             </div>
             <span class="quick-order-list__message caption-large" role="status">
               <span class="quick-order-list__message-icon hidden">
-                <span class="svg-wrapper">
-                  {{- 'icon-checkmark.svg' | inline_asset_content -}}
-                </span>
+                {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
               </span>
               <span class="quick-order-list__message-text"></span>
             </span>
@@ -292,9 +284,7 @@
     {%- endif -%}
   </quick-order-list>
   <template id="QuickOrderListErrorTemplate-{{ product.id }}">
-    <span class="svg-wrapper">
-      {{ 'icon-error.svg' | inline_asset_content }}
-    </span>
+    {%- render 'ms_icon', icon: settings.ms_icon_error -%}
     <span class="quick-order-list-error-message caption-large" role="alert"></span>
   </template>
 </div>

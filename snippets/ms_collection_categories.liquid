@@ -28,7 +28,7 @@
           <div>
             <span>{{ title_categories }}</span>
             <span class="mobile-facets__arrow">
-              {{- 'icon-arrow.svg' | inline_asset_content -}}
+              {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
             </span>
           </div>
         </div>
@@ -42,7 +42,7 @@
             aria-expanded="true"
             type="button"
           >
-            {{- 'icon-arrow.svg' | inline_asset_content -}}
+            {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
             <span>{{ title_categories }}</span>
           </button>
           
@@ -57,7 +57,7 @@
                     <div class="mobile-categories__summary" role="button" tabindex="0">
                       <span class="{% if is_active %}active{% endif %}">{{ link.title }}</span>
                       <span class="mobile-facets__arrow">
-                        {{- 'icon-arrow.svg' | inline_asset_content -}}
+                        {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                       </span>
                     </div>
                     <div class="mobile-categories__children">
@@ -78,7 +78,7 @@
                                 <div class="mobile-categories__child-summary" role="button" tabindex="0">
                                   <span class="{% if is_child_active %}active{% endif %}">{{ child_link.title }}</span>
                                   <span class="mobile-facets__arrow mobile-facets__arrow--small">
-                                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                                    {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                                   </span>
                                 </div>
                                 <div class="mobile-categories__grandchildren">
@@ -134,7 +134,7 @@
           <summary class="facets__summary caption-large focus-offset">
             <div>
               <span>{{ title_categories }}</span>
-              {{- 'icon-caret.svg' | inline_asset_content -}}
+              {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
             </div>
           </summary>
           <div class="facets__display facets-categories__display--horizontal">
@@ -157,12 +157,12 @@
                             {{ link.title }}
                           </a>
                           <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- else -%}
                           <button type="button" class="facets__item-button {% if is_active %}active{% endif %}">
                             <span>{{ link.title }}</span>
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- endif -%}
                       </div>
@@ -185,12 +185,12 @@
                                       {{ child_link.title }}
                                     </a>
                                     <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
-                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- else -%}
                                     <button type="button" class="facets__item-child-button {% if is_child_active %}active{% endif %}">
                                       <span>{{ child_link.title }}</span>
-                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- endif -%}
                                 </div>
@@ -259,12 +259,12 @@
                             {{ link.title }}
                           </a>
                           <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- else -%}
                           <button type="button" class="facets__item-button {% if is_active %}active{% endif %}">
                             <span>{{ link.title }}</span>
-                            {{- 'icon-caret.svg' | inline_asset_content -}}
+                            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- endif -%}
                       </div>
@@ -287,12 +287,12 @@
                                       {{ child_link.title }}
                                     </a>
                                     <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
-                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- else -%}
                                     <button type="button" class="facets__item-child-button {% if is_child_active %}active{% endif %}">
                                       <span>{{ child_link.title }}</span>
-                                      {{- 'icon-caret.svg' | inline_asset_content -}}
+                                      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- endif -%}
                                 </div>

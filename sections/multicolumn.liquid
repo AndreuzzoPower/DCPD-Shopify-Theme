@@ -139,9 +139,7 @@
                       {% endif %}
                     >
                       {{- block.settings.link_label | escape -}}
-                      <span class="svg-wrapper"
-                        ><span class="icon-wrap">&nbsp;{{ 'icon-arrow.svg' | inline_asset_content }}</span></span
-                      >
+                      {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                     </a>
                   {%- endif -%}
                 </div>
@@ -159,7 +157,7 @@
             name="previous"
             aria-label="{{ 'general.slider.previous_slide' | t }}"
           >
-            <span class="svg-wrapper">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
           <div class="slider-counter caption">
             <span class="slider-counter--current">1</span>
@@ -173,7 +171,7 @@
             name="next"
             aria-label="{{ 'general.slider.next_slide' | t }}"
           >
-            <span class="svg-wrapper">{{ 'icon-caret.svg' | inline_asset_content }}</span>
+            {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
           </button>
         </div>
       {%- endif -%}

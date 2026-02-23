@@ -51,9 +51,7 @@
       </div>
       {%- if form.errors -%}
         <small id="RecoverEmail-email-error" class="form__message">
-          <span class="svg-wrapper">
-            {{- 'icon-error.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_error -%}
           {{ form.errors.messages.form }}
         </small>
       {%- endif -%}
@@ -74,9 +72,7 @@
   <div>
     {%- if recover_success == true -%}
       <h3 class="form__message" tabindex="-1" autofocus>
-        <span class="svg-wrapper">
-          {{- 'icon-success.svg' | inline_asset_content -}}
-        </span>
+        {%- render 'ms_icon', icon: settings.ms_icon_success -%}
         {{ 'customer.recover_password.success' | t }}
       </h3>
     {%- endif -%}
@@ -84,9 +80,7 @@
       {%- if form.errors -%}
         <div class="form__message" tabindex="-1" autofocus>
           <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
-          <span class="svg-wrapper">
-            {{- 'icon-error.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_error -%}
           {{ 'templates.contact.form.error_heading' | t }}
         </div>
         {{ form.errors | default_errors }}

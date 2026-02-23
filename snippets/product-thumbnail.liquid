@@ -63,17 +63,11 @@
     >
       {% case media.media_type %}
         {% when 'video', 'external_video' %}
-          <span class="svg-wrapper">
-            {{- 'icon-play.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_play -%}
         {% when 'model' %}
-          <span class="svg-wrapper">
-            {{- 'icon-3d-model.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_3d_model -%}
         {% else %}
-          <span class="svg-wrapper">
-            {{- 'icon-zoom.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_zoom -%}
       {% endcase %}
     </span>
     {%- render 'loading-spinner' -%}
@@ -110,14 +104,10 @@
       <span class="deferred-media__poster-button motion-reduce">
         {%- if media.media_type == 'model' -%}
           <span class="visually-hidden">{{ 'products.product.media.play_model' | t }}</span>
-          <span class="svg-wrapper">
-            {{- 'icon-3d-model.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_3d_model -%}
         {%- else -%}
           <span class="visually-hidden">{{ 'products.product.media.play_video' | t }}</span>
-          <span class="svg-wrapper">
-            {{- 'icon-play.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_play -%}
         {%- endif -%}
       </span>
       {{
@@ -159,9 +149,7 @@
           data-shopify-title="{{ product.title | escape }}"
           data-shopify-xr-hidden
         >
-          <span class="svg-wrapper">
-            {{- 'icon-3d-model.svg' | inline_asset_content -}}
-          </span>
+          {%- render 'ms_icon', icon: settings.ms_icon_3d_model -%}
           {{ 'products.product.xr_button' | t }}
         </button>
       {%- endif -%}
