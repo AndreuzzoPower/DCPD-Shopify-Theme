@@ -12,6 +12,8 @@
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .ms-cl--round-images .card__inner {
@@ -36,7 +38,10 @@
   --ratio-percent: 100% !important;
 }
 
-/* ── Link Overlay Positioning ── */
+/* ── Link Overlay ──
+   L'overlay copre il 100% della card; il testo viene posizionato
+   internamente tramite flexbox (align-items).
+   ─────────────────────────────────────────────────────── */
 .ms-cl--overlay .card.card--media {
   position: relative;
   overflow: hidden;
@@ -44,34 +49,41 @@
 
 .ms-cl--overlay .card.card--media > .card__content {
   position: absolute !important;
+  top: 0;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 2;
   margin: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.ms-cl--overlay .card.card--media > .card__content .card__information {
+  width: 100%;
+}
+
+.ms-cl--overlay .card.card--media > .card__content .card__heading a {
+  text-decoration: none;
 }
 
 .ms-cl--overlay-top .card.card--media > .card__content {
-  top: 0;
-  bottom: auto;
+  justify-content: flex-start;
 }
 
 .ms-cl--overlay-center .card.card--media > .card__content {
-  top: 50%;
-  bottom: auto;
-  transform: translateY(-50%);
+  justify-content: center;
 }
 
 .ms-cl--overlay-bottom .card.card--media > .card__content {
-  top: auto;
-  bottom: 0;
+  justify-content: flex-end;
 }
 
 .ms-cl--overlay .card--text > .card__content {
   position: static !important;
-}
-
-.ms-cl--overlay .card__content .card__heading a {
-  text-decoration: none;
+  display: grid !important;
 }
 
 /* ── Link Alignment ── */
