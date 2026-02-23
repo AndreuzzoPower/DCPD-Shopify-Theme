@@ -150,6 +150,7 @@
   overflow: visible;
 }
 
+.ms-cl--link-pill .card__heading .icon-wrap svg,
 .ms-cl--link-pill .card__heading .icon-wrap .svg-wrapper {
   width: 1em;
   height: 1em;
@@ -181,6 +182,7 @@
   overflow: visible;
 }
 
+.ms-cl--link-button .card__heading .icon-wrap svg,
 .ms-cl--link-button .card__heading .icon-wrap .svg-wrapper {
   width: 1em;
   height: 1em;

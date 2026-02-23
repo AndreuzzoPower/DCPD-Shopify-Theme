@@ -10,16 +10,6 @@
   flex-shrink: 0;
 }
 
-.svg-wrapper svg {
-  fill: currentColor;
-}
-
-/* SVG con posizionamento CSS proprio (es. .icon-caret usa position: absolute):
-   il wrapper diventa trasparente al layout per non interferire */
-.svg-wrapper:has(> .icon-caret) {
-  display: contents;
-}
-
 /* Wrapper per icone da libreria esterna (Font Awesome, Bootstrap Icons, ecc.)
    Ha anche la classe .svg-wrapper per ereditare tutte le dimensioni esistenti */
 .icon-lib-wrapper {
