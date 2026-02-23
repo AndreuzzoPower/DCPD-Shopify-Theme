@@ -42,6 +42,11 @@
   if section.settings.enable_desktop_slider and products_to_display > section.settings.columns_desktop
     assign show_desktop_slider = true
   endif
+
+  assign is_full_width = false
+  if section.settings.section_width == 'full_width'
+    assign is_full_width = true
+  endif
 -%}
 
 <div
@@ -49,7 +54,7 @@
   id="section-{{ section.id }}"
 >
   <div
-    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if is_full_width %} collection--full-width{% endif %}"
     id="collection-{{ section.id }}"
     data-id="{{ section.id }}"
   >
@@ -76,7 +81,7 @@
     <slider-component
       data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
       data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
-      class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and is_full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
     >
       <ul
         id="Slider-{{ section.id }}"
@@ -191,13 +196,40 @@
 {%- render 'ms_section-style' -%}
 {% schema %}
 {
-  "name": "t:sections.featured-collection.name",
+  "name": "MS Featured collection",
   "tag": "section",
   "class": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
     {
       "type": "collection",
       "id": "collection",
@@ -211,10 +243,6 @@
       "step": 1,
       "default": 4,
       "label": "t:sections.featured-collection.settings.products_to_show.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_text.content"
     },
     {
       "type": "liquid",
@@ -282,8 +310,35 @@
       "default": "body"
     },
     {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "t:sections.featured-collection.settings.show_view_all.label",
+      "info": "t:sections.featured-collection.settings.show_view_all.info"
+    },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "t:sections.featured-collection.settings.view_all_style.label",
+      "options": [
+        {
+          "value": "link",
+          "label": "t:sections.featured-collection.settings.view_all_style.options__1.label"
+        },
+        {
+          "value": "outline",
+          "label": "t:sections.featured-collection.settings.view_all_style.options__2.label"
+        },
+        {
+          "value": "solid",
+          "label": "t:sections.featured-collection.settings.view_all_style.options__3.label"
+        }
+      ],
+      "default": "solid"
+    },
+    {
       "type": "header",
-      "content": "t:sections.featured-collection.settings.header_collection.content"
+      "content": "Carosello"
     },
     {
       "type": "range",
@@ -316,48 +371,30 @@
       "label": "Tempo transizione (sec.)"
     },
     {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "t:sections.featured-collection.settings.full_width.label",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "default": true,
-      "label": "t:sections.featured-collection.settings.show_view_all.label",
-      "info": "t:sections.featured-collection.settings.show_view_all.info"
-    },
-    {
       "type": "select",
-      "id": "view_all_style",
-      "label": "t:sections.featured-collection.settings.view_all_style.label",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.featured-collection.settings.columns_mobile.label",
       "options": [
         {
-          "value": "link",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__1.label"
+          "value": "1",
+          "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label"
         },
         {
-          "value": "outline",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__2.label"
-        },
-        {
-          "value": "solid",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__3.label"
+          "value": "2",
+          "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label"
         }
-      ],
-      "default": "solid"
+      ]
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.all.colors.has_cards_info",
-      "default": "scheme-1"
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
     },
     {
       "type": "header",
-      "content": "t:sections.featured-collection.settings.header.content"
+      "content": "Stile"
     },
     {
       "type": "select",
@@ -457,32 +494,6 @@
           "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
         }
       ]
-    },
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_mobile.content"
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "default": "2",
-      "label": "t:sections.featured-collection.settings.columns_mobile.label",
-      "options": [
-        {
-          "value": "1",
-          "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label"
-        },
-        {
-          "value": "2",
-          "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label"
-        }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "swipe_on_mobile",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
     }
   ],
 "blocks":[
@@ -666,7 +677,7 @@
   "presets": [
     {
       "name": "t:sections.featured-collection.presets.name",
-      "category": "Prodotti",
+      "category": "Prodotti & Collezioni"
     }
   ]
 }
