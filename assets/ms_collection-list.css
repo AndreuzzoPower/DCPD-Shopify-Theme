@@ -12,13 +12,13 @@
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  border-radius: 50%;
-  overflow: hidden;
 }
 
 .ms-cl--round-images .card__inner {
   background: transparent !important;
   border: none !important;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .ms-cl--round-images .card__media,
@@ -38,9 +38,21 @@
   --ratio-percent: 100% !important;
 }
 
+/* Round + overlay: il .card diventa il contenitore circolare
+   con clip su tutto (immagine + overlay) */
+.ms-cl--round-images.ms-cl--overlay .card.card--media {
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  aspect-ratio: 1 / 1;
+}
+
+.ms-cl--round-images.ms-cl--overlay .card.card--media > .card__content {
+  border-radius: 50%;
+}
+
 /* ── Link Overlay ──
-   L'overlay copre il 100% della card; il testo viene posizionato
-   internamente tramite flexbox (align-items).
+   L'overlay copre il 100% della card. Il testo viene allineato
+   verticalmente tramite flexbox (justify-content).
    ─────────────────────────────────────────────────────── */
 .ms-cl--overlay .card.card--media {
   position: relative;
@@ -49,20 +61,23 @@
 
 .ms-cl--overlay .card.card--media > .card__content {
   position: absolute !important;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 2;
   margin: 0 !important;
   display: flex !important;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 0;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  grid-template-rows: unset !important;
+  padding: 0 !important;
 }
 
 .ms-cl--overlay .card.card--media > .card__content .card__information {
   width: 100%;
+  flex-grow: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 .ms-cl--overlay .card.card--media > .card__content .card__heading a {
@@ -70,15 +85,15 @@
 }
 
 .ms-cl--overlay-top .card.card--media > .card__content {
-  justify-content: flex-start;
+  justify-content: flex-start !important;
 }
 
 .ms-cl--overlay-center .card.card--media > .card__content {
-  justify-content: center;
+  justify-content: center !important;
 }
 
 .ms-cl--overlay-bottom .card.card--media > .card__content {
-  justify-content: flex-end;
+  justify-content: flex-end !important;
 }
 
 .ms-cl--overlay .card--text > .card__content {
