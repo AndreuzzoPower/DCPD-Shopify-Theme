@@ -1,5 +1,5 @@
 {%- comment -%}
-  Section: collection-list.liquid
+  Section: ms_collection-list.liquid
   Descrizione: Elenco collezioni — griglia o carosello su desktop e mobile.
   Adeguata alle direttive MS (v7).
 {%- endcomment -%}
@@ -7,6 +7,7 @@
 {{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
+{{ 'ms_collection-list.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   comment
@@ -77,30 +78,91 @@
     assign columns = 3
   endif
 
-  assign grid_align = section.settings.grid_alignment | default: 'left'
+  comment
+    ── Card layout helpers ──
+  endcomment
+  assign link_pos = section.settings.card_link_position | default: 'below'
+  assign link_style = section.settings.card_link_style | default: 'link'
+  assign is_overlay = false
+  if link_pos contains 'overlay'
+    assign is_overlay = true
+  endif
 -%}
 
-{%- if grid_align != 'left' -%}
-  {%- liquid
-    case grid_align
-      when 'center'
-        assign justify_val = 'center'
-      when 'right'
-        assign justify_val = 'flex-end'
-    endcase
-  -%}
-  {%- style -%}
+{%- comment -%} ── Stili dinamici (dipendono dai settings) ── {%- endcomment -%}
+{%- style -%}
+  /* Grid alignment */
+  {%- if section.settings.grid_alignment != 'left' -%}
     #section-{{ section.id }} .collection-list:not(.slider) {
-      justify-content: {{ justify_val }};
+      {%- if section.settings.grid_alignment == 'center' -%}
+        justify-content: center;
+      {%- elsif section.settings.grid_alignment == 'right' -%}
+        justify-content: flex-end;
+      {%- endif -%}
     }
     #section-{{ section.id }} .collection-list:not(.slider) > .grid__item {
       flex-grow: 0;
     }
-  {%- endstyle -%}
-{%- endif -%}
+  {%- endif -%}
+
+  /* Card border-radius */
+  {%- if section.settings.card_border_radius > 0 -%}
+    #section-{{ section.id }} .card-wrapper {
+      border-radius: {{ section.settings.card_border_radius }}px;
+      overflow: hidden;
+    }
+    #section-{{ section.id }} .card,
+    #section-{{ section.id }} .card__inner {
+      border-radius: {{ section.settings.card_border_radius }}px;
+    }
+  {%- endif -%}
+
+  /* Card shadow */
+  {%- if section.settings.card_shadow == 'light' -%}
+    #section-{{ section.id }} .card-wrapper { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+  {%- elsif section.settings.card_shadow == 'medium' -%}
+    #section-{{ section.id }} .card-wrapper { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
+  {%- elsif section.settings.card_shadow == 'strong' -%}
+    #section-{{ section.id }} .card-wrapper { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18); }
+  {%- endif -%}
+
+  /* Card background */
+  {%- if section.settings.card_bg_color != blank -%}
+    #section-{{ section.id }} .card {
+      background-color: {{ section.settings.card_bg_color }};
+    }
+  {%- endif -%}
+
+  /* Link area padding */
+  {%- if section.settings.card_link_padding_top != 0
+      or section.settings.card_link_padding_right != 0
+      or section.settings.card_link_padding_bottom != 0
+      or section.settings.card_link_padding_left != 0 -%}
+    #section-{{ section.id }} .card__content .card__information {
+      padding: {{ section.settings.card_link_padding_top }}px {{ section.settings.card_link_padding_right }}px {{ section.settings.card_link_padding_bottom }}px {{ section.settings.card_link_padding_left }}px;
+    }
+  {%- endif -%}
+
+  /* Overlay styles */
+  {%- if is_overlay -%}
+    {%- if section.settings.card_overlay_text_color != blank -%}
+      #section-{{ section.id }}.ms-cl--overlay .card--media > .card__content,
+      #section-{{ section.id }}.ms-cl--overlay .card--media > .card__content a {
+        color: {{ section.settings.card_overlay_text_color }};
+      }
+    {%- endif -%}
+    {%- if section.settings.card_overlay_bg_color != blank -%}
+      {%- assign overlay_alpha = section.settings.card_overlay_bg_opacity | times: 0.01 -%}
+      #section-{{ section.id }}.ms-cl--overlay .card--media > .card__content {
+        background-color: {{ section.settings.card_overlay_bg_color | color_modify: 'alpha', overlay_alpha }};
+        padding: 1rem;
+      }
+    {%- endif -%}
+  {%- endif -%}
+{%- endstyle -%}
 
 <div
-  class="color-{{ section.settings.color_scheme }} gradient"
+  class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.card_image_round %} ms-cl--round-images{% endif %}{% if link_style == 'pill' %} ms-cl--link-pill{% elsif link_style == 'button' %} ms-cl--link-button{% endif %}{% if is_overlay %} ms-cl--overlay ms-cl--{{ link_pos }}{% endif %}"
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
@@ -259,26 +321,11 @@
       "type": "select",
       "id": "heading_size",
       "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
       ],
       "default": "h1",
       "label": "t:sections.all.heading_size.label"
@@ -322,7 +369,7 @@
       "type": "select",
       "id": "grid_alignment",
       "label": "Allineamento griglia",
-      "info": "Allineamento degli elementi nell'ultima riga quando non riempiono tutte le colonne. Applicato solo in modalità griglia.",
+      "info": "Allineamento degli elementi quando non riempiono tutte le colonne. Applicato solo in modalita griglia.",
       "default": "left",
       "options": [
         { "value": "left", "label": "Sinistra" },
@@ -342,7 +389,7 @@
       "id": "enable_autoplay",
       "label": "Abilita autoplay",
       "default": false,
-      "info": "Attiva la rotazione automatica delle slide. Funziona quando il carosello è attivo."
+      "info": "Attiva la rotazione automatica delle slide. Funziona quando il carosello e attivo."
     },
     {
       "type": "range",
@@ -352,7 +399,7 @@
       "step": 1,
       "default": 3,
       "unit": "s",
-      "label": "Velocità autoplay (secondi)",
+      "label": "Velocita autoplay (secondi)",
       "info": "Tempo tra una slide e la successiva."
     },
     {
@@ -363,14 +410,8 @@
       "type": "select",
       "id": "columns_mobile",
       "options": [
-        {
-          "value": "1",
-          "label": "t:sections.collection-list.settings.columns_mobile.options__1.label"
-        },
-        {
-          "value": "2",
-          "label": "t:sections.collection-list.settings.columns_mobile.options__2.label"
-        }
+        { "value": "1", "label": "t:sections.collection-list.settings.columns_mobile.options__1.label" },
+        { "value": "2", "label": "t:sections.collection-list.settings.columns_mobile.options__2.label" }
       ],
       "default": "1",
       "label": "t:sections.collection-list.settings.columns_mobile.label"
@@ -383,27 +424,156 @@
     },
     {
       "type": "header",
-      "content": "Card"
+      "content": "Stile card"
     },
     {
       "type": "select",
       "id": "image_ratio",
       "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.collection-list.settings.image_ratio.options__1.label"
-        },
-        {
-          "value": "portrait",
-          "label": "t:sections.collection-list.settings.image_ratio.options__2.label"
-        },
-        {
-          "value": "square",
-          "label": "t:sections.collection-list.settings.image_ratio.options__3.label"
-        }
+        { "value": "adapt", "label": "t:sections.collection-list.settings.image_ratio.options__1.label" },
+        { "value": "portrait", "label": "t:sections.collection-list.settings.image_ratio.options__2.label" },
+        { "value": "square", "label": "t:sections.collection-list.settings.image_ratio.options__3.label" }
       ],
       "default": "square",
       "label": "t:sections.collection-list.settings.image_ratio.label"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Raggio bordi (border-radius)"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Ombra card",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "light", "label": "Leggera" },
+        { "value": "medium", "label": "Media" },
+        { "value": "strong", "label": "Forte" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "card_image_round",
+      "default": false,
+      "label": "Immagini rotonde",
+      "info": "Ritaglia le immagini in forma circolare (1:1)."
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Sfondo card"
+    },
+    {
+      "type": "header",
+      "content": "Link card"
+    },
+    {
+      "type": "select",
+      "id": "card_link_style",
+      "label": "Stile link",
+      "default": "link",
+      "options": [
+        { "value": "link", "label": "Link (default)" },
+        { "value": "button", "label": "Bottone" },
+        { "value": "pill", "label": "Pill" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "card_link_position",
+      "label": "Posizione link",
+      "default": "below",
+      "options": [
+        { "value": "below", "label": "Sotto l'immagine" },
+        { "value": "overlay_top", "label": "Overlay — in alto" },
+        { "value": "overlay_center", "label": "Overlay — al centro" },
+        { "value": "overlay_bottom", "label": "Overlay — in basso" }
+      ],
+      "info": "La modalita overlay posiziona il testo sopra l'immagine."
+    },
+    {
+      "type": "header",
+      "content": "Padding area link"
+    },
+    {
+      "type": "range",
+      "id": "card_link_padding_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding top"
+    },
+    {
+      "type": "range",
+      "id": "card_link_padding_right",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding right"
+    },
+    {
+      "type": "range",
+      "id": "card_link_padding_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "range",
+      "id": "card_link_padding_left",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Padding left"
+    },
+    {
+      "type": "header",
+      "content": "Overlay (colori)"
+    },
+    {
+      "type": "color",
+      "id": "card_overlay_text_color",
+      "label": "Colore testo overlay",
+      "default": "#ffffff",
+      "info": "Applicato solo quando la posizione del link e in overlay."
+    },
+    {
+      "type": "color",
+      "id": "card_overlay_bg_color",
+      "label": "Sfondo overlay",
+      "default": "#000000",
+      "info": "Colore di sfondo dietro il testo in overlay."
+    },
+    {
+      "type": "range",
+      "id": "card_overlay_bg_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Opacita sfondo overlay"
+    },
+    {
+      "type": "header",
+      "content": "Colori"
     },
     {
       "type": "color_scheme",
@@ -421,7 +591,7 @@
       "id": "show_view_all",
       "default": false,
       "label": "t:sections.collection-list.settings.show_view_all.label",
-      "info": "t:sections.collection-list.settings.show_view_all.info"
+      "info": "Mostra il pulsante quando il numero di collezioni inserite e inferiore al numero totale di collezioni nello shop. Punta alla pagina /collections."
     },
     {
       "type": "select",

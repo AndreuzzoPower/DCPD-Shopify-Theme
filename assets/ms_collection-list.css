@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════
+   MS Collection List — Custom Styles
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Round Images ── */
+.ms-cl--round-images .card__media,
+.ms-cl--round-images .card__media .media {
+  border-radius: 50%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.ms-cl--round-images .card__media img {
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+}
+
+.ms-cl--round-images .card__inner.ratio {
+  --ratio-percent: 100% !important;
+}
+
+/* ── Link Overlay Positioning ── */
+.ms-cl--overlay .card--media {
+  position: relative;
+}
+
+.ms-cl--overlay .card--media > .card__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+}
+
+.ms-cl--overlay .card--media > .card__content .card__heading a {
+  text-decoration: none;
+}
+
+.ms-cl--overlay-top .card--media > .card__content {
+  top: 0;
+}
+
+.ms-cl--overlay-center .card--media > .card__content {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ms-cl--overlay-bottom .card--media > .card__content {
+  bottom: 0;
+}
+
+.ms-cl--overlay .card--text > .card__content {
+  position: static;
+}
+
+/* ── Link Style: Pill ── */
+.ms-cl--link-pill .card__heading a {
+  display: inline-block;
+  padding: 0.45rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ms-cl--link-pill .card__heading a:hover {
+  background-color: rgba(var(--color-foreground), 0.06);
+}
+
+.ms-cl--link-pill .card__heading .icon-wrap {
+  display: none;
+}
+
+/* ── Link Style: Button ── */
+.ms-cl--link-button .card__heading a {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: rgba(var(--color-button), 1);
+  color: rgba(var(--color-button-text), 1);
+  border-radius: 0;
+  text-decoration: none;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  transition: background-color 0.2s ease;
+}
+
+.ms-cl--link-button .card__heading a:hover {
+  background: rgba(var(--color-button), 0.85);
+}
+
+.ms-cl--link-button .card__heading .icon-wrap {
+  display: none;
+}
