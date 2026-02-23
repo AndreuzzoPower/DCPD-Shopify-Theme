@@ -355,12 +355,42 @@
         "mobile_content_alignment": "center",
         "show_text_below": true
       }
+    },
+    "ms_featured_collection_gLNCjA": {
+      "type": "ms_featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "collection": "prova-1",
+        "products_to_show": 11,
+        "title": "Collezione in evidenza",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": true,
+        "description_style": "body",
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "enable_desktop_slider_autoplay": false,
+        "desktop_slider_autoplay_velocita": 3,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "quick_add": "none"
+      }
     }
   },
   "order": [
     "collection_list_cwXwB8",
     "featured_product_WBJUd7",
     "ms_rich_text_XjDUaG",
-    "ms_image_banner_hgtaYa"
+    "ms_image_banner_hgtaYa",
+    "ms_featured_collection_gLNCjA"
   ]
 }
