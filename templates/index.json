@@ -279,10 +279,12 @@
             "button_label": "Etichetta pulsante",
             "button_link": "",
             "button_style_secondary": false,
+            "button_type": "button",
             "button_size": "default",
             "button_label_2": "asasas",
             "button_link_2": "",
             "button_style_secondary_2": true,
+            "button_type_2": "button",
             "button_size_2": "extra_jumbo"
           }
         }
@@ -328,10 +330,12 @@
             "button_label_1": "Etichetta pulsante",
             "button_link_1": "",
             "button_style_secondary_1": false,
+            "button_type_1": "button",
             "button_size_1": "default",
             "button_label_2": "Etichetta pulsante",
             "button_link_2": "",
             "button_style_secondary_2": false,
+            "button_type_2": "button",
             "button_size_2": "default"
           }
         }
@@ -370,6 +374,9 @@
         "show_description": true,
         "description_style": "body",
         "show_view_all": true,
+        "view_all_style_secondary": false,
+        "view_all_type": "button",
+        "view_all_size": "default",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": false,
@@ -417,7 +424,8 @@
             "button_label": "Etichetta pulsante",
             "button_link": "",
             "button_style_secondary": false,
-            "button_size": "small"
+            "button_type": "pill",
+            "button_size": "jumbo"
           }
         }
       },
