@@ -34,5 +34,7 @@
     {{- icon_str | inline_asset_content -}}
   </span>
 {%- else -%}
-  <i class="{{ icon_str }}{% if class != blank %} {{ class }}{% endif %}"{% if hide_aria %} aria-hidden="true"{% endif %}{% if aria_label != blank %} role="img" aria-label="{{ aria_label }}"{% endif %}></i>
+  <span class="svg-wrapper icon-lib-wrapper{% if class != blank %} {{ class }}{% endif %}"{% if hide_aria %} aria-hidden="true"{% endif %}{% if aria_label != blank %} role="img" aria-label="{{ aria_label }}"{% endif %}>
+    <i class="{{ icon_str }}"></i>
+  </span>
 {%- endif -%}

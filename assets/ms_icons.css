@@ -16,16 +16,28 @@
   fill: currentColor;
 }
 
-.ms-icon-lib {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+/* Wrapper per icone da libreria esterna (Font Awesome, Bootstrap Icons, ecc.)
+   Ha anche la classe .svg-wrapper per ereditare tutte le dimensioni esistenti */
+.icon-lib-wrapper {
   font-size: inherit;
   line-height: 1;
+  color: currentColor;
 }
 
-.ms-icon-lib i {
+.icon-lib-wrapper i {
   font-size: inherit;
   line-height: inherit;
+}
+
+/* Contesti specifici: font-size per icone libreria per matchare le dimensioni degli SVG */
+.header__icon .icon-lib-wrapper i {
+  font-size: 2rem;
+}
+
+.quantity__button .icon-lib-wrapper i {
+  font-size: 1rem;
+}
+
+.field__button .icon-lib-wrapper i {
+  font-size: 1.4rem;
 }

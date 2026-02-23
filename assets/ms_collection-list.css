@@ -129,7 +129,9 @@
 
 /* ── Link Style: Pill ── */
 .ms-cl--link-pill .card__heading a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.45rem 1.4rem;
   border-radius: 999px;
   border: 1px solid currentColor;
@@ -141,13 +143,16 @@
   background-color: rgba(var(--color-foreground), 0.06);
 }
 
-.ms-cl--link-pill .card__heading .icon-wrap {
-  display: none;
+.ms-cl--link-pill .card__heading .icon-wrap .svg-wrapper {
+  width: 1em;
+  height: 1em;
 }
 
 /* ── Link Style: Button ── */
 .ms-cl--link-button .card__heading a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.8rem 2rem;
   background: rgba(var(--color-button), 1);
   color: rgba(var(--color-button-text), 1);
@@ -162,6 +167,7 @@
   background: rgba(var(--color-button), 0.85);
 }
 
-.ms-cl--link-button .card__heading .icon-wrap {
-  display: none;
+.ms-cl--link-button .card__heading .icon-wrap .svg-wrapper {
+  width: 1em;
+  height: 1em;
 }
