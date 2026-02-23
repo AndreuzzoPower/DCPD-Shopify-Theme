@@ -143,6 +143,13 @@
   background-color: rgba(var(--color-foreground), 0.06);
 }
 
+.ms-cl--link-pill .card__heading .icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0;
+  overflow: visible;
+}
+
 .ms-cl--link-pill .card__heading .icon-wrap .svg-wrapper {
   width: 1em;
   height: 1em;
@@ -165,6 +172,13 @@
 
 .ms-cl--link-button .card__heading a:hover {
   background: rgba(var(--color-button), 0.85);
+}
+
+.ms-cl--link-button .card__heading .icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0;
+  overflow: visible;
 }
 
 .ms-cl--link-button .card__heading .icon-wrap .svg-wrapper {
