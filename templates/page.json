@@ -100,7 +100,7 @@
       "name": "MS Blog in evidenza",
       "settings": {
         "section_width": "page_width",
-        "blog": "notizie",
+        "blog": "",
         "post_limit": 50,
         "columns_desktop": "3",
         "columns_mobile": "1",
