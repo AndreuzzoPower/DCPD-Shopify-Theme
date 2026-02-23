@@ -23,6 +23,7 @@
     "animations_reveal_on_scroll": true,
     "animations_hover_elements": "default",
     "ms_icon_library": "font-awesome",
+    "ms_icon_filter": "icon-filter.svg",
     "ms_icon_cart": "icon-cart.svg",
     "buttons_border_thickness": 1,
     "buttons_border_opacity": 100,
