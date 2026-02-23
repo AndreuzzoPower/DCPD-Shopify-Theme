@@ -86,6 +86,27 @@
 {% endfor %}
 
 {%- liquid
+  assign sw = section.settings.section_width | default: 'full_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+  case sw
+    when 'narrow'
+      assign content_width_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign content_width_class = 'page-width'
+    when 'page_fluid'
+      assign content_width_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign content_width_class = 'page-width'
+  endcase
+-%}
+
+{%- liquid
   assign full_width = '100vw'
   assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
 
@@ -171,17 +192,24 @@
       }}
     </div>
   {%- endif -%}
-  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+  <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} {{ content_width_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <div
-              class="banner__heading inline-richtext {{ block.settings.heading_size }}"
+            {%- liquid
+              assign title_tag = block.settings.title_tag | default: 'div'
+              assign title_classes = 'banner__heading inline-richtext ' | append: block.settings.heading_size
+              if block.settings.title_custom_class != blank
+                assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+              endif
+            -%}
+            <{{ title_tag }}
+              class="{{ title_classes }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
-            </div>
+            </{{ title_tag }}>
           {%- when 'text' -%}
             <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>
@@ -232,6 +260,32 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.image-banner.settings.image.label"
@@ -240,16 +294,6 @@
       "type": "image_picker",
       "id": "image_2",
       "label": "t:sections.image-banner.settings.image_2.label"
-    },
-    {
-      "type": "range",
-      "id": "image_overlay_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "%",
-      "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
-      "default": 0
     },
     {
       "type": "select",
@@ -300,8 +344,18 @@
       "label": "t:sections.all.animation.image_behavior.label"
     },
     {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
+      "default": 0
+    },
+    {
       "type": "header",
-      "content": "t:sections.image-banner.settings.content.content"
+      "content": "Contenuto"
     },
     {
       "type": "select",
@@ -374,21 +428,15 @@
       "label": "t:sections.image-banner.settings.show_text_box.label"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
-    {
       "type": "header",
-      "content": "t:sections.image-banner.settings.mobile.content"
+      "content": "Mobile"
     },
     {
       "type": "checkbox",
       "id": "stack_images_on_mobile",
       "default": true,
       "label": "t:sections.image-banner.settings.stack_images_on_mobile.label"
-    },    
+    },
     {
       "type": "select",
       "id": "mobile_content_alignment",
@@ -455,6 +503,28 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         }
       ]
     },
@@ -752,6 +822,7 @@
   "presets": [
     {
       "name": "MS Image Banner",
+      "category": "Media",
       "blocks": [
         {
           "type": "heading"
