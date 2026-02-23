@@ -178,7 +178,7 @@
       }
     },
     "featured_product_WBJUd7": {
-      "type": "featured-product",
+      "type": "ms_featured-product",
       "blocks": {
         "text_Ef8EEq": {
           "type": "text",
