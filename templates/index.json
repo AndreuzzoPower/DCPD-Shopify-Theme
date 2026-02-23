@@ -12,6 +12,12 @@
     "collection_list_cwXwB8": {
       "type": "collection-list",
       "blocks": {
+        "section_background_kqWjFH": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#f0066f"
+          }
+        },
         "featured_collection_EyXfd8": {
           "type": "featured_collection",
           "settings": {
@@ -32,6 +38,7 @@
         }
       },
       "block_order": [
+        "section_background_kqWjFH",
         "featured_collection_EyXfd8",
         "featured_collection_rTL389",
         "featured_collection_D3N7Wc"
