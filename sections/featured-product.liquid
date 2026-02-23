@@ -112,8 +112,29 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 
+  {%- liquid
+    assign sw = section.settings.section_width | default: 'page_width'
+    if sw == 'default' or sw == 'contained'
+      assign sw = 'page_width'
+    elsif sw == 'full'
+      assign sw = 'full_width'
+    elsif sw == 'fluid'
+      assign sw = 'page_fluid'
+    endif
+    case sw
+      when 'narrow'
+        assign sw_class = 'page-width page-width--narrow'
+      when 'page_width'
+        assign sw_class = 'page-width'
+      when 'page_fluid'
+        assign sw_class = 'page-width page-width--fluid'
+      when 'full_width'
+        assign sw_class = ''
+    endcase
+  -%}
+
   <section class="color-{{ section.settings.color_scheme }} gradient">
-    <div class="page-width section-{{ section.id }}-padding">
+    <div class="{{ sw_class }} section-{{ section.id }}-padding">
       <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}isolate {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- unless placeholder -%}
@@ -150,13 +171,20 @@
                     {{- block.settings.text -}}
                   </p>
                 {%- when 'title' -%}
-                  <div class="product__title {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
+                  {%- liquid
+                    assign title_tag = block.settings.title_tag | default: 'h2'
+                    assign title_classes = 'product__title ' | append: block.settings.heading_size
+                    if block.settings.title_custom_class != blank
+                      assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+                    endif
+                  -%}
+                  <{{ title_tag }} class="{{ title_classes }}" {{ block.shopify_attributes }}>
                     {%- unless placeholder -%}
                       {{ product.title | escape }}
                     {%- else -%}
                       {{ 'onboarding.product_title' | t }}
                     {%- endunless -%}
-                  </div>
+                  </{{ title_tag }}>
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                     {%- render 'price',
@@ -532,7 +560,7 @@
 
 {% schema %}
 {
-  "name": "MS featured product",
+  "name": "MS Featured product",
   "tag": "section",
   "class": "section section-featured-product",
   "disabled_on": {
@@ -606,6 +634,28 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         }
       ]
     },
@@ -1662,11 +1712,28 @@
       "id": "enable_video_looping",
       "default": false,
       "label": "t:sections.featured-product.settings.enable_video_looping.label"
+    },
+    {
+      "type": "header",
+      "content": "Larghezza sezione"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
     }
   ],
   "presets": [
     {
-      "name": "MS featured product",
+      "name": "MS Featured product",
+      "category": "Prodotti & Collezioni",
       "blocks": [
         {
           "type": "text",
