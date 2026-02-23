@@ -423,9 +423,9 @@
           "settings": {
             "button_label": "Etichetta pulsante",
             "button_link": "",
-            "button_style_secondary": false,
+            "button_style_secondary": true,
             "button_type": "pill",
-            "button_size": "jumbo"
+            "button_size": "large"
           }
         }
       },
@@ -438,8 +438,8 @@
       "name": "MS Image with text",
       "settings": {
         "section_width": "narrow",
-        "section_color_scheme": "",
-        "color_scheme": "",
+        "section_color_scheme": "scheme-5",
+        "color_scheme": "scheme-45900663-4210-4644-83ef-9f6d380a54a5",
         "layout": "text_first",
         "height": "adapt",
         "desktop_image_width": "medium",
