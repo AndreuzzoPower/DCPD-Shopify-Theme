@@ -14,15 +14,57 @@
   }
 {%- endstyle -%}
 
-<div class="isolate{% unless section.settings.full_width %} page-width{% endunless %}">
-  <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if section.settings.full_width %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
-    <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}{% if section.settings.full_width %} page-width{% endif %}">
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+
+  assign is_full = false
+  if sw == 'full_width'
+    assign is_full = true
+  endif
+
+  if section.settings.full_width == true and section.settings.section_width == blank
+    assign is_full = true
+    assign sw = 'full_width'
+  endif
+
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+-%}
+
+<div class="isolate{% unless is_full %} {{ sw_class }}{% endunless %}">
+  <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if is_full %} rich-text--full-width content-container--full-width{% endif %} section-{{ section.id }}-padding">
+    <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}{% if is_full %} page-width{% endif %}">
       <div class="rich-text__blocks {{ section.settings.content_alignment }}">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'heading' -%}
-              <div
-                class="rich-text__heading rte inline-richtext {{ block.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {%- liquid
+                assign title_tag = block.settings.title_tag | default: 'div'
+                assign title_classes = 'rich-text__heading rte inline-richtext ' | append: block.settings.heading_size
+                if block.settings.title_custom_class != blank
+                  assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+                endif
+                if settings.animations_reveal_on_scroll
+                  assign title_classes = title_classes | append: ' scroll-trigger animate--slide-in'
+                endif
+              -%}
+              <{{ title_tag }}
+                class="{{ title_classes }}"
                 {{ block.shopify_attributes }}
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
@@ -30,7 +72,7 @@
                 {% endif %}
               >
                 {{ block.settings.heading }}
-              </div>
+              </{{ title_tag }}>
             {%- when 'caption' -%}
               <p
                 class="rich-text__caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -160,6 +202,32 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
       "type": "select",
       "id": "desktop_content_position",
       "options": [
@@ -198,18 +266,6 @@
       ],
       "default": "center",
       "label": "t:sections.rich-text.settings.content_alignment.label"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "default": true,
-      "label": "t:sections.rich-text.settings.full_width.label"
     },
     {
       "type": "header",
@@ -275,6 +331,28 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         }
       ]
     },
@@ -600,6 +678,7 @@
   "presets": [
     {
       "name": "MS Rich text",
+      "category": "Contenuti",
       "blocks": [
         {
           "type": "heading"

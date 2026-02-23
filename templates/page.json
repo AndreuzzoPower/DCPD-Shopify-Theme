@@ -18,7 +18,7 @@
       }
     },
     "rich_text_ezAqEK": {
-      "type": "rich-text",
+      "type": "ms_rich-text",
       "blocks": {
         "heading_HDELaw": {
           "type": "heading",
