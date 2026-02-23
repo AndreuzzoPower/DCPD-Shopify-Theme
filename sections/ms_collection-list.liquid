@@ -123,7 +123,7 @@
             {%- assign slide_index = slide_index | plus: 1 -%}
             <li
               id="Slide-{{ section.id }}-{{ slide_index }}"
-              class="collection-list__item grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if block.settings.collection.featured_image == nil %} collection-list__item--no-media{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              class="collection-list__item grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if block.settings.custom_image == blank and block.settings.collection.featured_image == nil %} collection-list__item--no-media{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
               {{ block.shopify_attributes }}
               {% if settings.animations_reveal_on_scroll %}
                 data-cascade
@@ -136,7 +136,8 @@
                 card_collection: block.settings.collection,
                 media_aspect_ratio: section.settings.image_ratio,
                 columns: columns,
-                placeholder_image: placeholder_image
+                placeholder_image: placeholder_image,
+                custom_image: block.settings.custom_image
               %}
             </li>
           {%- endif -%}
@@ -414,6 +415,12 @@
           "type": "collection",
           "id": "collection",
           "label": "t:sections.collection-list.blocks.featured_collection.settings.collection.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Immagine personalizzata",
+          "info": "Se presente, sovrascrive l'immagine di default della collezione."
         }
       ]
     },
