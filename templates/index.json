@@ -370,7 +370,6 @@
         "show_description": true,
         "description_style": "body",
         "show_view_all": true,
-        "view_all_style": "solid",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": false,
@@ -384,6 +383,64 @@
         "show_rating": true,
         "quick_add": "none"
       }
+    },
+    "ms_image_with_text_7nGk7K": {
+      "type": "ms_image-with-text",
+      "blocks": {
+        "caption_NFiGFN": {
+          "type": "caption",
+          "settings": {
+            "caption": "Aggiungi una tagline",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "heading_zrKPxi": {
+          "type": "heading",
+          "settings": {
+            "heading": "Immagine con testo",
+            "heading_size": "h1",
+            "title_tag": "h2",
+            "title_custom_class": ""
+          }
+        },
+        "text_RUEDhP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_dYD8QL": {
+          "type": "button",
+          "settings": {
+            "button_label": "Etichetta pulsante",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_size": "small"
+          }
+        }
+      },
+      "block_order": [
+        "caption_NFiGFN",
+        "heading_zrKPxi",
+        "text_RUEDhP",
+        "button_dYD8QL"
+      ],
+      "name": "MS Image with text",
+      "settings": {
+        "section_width": "narrow",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "layout": "text_first",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "image_behavior": "none",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "bottom",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left"
+      }
     }
   },
   "order": [
@@ -391,6 +448,7 @@
     "featured_product_WBJUd7",
     "ms_rich_text_XjDUaG",
     "ms_image_banner_hgtaYa",
-    "ms_featured_collection_gLNCjA"
+    "ms_featured_collection_gLNCjA",
+    "ms_image_with_text_7nGk7K"
   ]
 }
