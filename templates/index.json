@@ -32,27 +32,31 @@
         "featured_collection_EyXfd8": {
           "type": "featured_collection",
           "settings": {
-            "collection": "prova-1"
+            "collection": "prova-1",
+            "custom_label": ""
           }
         },
         "featured_collection_rTL389": {
           "type": "featured_collection",
           "settings": {
-            "collection": "prova-2"
+            "collection": "prova-2",
+            "custom_label": "Coll PErs"
           }
         },
         "featured_collection_D3N7Wc": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_mnexwN": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_KKwGTH": {
@@ -60,56 +64,64 @@
           "disabled": true,
           "settings": {
             "collection": "altra-cat",
-            "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png"
+            "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
+            "custom_label": ""
           }
         },
         "featured_collection_MxWnVr": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_YQcxGx": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_wHFd7P": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_dWiGCe": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_FJGyww": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_cUmT6B": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         },
         "featured_collection_JKEkpM": {
           "type": "featured_collection",
           "disabled": true,
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_label": ""
           }
         }
       },
@@ -149,6 +161,7 @@
         "card_image_round": true,
         "card_bg_color": "rgba(0,0,0,0)",
         "card_link_style": "pill",
+        "card_link_alignment": "left",
         "card_link_position": "below",
         "card_link_padding_top": 0,
         "card_link_padding_right": 0,
