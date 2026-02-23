@@ -10,9 +10,9 @@
   flex-shrink: 0;
 }
 
-/* Sizing default per SVG dentro il wrapper.
-   .icon-caret è escluso perché ha posizionamento CSS autonomo in base.css */
-.svg-wrapper svg:not(.icon-caret) {
+/* Fallback sizing per SVG personalizzati senza la classe .icon del tema Dawn.
+   Gli SVG del tema (con .icon) mantengono le proprie dimensioni da base.css */
+.svg-wrapper svg:not(.icon) {
   width: 1em;
   height: 1em;
 }
