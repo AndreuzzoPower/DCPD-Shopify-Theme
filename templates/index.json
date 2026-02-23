@@ -165,7 +165,7 @@
         "card_link_style": "pill",
         "card_link_alignment": "center",
         "card_show_icon": true,
-        "card_link_position": "overlay-center",
+        "card_link_position": "below",
         "card_link_padding_top": 0,
         "card_link_padding_right": 0,
         "card_link_padding_bottom": 0,
