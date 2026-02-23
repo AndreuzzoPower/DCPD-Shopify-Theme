@@ -147,7 +147,7 @@
         "card_border_radius": 6,
         "card_shadow": "medium",
         "card_image_round": true,
-        "card_bg_color": "#ffffff",
+        "card_bg_color": "rgba(0,0,0,0)",
         "card_link_style": "pill",
         "card_link_position": "below",
         "card_link_padding_top": 0,
