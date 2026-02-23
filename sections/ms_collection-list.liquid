@@ -92,6 +92,13 @@
 
 {%- comment -%} ── Stili dinamici (dipendono dai settings) ── {%- endcomment -%}
 {%- style -%}
+  /* Title & description alignment */
+  {%- if section.settings.title_alignment != 'left' -%}
+    #section-{{ section.id }} .ms-cl-header {
+      text-align: {{ section.settings.title_alignment }};
+    }
+  {%- endif -%}
+
   /* Grid alignment */
   {%- if section.settings.grid_alignment != 'left' -%}
     #section-{{ section.id }} .collection-list:not(.slider) {
@@ -167,26 +174,23 @@
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
-  <div class="collection-list-wrapper isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}{% if section.settings.title == blank %} no-heading{% endif %}{% if section.settings.show_view_all == false or collection_blocks_count > collections.size %} no-mobile-link{% endif %}">
-    {%- unless section.settings.title == blank -%}
-      <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% else %} title-wrapper--self-padded-mobile{% endif %} title-wrapper--no-top-margin">
-        <{{ title_tag }}
-          id="SectionHeading-{{ section.id }}"
-          class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-        >
-          {{ section.settings.title }}
-        </{{ title_tag }}>
-
-        {%- if section.settings.show_view_all and show_mobile_slider -%}
-          <a
-            href="{{ routes.collections_url }}"
-            id="ViewAll-{{ section.id }}"
-            class="link underlined-link large-up-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+  <div class="collection-list-wrapper isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}{% if section.settings.title == blank and section.settings.description == blank %} no-heading{% endif %}">
+    {%- unless section.settings.title == blank and section.settings.description == blank -%}
+      <div class="ms-cl-header title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% else %} title-wrapper--self-padded-mobile{% endif %} title-wrapper--no-top-margin">
+        {%- unless section.settings.title == blank -%}
+          <{{ title_tag }}
+            id="SectionHeading-{{ section.id }}"
+            class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           >
-            {{- 'sections.collection_list.view_all' | t -}}
-          </a>
-        {%- endif -%}
+            {{ section.settings.title }}
+          </{{ title_tag }}>
+        {%- endunless -%}
+
+        {%- unless section.settings.description == blank -%}
+          <div class="ms-cl-description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.description }}
+          </div>
+        {%- endunless -%}
       </div>
     {%- endunless -%}
 
@@ -260,23 +264,6 @@
       {%- endif -%}
     </slider-component>
 
-    {%- if section.settings.show_view_all and collection_blocks_count < collections.size -%}
-      <div
-        class="center collection-list-view-all{% if show_mobile_slider %} small-hide medium-hide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-        {% if settings.animations_reveal_on_scroll %}
-          data-cascade
-        {% endif %}
-      >
-        <a
-          href="{{ routes.collections_url }}"
-          class="button{%- render 'ms_button_size', size: section.settings.button_size -%}"
-          id="ViewAllButton-{{ section.id }}"
-          aria-labelledby="ViewAllButton-{{ section.id }} SectionHeading-{{ section.id }}"
-        >
-          {{- 'sections.collection_list.view_all' | t -}}
-        </a>
-      </div>
-    {%- endif -%}
   </div>
   {%- if sw_class != blank -%}</div>{%- endif -%}
 </div>
@@ -353,6 +340,22 @@
       "id": "title_custom_class",
       "label": "Classe CSS personalizzata titolo",
       "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Testo sotto il titolo"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Allineamento titolo e testo",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ]
     },
     {
       "type": "header",
@@ -595,32 +598,6 @@
       "info": "t:sections.all.colors.has_cards_info",
       "default": "scheme-1"
     },
-    {
-      "type": "header",
-      "content": "Pulsante \"Vedi tutto\""
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "default": false,
-      "label": "t:sections.collection-list.settings.show_view_all.label",
-      "info": "Mostra il pulsante quando il numero di collezioni inserite e inferiore al numero totale di collezioni nello shop. Punta alla pagina /collections."
-    },
-    {
-      "type": "select",
-      "id": "button_size",
-      "label": "Dimensione pulsante \"Vedi tutto\"",
-      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema > Pulsanti.",
-      "default": "default",
-      "options": [
-        { "value": "default", "label": "Predefinita" },
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "jumbo", "label": "Jumbo" },
-        { "value": "extra_jumbo", "label": "Extra Jumbo" }
-      ]
-    }
   ],
   "blocks": [
     {
