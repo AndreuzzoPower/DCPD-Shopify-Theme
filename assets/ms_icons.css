@@ -80,8 +80,9 @@ details[open] > .header__menu-item > .svg-wrapper {
   pointer-events: auto;
 }
 
-/* Disclosure buttons (lingua, valuta): caret allineato al testo */
-.disclosure__button {
+/* Disclosure buttons (lingua, valuta): caret allineato al testo.
+   Specificità alta per sovrascrivere .link { display: inline-block } di base.css */
+.disclosure__button.localization-form__select {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -100,7 +101,7 @@ details[open] > .header__menu-item > .svg-wrapper {
 }
 
 /* Cart drawer note summary: caret allineato */
-.summary__title {
+summary > .summary__title {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
