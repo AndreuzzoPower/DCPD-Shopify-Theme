@@ -302,11 +302,65 @@
         "padding_top": 40,
         "padding_bottom": 52
       }
+    },
+    "ms_image_banner_hgtaYa": {
+      "type": "ms_image-banner",
+      "blocks": {
+        "heading_G3xg6f": {
+          "type": "heading",
+          "settings": {
+            "heading": "Immagine banner",
+            "heading_size": "h1",
+            "title_tag": "h1",
+            "title_custom_class": ""
+          }
+        },
+        "text_yQRY66": {
+          "type": "text",
+          "settings": {
+            "text": "Fornisci ai clienti dettagli sulle immagini del banner o sul contenuto del modello.",
+            "text_style": "body"
+          }
+        },
+        "buttons_hYd7Qr": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Etichetta pulsante",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_size_1": "default",
+            "button_label_2": "Etichetta pulsante",
+            "button_link_2": "",
+            "button_style_secondary_2": false,
+            "button_size_2": "default"
+          }
+        }
+      },
+      "block_order": [
+        "heading_G3xg6f",
+        "text_yQRY66",
+        "buttons_hYd7Qr"
+      ],
+      "name": "MS Image Banner",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "image_height": "medium",
+        "image_behavior": "none",
+        "image_overlay_opacity": 0,
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
     }
   },
   "order": [
     "collection_list_cwXwB8",
     "featured_product_WBJUd7",
-    "ms_rich_text_XjDUaG"
+    "ms_rich_text_XjDUaG",
+    "ms_image_banner_hgtaYa"
   ]
 }
