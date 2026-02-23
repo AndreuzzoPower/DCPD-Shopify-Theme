@@ -47,9 +47,35 @@
   font-size: 1.4rem;
 }
 
-/* Menu dropdown caret: il wrapper diventa trasparente (display: contents) per
-   preservare il posizionamento assoluto di .icon-caret definito in base.css
-   (summary .icon-caret { position: absolute; right: 1.5rem }) */
-summary .svg-wrapper:has(> .icon-caret) {
-  display: contents;
+/* Menu dropdown caret: il wrapper assume il posizionamento assoluto del caret
+   per preservare le regole di base.css (summary .icon-caret) */
+summary > .svg-wrapper {
+  position: absolute;
+  right: 1.5rem;
+  top: calc(50% - 0.2rem);
+  height: 0.6rem;
+  width: auto;
+  pointer-events: none;
+}
+
+summary > .svg-wrapper .icon-caret {
+  position: static;
+  height: 100%;
+  width: auto;
+}
+
+.header__menu-item.list-menu__item > .svg-wrapper {
+  right: 0.8rem;
+}
+
+details[open] > .header__menu-item > .svg-wrapper {
+  transform: rotate(180deg);
+}
+
+.header__submenu .svg-wrapper {
+  position: static;
+  height: auto;
+  flex-shrink: 0;
+  margin-left: 1rem;
+  pointer-events: auto;
 }
