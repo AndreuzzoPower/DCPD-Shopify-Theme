@@ -83,6 +83,7 @@
   endcomment
   assign link_pos = section.settings.card_link_position | default: 'below'
   assign link_style = section.settings.card_link_style | default: 'link'
+  assign link_align = section.settings.card_link_alignment | default: 'left'
   assign is_overlay = false
   if link_pos contains 'overlay'
     assign is_overlay = true
@@ -162,7 +163,7 @@
 {%- endstyle -%}
 
 <div
-  class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.card_image_round %} ms-cl--round-images{% endif %}{% if link_style == 'pill' %} ms-cl--link-pill{% elsif link_style == 'button' %} ms-cl--link-button{% endif %}{% if is_overlay %} ms-cl--overlay ms-cl--{{ link_pos }}{% endif %}"
+  class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.card_image_round %} ms-cl--round-images{% endif %}{% if link_style == 'pill' %} ms-cl--link-pill{% elsif link_style == 'button' %} ms-cl--link-button{% endif %}{% if is_overlay %} ms-cl--overlay ms-cl--{{ link_pos }}{% endif %}{% if link_align != 'left' %} ms-cl--align-link-{{ link_align }}{% endif %}"
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
@@ -220,7 +221,8 @@
                 media_aspect_ratio: section.settings.image_ratio,
                 columns: columns,
                 placeholder_image: placeholder_image,
-                custom_image: block.settings.custom_image
+                custom_image: block.settings.custom_image,
+                custom_label: block.settings.custom_label
               %}
             </li>
           {%- endif -%}
@@ -488,6 +490,17 @@
     },
     {
       "type": "select",
+      "id": "card_link_alignment",
+      "label": "Allineamento link",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "card_link_position",
       "label": "Posizione link",
       "default": "below",
@@ -624,6 +637,12 @@
           "id": "custom_image",
           "label": "Immagine personalizzata",
           "info": "Se presente, sovrascrive l'immagine di default della collezione."
+        },
+        {
+          "type": "text",
+          "id": "custom_label",
+          "label": "Label personalizzata",
+          "info": "Se compilata, sovrascrive il nome della collezione nel link/bottone."
         }
       ]
     },

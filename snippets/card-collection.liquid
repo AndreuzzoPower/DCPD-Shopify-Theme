@@ -9,6 +9,7 @@
   - wrapper_class: {String} Wrapper class for card (optional)
   - placeholder_image: {String} Placeholder image when collection is empty (optional)
   - custom_image: {Object} Image picker object. If provided, overrides the collection featured_image (optional)
+  - custom_label: {String} Custom text label. If provided, overrides the collection title (optional)
 
   Usage:
   {% render 'card-collection' %}
@@ -18,6 +19,11 @@
   assign card_image = card_collection.featured_image
   if custom_image != blank
     assign card_image = custom_image
+  endif
+
+  assign card_title = card_collection.title
+  if custom_label != blank
+    assign card_title = custom_label
   endif
 
   assign ratio = 1
@@ -98,8 +104,8 @@
                 {% endif %}
                 class="full-unstyled-link"
               >
-                {%- if card_collection.title != blank -%}
-                  {{- card_collection.title | escape -}}
+                {%- if card_title != blank -%}
+                  {{- card_title | escape -}}
                 {%- else -%}
                   {{ 'onboarding.collection_title' | t }}
                 {%- endif -%}
@@ -134,8 +140,8 @@
               {% endif %}
               class="full-unstyled-link"
             >
-              {%- if card_collection.title != blank -%}
-                {{- card_collection.title | escape -}}
+              {%- if card_title != blank -%}
+                {{- card_title | escape -}}
               {%- else -%}
                 {{ 'onboarding.collection_title' | t }}
               {%- endif -%}

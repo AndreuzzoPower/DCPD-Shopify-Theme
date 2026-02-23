@@ -3,6 +3,22 @@
    ═══════════════════════════════════════════════════════ */
 
 /* ── Round Images ── */
+.ms-cl--round-images .card-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ms-cl--round-images .card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ms-cl--round-images .card__inner {
+  background: transparent !important;
+  border: none !important;
+}
+
 .ms-cl--round-images .card__media,
 .ms-cl--round-images .card__media .media {
   border-radius: 50%;
@@ -21,37 +37,58 @@
 }
 
 /* ── Link Overlay Positioning ── */
-.ms-cl--overlay .card--media {
+.ms-cl--overlay .card.card--media {
   position: relative;
+  overflow: hidden;
 }
 
-.ms-cl--overlay .card--media > .card__content {
-  position: absolute;
+.ms-cl--overlay .card.card--media > .card__content {
+  position: absolute !important;
   left: 0;
   right: 0;
   z-index: 2;
-  margin: 0;
+  margin: 0 !important;
 }
 
-.ms-cl--overlay .card--media > .card__content .card__heading a {
-  text-decoration: none;
-}
-
-.ms-cl--overlay-top .card--media > .card__content {
+.ms-cl--overlay-top .card.card--media > .card__content {
   top: 0;
+  bottom: auto;
 }
 
-.ms-cl--overlay-center .card--media > .card__content {
+.ms-cl--overlay-center .card.card--media > .card__content {
   top: 50%;
+  bottom: auto;
   transform: translateY(-50%);
 }
 
-.ms-cl--overlay-bottom .card--media > .card__content {
+.ms-cl--overlay-bottom .card.card--media > .card__content {
+  top: auto;
   bottom: 0;
 }
 
 .ms-cl--overlay .card--text > .card__content {
-  position: static;
+  position: static !important;
+}
+
+.ms-cl--overlay .card__content .card__heading a {
+  text-decoration: none;
+}
+
+/* ── Link Alignment ── */
+.ms-cl--align-link-center .card__content .card__information {
+  text-align: center;
+}
+
+.ms-cl--align-link-center .card__heading {
+  text-align: center;
+}
+
+.ms-cl--align-link-right .card__content .card__information {
+  text-align: right;
+}
+
+.ms-cl--align-link-right .card__heading {
+  text-align: right;
 }
 
 /* ── Link Style: Pill ── */
