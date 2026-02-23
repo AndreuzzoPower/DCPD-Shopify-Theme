@@ -1,72 +1,5 @@
 {{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
 
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
-{% for block in section.blocks %}
-  {% if block.type == 'section_padding' %}
-    <style>
-      #shopify-section-{{ section.id }} {
-        padding-top: {{ block.settings.section_padding_top }}px;
-        padding-bottom: {{ block.settings.section_padding_bottom }}px;
-      }
-      @media all and (min-width: 768px) and (max-width: 991px) {
-        #shopify-section-{{ section.id }} {
-          padding-top: {{ block.settings.section_padding_top_md }}px;
-          padding-bottom: {{ block.settings.section_padding_bottom_md }}px;
-        }
-      }
-      @media all and (max-width: 767px) {
-        #shopify-section-{{ section.id }} {
-          padding-top: {{ block.settings.section_padding_top_xs }}px;
-          padding-bottom: {{ block.settings.section_padding_bottom_xs }}px;
-        }
-      }
-    </style>
-  {% endif %}
-  {% if block.type == 'section_margin' %}
-    <style>
-      #shopify-section-{{ section.id }} {
-        margin-top: {{ block.settings.section_margin_top }}px;
-        margin-bottom: {{ block.settings.section_margin_bottom }}px;
-      }
-      @media all and (min-width: 768px) and (max-width: 991px) {
-        #shopify-section-{{ section.id }} {
-          margin-top: {{ block.settings.section_margin_top_md }}px;
-          margin-bottom: {{ block.settings.section_margin_bottom_md }}px;
-        }
-      }
-      @media all and (max-width: 767px) {
-        #shopify-section-{{ section.id }} {
-          margin-top: {{ block.settings.section_margin_top_xs }}px;
-          margin-bottom: {{ block.settings.section_margin_bottom_xs }}px;
-        }
-      }
-    </style>
-  {% endif %}
-  {% if block.type == 'section_background' %}
-    <style>
-      #shopify-section-{{ section.id }} {
-        background-color: {{ block.settings.section_bg_color }};
-        background-image: url({{ block.settings.section_bg_image | image_url }});
-        background-size: cover;
-        background-repeat: no-repeat;
-      }
-    </style>
-  {% endif %}
-{% endfor %}
-
 {%- liquid
   assign fetch_priority = 'auto'
   if section.index == 1
@@ -75,10 +8,22 @@
   if section.settings.color_scheme == section.settings.section_color_scheme and section.settings.content_layout == 'no-overlap'
     assign remove_color_classes = true
   endif
+
+  assign sw = section.settings.section_width | default: 'page_width'
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
 -%}
 
-<div class="section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
-  <div class="page-width">
+<div class="gradient color-{{ section.settings.section_color_scheme }}" id="section-{{ section.id }}">
+  <div class="{{ sw_class }}">
     <div class="image-with-text image-with-text--{{ section.settings.content_layout }} isolate{% if settings.text_boxes_border_thickness > 0 and settings.text_boxes_border_opacity > 0 and settings.media_border_thickness > 0 and settings.media_border_opacity > 0 %} collapse-borders{% endif %}{% unless section.settings.color_scheme == section.settings.section_color_scheme and settings.media_border_thickness > 0 and settings.text_boxes_shadow_opacity == 0 and settings.text_boxes_border_thickness == 0 or settings.text_boxes_border_opacity == 0 %} collapse-corners{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.layout == 'text_first' %} image-with-text__grid--reverse{% endif %}">
         <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
@@ -120,12 +65,19 @@
             {%- for block in section.blocks -%}
               {% case block.type %}
                 {%- when 'heading' -%}
-                  <div
-                    class="image-with-text__heading inline-richtext {{ block.settings.heading_size }}"
+                  {%- liquid
+                    assign title_tag = block.settings.title_tag | default: 'h2'
+                    assign title_classes = 'image-with-text__heading inline-richtext ' | append: block.settings.heading_size
+                    if block.settings.title_custom_class != blank
+                      assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+                    endif
+                  -%}
+                  <{{ title_tag }}
+                    class="{{ title_classes }}"
                     {{ block.shopify_attributes }}
                   >
                     {{ block.settings.heading }}
-                  </div>
+                  </{{ title_tag }}>
                 {%- when 'caption' -%}
                   <p
                     class="image-with-text__text image-with-text__text--caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }} {{ block.settings.text_style }}"
@@ -159,6 +111,7 @@
     </div>
   </div>
 </div>
+{%- render 'ms_section-style' -%}
 
 {% schema %}
 {
@@ -168,6 +121,54 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.multirow.settings.container_color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Immagine a sinistra"
+        },
+        {
+          "value": "text_first",
+          "label": "Immagine a destra"
+        }
+      ],
+      "default": "image_first",
+      "label": "t:sections.image-with-text.settings.layout.label"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
     {
       "type": "image_picker",
       "id": "image",
@@ -219,22 +220,6 @@
     },
     {
       "type": "select",
-      "id": "layout",
-      "options": [
-        {
-          "value": "image_first",
-          "label": "Immagine a sinistra"
-        },
-        {
-          "value": "text_first",
-          "label": "Immagine a destra"
-        }
-      ],
-      "default": "image_first",
-      "label": "t:sections.image-with-text.settings.layout.label"
-    },
-    {
-      "type": "select",
       "id": "image_behavior",
       "options": [
         {
@@ -255,8 +240,8 @@
     },
     {
       "type": "header",
-      "content": "t:sections.image-with-text.settings.header.content"
-    }, 
+      "content": "Contenuto"
+    },
     {
       "type": "select",
       "id": "content_layout",
@@ -272,7 +257,7 @@
       ],
       "default": "no-overlap",
       "label": "t:sections.image-with-text.settings.content_layout.label"
-    },       
+    },
     {
       "type": "select",
       "id": "desktop_content_position",
@@ -314,6 +299,10 @@
       "label": "t:sections.image-with-text.settings.desktop_content_alignment.label"
     },
     {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
       "type": "select",
       "id": "mobile_content_alignment",
       "options": [
@@ -332,22 +321,6 @@
       ],
       "default": "left",
       "label": "t:sections.image-with-text.settings.mobile_content_alignment.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.image-with-text.settings.header_colors.content"
-    },        
-    {
-      "type": "color_scheme",
-      "id": "section_color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.multirow.settings.container_color_scheme.label",
-      "default": "scheme-1"
     }
   ],
   "blocks": [
@@ -389,6 +362,28 @@
           ],
           "default": "h1",
           "label": "t:sections.all.heading_size.label"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         }
       ]
     },
@@ -690,6 +685,7 @@
   "presets": [
     {
       "name": "MS Image with text",
+      "category": "Media",
       "blocks": [
         {
           "type": "heading"
