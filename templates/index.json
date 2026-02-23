@@ -45,7 +45,8 @@
         "featured_collection_KKwGTH": {
           "type": "featured_collection",
           "settings": {
-            "collection": "altra-cat"
+            "collection": "altra-cat",
+            "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png"
           }
         },
         "featured_collection_MxWnVr": {
