@@ -145,7 +145,7 @@
       "settings": {
         "section_width": "page_width",
         "title": "Collezioni",
-        "heading_size": "h1",
+        "heading_size": "h0",
         "title_tag": "h2",
         "title_custom_class": "",
         "description": "<p>Testo introduttivo delle collection</p>",
@@ -164,7 +164,7 @@
         "card_bg_color": "rgba(0,0,0,0)",
         "card_link_style": "pill",
         "card_link_alignment": "center",
-        "card_link_position": "overlay_bottom",
+        "card_link_position": "overlay_center",
         "card_link_padding_top": 0,
         "card_link_padding_right": 0,
         "card_link_padding_bottom": 0,
