@@ -79,3 +79,17 @@ details[open] > .header__menu-item > .svg-wrapper {
   margin-left: 1rem;
   pointer-events: auto;
 }
+
+/* Disclosure buttons (lingua, valuta): caret inline dopo il testo */
+.disclosure__button > .svg-wrapper {
+  width: 1rem;
+  height: 0.6rem;
+  margin-left: 0.4rem;
+}
+
+/* Cart drawer note summary: caret inline */
+.summary__title > .svg-wrapper {
+  width: 1rem;
+  height: 0.6rem;
+  margin-left: 0.6rem;
+}
