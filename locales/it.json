@@ -130,7 +130,9 @@
         "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> nel carrello",
         "note": "Visualizza regole sulla quantità",
         "min_of": "Min {{ quantity }}",
-        "max_of": "Max {{ quantity }}"
+        "max_of": "Max {{ quantity }}",
+        "min_order": "Quantità minima d'ordine: {{ quantity }}",
+        "min_order_cart_warning": "La quantità minima per questo prodotto è di {{ quantity }} unità"
       },
       "price": {
         "from_price_html": "Da {{ price }}",

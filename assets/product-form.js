@@ -21,6 +21,19 @@ if (!customElements.get('product-form')) {
         evt.preventDefault();
         if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
 
+        const msMinOrder = parseInt(this.dataset.msMinOrder || '0', 10);
+        if (msMinOrder > 0) {
+          const qtyInput = this.form.querySelector('[name="quantity"]');
+          const qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+          if (qty < msMinOrder) {
+            const msg = window.msMinOrderStrings
+              ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
+              : `Minimum order: ${msMinOrder}`;
+            this.handleErrorMessage(msg);
+            return;
+          }
+        }
+
         this.handleErrorMessage();
 
         this.submitButton.setAttribute('aria-disabled', true);

@@ -2129,5 +2129,24 @@
         "label": "Privacy ID"
       }      
     ]
+  },
+  {
+    "name": "Minimo d'ordine",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "ms_min_order_enabled",
+        "label": "Attiva minimo d'ordine",
+        "default": false,
+        "info": "Se attivo, applica una quantità minima acquistabile per ogni prodotto."
+      },
+      {
+        "type": "number",
+        "id": "ms_min_order_default",
+        "label": "Quantità minima predefinita",
+        "default": 1,
+        "info": "Valore di default se il metafield 'custom.minimo_d_ordine' del prodotto è vuoto o 0."
+      }
+    ]
   }
 ]

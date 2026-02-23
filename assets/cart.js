@@ -60,7 +60,12 @@ class CartItems extends HTMLElement {
     const index = event.target.dataset.index;
     let message = '';
 
-    if (inputValue < event.target.dataset.min) {
+    const msMinOrder = parseInt(event.target.dataset.msMinOrder || '0', 10);
+    if (msMinOrder > 0 && inputValue > 0 && inputValue < msMinOrder) {
+      message = window.msMinOrderStrings
+        ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
+        : `Minimum order: ${msMinOrder}`;
+    } else if (inputValue < event.target.dataset.min) {
       message = window.quickOrderListStrings.min_error.replace('[min]', event.target.dataset.min);
     } else if (inputValue > parseInt(event.target.max)) {
       message = window.quickOrderListStrings.max_error.replace('[max]', event.target.max);

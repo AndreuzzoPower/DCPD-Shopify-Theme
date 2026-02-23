@@ -37,6 +37,30 @@
         </cart-note>
       {%- endif -%}
 
+      {%- liquid
+        assign ms_min_order_violation = false
+        if settings.ms_min_order_enabled
+          for item in cart.items
+            assign chk_meta = item.product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+            assign chk_ms_min = 0
+            if chk_meta > 0
+              assign chk_ms_min = chk_meta
+            elsif settings.ms_min_order_default > 0
+              assign chk_ms_min = settings.ms_min_order_default | plus: 0
+            endif
+            assign chk_native = item.variant.quantity_rule.min | default: 1
+            if chk_ms_min > chk_native
+              assign chk_eff = chk_ms_min
+            else
+              assign chk_eff = chk_native
+            endif
+            if item.quantity > 0 and item.quantity < chk_eff
+              assign ms_min_order_violation = true
+              break
+            endif
+          endfor
+        endif
+      -%}
       <div class="cart__blocks">
         {% for block in section.blocks %}
           {%- case block.type -%}
@@ -110,7 +134,7 @@
                   id="checkout"
                   class="cart__checkout-button button"
                   name="checkout"
-                  {% if cart == empty %}
+                  {% if cart == empty or ms_min_order_violation %}
                     disabled
                   {% endif %}
                   form="cart"

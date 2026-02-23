@@ -24,10 +24,28 @@
       endif
     -%}
 
+    {%- liquid
+      assign ms_min_qty = 0
+      if settings.ms_min_order_enabled
+        assign meta_val = product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+        if meta_val > 0
+          assign ms_min_qty = meta_val
+        elsif settings.ms_min_order_default > 0
+          assign ms_min_qty = settings.ms_min_order_default | plus: 0
+        endif
+      endif
+      assign native_min = product.selected_or_first_available_variant.quantity_rule.min | default: 1
+      if ms_min_qty > native_min
+        assign effective_min = ms_min_qty
+      else
+        assign effective_min = native_min
+      endif
+    -%}
     <product-form
       class="product-form"
       data-hide-errors="{{ gift_card_recipient_feature_active }}"
       data-section-id="{{ section.id }}"
+      data-ms-min-order="{{ effective_min }}"
     >
       <div class="product-form__error-message-wrapper" role="alert" hidden>
         {%- render 'ms_icon', icon: settings.ms_icon_error -%}

@@ -150,7 +150,9 @@
         "min_of": "Min {{ quantity }}",
         "max_of": "Max {{ quantity }}",
         "in_cart_html": "<span class=\"quantity-cart\">{{ quantity }}</span> in cart",
-        "note": "View quantity rules"
+        "note": "View quantity rules",
+        "min_order": "Minimum order quantity: {{ quantity }}",
+        "min_order_cart_warning": "The minimum order for this product is {{ quantity }} units"
       },
       "volume_pricing": {
         "title": "Volume Pricing",

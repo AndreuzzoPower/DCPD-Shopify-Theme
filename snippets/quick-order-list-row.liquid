@@ -280,7 +280,18 @@
             {% # theme-check-disable %}
             {% assign cart_qty = cart | item_count_for_variant: variant.id %}
             {% # theme-check-enable %}
-            {% render 'quantity-input', variant: variant, min: 0 %}
+            {%- liquid
+              assign qol_ms_min = 0
+              if settings.ms_min_order_enabled
+                assign qol_meta = variant.product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+                if qol_meta > 0
+                  assign qol_ms_min = qol_meta
+                elsif settings.ms_min_order_default > 0
+                  assign qol_ms_min = settings.ms_min_order_default | plus: 0
+                endif
+              endif
+            -%}
+            {% render 'quantity-input', variant: variant, min: 0, ms_min_order: qol_ms_min %}
           {%- endif -%}
         </div>
         {% if cart_qty > 0 %}

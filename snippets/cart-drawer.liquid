@@ -268,6 +268,22 @@
                           if item.variant.quantity_price_breaks.size > 0
                             assign has_vol_pricing = true
                           endif
+
+                          assign cart_ms_min = 0
+                          if settings.ms_min_order_enabled
+                            assign cart_meta = item.product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+                            if cart_meta > 0
+                              assign cart_ms_min = cart_meta
+                            elsif settings.ms_min_order_default > 0
+                              assign cart_ms_min = settings.ms_min_order_default | plus: 0
+                            endif
+                          endif
+                          assign cart_native_min = item.variant.quantity_rule.min | default: 1
+                          if cart_ms_min > cart_native_min
+                            assign cart_effective_min = cart_ms_min
+                          else
+                            assign cart_effective_min = cart_native_min
+                          endif
                         -%}
                         <td
                           class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}"
@@ -297,7 +313,8 @@
                                     {% # theme-check-disable %}
                                     data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
                                     min="0"
-                                    data-min="{{ item.variant.quantity_rule.min }}"
+                                    data-min="{{ cart_effective_min }}"
+                                    data-ms-min-order="{{ cart_effective_min }}"
                                     {% if item.variant.quantity_rule.max != null %}
                                       max="{{ item.variant.quantity_rule.max }}"
                                     {% endif %}
@@ -423,6 +440,11 @@
                               {%- render 'ms_icon', icon: settings.ms_icon_error -%}
                             </div>
                           </quantity-popover>
+                          {%- if cart_effective_min > 1 and item.quantity < cart_effective_min and item.quantity > 0 -%}
+                            <p class="cart-item__error caption" style="color: rgb(var(--color-error));">
+                              {{ 'products.product.quantity.min_order_cart_warning' | t: quantity: cart_effective_min }}
+                            </p>
+                          {%- endif -%}
                         </td>
                       </tr>
                     {%- endfor -%}
@@ -525,6 +547,30 @@
 
         <!-- CTAs -->
 
+        {%- liquid
+          assign ms_min_order_violation = false
+          if settings.ms_min_order_enabled
+            for item in cart.items
+              assign chk_meta = item.product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+              assign chk_ms_min = 0
+              if chk_meta > 0
+                assign chk_ms_min = chk_meta
+              elsif settings.ms_min_order_default > 0
+                assign chk_ms_min = settings.ms_min_order_default | plus: 0
+              endif
+              assign chk_native = item.variant.quantity_rule.min | default: 1
+              if chk_ms_min > chk_native
+                assign chk_eff = chk_ms_min
+              else
+                assign chk_eff = chk_native
+              endif
+              if item.quantity > 0 and item.quantity < chk_eff
+                assign ms_min_order_violation = true
+                break
+              endif
+            endfor
+          endif
+        -%}
         <div class="cart__ctas" {{ block.shopify_attributes }}>
           <button
             type="submit"
@@ -532,7 +578,7 @@
             class="cart__checkout-button button"
             name="checkout"
             form="CartDrawer-Form"
-            {% if cart == empty %}
+            {% if cart == empty or ms_min_order_violation %}
               disabled
             {% endif %}
           >

@@ -252,6 +252,23 @@
                       >
                     </span>
                   </label>
+                  {%- liquid
+                    assign ms_min_qty = 0
+                    if settings.ms_min_order_enabled
+                      assign meta_val = product.metafields.custom.minimo_d_ordine.value | default: 0 | plus: 0
+                      if meta_val > 0
+                        assign ms_min_qty = meta_val
+                      elsif settings.ms_min_order_default > 0
+                        assign ms_min_qty = settings.ms_min_order_default | plus: 0
+                      endif
+                    endif
+                    assign native_min = product.selected_or_first_available_variant.quantity_rule.min | default: 1
+                    if ms_min_qty > native_min
+                      assign effective_min = ms_min_qty
+                    else
+                      assign effective_min = native_min
+                    endif
+                  -%}
                   <div class="price-per-item__container">
                     <quantity-input class="quantity" data-url="{{ product.url }}" data-section="{{ section.id }}">
                       <button class="quantity__button" name="minus" type="button">
@@ -266,14 +283,15 @@
                         name="quantity"
                         id="Quantity-{{ section.id }}"
                         data-cart-quantity="{{ cart_qty }}"
-                        data-min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
-                        min="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                        data-min="{{ effective_min }}"
+                        data-ms-min-order="{{ effective_min }}"
+                        min="{{ effective_min }}"
                         {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
                           data-max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
                           max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
                         {% endif %}
                         step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
-                        value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
+                        value="{{ effective_min }}"
                         form="{{ product_form_id }}"
                       >
                       <button class="quantity__button" name="plus" type="button">
@@ -369,19 +387,16 @@
                     {%- endif -%}
                   </div>
                   <div class="quantity__rules caption" id="Quantity-Rules-{{ section.id }}">
+                    {%- if effective_min > 1 -%}
+                      <span class="divider">
+                        {{- 'products.product.quantity.min_order' | t: quantity: effective_min -}}
+                      </span>
+                    {%- endif -%}
                     {%- if product.selected_or_first_available_variant.quantity_rule.increment > 1 -%}
                       <span class="divider">
                         {{-
                           'products.product.quantity.multiples_of'
                           | t: quantity: product.selected_or_first_available_variant.quantity_rule.increment
-                        -}}
-                      </span>
-                    {%- endif -%}
-                    {%- if product.selected_or_first_available_variant.quantity_rule.min > 1 -%}
-                      <span class="divider">
-                        {{-
-                          'products.product.quantity.minimum_of'
-                          | t: quantity: product.selected_or_first_available_variant.quantity_rule.min
                         -}}
                       </span>
                     {%- endif -%}
