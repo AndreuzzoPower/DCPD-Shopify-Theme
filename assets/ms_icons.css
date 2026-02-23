@@ -46,3 +46,10 @@
 .field__button .icon-lib-wrapper i {
   font-size: 1.4rem;
 }
+
+/* Menu dropdown caret: il wrapper diventa trasparente (display: contents) per
+   preservare il posizionamento assoluto di .icon-caret definito in base.css
+   (summary .icon-caret { position: absolute; right: 1.5rem }) */
+summary .svg-wrapper:has(> .icon-caret) {
+  display: contents;
+}
