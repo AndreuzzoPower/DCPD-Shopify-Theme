@@ -12,6 +12,17 @@
     "collection_list_cwXwB8": {
       "type": "ms_collection-list",
       "blocks": {
+        "section_padding_dkew3b": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 5,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 30
+          }
+        },
         "section_background_kqWjFH": {
           "type": "section_background",
           "settings": {
@@ -93,6 +104,7 @@
         }
       },
       "block_order": [
+        "section_padding_dkew3b",
         "section_background_kqWjFH",
         "featured_collection_EyXfd8",
         "featured_collection_rTL389",
