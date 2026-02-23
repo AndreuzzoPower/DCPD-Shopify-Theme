@@ -1,7 +1,8 @@
 {%- comment -%}
   Section: ms_featured-blog.liquid
   Descrizione: Blog in evidenza — mostra articoli dal blog selezionato in un carosello.
-               Se nessun blog è selezionato, mostra gli ultimi articoli da TUTTI i blog
+               Se nessun blog è selezionato ma è impostato un "Menu blog",
+               mostra gli ultimi articoli da tutti i blog presenti nel menu,
                ordinati per data di pubblicazione (più recenti prima).
   Adeguata alle direttive MS (v7).
 {%- endcomment -%}
@@ -43,23 +44,35 @@
 
   comment
     ── Raccolta articoli ──
-    Se un blog è selezionato, usa quelli.
-    Altrimenti raccoglie gli ultimi articoli da TUTTI i blog,
-    ordinati per data di pubblicazione (più recenti prima).
+    1. Blog selezionato → usa quello.
+    2. Nessun blog ma menu blog impostato → raccoglie gli articoli
+       da tutti i blog presenti nel menu, ordinati per data DESC.
+    3. Nessuno dei due → messaggio "Nessun articolo".
+    Nota: in Shopify Liquid, `blogs` NON è iterabile con for.
+    Si usa un link_list (menu) contenente link ai blog desiderati.
   endcomment
   assign has_selected_blog = false
+  assign has_multi_blog = false
   assign all_articles = '' | split: ''
   assign total_articles_count = 0
 
   if section.settings.blog != blank
     assign has_selected_blog = true
     assign total_articles_count = section.settings.blog.articles_count
-  else
-    for b in blogs
-      assign all_articles = all_articles | concat: b.articles
-    endfor
-    assign all_articles = all_articles | sort: 'published_at' | reverse
-    assign total_articles_count = all_articles.size
+  elsif section.settings.blogs_menu != blank
+    assign _menu = linklists[section.settings.blogs_menu]
+    if _menu != blank and _menu.links.size > 0
+      for link in _menu.links
+        if link.type == 'blog_link'
+          assign all_articles = all_articles | concat: link.object.articles
+        endif
+      endfor
+      assign all_articles = all_articles | sort: 'published_at' | reverse
+      assign total_articles_count = all_articles.size
+      if total_articles_count > 0
+        assign has_multi_blog = true
+      endif
+    endif
   endif
 
   assign posts_displayed = total_articles_count
@@ -206,9 +219,9 @@
             </li>
           {%- endfor -%}
 
-        {%- elsif has_selected_blog == false and all_articles.size > 0 -%}
+        {%- elsif has_multi_blog -%}
           {%- comment -%}
-            ── Nessun blog selezionato → ultimi post da TUTTI i blog ──
+            ── Nessun blog selezionato → ultimi post da tutti i blog nel menu ──
             Gli articoli sono già ordinati per published_at DESC.
             Per ogni articolo, risaliamo al blog di appartenenza tramite l'URL.
           {%- endcomment -%}
@@ -249,16 +262,10 @@
           {%- endfor -%}
 
         {%- else -%}
-          {%- comment -%} ── Nessun articolo disponibile — messaggio informativo ── {%- endcomment -%}
+          {%- comment -%} ── Nessun articolo disponibile ── {%- endcomment -%}
           <li class="blog__post grid__item article slider__slide slider__slide--full-width">
-            <div class="article-card-wrapper card-wrapper">
-              <div class="card article-card card--text">
-                <div class="card__content">
-                  <div class="card__information">
-                    <p class="card__heading">{{ 'sections.featured_blog.onboarding_title' | t }}</p>
-                  </div>
-                </div>
-              </div>
+            <div class="ms-fb__no-articles">
+              <p>{{ 'sections.featured_blog.no_articles' | t }}</p>
             </div>
           </li>
         {%- endif -%}
@@ -370,7 +377,13 @@
       "type": "blog",
       "id": "blog",
       "label": "t:sections.featured-blog.settings.blog.label",
-      "info": "Se non selezionato, verranno mostrati gli ultimi articoli da tutti i blog, ordinati per data."
+      "info": "Seleziona un blog specifico. Se vuoto, verrà usato il 'Menu blog' sottostante."
+    },
+    {
+      "type": "link_list",
+      "id": "blogs_menu",
+      "label": "Menu blog (per tutti i blog)",
+      "info": "Se nessun blog è selezionato sopra, scegli un menu di navigazione contenente link ai blog. Verranno mostrati gli ultimi articoli da tutti i blog presenti nel menu, ordinati per data."
     },
     {
       "type": "range",

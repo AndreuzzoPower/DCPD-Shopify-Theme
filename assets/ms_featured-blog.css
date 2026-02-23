@@ -142,7 +142,21 @@
 }
 
 /* --------------------------------------------------------------------------
-   11. Accessibility — Focus visible
+   11. No articles message
+   -------------------------------------------------------------------------- */
+.ms-fb__no-articles {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: rgba(var(--color-foreground), 0.6);
+  font-size: 1.4rem;
+}
+
+.ms-fb__no-articles p {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   12. Accessibility — Focus visible
    -------------------------------------------------------------------------- */
 .ms-featured-blog a:focus-visible,
 .ms-featured-blog button:focus-visible {

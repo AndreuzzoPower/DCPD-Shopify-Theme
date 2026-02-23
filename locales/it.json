@@ -330,7 +330,8 @@
     "featured_blog": {
       "view_all": "Visualizza tutto",
       "onboarding_title": "Articolo del blog",
-      "onboarding_content": "Offri ai clienti un riepilogo dell'articolo del blog"
+      "onboarding_content": "Offri ai clienti un riepilogo dell'articolo del blog",
+      "no_articles": "Nessun articolo presente. Seleziona un blog o configura un menu con i link ai blog."
     },
     "featured_collection": {
       "view_all": "Visualizza tutto",
