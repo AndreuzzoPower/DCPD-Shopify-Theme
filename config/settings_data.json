@@ -182,6 +182,7 @@
     "iub_siteid": "",
     "iub_cookieid": "",
     "iub_privacyid": "",
+    "ms_min_order_enabled": true,
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
