@@ -80,16 +80,40 @@ details[open] > .header__menu-item > .svg-wrapper {
   pointer-events: auto;
 }
 
-/* Disclosure buttons (lingua, valuta): caret inline dopo il testo */
-.disclosure__button > .svg-wrapper {
-  width: 1rem;
-  height: 0.6rem;
-  margin-left: 0.4rem;
+/* Disclosure buttons (lingua, valuta): caret allineato al testo */
+.disclosure__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-/* Cart drawer note summary: caret inline */
-.summary__title > .svg-wrapper {
+.disclosure__button > .svg-wrapper {
+  position: static;
   width: 1rem;
   height: 0.6rem;
-  margin-left: 0.6rem;
+}
+
+.disclosure__button > .svg-wrapper .icon-caret {
+  position: static;
+  height: 100%;
+  width: auto;
+}
+
+/* Cart drawer note summary: caret allineato */
+.summary__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.summary__title > .svg-wrapper {
+  position: static;
+  width: 1rem;
+  height: 0.6rem;
+}
+
+.summary__title > .svg-wrapper .icon-caret {
+  position: static;
+  height: 100%;
+  width: auto;
 }
