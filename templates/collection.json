@@ -60,7 +60,7 @@
       ],
       "settings": {
         "layout": "side_by_side",
-        "section_width": "narrow",
+        "section_width": "page_width",
         "desktop_text_width": "50",
         "text_content_width": "100",
         "text_alignment": "left",
@@ -82,6 +82,7 @@
         "readmore_position": "center",
         "readmore_style": "button",
         "readmore_show_icon": false,
+        "readmore_custom_icon": "",
         "overlay_color": "#000000",
         "overlay_opacity": 40,
         "overlay_text_color": "#ffffff"
@@ -115,6 +116,9 @@
         "ea_show_author": true,
         "ea_show_reading": true,
         "ea_show_icons": false,
+        "ea_custom_icon_date": "",
+        "ea_custom_icon_reading": "",
+        "ea_custom_icon_author": "",
         "ea_show_excerpt": true,
         "ea_show_blog_name": false,
         "ea_show_tags": false,
