@@ -2,6 +2,15 @@
    MS Collection List — Custom Styles
    ═══════════════════════════════════════════════════════ */
 
+/* ── Header (titolo + descrizione) ── */
+.ms-cl-header.title-wrapper-with-link {
+  display: block;
+}
+
+.ms-cl-description {
+  margin-top: 0.8rem;
+}
+
 /* ── Round Images ── */
 .ms-cl--round-images .card-wrapper {
   background: transparent !important;

@@ -10,6 +10,8 @@
   - placeholder_image: {String} Placeholder image when collection is empty (optional)
   - custom_image: {Object} Image picker object. If provided, overrides the collection featured_image (optional)
   - custom_label: {String} Custom text label. If provided, overrides the collection title (optional)
+  - show_icon: {Boolean} Whether to show the arrow icon next to the link (optional, default true)
+  - custom_icon: {Object} Image picker object for a custom icon. If provided, replaces the default arrow SVG (optional)
 
   Usage:
   {% render 'card-collection' %}
@@ -25,6 +27,10 @@
   if custom_label != blank
     assign card_title = custom_label
   endif
+
+  unless show_icon == false
+    assign show_icon = true
+  endunless
 
   assign ratio = 1
   if card_image and media_aspect_ratio == 'portrait'
@@ -109,9 +115,13 @@
                 {%- else -%}
                   {{ 'onboarding.collection_title' | t }}
                 {%- endif -%}
-                {%- if card_collection.description == blank -%}
+                {%- if card_collection.description == blank and show_icon -%}
                   <span class="icon-wrap">
-                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- if custom_icon != blank -%}
+                      <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                    {%- else -%}
+                      {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- endif -%}
                   </span>
                 {%- endif %}
               </a>
@@ -119,9 +129,15 @@
             {%- if card_collection.description != blank -%}
               <p class="card__caption">
                 {{- card_collection.description | strip_html | truncatewords: 12 -}}
-                <span class="icon-wrap">
-                  {{- 'icon-arrow.svg' | inline_asset_content -}}
-                </span>
+                {%- if show_icon -%}
+                  <span class="icon-wrap">
+                    {%- if custom_icon != blank -%}
+                      <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                    {%- else -%}
+                      {{- 'icon-arrow.svg' | inline_asset_content -}}
+                    {%- endif -%}
+                  </span>
+                {%- endif -%}
               </p>
             {%- endif -%}
           </div>
@@ -145,9 +161,13 @@
               {%- else -%}
                 {{ 'onboarding.collection_title' | t }}
               {%- endif -%}
-              {%- if card_image or card_collection.description == blank -%}
+              {%- if show_icon and card_image or show_icon and card_collection.description == blank -%}
                 <span class="icon-wrap">
-                  {{- 'icon-arrow.svg' | inline_asset_content -}}
+                  {%- if custom_icon != blank -%}
+                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                  {%- else -%}
+                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                  {%- endif -%}
                 </span>
               {%- endif %}
             </a>
@@ -155,9 +175,15 @@
           {%- if card_image == null and card_collection.description != blank -%}
             <p class="card__caption">
               {{- card_collection.description | strip_html | truncatewords: 12 -}}
-              <span class="icon-wrap">
-                {{- 'icon-arrow.svg' | inline_asset_content -}}
-              </span>
+              {%- if show_icon -%}
+                <span class="icon-wrap">
+                  {%- if custom_icon != blank -%}
+                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                  {%- else -%}
+                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
             </p>
           {%- endif -%}
         </div>
@@ -169,9 +195,15 @@
           <div class="card__heading card__heading--placeholder">
             <a role="link" aria-disabled="true" class="full-unstyled-link">
               {{ 'onboarding.collection_title' | t }}
-              <span class="icon-wrap">
-                {{- 'icon-arrow.svg' | inline_asset_content -}}
-              </span>
+              {%- if show_icon -%}
+                <span class="icon-wrap">
+                  {%- if custom_icon != blank -%}
+                    <img src="{{ custom_icon | image_url: width: 20 }}" alt="" width="20" height="20" loading="lazy">
+                  {%- else -%}
+                    {{- 'icon-arrow.svg' | inline_asset_content -}}
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
             </a>
           </div>
         </div>

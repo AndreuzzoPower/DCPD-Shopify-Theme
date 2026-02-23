@@ -226,7 +226,9 @@
                 columns: columns,
                 placeholder_image: placeholder_image,
                 custom_image: block.settings.custom_image,
-                custom_label: block.settings.custom_label
+                custom_label: block.settings.custom_label,
+                show_icon: section.settings.card_show_icon,
+                custom_icon: section.settings.card_custom_icon
               %}
             </li>
           {%- endif -%}
@@ -503,15 +505,27 @@
       ]
     },
     {
+      "type": "checkbox",
+      "id": "card_show_icon",
+      "default": true,
+      "label": "Mostra icona nel link"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_custom_icon",
+      "label": "Icona personalizzata",
+      "info": "Se presente, sovrascrive l'icona freccia di default. Consigliato: SVG o PNG trasparente di piccole dimensioni."
+    },
+    {
       "type": "select",
       "id": "card_link_position",
       "label": "Posizione link",
       "default": "below",
       "options": [
         { "value": "below", "label": "Sotto l'immagine" },
-        { "value": "overlay_top", "label": "Overlay — in alto" },
-        { "value": "overlay_center", "label": "Overlay — al centro" },
-        { "value": "overlay_bottom", "label": "Overlay — in basso" }
+        { "value": "overlay-top", "label": "Overlay — in alto" },
+        { "value": "overlay-center", "label": "Overlay — al centro" },
+        { "value": "overlay-bottom", "label": "Overlay — in basso" }
       ],
       "info": "La modalita overlay posiziona il testo sopra l'immagine."
     },
