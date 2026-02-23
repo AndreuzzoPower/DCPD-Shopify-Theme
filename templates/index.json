@@ -148,6 +148,8 @@
         "heading_size": "h1",
         "title_tag": "h2",
         "title_custom_class": "",
+        "description": "<p>Testo introduttivo delle collection</p>",
+        "title_alignment": "center",
         "columns_desktop": 3,
         "grid_alignment": "center",
         "enable_desktop_slider": false,
@@ -170,9 +172,7 @@
         "card_overlay_text_color": "#ffffff",
         "card_overlay_bg_color": "#121212",
         "card_overlay_bg_opacity": 45,
-        "color_scheme": "",
-        "show_view_all": true,
-        "button_size": "default"
+        "color_scheme": ""
       }
     }
   },
