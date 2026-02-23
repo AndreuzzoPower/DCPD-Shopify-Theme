@@ -17,8 +17,10 @@
   <h1 class="title">
     {{ 'templates.404.title' | t }}
   </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button {%- render 'ms_button_size', size: section.settings.button_size -%}">
+  <a href="{{ routes.all_products_collection_url }}" class="{%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}">
+    {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
     {{ 'general.continue_shopping' | t }}
+    {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'after' -%}
   </a>
 </div>
 
@@ -27,6 +29,10 @@
   "name": "Pagina 404",
   "tag": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Pulsante"
+    },
     {
       "type": "select",
       "id": "button_size",
@@ -40,6 +46,40 @@
         { "value": "large", "label": "Large" },
         { "value": "jumbo", "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "Stile contorno",
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
       ]
     }
   ]

@@ -113,11 +113,7 @@
   comment
     ── Button style + sizing ──
   endcomment
-  assign btn_style = section.settings.button_style | default: 'button'
-  assign btn_size_class = ''
 -%}
-
-{%- capture btn_size_class -%}{%- render 'ms_button_size', size: section.settings.button_size -%}{%- endcapture -%}
 
 {%- comment -%} ── Stili dinamici card (dipendono dai settings) ── {%- endcomment -%}
 {%- style -%}
@@ -330,35 +326,16 @@
         {%- liquid
           assign view_all_text = 'sections.featured_blog.view_all' | t
         -%}
-        {%- case btn_style -%}
-          {%- when 'pill' -%}
-            <a
-              href="{{ section.settings.blog.url }}"
-              id="ViewAll-{{ section.id }}"
-              class="ms-fb__view-all-btn ms-fb__view-all-btn--pill{{ btn_size_class }}"
-              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
-            >
-              {{ view_all_text }}
-            </a>
-          {%- when 'link' -%}
-            <a
-              href="{{ section.settings.blog.url }}"
-              id="ViewAll-{{ section.id }}"
-              class="ms-fb__view-all-btn ms-fb__view-all-btn--link"
-              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
-            >
-              {{ view_all_text }}
-            </a>
-          {%- else -%}
-            <a
-              href="{{ section.settings.blog.url }}"
-              id="ViewAll-{{ section.id }}"
-              class="ms-fb__view-all-btn button{{ btn_size_class }}"
-              aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
-            >
-              {{ view_all_text }}
-            </a>
-        {%- endcase -%}
+        <a
+          href="{{ section.settings.blog.url }}"
+          id="ViewAll-{{ section.id }}"
+          class="ms-fb__view-all-btn {%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
+          aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+        >
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
+          {{ view_all_text }}
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'after' -%}
+        </a>
       </div>
     {%- endif -%}
   </div>
@@ -732,29 +709,52 @@
     },
     {
       "type": "select",
-      "id": "button_style",
-      "label": "Stile pulsante",
-      "options": [
-        { "value": "button", "label": "Bottone" },
-        { "value": "pill", "label": "Pill" },
-        { "value": "link", "label": "Link" }
-      ],
-      "default": "button"
-    },
-    {
-      "type": "select",
       "id": "button_size",
       "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
       "options": [
-        { "value": "default", "label": "Predefinita (globale)" },
+        { "value": "default", "label": "Predefinita" },
         { "value": "small", "label": "Small" },
         { "value": "medium", "label": "Medium" },
         { "value": "large", "label": "Large" },
         { "value": "jumbo", "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
-      ],
-      "default": "default",
-      "info": "Non applicabile allo stile \"Link\"."
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "Stile contorno",
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
     },
     {
       "type": "header",

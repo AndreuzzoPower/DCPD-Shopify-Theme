@@ -113,7 +113,9 @@
                     {% endif %}
                     class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}"
                   >
+                    {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'before' -%}
                     {{- block.settings.button_label | escape -}}
+                    {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'after' -%}
                   </a>
                 {%- endif -%}
                 {%- if block.settings.button_label_2 != blank -%}
@@ -125,7 +127,9 @@
                     {% endif %}
                     class="{%- render 'ms_button_classes', type: block.settings.button_type_2, secondary: block.settings.button_style_secondary_2, size: block.settings.button_size_2 -%}"
                   >
+                    {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'before' -%}
                     {{- block.settings.button_label_2 | escape -}}
+                    {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'after' -%}
                   </a>
                 {%- endif -%}
               </div>
@@ -473,9 +477,25 @@
           ]
         },
         {
+          "type": "text",
+          "id": "button_icon",
+          "label": "Icona pulsante 1",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position",
+          "label": "Posizione icona 1",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
+          ]
+        },
+        {
          "type": "header",
          "content": "t:sections.rich-text.blocks.buttons.settings.header_button2.content"
-        },          
+        },
         {
           "type": "text",
           "id": "button_label_2",
@@ -518,6 +538,22 @@
             { "value": "large", "label": "Large" },
             { "value": "jumbo", "label": "Jumbo" },
             { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon_2",
+          "label": "Icona pulsante 2",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position_2",
+          "label": "Posizione icona 2",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
           ]
         }
       ]

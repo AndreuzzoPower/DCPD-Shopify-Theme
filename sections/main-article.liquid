@@ -402,40 +402,11 @@
           class="article-template__back-block article-template__back-block--{{ block.id }} {{ ms_bw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {%- liquid
-            assign back_icon_file = settings.ms_icon_arrow
-            if block.settings.custom_icon != blank
-              assign back_icon_file = block.settings.custom_icon
-            endif
-          -%}
-          {%- if block.settings.display_style == 'button' -%}
-            <a href="{{ blog.url }}" class="button article-template__back-button {%- render 'ms_button_size', size: block.settings.button_size -%}">
-              {%- if block.settings.show_icon -%}
-                <span class="icon-wrap" aria-hidden="true">
-                  {%- render 'ms_icon', icon: back_icon_file -%}
-                </span>
-              {%- endif -%}
-              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-            </a>
-          {%- elsif block.settings.display_style == 'pill' -%}
-            <a href="{{ blog.url }}" class="article-template__back-pill {%- render 'ms_button_size', size: block.settings.button_size -%}">
-              {%- if block.settings.show_icon -%}
-                <span class="icon-wrap" aria-hidden="true">
-                  {%- render 'ms_icon', icon: back_icon_file -%}
-                </span>
-              {%- endif -%}
-              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-            </a>
-          {%- else -%}
-            <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
-              {%- if block.settings.show_icon -%}
-                <span class="icon-wrap" aria-hidden="true">
-                  {%- render 'ms_icon', icon: back_icon_file -%}
-                </span>
-              {%- endif -%}
-              {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-            </a>
-          {%- endif -%}
+          <a href="{{ blog.url }}" class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}">
+            {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'before' -%}
+            {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
+            {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'after' -%}
+          </a>
         </div>
     {%- endcase -%}
   {%- endfor -%}
@@ -1216,42 +1187,9 @@
         },
         {
           "type": "select",
-          "id": "display_style",
-          "label": "Stile",
-          "default": "link",
-          "options": [
-            {
-              "value": "link",
-              "label": "Link"
-            },
-            {
-              "value": "pill",
-              "label": "Pill (arrotondato)"
-            },
-            {
-              "value": "button",
-              "label": "Bottone"
-            }
-          ]
-        },
-        {
-          "type": "checkbox",
-          "id": "show_icon",
-          "default": true,
-          "label": "Mostra icona freccia",
-          "info": "Mostra o nascondi l'icona freccia a sinistra del testo."
-        },
-        {
-          "type": "text",
-          "id": "custom_icon",
-          "label": "Icona personalizzata (SVG)",
-          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
-        },
-        {
-          "type": "select",
           "id": "button_size",
           "label": "Dimensione pulsante",
-          "info": "Attivo solo per stile \"Bottone\" e \"Pill\". \"Predefinita\" usa il valore globale.",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
           "default": "default",
           "options": [
             { "value": "default", "label": "Predefinita" },
@@ -1260,6 +1198,40 @@
             { "value": "large", "label": "Large" },
             { "value": "jumbo", "label": "Jumbo" },
             { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "Tipo pulsante",
+          "default": "link",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon",
+          "label": "Icona pulsante",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-left). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position",
+          "label": "Posizione icona",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
           ]
         },
         {

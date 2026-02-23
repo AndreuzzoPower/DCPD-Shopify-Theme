@@ -1,0 +1,16 @@
+{%- comment -%}
+  Snippet: ms_button_icon.liquid
+  Renderizza l'icona di un pulsante nella posizione corretta.
+
+  Parametri:
+    - icon (string): valore icona (SVG o classe libreria). Se blank non renderizza.
+    - position (string): 'before' o 'after'. Default 'before'.
+    - slot (string): 'before' o 'after'. L'icona viene renderizzata solo se position == slot.
+{%- endcomment -%}
+
+{%- if icon != blank -%}
+  {%- assign pos = position | default: 'before' -%}
+  {%- if pos == slot -%}
+    {%- render 'ms_icon', icon: icon, class: 'button-icon' -%}
+  {%- endif -%}
+{%- endif -%}

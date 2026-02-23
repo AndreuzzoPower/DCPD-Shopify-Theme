@@ -111,6 +111,31 @@
 }
 
 /* ═══════════════════════════════════════
+   BUTTON ICON
+   Icona opzionale prima o dopo la label.
+   Dimensione relativa al font-size del pulsante.
+   ═══════════════════════════════════════ */
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.button-icon svg,
+.button-icon i {
+  width: 1em;
+  height: 1em;
+}
+
+.button:has(.button-icon),
+.link:has(.button-icon) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* ═══════════════════════════════════════
    PILL SIZING
    Classi applicabili agli elementi pill
    (back-pill, blog-name-pill, ecc.)

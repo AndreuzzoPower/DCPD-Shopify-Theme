@@ -186,7 +186,9 @@
             href="{{ section.settings.button_link }}"
           {% endif %}
         >
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
           {{ section.settings.button_label | escape }}
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'after' -%}
         </a>
       {%- endif -%}
     </div>
@@ -390,9 +392,25 @@
       ]
     },
     {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
+    },
+    {
       "type": "header",
       "content": "t:sections.multicolumn.settings.header_layout.content"
-    },     
+    },
     {
       "type": "range",
       "id": "columns_desktop",

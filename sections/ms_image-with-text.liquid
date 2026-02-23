@@ -100,7 +100,9 @@
                       class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}"
                       {{ block.shopify_attributes }}
                     >
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'before' -%}
                       {{ block.settings.button_label | escape }}
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'after' -%}
                     </a>
                   {%- endif -%}
               {%- endcase -%}
@@ -513,6 +515,22 @@
             { "value": "large", "label": "Large" },
             { "value": "jumbo", "label": "Jumbo" },
             { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon",
+          "label": "Icona pulsante",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position",
+          "label": "Posizione icona",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
           ]
         }
       ]

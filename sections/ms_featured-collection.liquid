@@ -184,7 +184,9 @@
           class="{%- render 'ms_button_classes', type: section.settings.view_all_type, secondary: section.settings.view_all_style_secondary, size: section.settings.view_all_size -%}"
           aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title | escape }}"
         >
+          {%- render 'ms_button_icon', icon: section.settings.view_all_icon, position: section.settings.view_all_icon_position, slot: 'before' -%}
           {{ 'sections.featured_collection.view_all' | t }}
+          {%- render 'ms_button_icon', icon: section.settings.view_all_icon, position: section.settings.view_all_icon_position, slot: 'after' -%}
         </a>
       </div>
     {%- endif -%}
@@ -347,6 +349,22 @@
         { "value": "large", "label": "Large" },
         { "value": "jumbo", "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "view_all_icon",
+      "label": "Icona pulsante (View all)",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "view_all_icon_position",
+      "label": "Posizione icona (View all)",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
       ]
     },
     {

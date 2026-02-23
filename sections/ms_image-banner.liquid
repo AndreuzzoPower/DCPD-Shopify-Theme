@@ -228,7 +228,9 @@
                   {% endif %}
                   class="{%- render 'ms_button_classes', type: block.settings.button_type_1, secondary: block.settings.button_style_secondary_1, size: block.settings.button_size_1 -%}"
                 >
+                  {%- render 'ms_button_icon', icon: block.settings.button_icon_1, position: block.settings.button_icon_position_1, slot: 'before' -%}
                   {{- block.settings.button_label_1 | escape -}}
+                  {%- render 'ms_button_icon', icon: block.settings.button_icon_1, position: block.settings.button_icon_position_1, slot: 'after' -%}
                 </a>
               {%- endif -%}
               {%- if block.settings.button_label_2 != blank and block.settings.button_link_1 != blank -%}
@@ -240,7 +242,9 @@
                   {% endif %}
                   class="{%- render 'ms_button_classes', type: block.settings.button_type_2, secondary: block.settings.button_style_secondary_2, size: block.settings.button_size_2 -%}"
                 >
+                  {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'before' -%}
                   {{- block.settings.button_label_2 | escape -}}
+                  {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'after' -%}
                 </a>
               {%- endif -%}
             </div>
@@ -616,8 +620,24 @@
           ]
         },
         {
-        "type": "header",
-        "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
+          "type": "text",
+          "id": "button_icon_1",
+          "label": "Icona pulsante 1",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position_1",
+          "label": "Posizione icona 1",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
         },
         {
           "type": "text",
@@ -662,6 +682,22 @@
             { "value": "large", "label": "Large" },
             { "value": "jumbo", "label": "Jumbo" },
             { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon_2",
+          "label": "Icona pulsante 2",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position_2",
+          "label": "Posizione icona 2",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
           ]
         }
       ]

@@ -123,7 +123,9 @@
                     class="{%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
                     tabindex="0"
                   >
+                    {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
                     {{ block.settings.button_label | escape }}
+                    {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'after' -%}
                   </a>
                 {%- endif -%}
               </div>
@@ -296,6 +298,22 @@
         { "value": "large", "label": "Large" },
         { "value": "jumbo", "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
       ]
     },
     {
