@@ -40,10 +40,9 @@
       ],
       "name": "MS Rich text",
       "settings": {
+        "color_scheme": "",
         "desktop_content_position": "center",
         "content_alignment": "center",
-        "color_scheme": "",
-        "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52
       }
