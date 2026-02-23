@@ -35,13 +35,76 @@
           "settings": {
             "collection": "altra-cat"
           }
+        },
+        "featured_collection_mnexwN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_KKwGTH": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_MxWnVr": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_YQcxGx": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_wHFd7P": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_dWiGCe": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_FJGyww": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_cUmT6B": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
+        },
+        "featured_collection_JKEkpM": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "altra-cat"
+          }
         }
       },
       "block_order": [
         "section_background_kqWjFH",
         "featured_collection_EyXfd8",
         "featured_collection_rTL389",
-        "featured_collection_D3N7Wc"
+        "featured_collection_D3N7Wc",
+        "featured_collection_mnexwN",
+        "featured_collection_KKwGTH",
+        "featured_collection_MxWnVr",
+        "featured_collection_YQcxGx",
+        "featured_collection_wHFd7P",
+        "featured_collection_dWiGCe",
+        "featured_collection_FJGyww",
+        "featured_collection_cUmT6B",
+        "featured_collection_JKEkpM"
       ],
       "name": "MS Elenco collezioni",
       "settings": {
@@ -58,7 +121,7 @@
         "swipe_on_mobile": false,
         "image_ratio": "square",
         "color_scheme": "",
-        "show_view_all": false,
+        "show_view_all": true,
         "button_size": "default"
       }
     }
