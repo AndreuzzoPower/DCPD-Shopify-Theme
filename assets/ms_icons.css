@@ -10,6 +10,17 @@
   flex-shrink: 0;
 }
 
+/* Sizing default per SVG dentro il wrapper.
+   .icon-caret è escluso perché ha posizionamento CSS autonomo in base.css */
+.svg-wrapper svg:not(.icon-caret) {
+  width: 1em;
+  height: 1em;
+}
+
+.svg-wrapper svg {
+  fill: currentColor;
+}
+
 /* Wrapper per icone da libreria esterna (Font Awesome, Bootstrap Icons, ecc.)
    Ha anche la classe .svg-wrapper per ereditare tutte le dimensioni esistenti */
 .icon-lib-wrapper {
