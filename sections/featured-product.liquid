@@ -1609,15 +1609,35 @@
   ],
   "settings": [
     {
-      "type": "product",
-      "id": "product",
-      "label": "t:sections.featured-product.settings.product.label"
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:sections.featured-product.settings.product.label"
     },
     {
       "type": "header",
@@ -1712,22 +1732,6 @@
       "id": "enable_video_looping",
       "default": false,
       "label": "t:sections.featured-product.settings.enable_video_looping.label"
-    },
-    {
-      "type": "header",
-      "content": "Larghezza sezione"
-    },
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "Larghezza blocco",
-      "options": [
-        { "label": "Stretta (narrow)", "value": "narrow" },
-        { "label": "Larghezza pagina", "value": "page_width" },
-        { "label": "Larghezza fluida", "value": "page_fluid" },
-        { "label": "Piena larghezza", "value": "full_width" }
-      ],
-      "default": "page_width"
     }
   ],
   "presets": [
