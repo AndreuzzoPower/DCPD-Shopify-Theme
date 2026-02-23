@@ -111,7 +111,7 @@
                     {% else %}
                       href="{{ block.settings.button_link }}"
                     {% endif %}
-                    class="button{% if block.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size -%}"
+                    class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}"
                   >
                     {{- block.settings.button_label | escape -}}
                   </a>
@@ -123,7 +123,7 @@
                     {% else %}
                       href="{{ block.settings.button_link_2 }}"
                     {% endif %}
-                    class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %} {%- render 'ms_button_size', size: block.settings.button_size_2 -%}"
+                    class="{%- render 'ms_button_classes', type: block.settings.button_type_2, secondary: block.settings.button_style_secondary_2, size: block.settings.button_size_2 -%}"
                   >
                     {{- block.settings.button_label_2 | escape -}}
                   </a>
@@ -443,7 +443,19 @@
           "type": "checkbox",
           "id": "button_style_secondary",
           "default": false,
-          "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_1.label"
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "Tipo pulsante 1",
+          "default": "button",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
         },
         {
           "type": "select",
@@ -479,7 +491,19 @@
           "type": "checkbox",
           "id": "button_style_secondary_2",
           "default": false,
-          "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_2.label"
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type_2",
+          "label": "Tipo pulsante 2",
+          "default": "button",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
         },
         {
           "type": "select",

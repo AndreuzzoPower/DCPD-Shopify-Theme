@@ -1,0 +1,33 @@
+{%- comment -%}
+  Snippet: ms_button_classes.liquid
+  Restituisce la stringa di classi CSS completa per un pulsante.
+
+  Parametri:
+    - type (string): 'button' (default), 'pill', 'link'
+    - secondary (boolean): true = contorno (sfondo trasparente + bordo)
+    - size (string): valore per ms_button_size ('default', 'small', 'medium', ecc.)
+
+  Output:
+    - type 'button': "button button--primary/secondary button--size-*"
+    - type 'pill':   "button button--pill button--primary/secondary button--size-*"
+    - type 'link':   "link underlined-link"
+{%- endcomment -%}
+
+{%- liquid
+  assign btn_type = type | default: 'button'
+
+  if btn_type == 'link'
+    echo 'link underlined-link'
+  else
+    echo 'button'
+    if btn_type == 'pill'
+      echo ' button--pill'
+    endif
+    if secondary
+      echo ' button--secondary'
+    else
+      echo ' button--primary'
+    endif
+    render 'ms_button_size', size: size
+  endif
+-%}

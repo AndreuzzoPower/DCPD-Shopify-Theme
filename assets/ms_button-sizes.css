@@ -73,6 +73,15 @@
 }
 
 /* ═══════════════════════════════════════
+   PILL SHAPE
+   border-radius arrotondato per lo stile "pill"
+   ═══════════════════════════════════════ */
+
+.button.button--pill {
+  border-radius: 50px;
+}
+
+/* ═══════════════════════════════════════
    PILL SIZING
    Classi applicabili agli elementi pill
    (back-pill, blog-name-pill, ecc.)
