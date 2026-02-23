@@ -423,8 +423,8 @@
           "settings": {
             "button_label": "Etichetta pulsante",
             "button_link": "",
-            "button_style_secondary": true,
-            "button_type": "pill",
+            "button_style_secondary": false,
+            "button_type": "button",
             "button_size": "large"
           }
         }
@@ -439,8 +439,9 @@
       "settings": {
         "section_width": "narrow",
         "section_color_scheme": "scheme-5",
-        "color_scheme": "scheme-45900663-4210-4644-83ef-9f6d380a54a5",
-        "layout": "text_first",
+        "color_scheme": "scheme-5",
+        "layout": "image_first",
+        "image": "shopify://shop_images/download.jpg",
         "height": "adapt",
         "desktop_image_width": "medium",
         "image_behavior": "none",
