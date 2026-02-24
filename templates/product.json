@@ -120,7 +120,6 @@
     },
     "related-products": {
       "type": "related-products",
-      "disabled": true,
       "settings": {
         "heading": "Prodotti Simili",
         "heading_size": "h2",
@@ -173,7 +172,7 @@
         "image_shape": "default",
         "show_secondary_image": false,
         "columns_desktop": 4,
-        "enable_desktop_slider": true,
+        "enable_desktop_slider": false,
         "enable_desktop_slider_autoplay": true,
         "desktop_slider_autoplay_velocita": 3,
         "carousel_arrows_position": "overlay_sides",
