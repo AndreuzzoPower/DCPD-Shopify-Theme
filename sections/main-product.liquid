@@ -1008,6 +1008,7 @@
                                         class="slider-counter__link slider-counter__link--{{ block.settings.pagination_style }} link"
                                         aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
                                         aria-controls="Slider-{{ block.id }}"
+                                        data-slide-index="{{ forloop.index }}"
                                       >
                                         {%- if block.settings.pagination_style == 'numbers' -%}
                                           {{ forloop.index -}}
