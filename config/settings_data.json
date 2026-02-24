@@ -100,7 +100,7 @@
     "card_border_thickness": 1,
     "card_border_opacity": 10,
     "card_corner_radius": 6,
-    "card_shadow": "strong",
+    "card_shadow": "light",
     "collection_card_style": "standard",
     "collection_card_image_padding": 0,
     "collection_card_text_alignment": "left",
