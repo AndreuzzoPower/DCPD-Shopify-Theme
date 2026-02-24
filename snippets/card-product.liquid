@@ -373,6 +373,9 @@
                       disabled
                     {% endif %}
                   >
+                  {%- if card_effective_min > 1 -%}
+                    <input type="hidden" name="quantity" value="{{ card_effective_min }}">
+                  {%- endif -%}
                   <button
                     id="{{ product_form_id }}-submit"
                     type="submit"

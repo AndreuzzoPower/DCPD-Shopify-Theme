@@ -22,15 +22,23 @@ if (!customElements.get('product-form')) {
         if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
 
         const msMinOrder = parseInt(this.dataset.msMinOrder || '0', 10);
-        if (msMinOrder > 0) {
-          const qtyInput = this.form.querySelector('[name="quantity"]');
-          const qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
-          if (qty < msMinOrder) {
-            const msg = window.msMinOrderStrings
-              ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
-              : `Minimum order: ${msMinOrder}`;
-            this.handleErrorMessage(msg);
-            return;
+        if (msMinOrder > 1) {
+          const qtyInput = this.form.elements['quantity'];
+          if (qtyInput) {
+            const qty = parseInt(qtyInput.value, 10);
+            if (qty < msMinOrder) {
+              const msg = window.msMinOrderStrings
+                ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
+                : `Minimum order: ${msMinOrder}`;
+              this.handleErrorMessage(msg);
+              return;
+            }
+          } else if (!this.form.querySelector('input[name="quantity"]')) {
+            const hiddenQty = document.createElement('input');
+            hiddenQty.type = 'hidden';
+            hiddenQty.name = 'quantity';
+            hiddenQty.value = msMinOrder;
+            this.form.appendChild(hiddenQty);
           }
         }
 
