@@ -184,6 +184,7 @@
     "iub_privacyid": "",
     "ms_min_order_enabled": true,
     "ms_min_order_default": 1,
+    "ms_min_order_show_label": true,
     "sections": {
       "main-password-header": {
         "type": "main-password-header",

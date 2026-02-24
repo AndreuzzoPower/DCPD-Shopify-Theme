@@ -55,6 +55,21 @@ class CartItems extends HTMLElement {
     event.target.select();
   }
 
+  showMinOrderToast(message) {
+    let toast = document.querySelector('.ms-min-order-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'ms-min-order-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.remove('ms-min-order-toast--hidden');
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => {
+      toast.classList.add('ms-min-order-toast--hidden');
+    }, 3000);
+  }
+
   validateQuantity(event) {
     const inputValue = parseInt(event.target.value);
     const index = event.target.dataset.index;
@@ -62,10 +77,15 @@ class CartItems extends HTMLElement {
 
     const msMinOrder = parseInt(event.target.dataset.msMinOrder || '0', 10);
     if (msMinOrder > 0 && inputValue > 0 && inputValue < msMinOrder) {
-      message = window.msMinOrderStrings
+      const toastMsg = window.msMinOrderStrings
         ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
         : `Minimum order: ${msMinOrder}`;
-    } else if (inputValue < event.target.dataset.min) {
+      this.showMinOrderToast(toastMsg);
+      this.resetQuantityInput(index);
+      return;
+    }
+
+    if (inputValue < event.target.dataset.min) {
       message = window.quickOrderListStrings.min_error.replace('[min]', event.target.dataset.min);
     } else if (inputValue > parseInt(event.target.max)) {
       message = window.quickOrderListStrings.max_error.replace('[max]', event.target.max);

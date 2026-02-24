@@ -393,7 +393,7 @@
                       {%- endif -%}
                     </div>
                     <div class="quantity__rules caption" id="Quantity-Rules-{{ section.id }}">
-                      {%- if effective_min > 1 -%}
+                      {%- if effective_min > 1 and settings.ms_min_order_show_label -%}
                         <span class="divider">
                           {{- 'products.product.quantity.min_order' | t: quantity: effective_min -}}
                         </span>

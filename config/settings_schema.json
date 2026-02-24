@@ -2146,6 +2146,13 @@
         "label": "Quantità minima predefinita",
         "default": 1,
         "info": "Valore di default se il metafield 'custom.minimo_d_ordine' del prodotto è vuoto o 0."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_min_order_show_label",
+        "label": "Mostra etichetta quantità minima",
+        "default": true,
+        "info": "Se attivo, mostra il testo 'Quantità minima d'ordine: X' ovunque sia visualizzato un prodotto con minimo > 1."
       }
     ]
   }

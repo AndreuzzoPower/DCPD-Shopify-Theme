@@ -393,9 +393,9 @@
                         </div>
                       </quantity-popover>
                       {%- if cart_effective_min > 1 and item.quantity < cart_effective_min and item.quantity > 0 -%}
-                        <p class="cart-item__error caption" style="color: rgb(var(--color-error));">
+                        <span class="ms-min-order-pill">
                           {{ 'products.product.quantity.min_order_cart_warning' | t: quantity: cart_effective_min }}
-                        </p>
+                        </span>
                       {%- endif -%}
                     </td>
 

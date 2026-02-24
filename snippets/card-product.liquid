@@ -221,7 +221,7 @@
             {%- endif -%}
 
             {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
-            {%- if card_effective_min > 1 -%}
+            {%- if card_effective_min > 1 and settings.ms_min_order_show_label -%}
               <p class="caption">{{ 'products.product.quantity.min_order' | t: quantity: card_effective_min }}</p>
             {%- endif -%}
             {%- if card_product.quantity_price_breaks_configured? -%}

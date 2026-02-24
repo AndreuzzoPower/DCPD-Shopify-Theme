@@ -15,6 +15,17 @@ if (!customElements.get('product-form')) {
         if (document.querySelector('cart-drawer')) this.submitButton.setAttribute('aria-haspopup', 'dialog');
 
         this.hideErrors = this.dataset.hideErrors === 'true';
+
+        const msMin = parseInt(this.dataset.msMinOrder || '0', 10);
+        if (msMin > 1) {
+          const qtyEl = this.form.elements['quantity'];
+          if (qtyEl) {
+            qtyEl.addEventListener('change', () => {
+              const val = parseInt(qtyEl.value, 10);
+              if (val >= msMin) this.handleErrorMessage();
+            });
+          }
+        }
       }
 
       onSubmitHandler(evt) {

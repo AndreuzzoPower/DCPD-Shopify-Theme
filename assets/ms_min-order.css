@@ -1,0 +1,55 @@
+/* ═══════════════════════════════════════
+   MINIMO D'ORDINE — Pill warning carrello
+   ═══════════════════════════════════════ */
+
+.ms-min-order-pill {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25em 0.75em;
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: #fff;
+  background-color: rgb(var(--color-error, 200 30 30));
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════
+   MINIMO D'ORDINE — Errore pagina prodotto
+   Più vicino alla label, tutto rosso.
+   ═══════════════════════════════════════ */
+
+.product-form__error-message-wrapper:not([hidden]) {
+  margin-top: -2rem;
+  color: red;
+}
+
+.product-form__error-message-wrapper:not([hidden]) svg {
+  color: red;
+}
+
+/* ═══════════════════════════════════════
+   MINIMO D'ORDINE — Toast carrello
+   Messaggio temporizzato (3s) in overlay.
+   ═══════════════════════════════════════ */
+
+.ms-min-order-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75em 1.5em;
+  font-size: 1.4rem;
+  color: #fff;
+  background-color: rgb(var(--color-error, 200 30 30));
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.ms-min-order-toast--hidden {
+  opacity: 0;
+}
