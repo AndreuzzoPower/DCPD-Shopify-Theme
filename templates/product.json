@@ -176,7 +176,7 @@
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": false,
         "desktop_slider_autoplay_velocita": 3,
-        "carousel_arrows_position": "overlay_sides",
+        "carousel_arrows_position": "above_right",
         "carousel_pagination_style": "dots",
         "carousel_scroll_mode": "page",
         "carousel_loop": false,
