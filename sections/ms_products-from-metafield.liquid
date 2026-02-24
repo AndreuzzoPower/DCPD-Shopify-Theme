@@ -141,11 +141,12 @@
       {%- if title_pw_class != blank -%}<div class="{{ title_pw_class }}">{%- endif -%}
       <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider and tw == 'full_width' %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
         {%- if section.settings.title != blank -%}
-          <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-            {{ section.settings.title }}
-          </div>
+          {%- assign t_tag = section.settings.title_tag | default: 'h2' -%}
+          <{{ t_tag }} class="title {{ section.settings.heading_size }}{% if section.settings.title_custom_class != blank %} {{ section.settings.title_custom_class }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+            {{- section.settings.title | escape -}}
+          </{{ t_tag }}>
         {%- endif -%}
-        {%- if section.settings.description != blank and section.settings.show_description -%}
+        {%- if section.settings.description != blank -%}
           <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
             {{ section.settings.description }}
           </div>
@@ -299,10 +300,26 @@
       "label": "t:sections.featured-collection.settings.products_to_show.label"
     },
     {
-      "type": "liquid",
+      "type": "text",
       "id": "title",
       "default": "Prodotti correlati",
       "label": "t:sections.featured-collection.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
     },
     {
       "type": "select",
@@ -318,15 +335,15 @@
       "label": "t:sections.all.heading_size.label"
     },
     {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
       "type": "liquid",
       "id": "description",
       "label": "t:sections.featured-collection.settings.description.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "label": "t:sections.featured-collection.settings.show_description.label",
-      "default": false
     },
     {
       "type": "select",
@@ -409,6 +426,10 @@
       "step": 1,
       "default": 3,
       "label": "Tempo transizione (sec.)"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
     },
     {
       "type": "select",
