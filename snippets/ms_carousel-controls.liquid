@@ -1,0 +1,95 @@
+{%- comment -%}
+  Snippet: ms_carousel-controls.liquid
+  Navigazione condivisa per tutti i caroselli (frecce + paginazione).
+
+  Parametri:
+    - section_id       (string, obbligatorio): ID della sezione
+    - total_items       (number, obbligatorio): numero totale di elementi
+    - pagination_style  (string): 'counter' | 'dots' | 'numbers' | 'none'  — default 'counter'
+    - show_arrows       (boolean): mostra frecce prev/next                  — default true
+    - show_pagination   (boolean): mostra paginazione                       — default true
+{%- endcomment -%}
+
+{%- liquid
+  assign cc_pagination = pagination_style | default: 'counter'
+  assign cc_arrows     = show_arrows
+  assign cc_pag_vis    = show_pagination
+  if show_arrows == nil
+    assign cc_arrows = true
+  endif
+  if show_pagination == nil
+    assign cc_pag_vis = true
+  endif
+-%}
+
+{%- if cc_arrows or cc_pag_vis -%}
+  <div class="slider-buttons">
+    {%- if cc_arrows -%}
+      <button
+        type="button"
+        class="slider-button slider-button--prev"
+        name="previous"
+        aria-label="{{ 'general.slider.previous_slide' | t }}"
+        aria-controls="Slider-{{ section_id }}"
+      >
+        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+      </button>
+    {%- endif -%}
+
+    {%- if cc_pag_vis and cc_pagination != 'none' -%}
+      {%- case cc_pagination -%}
+        {%- when 'counter' -%}
+          <div class="slider-counter caption">
+            <span class="slider-counter--current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+            <span class="slider-counter--total">{{ total_items }}</span>
+          </div>
+
+        {%- when 'dots' -%}
+          <div class="slider-counter slider-counter--dots">
+            <div class="slideshow__control-wrapper">
+              {%- for i in (1..total_items) -%}
+                <button
+                  class="slider-counter__link slider-counter__link--dots{% if forloop.first %} slider-counter__link--active{% endif %} link"
+                  aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                  aria-controls="Slider-{{ section_id }}"
+                  data-slide-index="{{ forloop.index }}"
+                >
+                  <span class="dot"></span>
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+
+        {%- when 'numbers' -%}
+          <div class="slider-counter slider-counter--numbers">
+            <div class="slideshow__control-wrapper">
+              {%- for i in (1..total_items) -%}
+                <button
+                  class="slider-counter__link slider-counter__link--numbers{% if forloop.first %} slider-counter__link--active{% endif %} link"
+                  aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+                  aria-controls="Slider-{{ section_id }}"
+                  data-slide-index="{{ forloop.index }}"
+                >
+                  {{- forloop.index -}}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+      {%- endcase -%}
+    {%- endif -%}
+
+    {%- if cc_arrows -%}
+      <button
+        type="button"
+        class="slider-button slider-button--next"
+        name="next"
+        aria-label="{{ 'general.slider.next_slide' | t }}"
+        aria-controls="Slider-{{ section_id }}"
+      >
+        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+      </button>
+    {%- endif -%}
+  </div>
+{%- endif -%}

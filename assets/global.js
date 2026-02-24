@@ -831,26 +831,33 @@ class SliderComponent extends HTMLElement {
     super();
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
-    this.enableSliderLooping = false;
+    this.enableSliderLooping = this.dataset.loop === 'true';
+    this.scrollMode = this.dataset.scrollMode || 'page';
     this.currentPageElement = this.querySelector('.slider-counter--current');
     this.pageTotalElement = this.querySelector('.slider-counter--total');
+    this.paginationLinks = this.querySelectorAll('.slider-counter__link');
     this.prevButton = this.querySelector('button[name="previous"]');
     this.nextButton = this.querySelector('button[name="next"]');
 
-    // Autoplay
     this.autoplay = this.dataset.autoplay === 'true';
     this.speed = parseInt(this.dataset.speed) || 5000;
     this.autoplayInterval = null;
 
-    if (!this.slider || !this.nextButton) return;
+    if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
     this.initPages();
-    const resizeObserver = new ResizeObserver((entries) => this.initPages());
+    const resizeObserver = new ResizeObserver(() => this.initPages());
     resizeObserver.observe(this.slider);
 
     this.slider.addEventListener('scroll', this.update.bind(this));
-    this.prevButton.addEventListener('click', this.onButtonClick.bind(this));
-    this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
+    if (this.prevButton) this.prevButton.addEventListener('click', this.onButtonClick.bind(this));
+    if (this.nextButton) this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
+
+    if (this.paginationLinks.length) {
+      this.paginationLinks.forEach((link) => {
+        link.addEventListener('click', this.onPaginationClick.bind(this));
+      });
+    }
 
     if (this.autoplay) {
       this.startAutoplay();
@@ -874,7 +881,7 @@ class SliderComponent extends HTMLElement {
   }
 
   update() {
-    if (!this.slider || !this.nextButton) return;
+    if (!this.slider) return;
 
     const previousPage = this.currentPage;
     this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
@@ -883,6 +890,8 @@ class SliderComponent extends HTMLElement {
       this.currentPageElement.textContent = this.currentPage;
       this.pageTotalElement.textContent = this.totalPages;
     }
+
+    this.updatePaginationLinks();
 
     if (this.currentPage != previousPage) {
       this.dispatchEvent(
@@ -897,17 +906,28 @@ class SliderComponent extends HTMLElement {
 
     if (this.enableSliderLooping) return;
 
-    if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
-      this.prevButton.setAttribute('disabled', 'disabled');
-    } else {
-      this.prevButton.removeAttribute('disabled');
+    if (this.prevButton) {
+      if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
+        this.prevButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.prevButton.removeAttribute('disabled');
+      }
     }
 
-    if (this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1])) {
-      this.nextButton.setAttribute('disabled', 'disabled');
-    } else {
-      this.nextButton.removeAttribute('disabled');
+    if (this.nextButton) {
+      if (this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1])) {
+        this.nextButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.nextButton.removeAttribute('disabled');
+      }
     }
+  }
+
+  updatePaginationLinks() {
+    if (!this.paginationLinks.length) return;
+    this.paginationLinks.forEach((link, index) => {
+      link.classList.toggle('slider-counter__link--active', index + 1 === this.currentPage);
+    });
   }
 
   isSlideVisible(element, offset = 0) {
@@ -917,27 +937,51 @@ class SliderComponent extends HTMLElement {
 
   onButtonClick(event) {
     event.preventDefault();
-    const step = event.currentTarget.dataset.step || 1;
-    this.slideScrollPosition =
-      event.currentTarget.name === 'next'
-        ? this.slider.scrollLeft + step * this.sliderItemOffset
-        : this.slider.scrollLeft - step * this.sliderItemOffset;
+    if (this.scrollMode === 'single') {
+      this.slideScrollPosition =
+        event.currentTarget.name === 'next'
+          ? this.slider.scrollLeft + this.sliderItemOffset
+          : this.slider.scrollLeft - this.sliderItemOffset;
+    } else {
+      const step = event.currentTarget.dataset.step || this.slidesPerPage;
+      this.slideScrollPosition =
+        event.currentTarget.name === 'next'
+          ? this.slider.scrollLeft + step * this.sliderItemOffset
+          : this.slider.scrollLeft - step * this.sliderItemOffset;
+    }
+
+    if (this.enableSliderLooping) {
+      if (this.slideScrollPosition < 0) {
+        this.slideScrollPosition = this.slider.scrollWidth - this.slider.clientWidth;
+      } else if (this.slideScrollPosition >= this.slider.scrollWidth - this.slider.clientWidth + this.sliderItemOffset) {
+        this.slideScrollPosition = 0;
+      }
+    }
+
     this.setSlidePosition(this.slideScrollPosition);
+  }
+
+  onPaginationClick(event) {
+    event.preventDefault();
+    const index = parseInt(event.currentTarget.dataset.slideIndex);
+    if (isNaN(index)) return;
+    const targetPosition = (index - 1) * this.sliderItemOffset;
+    this.setSlidePosition(targetPosition);
   }
 
   setSlidePosition(position) {
     this.slider.scrollTo({ left: position });
   }
 
-  // AUTOPLAY
   startAutoplay() {
     this.autoplayInterval = setInterval(() => {
-      // Se siamo alla fine, torna all'inizio
-      const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth;
+      const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
       if (atEnd) {
         this.setSlidePosition(0);
-      } else {
+      } else if (this.nextButton) {
         this.nextButton.click();
+      } else {
+        this.setSlidePosition(this.slider.scrollLeft + this.sliderItemOffset);
       }
     }, this.speed);
   }
