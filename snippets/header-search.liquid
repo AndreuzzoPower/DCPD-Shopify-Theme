@@ -30,7 +30,7 @@
     >
       <div class="modal-overlay"></div>
       <div
-        class="search-modal__content{% if settings.inputs_shadow_vertical_offset != 0 and settings.inputs_shadow_vertical_offset < 0 %} search-modal__content-top{% else %} search-modal__content-bottom{% endif %}"
+        class="search-modal__content search-modal__content-bottom"
         tabindex="-1"
       >
         {%- if settings.predictive_search_enabled -%}
