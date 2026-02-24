@@ -245,11 +245,9 @@
                     {{ 'products.product.quantity.label' | t }}
                     <span class="quantity__rules-cart{% if cart_qty == 0 %} hidden{% endif %}">
                       {%- render 'loading-spinner' -%}
-                      <span
-                        >(
+                      <span class="ms-cart-qty-pill">
                         {{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}}
-                        )</span
-                      >
+                      </span>
                     </span>
                   </label>
                   {%- liquid

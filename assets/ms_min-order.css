@@ -15,6 +15,22 @@
 }
 
 /* ═══════════════════════════════════════
+   QUANTITÀ NEL CARRELLO — Pill
+   ═══════════════════════════════════════ */
+
+.ms-cart-qty-pill {
+  display: inline-block;
+  margin-left: 0.5em;
+  padding: 0.15em 0.65em;
+  font-size: 0.85em;
+  line-height: 1.4;
+  color: #fff;
+  background-color: rgb(var(--color-foreground, 18 18 18));
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* ═══════════════════════════════════════
    MINIMO D'ORDINE — Errore pagina prodotto
    Più vicino alla label, tutto rosso.
    ═══════════════════════════════════════ */
