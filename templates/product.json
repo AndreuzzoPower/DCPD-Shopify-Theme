@@ -85,19 +85,11 @@
           "type": "description",
           "settings": {}
         },
-        "complementary_q7Yjyy": {
-          "type": "complementary",
+        "popup_fLgPTD": {
+          "type": "popup",
           "settings": {
-            "block_heading": "Si abbina con",
-            "make_collapsible_row": false,
-            "icon": "price_tag",
-            "custom_icon": "",
-            "product_list_limit": 10,
-            "products_per_page": 3,
-            "pagination_style": "counter",
-            "image_ratio": "square",
-            "enable_quick_add": false,
-            "show_min_order": true
+            "text": "Link pop-up con testo",
+            "page": ""
           }
         },
         "share": {
@@ -115,7 +107,7 @@
         "quantity_selector",
         "buy_buttons",
         "description",
-        "complementary_q7Yjyy",
+        "popup_fLgPTD",
         "share"
       ],
       "settings": {
