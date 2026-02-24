@@ -22,7 +22,8 @@ if (!customElements.get('product-form')) {
           if (qtyEl) {
             qtyEl.addEventListener('change', () => {
               const val = parseInt(qtyEl.value, 10);
-              if (val >= msMin) this.handleErrorMessage();
+              const cartQty = parseInt(qtyEl.dataset.cartQuantity || '0', 10);
+              if ((cartQty + val) >= msMin) this.handleErrorMessage();
             });
           }
         }
@@ -37,7 +38,8 @@ if (!customElements.get('product-form')) {
           const qtyInput = this.form.elements['quantity'];
           if (qtyInput) {
             const qty = parseInt(qtyInput.value, 10);
-            if (qty < msMinOrder) {
+            const cartQty = parseInt(qtyInput.dataset.cartQuantity || '0', 10);
+            if ((cartQty + qty) < msMinOrder) {
               const msg = window.msMinOrderStrings
                 ? window.msMinOrderStrings.error.replace('[quantity]', msMinOrder)
                 : `Minimum order: ${msMinOrder}`;
