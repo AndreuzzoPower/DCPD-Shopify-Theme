@@ -116,7 +116,7 @@
     "blog_card_border_thickness": 0,
     "blog_card_border_opacity": 10,
     "blog_card_corner_radius": 0,
-    "blog_card_shadow": "none",
+    "blog_card_shadow": "medium",
     "text_boxes_border_thickness": 0,
     "text_boxes_border_opacity": 10,
     "text_boxes_radius": 0,
