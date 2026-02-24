@@ -160,9 +160,9 @@
       "settings": {
         "mf": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].related_products.value }}",
         "products_to_show": 25,
-        "title_width": "full_width",
-        "slider_width": "page_width",
-        "columns_desktop": 4,
+        "title_width": "page_width",
+        "slider_width": "full_width",
+        "columns_desktop": 5,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
         "desktop_slider_autoplay_velocita": 3,
