@@ -133,6 +133,7 @@
         data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
         data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
         class="slider-mobile-gutter{% if is_slider_full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}"
+        {% unless is_slider_full_width %}style="--desktop-margin-left-first-item: 0px"{% endunless %}
       >
         <ul
           id="Slider-{{ section.id }}"
