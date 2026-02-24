@@ -161,7 +161,7 @@
         "mf": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].related_products.value }}",
         "products_to_show": 25,
         "title_width": "page_width",
-        "slider_width": "narrow",
+        "slider_width": "page_width",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
