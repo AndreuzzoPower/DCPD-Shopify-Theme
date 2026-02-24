@@ -164,7 +164,7 @@
         "slider_width": "page_width",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
-        "enable_desktop_slider_autoplay": true,
+        "enable_desktop_slider_autoplay": false,
         "desktop_slider_autoplay_velocita": 3,
         "title": "Prodotti correlati",
         "heading_size": "h1",
