@@ -129,7 +129,7 @@
         "ea_card_info_padding_top": 16,
         "ea_card_info_padding_right": 16,
         "ea_card_info_padding_bottom": 16,
-        "ea_card_info_padding_left": 0,
+        "ea_card_info_padding_left": 16,
         "menu_categories": "shop_categorie",
         "enable_menu_categories": true,
         "enable_title_categories": true,
