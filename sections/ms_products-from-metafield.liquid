@@ -152,6 +152,7 @@
                 show_secondary_image: section.settings.show_secondary_image,
                 show_vendor: section.settings.show_vendor,
                 show_rating: section.settings.show_rating,
+                show_min_order: section.settings.show_min_order,
                 section_id: section.id,
                 quick_add: section.settings.quick_add
               %}
@@ -407,6 +408,13 @@
       "default": false,
       "label": "t:sections.featured-collection.settings.show_rating.label",
       "info": "t:sections.featured-collection.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_min_order",
+      "default": true,
+      "label": "Mostra quantita minima",
+      "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
     },
     {
       "type": "select",

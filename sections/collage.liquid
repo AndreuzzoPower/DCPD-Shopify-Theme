@@ -182,6 +182,7 @@
                   card_product: block.settings.product,
                   media_aspect_ratio: 'adapt',
                   show_secondary_image: block.settings.second_image,
+                  show_min_order: block.settings.show_min_order,
                   extend_height: true,
                   placeholder_image: placeholder_image,
                   skip_styles: skip_card_product_styles
@@ -440,6 +441,13 @@
           "id": "second_image",
           "default": false,
           "label": "t:sections.collage.blocks.product.settings.second_image.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_min_order",
+          "default": true,
+          "label": "Mostra quantita minima",
+          "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
         }
       ]
     },

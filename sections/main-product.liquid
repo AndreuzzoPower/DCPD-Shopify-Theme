@@ -970,6 +970,7 @@
                                         card_product: product,
                                         media_aspect_ratio: block.settings.image_ratio,
                                         show_secondary_image: false,
+                                        show_min_order: block.settings.show_min_order,
                                         lazy_load: false,
                                         skip_styles: skip_card_product_styles,
                                         quick_add: quick_add,
@@ -2219,6 +2220,13 @@
           "id": "enable_quick_add",
           "label": "t:sections.main-product.blocks.complementary_products.settings.enable_quick_add.label",
           "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_min_order",
+          "default": true,
+          "label": "Mostra quantita minima",
+          "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
         }
       ]
     },

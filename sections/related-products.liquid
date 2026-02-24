@@ -45,6 +45,7 @@
               show_secondary_image: section.settings.show_secondary_image,
               show_vendor: section.settings.show_vendor,
               show_rating: section.settings.show_rating,
+              show_min_order: section.settings.show_min_order,
               skip_styles: skip_card_product_styles
             %}
           </li>
@@ -225,6 +226,13 @@
       "default": false,
       "label": "t:sections.related-products.settings.show_rating.label",
       "info": "t:sections.related-products.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_min_order",
+      "default": true,
+      "label": "Mostra quantita minima",
+      "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
     },
     {
       "type": "header",
