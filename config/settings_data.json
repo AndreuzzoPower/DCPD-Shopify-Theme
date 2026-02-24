@@ -114,7 +114,7 @@
     "blog_card_text_alignment": "left",
     "blog_card_color_scheme": "scheme-2",
     "blog_card_border_thickness": 1,
-    "blog_card_border_color": "#f0066f",
+    "blog_card_border_color": "#e0e0e0",
     "blog_card_corner_radius": 6,
     "blog_card_shadow": "medium",
     "text_boxes_border_thickness": 0,
