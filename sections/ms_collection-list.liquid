@@ -125,12 +125,12 @@
     }
   {%- endif -%}
 
-  /* Card shadow */
-  {%- if section.settings.card_shadow == 'light' -%}
+  /* Card shadow – gestita dal setting globale collection_card_shadow via CSS variables */
+  {%- if settings.collection_card_shadow == 'light' -%}
     #section-{{ section.id }} .card-wrapper { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
-  {%- elsif section.settings.card_shadow == 'medium' -%}
+  {%- elsif settings.collection_card_shadow == 'medium' -%}
     #section-{{ section.id }} .card-wrapper { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
-  {%- elsif section.settings.card_shadow == 'strong' -%}
+  {%- elsif settings.collection_card_shadow == 'strong' -%}
     #section-{{ section.id }} .card-wrapper { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18); }
   {%- endif -%}
 
@@ -449,18 +449,6 @@
       "default": 0,
       "unit": "px",
       "label": "Raggio bordi (border-radius)"
-    },
-    {
-      "type": "select",
-      "id": "card_shadow",
-      "label": "Ombra card",
-      "default": "none",
-      "options": [
-        { "value": "none", "label": "Nessuna" },
-        { "value": "light", "label": "Leggera" },
-        { "value": "medium", "label": "Media" },
-        { "value": "strong", "label": "Forte" }
-      ]
     },
     {
       "type": "checkbox",
