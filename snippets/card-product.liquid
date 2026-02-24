@@ -16,6 +16,7 @@
   - horizontal_class: {Boolean} Add a card--horizontal class if set to true. Default: false (optional)
   - horizontal_quick_add: {Boolean} Changes the quick add button styles when set to true. Default: false (optional)
   - placeholder_image: {String} The placeholder image to use when no product exists. Default: 'product-apparel-2' (optional)
+  - show_min_order: {Boolean} Show min order label. If not passed, falls back to global setting ms_min_order_show_label. (optional)
 
   Usage:
   {% render 'card-product', show_vendor: section.settings.show_vendor %}
@@ -221,7 +222,14 @@
             {%- endif -%}
 
             {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
-            {%- if card_effective_min > 1 and settings.ms_min_order_show_label -%}
+            {%- liquid
+              if show_min_order == true or show_min_order == false
+                assign cp_show_min = show_min_order
+              else
+                assign cp_show_min = settings.ms_min_order_show_label
+              endif
+            -%}
+            {%- if card_effective_min > 1 and cp_show_min -%}
               <p class="caption">{{ 'products.product.quantity.min_order' | t: quantity: card_effective_min }}</p>
             {%- endif -%}
             {%- if card_product.quantity_price_breaks_configured? -%}

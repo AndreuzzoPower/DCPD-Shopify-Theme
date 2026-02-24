@@ -26,6 +26,20 @@
   <script src="{{ 'ms_infinite-scroll.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+-%}
+
 {%- comment -%} Expert Advice check {%- endcomment -%}
 {%- assign ea_has_posts = false -%}
 {%- if section.settings.ea_enable -%}
@@ -137,7 +151,7 @@
         {%- paginate collection.products by section.settings.products_per_page -%}
           {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
           {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
-            <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
+            <facet-filters-form class="facets facets-vertical-sort {{ sw_class }} small-hide">
               <form class="facets-vertical-form" id="FacetSortForm">
                 <div class="facet-filters sorting caption">
                   <div class="facet-filters__field">
@@ -192,13 +206,13 @@
             </facet-filters-form>
           {%- endif -%}
 
-          <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+          <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical {{ sw_class }}{% endif %}">
             {{ 'component-facets.css' | asset_url | stylesheet_tag }}
             <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
             {%- if section.settings.enable_filtering or section.settings.enable_sorting or section.settings.enable_menu_categories -%}
               <aside
                 aria-labelledby="verticalTitle"
-                class="facets-wrapper{% unless section.settings.enable_filtering or section.settings.enable_menu_categories %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+                class="facets-wrapper{% unless section.settings.enable_filtering or section.settings.enable_menu_categories %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} {{ sw_class }}{% endif %}"
                 id="main-collection-filters"
                 data-id="{{ section.id }}"
               >
@@ -220,7 +234,7 @@
               {% endif %}
             >
               {%- if collection.products.size == 0 -%}
-                <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
+                <div class="collection collection--empty {{ sw_class }}" id="product-grid" data-id="{{ section.id }}">
                   <div class="loading-overlay gradient"></div>
                   <div class="title-wrapper center">
                     <div class="title title--primary">
@@ -235,7 +249,7 @@
                 </div>
               {%- else -%}
                 <div
-                  class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+                  class="collection{% if section.settings.filter_type != 'vertical' %} {{ sw_class }}{% endif %}"
                   {% if section.settings.enable_infinite_scroll %}
                     data-infinite-scroll
                     data-infinite-grid="#product-grid"
@@ -272,6 +286,7 @@
                           show_secondary_image: section.settings.show_secondary_image,
                           show_vendor: section.settings.show_vendor,
                           show_rating: section.settings.show_rating,
+                          show_min_order: section.settings.show_min_order,
                           lazy_load: lazy_load,
                           skip_styles: skip_card_product_styles,
                           quick_add: section.settings.quick_add,
@@ -367,9 +382,36 @@
 
 {% schema %}
 {
-  "name": "t:sections.main-collection-product-grid.name",
+  "name": "MS Collection Grid",
   "class": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Griglia"
+    },
     {
       "type": "range",
       "id": "products_per_page",
@@ -403,17 +445,10 @@
           "label": "t:sections.main-collection-product-grid.settings.columns_mobile.options__2.label"
         }
       ]
-    },    
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.all.colors.has_cards_info",
-      "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "t:sections.main-collection-product-grid.settings.header__3.content"
+      "content": "Media"
     },
     {
       "type": "select",
@@ -482,6 +517,10 @@
       "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
     },
     {
+      "type": "header",
+      "content": "Scheda prodotto"
+    },
+    {
       "type": "checkbox",
       "id": "show_vendor",
       "default": false,
@@ -493,6 +532,13 @@
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
       "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_min_order",
+      "default": true,
+      "label": "Mostra quantita minima",
+      "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
     },
     {
       "type": "select",
