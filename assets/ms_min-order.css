@@ -18,29 +18,45 @@
    QUANTITÀ NEL CARRELLO — Pill
    ═══════════════════════════════════════ */
 
+.quantity__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
 .ms-cart-qty-pill {
-  display: inline-block;
-  margin-left: 0.5em;
+  display: inline-flex;
+  align-items: center;
   padding: 0.15em 0.65em;
   font-size: 0.85em;
   line-height: 1.4;
   color: #fff;
   background-color: rgb(var(--color-foreground, 18 18 18));
   border-radius: 999px;
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 /* ═══════════════════════════════════════
    MINIMO D'ORDINE — Errore pagina prodotto
-   Più vicino alla label, tutto rosso.
+   Più vicino alla label, tutto rosso,
+   icona centrata con il testo.
    ═══════════════════════════════════════ */
 
 .product-form__error-message-wrapper:not([hidden]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   margin-top: -2rem;
   color: red;
 }
 
+.product-form__error-message-wrapper:not([hidden]) .svg-wrapper,
 .product-form__error-message-wrapper:not([hidden]) svg {
+  display: inline-flex;
+  align-items: center;
+  width: 1.2em;
+  height: 1.2em;
+  flex-shrink: 0;
   color: red;
 }
 
