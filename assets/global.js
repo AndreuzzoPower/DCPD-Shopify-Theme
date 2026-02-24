@@ -872,6 +872,14 @@ class SliderComponent extends HTMLElement {
       (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
     );
     this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
+
+    if (this.scrollMode === 'single') {
+      this.paginationPages = this.sliderItemsToShow.length;
+    } else {
+      this.paginationPages = Math.ceil(this.sliderItemsToShow.length / this.slidesPerPage);
+    }
+
+    this.updatePaginationCount();
     this.update();
   }
 
@@ -880,15 +888,34 @@ class SliderComponent extends HTMLElement {
     this.initPages();
   }
 
+  updatePaginationCount() {
+    if (this.pageTotalElement) {
+      this.pageTotalElement.textContent = this.paginationPages;
+    }
+    if (this.paginationLinks.length) {
+      this.paginationLinks.forEach((link, index) => {
+        link.style.display = index < this.paginationPages ? '' : 'none';
+      });
+    }
+  }
+
   update() {
     if (!this.slider) return;
 
     const previousPage = this.currentPage;
-    this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
 
-    if (this.currentPageElement && this.pageTotalElement) {
+    if (this.scrollMode === 'single') {
+      this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+    } else {
+      const pageOffset = this.slidesPerPage * this.sliderItemOffset;
+      this.currentPage = Math.min(
+        Math.floor(this.slider.scrollLeft / pageOffset) + 1,
+        this.paginationPages
+      );
+    }
+
+    if (this.currentPageElement) {
       this.currentPageElement.textContent = this.currentPage;
-      this.pageTotalElement.textContent = this.totalPages;
     }
 
     this.updatePaginationLinks();
@@ -965,7 +992,9 @@ class SliderComponent extends HTMLElement {
     event.preventDefault();
     const index = parseInt(event.currentTarget.dataset.slideIndex);
     if (isNaN(index)) return;
-    const targetPosition = (index - 1) * this.sliderItemOffset;
+    const targetPosition = this.scrollMode === 'single'
+      ? (index - 1) * this.sliderItemOffset
+      : (index - 1) * this.slidesPerPage * this.sliderItemOffset;
     this.setSlidePosition(targetPosition);
   }
 
