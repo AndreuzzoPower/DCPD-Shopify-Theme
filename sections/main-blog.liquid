@@ -79,15 +79,13 @@
     }
   }
 
-  /* Stile card: bordi, border-radius e ombra */
+  /* Stile card: bordi e ombra – gestiti da settings globali */
   .section-{{ section.id }}-padding .article-card-wrapper {
-    {% if section.settings.card_border_position == 'all' %}
-      border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
-    {% elsif section.settings.card_border_position == 'bottom' %}
-      border-bottom: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    {% if settings.blog_card_border_thickness > 0 %}
+      border: {{ settings.blog_card_border_thickness }}px solid {{ settings.blog_card_border_color }};
     {% endif %}
-    {% if section.settings.card_border_radius > 0 %}
-      border-radius: {{ section.settings.card_border_radius }}px;
+    {% if settings.blog_card_corner_radius > 0 %}
+      border-radius: {{ settings.blog_card_corner_radius }}px;
     {% endif %}
     {% if settings.blog_card_shadow == 'light' %}
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -469,52 +467,6 @@
     {
       "type": "header",
       "content": "Stile card"
-    },
-    {
-      "type": "select",
-      "id": "card_border_position",
-      "label": "Bordi",
-      "default": "none",
-      "options": [
-        {
-          "value": "none",
-          "label": "Nessuno"
-        },
-        {
-          "value": "all",
-          "label": "Tutti i lati"
-        },
-        {
-          "value": "bottom",
-          "label": "Solo sotto"
-        }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "card_border_width",
-      "min": 1,
-      "max": 5,
-      "step": 1,
-      "default": 1,
-      "unit": "px",
-      "label": "Spessore bordo"
-    },
-    {
-      "type": "color",
-      "id": "card_border_color",
-      "label": "Colore bordo",
-      "default": "#e0e0e0"
-    },
-    {
-      "type": "range",
-      "id": "card_border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "default": 0,
-      "unit": "px",
-      "label": "Raggio bordi (border-radius)"
     },
     {
       "type": "checkbox",

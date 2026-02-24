@@ -1208,14 +1208,10 @@
         "default": 0
       },
       {
-        "type": "range",
-        "id": "card_border_opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "label": "t:settings_schema.global.settings.opacity.label",
-        "default": 0
+        "type": "color",
+        "id": "card_border_color",
+        "label": "Colore bordo",
+        "default": "#e0e0e0"
       },
       {
         "type": "range",
@@ -1311,14 +1307,10 @@
         "default": 0
       },
       {
-        "type": "range",
-        "id": "collection_card_border_opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "label": "t:settings_schema.global.settings.opacity.label",
-        "default": 0
+        "type": "color",
+        "id": "collection_card_border_color",
+        "label": "Colore bordo",
+        "default": "#e0e0e0"
       },
       {
         "type": "range",
@@ -1414,14 +1406,10 @@
         "default": 0
       },
       {
-        "type": "range",
-        "id": "blog_card_border_opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "unit": "%",
-        "label": "t:settings_schema.global.settings.opacity.label",
-        "default": 0
+        "type": "color",
+        "id": "blog_card_border_color",
+        "label": "Colore bordo",
+        "default": "#e0e0e0"
       },
       {
         "type": "range",

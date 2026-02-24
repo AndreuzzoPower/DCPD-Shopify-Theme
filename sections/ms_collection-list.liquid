@@ -113,15 +113,15 @@
     }
   {%- endif -%}
 
-  /* Card border-radius */
-  {%- if section.settings.card_border_radius > 0 -%}
+  /* Card border-radius – gestito da settings globali */
+  {%- if settings.collection_card_corner_radius > 0 -%}
     #section-{{ section.id }} .card-wrapper {
-      border-radius: {{ section.settings.card_border_radius }}px;
+      border-radius: {{ settings.collection_card_corner_radius }}px;
       overflow: hidden;
     }
     #section-{{ section.id }} .card,
     #section-{{ section.id }} .card__inner {
-      border-radius: {{ section.settings.card_border_radius }}px;
+      border-radius: {{ settings.collection_card_corner_radius }}px;
     }
   {%- endif -%}
 
@@ -439,16 +439,6 @@
       ],
       "default": "square",
       "label": "t:sections.collection-list.settings.image_ratio.label"
-    },
-    {
-      "type": "range",
-      "id": "card_border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "default": 0,
-      "unit": "px",
-      "label": "Raggio bordi (border-radius)"
     },
     {
       "type": "checkbox",

@@ -122,7 +122,7 @@
         --product-card-corner-radius: {{ settings.card_corner_radius | divided_by: 10.0 }}rem;
         --product-card-text-alignment: {{ settings.card_text_alignment }};
         --product-card-border-width: {{ settings.card_border_thickness | divided_by: 10.0 }}rem;
-        --product-card-border-opacity: {{ settings.card_border_opacity | divided_by: 100.0 }};
+        --product-card-border-color: {{ settings.card_border_color }};
         {% case settings.card_shadow %}
           {% when 'light' %}
             --product-card-shadow-opacity: 0.08;
@@ -154,7 +154,7 @@
         --collection-card-corner-radius: {{ settings.collection_card_corner_radius | divided_by: 10.0 }}rem;
         --collection-card-text-alignment: {{ settings.collection_card_text_alignment }};
         --collection-card-border-width: {{ settings.collection_card_border_thickness | divided_by: 10.0 }}rem;
-        --collection-card-border-opacity: {{ settings.collection_card_border_opacity | divided_by: 100.0 }};
+        --collection-card-border-color: {{ settings.collection_card_border_color }};
         {% case settings.collection_card_shadow %}
           {% when 'light' %}
             --collection-card-shadow-opacity: 0.08;
@@ -186,7 +186,7 @@
         --blog-card-corner-radius: {{ settings.blog_card_corner_radius | divided_by: 10.0 }}rem;
         --blog-card-text-alignment: {{ settings.blog_card_text_alignment }};
         --blog-card-border-width: {{ settings.blog_card_border_thickness | divided_by: 10.0 }}rem;
-        --blog-card-border-opacity: {{ settings.blog_card_border_opacity | divided_by: 100.0 }};
+        --blog-card-border-color: {{ settings.blog_card_border_color }};
         {% case settings.blog_card_shadow %}
           {% when 'light' %}
             --blog-card-shadow-opacity: 0.08;

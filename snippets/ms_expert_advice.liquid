@@ -185,13 +185,11 @@
 
     /* ===== EA Card styles (scoped to .ms-ea) ===== */
     .ms-ea .article-card-wrapper {
-      {% if section.settings.ea_card_border_position == 'all' %}
-        border: {{ section.settings.ea_card_border_width | default: 1 }}px solid {{ section.settings.ea_card_border_color | default: '#e0e0e0' }};
-      {% elsif section.settings.ea_card_border_position == 'bottom' %}
-        border-bottom: {{ section.settings.ea_card_border_width | default: 1 }}px solid {{ section.settings.ea_card_border_color | default: '#e0e0e0' }};
+      {% if settings.card_border_thickness > 0 %}
+        border: {{ settings.card_border_thickness }}px solid {{ settings.card_border_color }};
       {% endif %}
-      {% if section.settings.ea_card_border_radius > 0 %}
-        border-radius: {{ section.settings.ea_card_border_radius }}px;
+      {% if settings.card_corner_radius > 0 %}
+        border-radius: {{ settings.card_corner_radius }}px;
       {% endif %}
       {% if settings.card_shadow == 'light' %}
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);

@@ -12,7 +12,7 @@
 .contains-card--product {
   --border-radius: var(--product-card-corner-radius);
   --border-width: var(--product-card-border-width);
-  --border-opacity: var(--product-card-border-opacity);
+  --border-color: var(--product-card-border-color);
   --shadow-horizontal-offset: var(--product-card-shadow-horizontal-offset);
   --shadow-vertical-offset: var(--product-card-shadow-vertical-offset);
   --shadow-blur-radius: var(--product-card-shadow-blur-radius);
@@ -26,7 +26,7 @@
 .contains-card--collection {
   --border-radius: var(--collection-card-corner-radius);
   --border-width: var(--collection-card-border-width);
-  --border-opacity: var(--collection-card-border-opacity);
+  --border-color: var(--collection-card-border-color);
   --shadow-horizontal-offset: var(--collection-card-shadow-horizontal-offset);
   --shadow-vertical-offset: var(--collection-card-shadow-vertical-offset);
   --shadow-blur-radius: var(--collection-card-shadow-blur-radius);
@@ -40,7 +40,7 @@
 .contains-card--article {
   --border-radius: var(--blog-card-corner-radius);
   --border-width: var(--blog-card-border-width);
-  --border-opacity: var(--blog-card-border-opacity);
+  --border-color: var(--blog-card-border-color);
   --shadow-horizontal-offset: var(--blog-card-shadow-horizontal-offset);
   --shadow-vertical-offset: var(--blog-card-shadow-vertical-offset);
   --shadow-blur-radius: var(--blog-card-shadow-blur-radius);
