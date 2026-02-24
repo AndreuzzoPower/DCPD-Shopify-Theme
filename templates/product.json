@@ -180,7 +180,7 @@
         "carousel_pagination_style": "dots",
         "carousel_scroll_mode": "single",
         "carousel_loop": false,
-        "carousel_show_arrows": true,
+        "carousel_show_arrows": false,
         "carousel_show_pagination": true,
         "carousel_peek_size": "medium",
         "columns_mobile": "2",
