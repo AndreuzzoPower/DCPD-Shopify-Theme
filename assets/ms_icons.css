@@ -119,24 +119,3 @@ summary > .summary__title {
   width: auto;
 }
 
-/* "View full details" link: allinea icona freccia al testo */
-.product__view-details {
-  display: inline-flex;
-  align-items: center;
-}
-
-.product__view-details .svg-wrapper {
-  width: 1.2rem;
-  margin-left: 1.2rem;
-  flex-shrink: 0;
-}
-
-/* Gift card recipient checkbox: label centrata e meno spaziata */
-.recipient-checkbox {
-  align-items: center;
-}
-
-.recipient-checkbox > svg {
-  margin-top: 0;
-  margin-right: 0.5rem;
-}

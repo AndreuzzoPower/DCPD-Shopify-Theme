@@ -277,10 +277,12 @@
 }
 
 quick-add-modal .product:not(.featured-product) .product__view-details {
-  display: block;
+  display: inline-flex;
+  align-items: center;
 }
 
-.quick-add-modal__content--bulk .product__view-details .icon {
+.quick-add-modal__content--bulk .product__view-details .icon,
+.quick-add-modal__content--bulk .product__view-details .svg-wrapper {
   margin-left: 1.2rem;
 }
 

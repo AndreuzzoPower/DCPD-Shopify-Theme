@@ -1166,7 +1166,8 @@ a.product__text {
 }
 
 .product__view-details {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -1175,7 +1176,8 @@ a.product__text {
   text-underline-offset: 0.3rem;
 }
 
-.product__view-details .icon {
+.product__view-details .icon,
+.product__view-details .svg-wrapper {
   width: 1.2rem;
   margin-left: 1.2rem;
   flex-shrink: 0;
@@ -1394,7 +1396,7 @@ a.product__text {
   font-size: 1.6rem;
   display: flex;
   word-break: break-word;
-  align-items: flex-start;
+  align-items: center;
   max-width: inherit;
   position: relative;
   cursor: pointer;
@@ -1424,9 +1426,12 @@ a.product__text {
 }
 
 .recipient-checkbox > svg {
-  margin-top: var(--recipient-checkbox-margin-top);
-  margin-right: 1.2rem;
+  margin-right: 0.6rem;
   flex-shrink: 0;
+}
+
+.recipient-checkbox > .svg-wrapper {
+  display: contents;
 }
 
 .recipient-form .icon-checkmark {
@@ -1434,7 +1439,8 @@ a.product__text {
   position: absolute;
   left: 0.28rem;
   z-index: 5;
-  top: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
   width: 10px;
   height: 9px;
 }
