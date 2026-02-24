@@ -119,22 +119,24 @@
       }
     },
     "related-products": {
-      "type": "related-products",
+      "type": "ms_related-products",
       "settings": {
+        "section_width": "page_width",
+        "color_scheme": "scheme-1",
         "heading": "Prodotti Simili",
+        "title_tag": "h2",
         "heading_size": "h2",
         "products_to_show": 10,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "color_scheme": "scheme-1",
         "image_ratio": "square",
         "image_shape": "default",
         "show_secondary_image": true,
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "show_vendor": false,
         "show_rating": false,
-        "show_min_order": true,
-        "padding_top": 36,
-        "padding_bottom": 28
+        "show_min_order": true
       }
     },
     "ms_products_from_metafield_JRyQgy": {
