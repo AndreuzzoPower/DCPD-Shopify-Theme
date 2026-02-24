@@ -47,7 +47,45 @@
   if section.settings.section_width == 'full_width'
     assign is_full_width = true
   endif
+
+  assign fc_sw = section.settings.section_width | default: 'page_width'
+  if fc_sw == 'default' or fc_sw == 'contained'
+    assign fc_sw = 'page_width'
+  elsif fc_sw == 'full'
+    assign fc_sw = 'full_width'
+  elsif fc_sw == 'fluid'
+    assign fc_sw = 'page_fluid'
+  endif
+  case fc_sw
+    when 'narrow'
+      assign fc_sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign fc_sw_class = 'page-width'
+    when 'page_fluid'
+      assign fc_sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign fc_sw_class = ''
+  endcase
 -%}
+
+{%- unless is_full_width -%}
+  {%- if show_desktop_slider -%}
+    {% style %}
+      @media screen and (min-width: 990px) {
+        #section-{{ section.id }} .slider.slider--desktop {
+          margin-left: 0;
+          scroll-padding-left: 0;
+        }
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc((100% - 4rem) / 1 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc((100% - 4rem) / 2 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc((100% - 4rem) / 3 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc((100% - 4rem) / 4 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc((100% - 4rem) / 5 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc((100% - 4rem) / 6 - var(--grid-desktop-horizontal-spacing)); }
+      }
+    {% endstyle %}
+  {%- endif -%}
+{%- endunless -%}
 
 <div
   class="color-{{ section.settings.color_scheme }} isolate gradient"
@@ -78,10 +116,12 @@
       {%- endif -%}
     </div>
 
+    {%- if fc_sw_class != blank -%}<div class="{{ fc_sw_class }}">{%- endif -%}
     <slider-component
       data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
       data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
-      class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and is_full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      class="slider-mobile-gutter{% if is_full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      {% unless is_full_width %}style="--desktop-margin-left-first-item: 0px"{% endunless %}
     >
       <ul
         id="Slider-{{ section.id }}"
@@ -177,6 +217,7 @@
         </div>
       {%- endif -%}
     </slider-component>
+    {%- if fc_sw_class != blank -%}</div>{%- endif -%}
 
     {%- if section.settings.show_view_all and more_in_collection -%}
       <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">

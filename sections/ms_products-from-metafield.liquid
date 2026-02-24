@@ -245,21 +245,6 @@
   },
   "settings": [
     {
-      "type": "product_list",
-      "id": "mf",
-      "label": "Metafield prodotti",
-      "info": "Seleziona i prodotti da mostrare. Utilizza un metafield di tipo product_list per il collegamento dinamico."
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 2,
-      "max": 25,
-      "step": 1,
-      "default": 4,
-      "label": "t:sections.featured-collection.settings.products_to_show.label"
-    },
-    {
       "type": "header",
       "content": "Layout"
     },
@@ -288,38 +273,30 @@
       "default": "page_width"
     },
     {
-      "type": "range",
-      "id": "columns_desktop",
-      "min": 1,
-      "max": 6,
-      "step": 1,
-      "default": 4,
-      "label": "t:sections.featured-collection.settings.columns_desktop.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_desktop_slider",
-      "label": "t:sections.featured-collection.settings.enable_desktop_slider.label",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_desktop_slider_autoplay",
-      "label": "Abilita autoplay",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "desktop_slider_autoplay_velocita",
-      "min": 1,
-      "max": 5,
-      "step": 1,
-      "default": 3,
-      "label": "Tempo transizione (sec.)"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
     },
     {
       "type": "header",
-      "content": "t:sections.featured-collection.settings.header_text.content"
+      "content": "Contenuto"
+    },
+    {
+      "type": "product_list",
+      "id": "mf",
+      "label": "Metafield prodotti",
+      "info": "Seleziona i prodotti da mostrare. Utilizza un metafield di tipo product_list per il collegamento dinamico."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 25,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.featured-collection.settings.products_to_show.label"
     },
     {
       "type": "liquid",
@@ -364,36 +341,7 @@
     },
     {
       "type": "header",
-      "content": "Stile"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.all.colors.has_cards_info",
-      "default": "scheme-1"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "default": true,
-      "label": "t:sections.featured-collection.settings.show_view_all.label",
-      "info": "t:sections.featured-collection.settings.show_view_all.info"
-    },
-    {
-      "type": "select",
-      "id": "view_all_style",
-      "label": "t:sections.featured-collection.settings.view_all_style.label",
-      "options": [
-        { "value": "link", "label": "t:sections.featured-collection.settings.view_all_style.options__1.label" },
-        { "value": "outline", "label": "t:sections.featured-collection.settings.view_all_style.options__2.label" },
-        { "value": "solid", "label": "t:sections.featured-collection.settings.view_all_style.options__3.label" }
-      ],
-      "default": "solid"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header.content"
+      "content": "Media"
     },
     {
       "type": "select",
@@ -429,6 +377,60 @@
       "label": "t:sections.featured-collection.settings.show_secondary_image.label"
     },
     {
+      "type": "header",
+      "content": "Carosello"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.featured-collection.settings.columns_desktop.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop_slider",
+      "label": "t:sections.featured-collection.settings.enable_desktop_slider.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop_slider_autoplay",
+      "label": "Abilita autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_slider_autoplay_velocita",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Tempo transizione (sec.)"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "t:sections.featured-collection.settings.columns_mobile.label",
+      "options": [
+        { "value": "1", "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label" },
+        { "value": "2", "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": false,
+      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "Scheda prodotto"
+    },
+    {
       "type": "checkbox",
       "id": "show_vendor",
       "default": false,
@@ -458,26 +460,6 @@
         { "value": "standard", "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2" },
         { "value": "bulk", "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3" }
       ]
-    },
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_mobile.content"
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "default": "2",
-      "label": "t:sections.featured-collection.settings.columns_mobile.label",
-      "options": [
-        { "value": "1", "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label" },
-        { "value": "2", "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "swipe_on_mobile",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
     }
   ],
   "blocks": [

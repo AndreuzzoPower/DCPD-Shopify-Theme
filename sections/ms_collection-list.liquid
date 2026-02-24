@@ -169,6 +169,25 @@
   {%- endif -%}
 {%- endstyle -%}
 
+{%- unless is_full_width -%}
+  {%- if show_desktop_slider -%}
+    {% style %}
+      @media screen and (min-width: 990px) {
+        #section-{{ section.id }} .slider.slider--desktop {
+          margin-left: 0;
+          scroll-padding-left: 0;
+        }
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc((100% - 4rem) / 1 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc((100% - 4rem) / 2 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc((100% - 4rem) / 3 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc((100% - 4rem) / 4 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc((100% - 4rem) / 5 - var(--grid-desktop-horizontal-spacing)); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc((100% - 4rem) / 6 - var(--grid-desktop-horizontal-spacing)); }
+      }
+    {% endstyle %}
+  {%- endif -%}
+{%- endunless -%}
+
 <div
   class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.card_image_round %} ms-cl--round-images{% endif %}{% if link_style == 'pill' %} ms-cl--link-pill{% elsif link_style == 'button' %} ms-cl--link-button{% endif %}{% if is_overlay %} ms-cl--overlay ms-cl--{{ link_pos }}{% endif %}{% if link_align != 'left' %} ms-cl--align-link-{{ link_align }}{% endif %}"
   id="section-{{ section.id }}"
@@ -198,6 +217,7 @@
       data-autoplay="{{ section.settings.enable_autoplay }}"
       data-speed="{{ section.settings.autoplay_speed }}000"
       class="slider-mobile-gutter{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if is_full_width %} slider-component-full-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      {% unless is_full_width %}style="--desktop-margin-left-first-item: 0px"{% endunless %}
     >
       <ul
         class="collection-list contains-card contains-card--collection{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %} collection-list--{{ collection_blocks_count }}-items"
