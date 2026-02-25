@@ -516,7 +516,11 @@
             "text_alignment": "center",
             "text_alignment_mobile": "center",
             "color_scheme": "scheme-1",
-            "slide_accessibility_label": ""
+            "slide_accessibility_label": "",
+            "overlay_controls_light": false,
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
           }
         },
         "slide_FGW4zc": {
@@ -545,7 +549,11 @@
             "text_alignment": "center",
             "text_alignment_mobile": "center",
             "color_scheme": "",
-            "slide_accessibility_label": ""
+            "slide_accessibility_label": "",
+            "overlay_controls_light": true,
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
           }
         },
         "slide_kWDACL": {
@@ -574,7 +582,11 @@
             "text_alignment": "center",
             "text_alignment_mobile": "center",
             "color_scheme": "",
-            "slide_accessibility_label": ""
+            "slide_accessibility_label": "",
+            "overlay_controls_light": false,
+            "schedule_enabled": false,
+            "schedule_start": "",
+            "schedule_end": ""
           }
         }
       },
