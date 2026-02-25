@@ -583,7 +583,7 @@
             "text_alignment_mobile": "center",
             "color_scheme": "",
             "slide_accessibility_label": "",
-            "overlay_controls_light": false,
+            "overlay_controls_light": true,
             "schedule_enabled": false,
             "schedule_start": "",
             "schedule_end": ""
