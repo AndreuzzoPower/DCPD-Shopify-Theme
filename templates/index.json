@@ -665,6 +665,166 @@
         "subheading_custom_class": "",
         "heading_alignment": "left"
       }
+    },
+    "ms_multicolumn_dNmEq4": {
+      "type": "ms_multicolumn",
+      "blocks": {
+        "column_zjLaeT": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_ab8Vch": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_hwdGEP": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_yyDkVb": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_kWqdp9": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/download.jpg",
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "vai",
+            "link": "#",
+            "link_button_style_secondary": true,
+            "link_button_type": "button",
+            "link_button_size": "medium",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_n9ftcr": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_LaLBEH": {
+          "type": "column",
+          "settings": {
+            "title": "Colonna",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        }
+      },
+      "block_order": [
+        "column_zjLaeT",
+        "column_ab8Vch",
+        "column_hwdGEP",
+        "column_yyDkVb",
+        "column_kWqdp9",
+        "column_n9ftcr",
+        "column_LaLBEH"
+      ],
+      "name": "MS Multicolonna",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "column_alignment": "left",
+        "background_style": "primary",
+        "title": "Multicolonna",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "heading_custom_class": "",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "Etichetta pulsante",
+        "button_link": "",
+        "button_style_secondary": false,
+        "button_type": "button",
+        "button_size": "default",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "columns_desktop": 3,
+        "enable_desktop_slider": false,
+        "enable_autoplay": false,
+        "autoplay_speed": 5,
+        "carousel_arrows_position": "below_center",
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_loop": false,
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "carousel_peek_size": "medium",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false
+      }
     }
   },
   "order": [
@@ -675,6 +835,7 @@
     "ms_featured_collection_gLNCjA",
     "ms_image_with_text_7nGk7K",
     "ms_slideshow_7bym9P",
-    "ms_collage_qDzJwf"
+    "ms_collage_qDzJwf",
+    "ms_multicolumn_dNmEq4"
   ]
 }
