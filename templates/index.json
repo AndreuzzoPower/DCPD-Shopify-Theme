@@ -552,9 +552,9 @@
         "color_scheme": "",
         "slide_height": "medium",
         "image_behavior": "none",
-        "slider_visual": "counter",
-        "auto_rotate": false,
-        "change_slides_speed": 5,
+        "slider_visual": "dots",
+        "auto_rotate": true,
+        "change_slides_speed": 3,
         "show_text_below": true,
         "accessibility_info": "Presentazione sul nostro brand"
       }
