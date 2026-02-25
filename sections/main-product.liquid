@@ -476,16 +476,16 @@
                   assign popup_btn_class = 'product-popup-modal__button'
                   case popup_btn_type
                     when 'button'
-                      assign popup_btn_class = popup_btn_class | append: ' button'
+                      assign popup_btn_class = popup_btn_class | append: ' button button--full-width'
                       if block.settings.button_style_secondary
-                        assign popup_btn_class = popup_btn_class | append: ' button--secondary button--outline'
+                        assign popup_btn_class = popup_btn_class | append: ' button--secondary'
                       else
                         assign popup_btn_class = popup_btn_class | append: ' button--primary'
                       endif
                     when 'pill'
-                      assign popup_btn_class = popup_btn_class | append: ' button button--pill'
+                      assign popup_btn_class = popup_btn_class | append: ' button button--full-width button--pill'
                       if block.settings.button_style_secondary
-                        assign popup_btn_class = popup_btn_class | append: ' button--secondary button--outline'
+                        assign popup_btn_class = popup_btn_class | append: ' button--secondary'
                       else
                         assign popup_btn_class = popup_btn_class | append: ' button--primary'
                       endif
@@ -531,7 +531,7 @@
                   <modal-opener class="product-form__info-request" data-modal="#InfoRequestModal-{{ section.id }}">
                     <button
                       type="button"
-                      class="button{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %}{% if block.settings.info_request_style_secondary %} button--secondary button--outline{% else %} button--primary{% endif %} product-form__info-request-btn{% if block.settings.info_request_custom_class != blank %} {{ block.settings.info_request_custom_class }}{% endif %}"
+                      class="button button--full-width{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %} {% if block.settings.info_request_style_secondary %}button--secondary{% else %}button--primary{% endif %} product-form__info-request-btn{% if block.settings.info_request_custom_class != blank %} {{ block.settings.info_request_custom_class }}{% endif %}"
                     >
                       {{ block.settings.info_request_label | default: 'Richiedi informazioni' }}
                     </button>

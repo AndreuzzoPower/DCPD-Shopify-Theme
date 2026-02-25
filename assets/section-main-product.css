@@ -1277,11 +1277,32 @@ a.product__text {
 
 .icon-with-text--horizontal .icon-with-text__item {
   flex-direction: column;
-  width: 33%;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .icon-with-text--vertical .icon-with-text__item {
   margin-bottom: var(--icon-size);
+}
+
+.icon-with-text__link {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.icon-with-text--horizontal .icon-with-text__link {
+  flex-direction: column;
+  width: 100%;
+}
+
+.icon-with-text__link .h4 {
+  text-decoration: underline;
+}
+
+.icon-with-text__link:hover .h4 {
+  text-decoration-thickness: 2px;
 }
 
 /* SKU block */
