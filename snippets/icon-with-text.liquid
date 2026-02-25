@@ -1,19 +1,19 @@
 {% comment %}
-  Renders icon with text block
+  Renders icon with text block (up to 5 pairings).
+  Each pairing supports an optional link with target.
 
   Accepts:
   - block: {Object} passes in the block information.
 
-
   Usage:
-  {% render 'icon-with-text',
-    block: block
-  %}
+  {% render 'icon-with-text', block: block %}
 {% endcomment %}
 {%- liquid
   assign heading_1_empty = false
   assign heading_2_empty = false
   assign heading_3_empty = false
+  assign heading_4_empty = false
+  assign heading_5_empty = false
   assign text_only_all_items = true
 
   if block.settings.heading_1 == empty
@@ -28,11 +28,23 @@
     assign heading_3_empty = true
   endif
 
+  if block.settings.heading_4 == empty
+    assign heading_4_empty = true
+  endif
+
+  if block.settings.heading_5 == empty
+    assign heading_5_empty = true
+  endif
+
   if heading_1_empty == false and block.settings.icon_1 != 'none' or block.settings.image_1 != null or block.settings.custom_icon_1 != blank
     assign text_only_all_items = false
   elsif heading_2_empty == false and block.settings.icon_2 != 'none' or block.settings.image_2 != null or block.settings.custom_icon_2 != blank
     assign text_only_all_items = false
   elsif heading_3_empty == false and block.settings.icon_3 != 'none' or block.settings.image_3 != null or block.settings.custom_icon_3 != blank
+    assign text_only_all_items = false
+  elsif heading_4_empty == false and block.settings.icon_4 != 'none' or block.settings.image_4 != null or block.settings.custom_icon_4 != blank
+    assign text_only_all_items = false
+  elsif heading_5_empty == false and block.settings.icon_5 != 'none' or block.settings.image_5 != null or block.settings.custom_icon_5 != blank
     assign text_only_all_items = false
   endif
 -%}
@@ -42,6 +54,9 @@
 >
   {%- unless heading_1_empty -%}
     <li class="icon-with-text__item">
+      {%- if block.settings.link_1 != blank -%}
+        <a href="{{ block.settings.link_1 }}" target="{{ block.settings.link_target_1 | default: '_self' }}"{% if block.settings.link_target_1 == '_blank' %} rel="noopener noreferrer"{% endif %} class="icon-with-text__link">
+      {%- endif -%}
       {%- if block.settings.image_1 == null -%}
         {%- render 'icon-accordion', icon: block.settings.icon_1, custom_icon: block.settings.custom_icon_1 -%}
       {%- else -%}
@@ -60,12 +75,18 @@
       <span class="h4 inline-richtext">
         {{- block.settings.heading_1 -}}
       </span>
+      {%- if block.settings.link_1 != blank -%}
+        </a>
+      {%- endif -%}
     </li>
   {%- endunless -%}
   {%- unless heading_2_empty -%}
     <li class="icon-with-text__item">
+      {%- if block.settings.link_2 != blank -%}
+        <a href="{{ block.settings.link_2 }}" target="{{ block.settings.link_target_2 | default: '_self' }}"{% if block.settings.link_target_2 == '_blank' %} rel="noopener noreferrer"{% endif %} class="icon-with-text__link">
+      {%- endif -%}
       {%- if block.settings.image_2 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_2, custom_icon: block.settings.custom_icon_2 -%}
+        {%- render 'icon-accordion', icon: block.settings.icon_2, custom_icon: block.settings.custom_icon_2 -%}
       {%- else -%}
         <img
           src="{{ block.settings.image_2 | image_url }}"
@@ -82,12 +103,18 @@
       <span class="h4 inline-richtext">
         {{- block.settings.heading_2 -}}
       </span>
+      {%- if block.settings.link_2 != blank -%}
+        </a>
+      {%- endif -%}
     </li>
   {%- endunless -%}
   {%- unless heading_3_empty -%}
     <li class="icon-with-text__item">
+      {%- if block.settings.link_3 != blank -%}
+        <a href="{{ block.settings.link_3 }}" target="{{ block.settings.link_target_3 | default: '_self' }}"{% if block.settings.link_target_3 == '_blank' %} rel="noopener noreferrer"{% endif %} class="icon-with-text__link">
+      {%- endif -%}
       {%- if block.settings.image_3 == null -%}
-        {% render 'icon-accordion', icon: block.settings.icon_3, custom_icon: block.settings.custom_icon_3 -%}
+        {%- render 'icon-accordion', icon: block.settings.icon_3, custom_icon: block.settings.custom_icon_3 -%}
       {%- else -%}
         <img
           src="{{ block.settings.image_3 | image_url }}"
@@ -104,6 +131,65 @@
       <span class="h4 inline-richtext">
         {{- block.settings.heading_3 -}}
       </span>
+      {%- if block.settings.link_3 != blank -%}
+        </a>
+      {%- endif -%}
+    </li>
+  {%- endunless -%}
+  {%- unless heading_4_empty -%}
+    <li class="icon-with-text__item">
+      {%- if block.settings.link_4 != blank -%}
+        <a href="{{ block.settings.link_4 }}" target="{{ block.settings.link_target_4 | default: '_self' }}"{% if block.settings.link_target_4 == '_blank' %} rel="noopener noreferrer"{% endif %} class="icon-with-text__link">
+      {%- endif -%}
+      {%- if block.settings.image_4 == null -%}
+        {%- render 'icon-accordion', icon: block.settings.icon_4, custom_icon: block.settings.custom_icon_4 -%}
+      {%- else -%}
+        <img
+          src="{{ block.settings.image_4 | image_url }}"
+          {% if block.settings.image_4.alt != blank %}
+            alt="{{ block.settings.image_4.alt | escape }}"
+          {% else %}
+            role="presentation"
+          {% endif %}
+          height="auto"
+          width="auto"
+          loading="lazy"
+        >
+      {%- endif -%}
+      <span class="h4 inline-richtext">
+        {{- block.settings.heading_4 -}}
+      </span>
+      {%- if block.settings.link_4 != blank -%}
+        </a>
+      {%- endif -%}
+    </li>
+  {%- endunless -%}
+  {%- unless heading_5_empty -%}
+    <li class="icon-with-text__item">
+      {%- if block.settings.link_5 != blank -%}
+        <a href="{{ block.settings.link_5 }}" target="{{ block.settings.link_target_5 | default: '_self' }}"{% if block.settings.link_target_5 == '_blank' %} rel="noopener noreferrer"{% endif %} class="icon-with-text__link">
+      {%- endif -%}
+      {%- if block.settings.image_5 == null -%}
+        {%- render 'icon-accordion', icon: block.settings.icon_5, custom_icon: block.settings.custom_icon_5 -%}
+      {%- else -%}
+        <img
+          src="{{ block.settings.image_5 | image_url }}"
+          {% if block.settings.image_5.alt != blank %}
+            alt="{{ block.settings.image_5.alt | escape }}"
+          {% else %}
+            role="presentation"
+          {% endif %}
+          height="auto"
+          width="auto"
+          loading="lazy"
+        >
+      {%- endif -%}
+      <span class="h4 inline-richtext">
+        {{- block.settings.heading_5 -}}
+      </span>
+      {%- if block.settings.link_5 != blank -%}
+        </a>
+      {%- endif -%}
     </li>
   {%- endunless -%}
 </ul>
