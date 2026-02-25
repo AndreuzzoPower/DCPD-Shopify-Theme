@@ -90,7 +90,7 @@
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--full-width{% if block.settings.button_type == 'pill' %} button--pill{% endif %} {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}{% if block.settings.button_custom_class != blank %} {{ block.settings.button_custom_class }}{% endif %}"
+            class="product-form__submit button button--full-width{% if block.settings.button_type == 'pill' %} button--pill{% endif %}{% if block.settings.button_style_secondary %} button--outline{% endif %} {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}{% if block.settings.button_custom_class != blank %} {{ block.settings.button_custom_class }}{% endif %}"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null

@@ -473,14 +473,28 @@
               {%- when 'popup' -%}
                 {%- liquid
                   assign popup_btn_type = block.settings.button_type | default: 'link'
+                  assign popup_btn_class = 'product-popup-modal__button'
                   case popup_btn_type
                     when 'button'
-                      assign popup_btn_class = 'product-popup-modal__button button button--secondary'
+                      assign popup_btn_class = popup_btn_class | append: ' button'
+                      if block.settings.button_style_secondary
+                        assign popup_btn_class = popup_btn_class | append: ' button--secondary button--outline'
+                      else
+                        assign popup_btn_class = popup_btn_class | append: ' button--primary'
+                      endif
                     when 'pill'
-                      assign popup_btn_class = 'product-popup-modal__button button button--secondary button--pill'
+                      assign popup_btn_class = popup_btn_class | append: ' button button--pill'
+                      if block.settings.button_style_secondary
+                        assign popup_btn_class = popup_btn_class | append: ' button--secondary button--outline'
+                      else
+                        assign popup_btn_class = popup_btn_class | append: ' button--primary'
+                      endif
                     else
-                      assign popup_btn_class = 'product-popup-modal__button link'
+                      assign popup_btn_class = popup_btn_class | append: ' link'
                   endcase
+                  if block.settings.button_custom_class != blank
+                    assign popup_btn_class = popup_btn_class | append: ' ' | append: block.settings.button_custom_class
+                  endif
                 -%}
                 <modal-opener
                   class="product-popup-modal__opener quick-add-hidden"
@@ -517,7 +531,7 @@
                   <modal-opener class="product-form__info-request" data-modal="#InfoRequestModal-{{ section.id }}">
                     <button
                       type="button"
-                      class="button button--secondary{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %} product-form__info-request-btn{% if block.settings.info_request_custom_class != blank %} {{ block.settings.info_request_custom_class }}{% endif %}"
+                      class="button{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %}{% if block.settings.info_request_style_secondary %} button--secondary button--outline{% else %} button--primary{% endif %} product-form__info-request-btn{% if block.settings.info_request_custom_class != blank %} {{ block.settings.info_request_custom_class }}{% endif %}"
                     >
                       {{ block.settings.info_request_label | default: 'Richiedi informazioni' }}
                     </button>
@@ -1707,6 +1721,13 @@
           ]
         },
         {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "label": "Stile contorno",
+          "default": false,
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
           "type": "text",
           "id": "button_custom_class",
           "label": "Classe CSS personalizzata",
@@ -1766,6 +1787,13 @@
             { "value": "button", "label": "Pulsante" },
             { "value": "pill", "label": "Pill (arrotondato)" }
           ]
+        },
+        {
+          "type": "checkbox",
+          "id": "info_request_style_secondary",
+          "label": "Stile contorno Richiedi informazioni",
+          "default": true,
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
         },
         {
           "type": "text",
@@ -2037,6 +2065,19 @@
             { "value": "button", "label": "Pulsante" },
             { "value": "pill", "label": "Pill (arrotondato)" }
           ]
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "label": "Stile contorno",
+          "default": true,
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente. Ignorato per tipo \"Solo link\"."
+        },
+        {
+          "type": "text",
+          "id": "button_custom_class",
+          "label": "Classe CSS personalizzata",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         },
         {
           "id": "page",
