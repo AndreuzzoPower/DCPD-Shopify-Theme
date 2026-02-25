@@ -51,7 +51,9 @@
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "text_style": "uppercase",
+            "text_tag": "p",
+            "text_custom_class": ""
           }
         },
         "title": {
@@ -71,18 +73,22 @@
         },
         "quantity_selector": {
           "type": "quantity_selector",
-          "settings": {}
+          "settings": {
+            "show_cart_quantity": false
+          }
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
-            "show_info_request": false,
+            "button_type": "button",
+            "show_info_request": true,
             "info_request_label": "Richiedi informazioni",
             "info_request_form_type": "contact_form",
             "info_request_form_html": "",
-            "info_request_modal_title": "Richiedi informazioni"
+            "info_request_modal_title": "Richiedi informazioni",
+            "info_request_button_type": "button"
           }
         },
         "description": {
