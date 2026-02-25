@@ -30,24 +30,12 @@
   }
 }
 
-/* Box background opacity — only background, not content */
-.slideshow__slide .banner__box {
-  position: relative;
-  isolation: isolate;
-}
-
+/* Box background opacity.
+   background-color alpha only affects the background, NOT child content/text.
+   Direct rgba approach is simpler and avoids z-index/isolation stacking issues. */
 .slideshow__slide .ms-slide__box-custom-opacity {
-  background-color: transparent !important;
+  background-color: rgb(var(--color-background) / var(--ms-box-bg-opacity, 1)) !important;
   background-image: none !important;
-}
-
-.slideshow__slide .ms-slide__box-custom-opacity::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background-color: rgb(var(--color-background) / var(--ms-box-bg-opacity, 1));
 }
 
 /* Media wrapper — positioning context for overlay elements */
@@ -118,15 +106,17 @@
   justify-content: center !important;
 }
 
-/* Dawn applica position:absolute a .icon.icon-pause/.icon.icon-play
-   Li centeriamo nel cerchio overlay con top/left 50% + translate(-50%,-50%). */
+/* Dawn applica position:absolute a .icon.icon-pause/.icon.icon-play (specificità 30).
+   Centeriamo con inset:0 + margin:auto + dimensioni esplicite (la tecnica più robusta
+   per elementi absolute con dimensioni note: equivale a margin: auto su tutti i lati). */
 .ms-slideshow__autoplay-overlay .icon.icon-pause,
 .ms-slideshow__autoplay-overlay .icon.icon-play {
   position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  margin: 0 !important;
+  inset: 0 !important;
+  margin: auto !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  transform: none !important;
   padding: 0 !important;
 }
 
