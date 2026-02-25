@@ -365,8 +365,8 @@
       class="slideshow__autoplay slider-button ms-slideshow__autoplay-overlay"
       aria-label="{{ 'sections.slideshow.pause_slideshow' | t }}"
     >
-      {%- render 'ms_icon', icon: settings.ms_icon_pause -%}
-      {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+      {%- render 'ms_icon', icon: settings.ms_icon_pause, class: 'icon icon-pause' -%}
+      {%- render 'ms_icon', icon: settings.ms_icon_play, class: 'icon icon-play' -%}
     </button>
   {%- endif -%}
   </div>

@@ -118,18 +118,14 @@
   justify-content: center !important;
 }
 
-/* Reset any absolute/relative positioning Dawn may apply to icons inside the button */
-.ms-slideshow__autoplay-overlay .icon,
-.ms-slideshow__autoplay-overlay .icon-pause,
-.ms-slideshow__autoplay-overlay .icon-play,
-.ms-slideshow__autoplay-overlay svg {
-  position: static !important;
-  top: auto !important;
-  left: auto !important;
-  bottom: auto !important;
-  right: auto !important;
-  width: 1.6rem !important;
-  height: 1.6rem !important;
+/* Dawn applica position:absolute a .icon.icon-pause/.icon.icon-play
+   Li centeriamo nel cerchio overlay con top/left 50% + translate(-50%,-50%). */
+.ms-slideshow__autoplay-overlay .icon.icon-pause,
+.ms-slideshow__autoplay-overlay .icon.icon-play {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
   margin: 0 !important;
   padding: 0 !important;
 }
