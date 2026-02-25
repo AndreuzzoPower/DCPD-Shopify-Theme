@@ -50,11 +50,12 @@
   background-color: rgb(var(--color-background) / var(--ms-box-bg-opacity, 1));
 }
 
-/* Overlay arrows on sides of the slider */
-.ms-slideshow--arrows-overlay .slideshow {
+/* Media wrapper — positioning context for overlay elements */
+.ms-slideshow__media-wrapper {
   position: relative;
 }
 
+/* Overlay arrows on sides of the slider */
 .ms-slideshow__arrows-overlay {
   position: absolute;
   top: 50%;
@@ -71,6 +72,42 @@
 
 .ms-slideshow__arrows-overlay .slider-button {
   pointer-events: auto;
+  width: 5rem;
+  height: 5rem;
+  background-color: rgba(var(--color-foreground), 0.18);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease;
+}
+
+.ms-slideshow__arrows-overlay .slider-button:hover,
+.ms-slideshow__arrows-overlay .slider-button:focus-visible {
+  background-color: rgba(var(--color-foreground), 0.36);
+}
+
+.ms-slideshow__arrows-overlay .slider-button svg,
+.ms-slideshow__arrows-overlay .slider-button .icon {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+/* Autoplay button overlay (bottom-right of media wrapper) */
+.ms-slideshow__autoplay-overlay {
+  position: absolute;
+  bottom: 1.6rem;
+  right: 1.6rem;
+  z-index: 3;
+  width: 4.4rem;
+  height: 4.4rem;
+  background-color: rgba(var(--color-foreground), 0.25);
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.2s ease;
+}
+
+.ms-slideshow__autoplay-overlay:hover,
+.ms-slideshow__autoplay-overlay:focus-visible {
+  background-color: rgba(var(--color-foreground), 0.45);
 }
 
 /* Pagination standalone (when arrows are overlay) */

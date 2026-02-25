@@ -31,6 +31,11 @@
     assign arrows_overlay = true
   endif
 
+  assign autoplay_overlay = false
+  if section.settings.auto_rotate and section.settings.autoplay_position == 'overlay'
+    assign autoplay_overlay = true
+  endif
+
   assign has_multiple_slides = false
   assign real_slide_count = 0
   for block in section.blocks
@@ -149,6 +154,7 @@
           {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
         </button>
       {%- endif -%}
+      {%- unless autoplay_overlay -%}
       <button
         type="button"
         class="slideshow__autoplay slider-button{% if section.settings.auto_rotate == false %} slideshow__autoplay--paused{% endif %}"
@@ -157,9 +163,11 @@
         {%- render 'ms_icon', icon: settings.ms_icon_pause -%}
         {%- render 'ms_icon', icon: settings.ms_icon_play -%}
       </button>
+      {%- endunless -%}
     </div>
   {%- endif -%}
 
+  <div class="ms-slideshow__media-wrapper">
   <div
     class="slideshow banner banner--{{ section.settings.slide_height }} grid grid--1-col slider slider--everywhere{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.blocks.first.settings.image == blank %} slideshow--placeholder{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
     id="Slider-{{ section.id }}"
@@ -307,29 +315,40 @@
       {%- endif -%}
     {%- endfor -%}
 
-    {%- comment -%} Overlay arrows inside the slider container — always rendered when arrows_overlay, regardless of auto_rotate {%- endcomment -%}
-    {%- if has_multiple_slides and arrows_overlay and show_arrows -%}
-      <div class="ms-slideshow__arrows-overlay" role="group" aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}">
-        <button
-          type="button"
-          class="slider-button slider-button--prev"
-          name="previous"
-          aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
-          aria-controls="Slider-{{ section.id }}"
-        >
-          {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
-        </button>
-        <button
-          type="button"
-          class="slider-button slider-button--next"
-          name="next"
-          aria-label="{{ 'sections.slideshow.next_slideshow' | t }}"
-          aria-controls="Slider-{{ section.id }}"
-        >
-          {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
-        </button>
-      </div>
-    {%- endif -%}
+  </div>
+  {%- comment -%} Overlay arrows — outside the scroll container so they stay fixed while slides scroll {%- endcomment -%}
+  {%- if has_multiple_slides and arrows_overlay and show_arrows -%}
+    <div class="ms-slideshow__arrows-overlay" role="group" aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}">
+      <button
+        type="button"
+        class="slider-button slider-button--prev"
+        name="previous"
+        aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
+        aria-controls="Slider-{{ section.id }}"
+      >
+        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+      </button>
+      <button
+        type="button"
+        class="slider-button slider-button--next"
+        name="next"
+        aria-label="{{ 'sections.slideshow.next_slideshow' | t }}"
+        aria-controls="Slider-{{ section.id }}"
+      >
+        {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+      </button>
+    </div>
+  {%- endif -%}
+  {%- if section.settings.auto_rotate and autoplay_overlay -%}
+    <button
+      type="button"
+      class="slideshow__autoplay slider-button ms-slideshow__autoplay-overlay"
+      aria-label="{{ 'sections.slideshow.pause_slideshow' | t }}"
+    >
+      {%- render 'ms_icon', icon: settings.ms_icon_pause -%}
+      {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+    </button>
+  {%- endif -%}
   </div>
 
   {%- comment -%} Bottom controls — manual mode only {%- endcomment -%}
@@ -566,6 +585,17 @@
       "id": "auto_rotate",
       "label": "t:sections.slideshow.settings.auto_rotate.label",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "autoplay_position",
+      "label": "Posizione play / pausa",
+      "info": "Attivo solo con rotazione automatica abilitata.",
+      "options": [
+        { "value": "top_bar", "label": "Barra controlli" },
+        { "value": "overlay", "label": "Sovrapposto (basso destra)" }
+      ],
+      "default": "top_bar"
     },
     {
       "type": "range",
