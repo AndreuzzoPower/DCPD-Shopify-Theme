@@ -91,11 +91,17 @@
   height: 1.8rem;
 }
 
-/* Autoplay button overlay (bottom-right of media wrapper) */
-.ms-slideshow__autoplay-overlay {
-  position: absolute;
+/* Autoplay button overlay (bottom-right of media wrapper)
+   Needs specificity 30+ to override Dawn's:
+     @media (min-width: 768px) { .slideshow__autoplay.slider-button { position: inherit } }
+   which has specificity 20. */
+.ms-slideshow__autoplay-overlay,
+.ms-slideshow__autoplay-overlay.slideshow__autoplay.slider-button {
+  position: absolute !important;
   bottom: 1.6rem;
   right: 1.6rem;
+  top: auto;
+  left: auto;
   z-index: 3;
   width: 4.4rem;
   height: 4.4rem;
@@ -103,10 +109,14 @@
   border-radius: 50%;
   backdrop-filter: blur(4px);
   transition: background-color 0.2s ease;
+  margin: 0;
+  padding: 0;
+  border-left: none;
 }
 
 .ms-slideshow__autoplay-overlay:hover,
-.ms-slideshow__autoplay-overlay:focus-visible {
+.ms-slideshow__autoplay-overlay:focus-visible,
+.ms-slideshow__autoplay-overlay.slideshow__autoplay.slider-button:hover {
   background-color: rgba(var(--color-foreground), 0.45);
 }
 
