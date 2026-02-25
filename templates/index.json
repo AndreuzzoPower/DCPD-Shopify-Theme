@@ -489,6 +489,35 @@
     "ms_slideshow_7bym9P": {
       "type": "ms_slideshow",
       "blocks": {
+        "slide_qBpWYV": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png",
+            "image_overlay_opacity": 0,
+            "heading": "Slide immagine",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "heading_custom_class": "",
+            "subheading": "Racconta la storia del tuo brand con video e immagini",
+            "subheading_tag": "p",
+            "subheading_custom_class": "",
+            "hide_text_on_mobile": false,
+            "button_label": "Etichetta pulsante",
+            "link": "",
+            "button_style_secondary": false,
+            "button_type": "button",
+            "button_size": "default",
+            "button_icon": "",
+            "button_icon_position": "before",
+            "show_text_box": true,
+            "box_opacity": 100,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1",
+            "slide_accessibility_label": ""
+          }
+        },
         "slide_FGW4zc": {
           "type": "slide",
           "settings": {
@@ -549,6 +578,7 @@
         }
       },
       "block_order": [
+        "slide_qBpWYV",
         "slide_FGW4zc",
         "slide_kWDACL"
       ],
@@ -559,9 +589,9 @@
         "slide_height": "medium",
         "image_behavior": "none",
         "show_arrows": true,
-        "arrows_position": "bottom_center",
+        "arrows_position": "overlay_sides",
         "show_pagination": true,
-        "pagination_style": "counter",
+        "pagination_style": "dots",
         "auto_rotate": false,
         "change_slides_speed": 5,
         "show_text_below": true,
