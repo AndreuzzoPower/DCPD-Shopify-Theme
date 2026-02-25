@@ -92,6 +92,26 @@
             "page": ""
           }
         },
+        "collapsible_tab_dtbbbr": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Riga comprimibile",
+            "icon": "washing",
+            "custom_icon": "",
+            "content": "",
+            "page": ""
+          }
+        },
+        "custom_logo_upload_DVHnFf": {
+          "type": "custom_logo_upload",
+          "settings": {
+            "label": "",
+            "property_name": "Foto personalizzata",
+            "info": "",
+            "placeholder_text": "Seleziona un file o trascinalo qui",
+            "required": false
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -108,6 +128,8 @@
         "buy_buttons",
         "description",
         "popup_fLgPTD",
+        "collapsible_tab_dtbbbr",
+        "custom_logo_upload_DVHnFf",
         "share"
       ],
       "settings": {
