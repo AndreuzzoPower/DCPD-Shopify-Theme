@@ -43,6 +43,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "rating_rhgzx6": {
+          "type": "rating",
+          "settings": {}
+        },
         "vendor": {
           "type": "text",
           "settings": {
@@ -112,6 +116,32 @@
             "required": false
           }
         },
+        "custom_notes_jMhTUG": {
+          "type": "custom_notes",
+          "settings": {
+            "label": "",
+            "property_name": "Note personalizzazione",
+            "placeholder": "Es: Voglio il logo sulla parte centrale",
+            "rows": 3,
+            "max_chars": 500,
+            "required": false
+          }
+        },
+        "icon_with_text_MzLtpV": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "heart",
+            "custom_icon_1": "",
+            "heading_1": "Titolo",
+            "icon_2": "return",
+            "custom_icon_2": "",
+            "heading_2": "Titolo",
+            "icon_3": "truck",
+            "custom_icon_3": "",
+            "heading_3": "Titolo"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -120,6 +150,7 @@
         }
       },
       "block_order": [
+        "rating_rhgzx6",
         "vendor",
         "title",
         "price",
@@ -130,6 +161,8 @@
         "popup_fLgPTD",
         "collapsible_tab_dtbbbr",
         "custom_logo_upload_DVHnFf",
+        "custom_notes_jMhTUG",
+        "icon_with_text_MzLtpV",
         "share"
       ],
       "settings": {
