@@ -83,7 +83,7 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
             "button_type": "button",
-            "button_style_secondary": true,
+            "button_style_secondary": false,
             "button_custom_class": "",
             "show_info_request": true,
             "info_request_label": "Richiedi informazioni",
@@ -104,10 +104,10 @@
           "settings": {
             "text": "Link pop-up con testo",
             "button_type": "pill",
-            "button_style_secondary": true,
+            "button_style_secondary": false,
             "button_custom_class": "",
             "page": "",
-            "custom_html": "sasafsdafdsafad"
+            "custom_html": ""
           }
         },
         "collapsible_tab_dtbbbr": {
@@ -148,7 +148,7 @@
             "icon_1": "heart",
             "custom_icon_1": "",
             "heading_1": "Titolo",
-            "link_1": "",
+            "link_1": "shopify://pages/blog",
             "link_target_1": "_self",
             "icon_2": "return",
             "custom_icon_2": "",
