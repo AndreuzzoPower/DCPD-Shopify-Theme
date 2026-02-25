@@ -501,6 +501,7 @@
             "subheading": "Racconta la storia del tuo brand con video e immagini",
             "subheading_tag": "p",
             "subheading_custom_class": "",
+            "hide_text_on_mobile": false,
             "button_label": "Etichetta pulsante",
             "link": "",
             "button_style_secondary": false,
@@ -509,10 +510,12 @@
             "button_icon": "",
             "button_icon_position": "before",
             "show_text_box": true,
+            "box_opacity": 100,
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": ""
+            "color_scheme": "",
+            "slide_accessibility_label": ""
           }
         },
         "slide_WCXENJ": {
@@ -527,6 +530,7 @@
             "subheading": "Racconta la storia del tuo brand con video e immagini",
             "subheading_tag": "p",
             "subheading_custom_class": "",
+            "hide_text_on_mobile": false,
             "button_label": "Etichetta pulsante",
             "link": "",
             "button_style_secondary": false,
@@ -535,10 +539,12 @@
             "button_icon": "",
             "button_icon_position": "before",
             "show_text_box": true,
+            "box_opacity": 100,
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": ""
+            "color_scheme": "",
+            "slide_accessibility_label": ""
           }
         }
       },
@@ -552,7 +558,10 @@
         "color_scheme": "",
         "slide_height": "medium",
         "image_behavior": "none",
-        "slider_visual": "dots",
+        "show_arrows": true,
+        "arrows_position": "overlay_sides",
+        "show_pagination": true,
+        "pagination_style": "counter",
         "auto_rotate": true,
         "change_slides_speed": 3,
         "show_text_below": true,
