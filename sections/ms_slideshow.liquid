@@ -40,7 +40,17 @@
   assign real_slide_count = 0
   for block in section.blocks
     if block.type == 'slide'
-      assign real_slide_count = real_slide_count | plus: 1
+      if request.design_mode
+        assign real_slide_count = real_slide_count | plus: 1
+      else
+        capture ms_sld_vis
+          render 'ms_schedule_check', schedule_enabled: block.settings.schedule_enabled, schedule_start: block.settings.schedule_start, schedule_end: block.settings.schedule_end
+        endcapture
+        assign ms_sld_vis = ms_sld_vis | strip
+        if ms_sld_vis == 'true'
+          assign real_slide_count = real_slide_count | plus: 1
+        endif
+      endif
     endif
   endfor
   if real_slide_count > 1
@@ -181,7 +191,20 @@
     -%}
     {%- for block in section.blocks -%}
       {%- if block.type == 'slide' -%}
+        {%- comment -%} Temporizzazione: salta slide non visibili (in design_mode mostrale tutte con badge) {%- endcomment -%}
+        {%- capture ms_slide_vis -%}
+          {%- render 'ms_schedule_check', schedule_enabled: block.settings.schedule_enabled, schedule_start: block.settings.schedule_start, schedule_end: block.settings.schedule_end -%}
+        {%- endcapture -%}
+        {%- assign ms_slide_vis = ms_slide_vis | strip -%}
+        {%- unless ms_slide_vis == 'true' or request.design_mode -%}
+          {%- continue -%}
+        {%- endunless -%}
         {%- liquid
+          assign is_slide_scheduled_hidden = false
+          if ms_slide_vis != 'true' and request.design_mode
+            assign is_slide_scheduled_hidden = true
+          endif
+
           assign slide_index = slide_index | plus: 1
           assign box_opacity = block.settings.box_opacity | default: 100
           assign has_custom_opacity = false
@@ -205,13 +228,14 @@
           {%- endif -%}
         {%- endstyle -%}
         <div
-          class="slideshow__slide grid__item grid--1-col slider__slide"
+          class="slideshow__slide grid__item grid--1-col slider__slide{% if is_slide_scheduled_hidden %} ms-slide--schedule-pending{% endif %}"
           id="Slide-{{ section.id }}-{{ slide_index }}"
           {{ block.shopify_attributes }}
           role="group"
           aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
           aria-label="{{ slide_aria_label }}"
           tabindex="-1"
+          data-ms-overlay-light="{{ block.settings.overlay_controls_light | default: false }}"
         >
           <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}">
             {%- if block.settings.image -%}
@@ -450,6 +474,58 @@
 {%- if request.design_mode -%}
   <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
+
+<script>
+(function() {
+  /**
+   * Per ogni media-wrapper dello slideshow imposta un IntersectionObserver
+   * che rileva quale slide è in vista e aggiorna la classe
+   * ms-overlay-controls--light sulle frecce e sul play/pausa overlay.
+   */
+  function initOverlayControlsColor(wrapper) {
+    var slider = wrapper.querySelector('.slideshow');
+    if (!slider) return;
+    var slides = Array.from(slider.querySelectorAll('.slideshow__slide'));
+    var controlEls = [
+      wrapper.querySelector('.ms-slideshow__arrows-overlay'),
+      wrapper.querySelector('.ms-slideshow__autoplay-overlay')
+    ].filter(Boolean);
+    if (!slides.length || !controlEls.length) return;
+
+    function applyFromSlide(slide) {
+      var isLight = slide.dataset.msOverlayLight === 'true';
+      controlEls.forEach(function(el) {
+        el.classList.toggle('ms-overlay-controls--light', isLight);
+      });
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) applyFromSlide(entry.target);
+      });
+    }, { root: slider, threshold: 0.5 });
+
+    slides.forEach(function(slide) { observer.observe(slide); });
+    applyFromSlide(slides[0]); // stato iniziale
+  }
+
+  function initAll() {
+    document.querySelectorAll('.ms-slideshow__media-wrapper').forEach(initOverlayControlsColor);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
+
+  /* Re-init quando Shopify ricarica la sezione nell'editor */
+  document.addEventListener('shopify:section:load', function(e) {
+    var wrapper = e.target.querySelector('.ms-slideshow__media-wrapper');
+    if (wrapper) initOverlayControlsColor(wrapper);
+  });
+})();
+</script>
 
 {% schema %}
 {
@@ -940,6 +1016,48 @@
           "id": "slide_accessibility_label",
           "label": "Descrizione slide (screen reader)",
           "info": "Descrizione significativa di questa slide per tecnologie assistive (es. 'Promozione estate 2025 — scarpe da trekking'). Se vuoto, usa la posizione numerica."
+        },
+        {
+          "type": "header",
+          "content": "Controlli sovrapposti"
+        },
+        {
+          "type": "paragraph",
+          "content": "Visibile solo se le frecce o il play/pausa sono impostati come sovrapposti sull'immagine."
+        },
+        {
+          "type": "checkbox",
+          "id": "overlay_controls_light",
+          "label": "Versione chiara",
+          "default": false,
+          "info": "Attiva per slide con sfondi scuri: cambia frecce e play/pausa in colori chiari."
+        },
+        {
+          "type": "header",
+          "content": "Temporizzazione"
+        },
+        {
+          "type": "paragraph",
+          "content": "Controlla quando questo slide è visibile. Se disattivata, lo slide è sempre visibile."
+        },
+        {
+          "type": "checkbox",
+          "id": "schedule_enabled",
+          "label": "Attiva temporizzazione",
+          "default": false,
+          "info": "Se attivo, lo slide sarà visibile solo nella finestra temporale specificata."
+        },
+        {
+          "type": "text",
+          "id": "schedule_start",
+          "label": "Data/ora inizio",
+          "info": "Formato: YYYY-MM-DD HH:MM (es. 2025-12-25 09:00). Lascia vuoto per nessun limite di inizio."
+        },
+        {
+          "type": "text",
+          "id": "schedule_end",
+          "label": "Data/ora fine",
+          "info": "Formato: YYYY-MM-DD HH:MM (es. 2025-12-31 23:59). Lascia vuoto per nessun limite di fine."
         }
       ]
     },

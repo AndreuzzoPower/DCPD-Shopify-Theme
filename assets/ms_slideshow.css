@@ -112,12 +112,63 @@
   margin: 0;
   padding: 0;
   border-left: none;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ms-slideshow__autoplay-overlay .icon,
+.ms-slideshow__autoplay-overlay svg {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 .ms-slideshow__autoplay-overlay:hover,
 .ms-slideshow__autoplay-overlay:focus-visible,
 .ms-slideshow__autoplay-overlay.slideshow__autoplay.slider-button:hover {
   background-color: rgba(var(--color-foreground), 0.45);
+}
+
+/* Light variant for overlay controls (for dark slides) */
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light {
+  color: rgb(var(--color-background));
+}
+
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button {
+  background-color: rgba(var(--color-background), 0.2);
+}
+
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button:hover,
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button:focus-visible {
+  background-color: rgba(var(--color-background), 0.4);
+}
+
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light,
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light.slideshow__autoplay.slider-button {
+  color: rgb(var(--color-background));
+  background-color: rgba(var(--color-background), 0.2) !important;
+}
+
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light:hover,
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light:focus-visible {
+  background-color: rgba(var(--color-background), 0.4) !important;
+}
+
+/* Slide schedulato ma non ancora attivo — indicatore visivo in design_mode */
+.ms-slide--schedule-pending::after {
+  content: '⏰ Programmato';
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  z-index: 10;
+  pointer-events: none;
+  font-family: sans-serif;
 }
 
 /* Pagination standalone (when arrows are overlay) */
