@@ -373,7 +373,7 @@ a.product__text {
   text-align: center;
 }
 
-.product--no-media .product-popup-modal__button {
+.product--no-media .product-popup-modal__button.link {
   padding-right: 0;
 }
 
@@ -844,10 +844,10 @@ a.product__text {
 }
 
 .product-popup-modal__opener {
-  display: inline-block;
+  display: block;
 }
 
-.product-popup-modal__button {
+.product-popup-modal__button.link {
   font-size: 1.6rem;
   padding-right: 1.3rem;
   padding-left: 0;
@@ -857,7 +857,7 @@ a.product__text {
   transition: text-decoration-thickness var(--duration-short) ease;
 }
 
-.product-popup-modal__button:hover {
+.product-popup-modal__button.link:hover {
   text-decoration-thickness: 0.2rem;
 }
 
