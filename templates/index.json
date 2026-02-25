@@ -155,11 +155,16 @@
         "enable_desktop_slider": false,
         "enable_autoplay": false,
         "autoplay_speed": 3,
+        "carousel_arrows_position": "below_center",
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_loop": false,
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "carousel_peek_size": "medium",
         "columns_mobile": "1",
         "swipe_on_mobile": false,
         "image_ratio": "square",
-        "card_border_radius": 6,
-        "card_shadow": "medium",
         "card_image_round": true,
         "card_bg_color": "rgba(0,0,0,0)",
         "card_link_style": "pill",
@@ -250,6 +255,17 @@
     "ms_rich_text_XjDUaG": {
       "type": "ms_rich-text",
       "blocks": {
+        "section_padding_imWJgC": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 100,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        },
         "caption_4NQg83": {
           "type": "caption",
           "settings": {
@@ -281,15 +297,20 @@
             "button_style_secondary": false,
             "button_type": "button",
             "button_size": "default",
+            "button_icon": "",
+            "button_icon_position": "before",
             "button_label_2": "asasas",
             "button_link_2": "",
             "button_style_secondary_2": true,
             "button_type_2": "button",
-            "button_size_2": "extra_jumbo"
+            "button_size_2": "extra_jumbo",
+            "button_icon_2": "",
+            "button_icon_position_2": "before"
           }
         }
       },
       "block_order": [
+        "section_padding_imWJgC",
         "caption_4NQg83",
         "heading_D8QrqE",
         "text_WM7xP6",
@@ -300,9 +321,7 @@
         "section_width": "full_width",
         "color_scheme": "",
         "desktop_content_position": "center",
-        "content_alignment": "center",
-        "padding_top": 40,
-        "padding_bottom": 52
+        "content_alignment": "center"
       }
     },
     "ms_image_banner_hgtaYa": {
@@ -332,11 +351,15 @@
             "button_style_secondary_1": false,
             "button_type_1": "button",
             "button_size_1": "default",
+            "button_icon_1": "",
+            "button_icon_position_1": "before",
             "button_label_2": "Etichetta pulsante",
             "button_link_2": "",
             "button_style_secondary_2": false,
             "button_type_2": "button",
-            "button_size_2": "default"
+            "button_size_2": "default",
+            "button_icon_2": "",
+            "button_icon_position_2": "before"
           }
         }
       },
@@ -377,10 +400,19 @@
         "view_all_style_secondary": false,
         "view_all_type": "button",
         "view_all_size": "default",
+        "view_all_icon": "",
+        "view_all_icon_position": "before",
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": false,
         "desktop_slider_autoplay_velocita": 3,
+        "carousel_arrows_position": "below_center",
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_loop": false,
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "carousel_peek_size": "medium",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
         "image_ratio": "adapt",
@@ -388,6 +420,7 @@
         "show_secondary_image": true,
         "show_vendor": true,
         "show_rating": true,
+        "show_min_order": true,
         "quick_add": "none"
       }
     },
@@ -425,7 +458,9 @@
             "button_link": "",
             "button_style_secondary": false,
             "button_type": "button",
-            "button_size": "large"
+            "button_size": "large",
+            "button_icon": "",
+            "button_icon_position": "before"
           }
         }
       },
