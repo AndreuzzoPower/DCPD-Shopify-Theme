@@ -614,6 +614,56 @@
         "show_text_below": true,
         "accessibility_info": "Presentazione sul nostro brand"
       }
+    },
+    "ms_collage_qDzJwf": {
+      "type": "ms_collage",
+      "blocks": {
+        "image_VFpz7Y": {
+          "type": "image",
+          "settings": {
+            "image_link": "",
+            "image_link_target": "_self",
+            "image_overlay_text": ""
+          }
+        },
+        "product_kmwqkM": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "second_image": false,
+            "show_min_order": true
+          }
+        },
+        "collection_gpKrnq": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "show_icon": true,
+            "custom_icon": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_VFpz7Y",
+        "product_kmwqkM",
+        "collection_gpKrnq"
+      ],
+      "name": "MS Collage",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "desktop_layout": "left",
+        "mobile_layout": "column",
+        "card_styles": "product-card-wrapper",
+        "heading": "Collage multimediale",
+        "heading_tag": "h2",
+        "heading_size": "h1",
+        "heading_custom_class": "",
+        "subheading": "",
+        "subheading_tag": "p",
+        "subheading_custom_class": "",
+        "heading_alignment": "left"
+      }
     }
   },
   "order": [
@@ -623,6 +673,7 @@
     "ms_image_banner_hgtaYa",
     "ms_featured_collection_gLNCjA",
     "ms_image_with_text_7nGk7K",
-    "ms_slideshow_7bym9P"
+    "ms_slideshow_7bym9P",
+    "ms_collage_qDzJwf"
   ]
 }
