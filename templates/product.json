@@ -103,7 +103,7 @@
           "type": "popup",
           "settings": {
             "text": "Link pop-up con testo",
-            "button_type": "pill",
+            "button_type": "button",
             "button_style_secondary": false,
             "button_custom_class": "",
             "page": "",
