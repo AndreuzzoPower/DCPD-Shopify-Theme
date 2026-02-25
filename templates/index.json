@@ -560,7 +560,7 @@
         "slide_height": "medium",
         "image_behavior": "ambient",
         "show_arrows": true,
-        "arrows_position": "bottom_center",
+        "arrows_position": "overlay_sides",
         "show_pagination": true,
         "pagination_style": "numbers",
         "auto_rotate": true,
