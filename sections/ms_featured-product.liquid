@@ -566,9 +566,7 @@
     endif
   -%}
 
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
+  {%- render 'ms_product-structured-data', product: product -%}
 
   {% if product.media.size > 0 %}
     <script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>

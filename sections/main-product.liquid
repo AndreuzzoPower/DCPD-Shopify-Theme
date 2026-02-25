@@ -1481,9 +1481,7 @@
       endif
     -%}
 
-    <script type="application/ld+json">
-      {{ product | structured_data }}
-    </script>
+    {%- render 'ms_product-structured-data', product: product -%}
   </div>
 </product-info>
 

@@ -317,7 +317,7 @@
               "name": {{ ms_post.author | default: shop.name | json }}
             }
             {%- if ms_post.excerpt != blank -%}
-              ,"description": {{ ms_post.excerpt | strip_html | truncate: 200 | json }}
+              ,"description": {{ ms_post.excerpt | strip_html | truncate: 5000 | json }}
             {%- endif -%}
             {%- if ms_post.tags.size > 0 -%}
               ,"keywords": {{ ms_post.tags | json }}

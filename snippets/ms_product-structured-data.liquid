@@ -1,0 +1,59 @@
+{%- comment -%}
+  Snippet: ms_product-structured-data.liquid
+  Genera JSON-LD schema.org/Product con descrizione troncata a 5000 caratteri.
+  Sostituisce il filtro Liquid built-in `product | structured_data` che non
+  gestisce il limite di 5000 caratteri imposto da Google per i dati strutturati.
+
+  Parametri:
+    - product: {Object} Oggetto prodotto Shopify (obbligatorio)
+{%- endcomment -%}
+
+{%- liquid
+  assign ms_sd_desc = product.description | strip_html | strip | truncate: 5000
+  assign ms_sd_url = request.origin | append: product.url
+  assign ms_sd_first_variant = product.selected_or_first_available_variant
+-%}
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ ms_sd_url | json }},
+  {%- if product.images.size > 0 -%}
+  "image": [
+    {%- for ms_sd_img in product.images -%}
+      {{ ms_sd_img | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  {%- endif -%}
+  {%- if ms_sd_desc != blank -%}
+  "description": {{ ms_sd_desc | json }},
+  {%- endif -%}
+  {%- if product.vendor != blank -%}
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  },
+  {%- endif -%}
+  {%- if ms_sd_first_variant.sku != blank -%}
+  "sku": {{ ms_sd_first_variant.sku | json }},
+  {%- endif -%}
+  {%- if ms_sd_first_variant.barcode != blank -%}
+  "gtin": {{ ms_sd_first_variant.barcode | json }},
+  {%- endif -%}
+  "offers": [
+    {%- for ms_sd_variant in product.variants -%}
+    {
+      "@type": "Offer",
+      "availability": "{% if ms_sd_variant.available %}http://schema.org/InStock{% else %}http://schema.org/OutOfStock{% endif %}",
+      "price": {{ ms_sd_variant.price | divided_by: 100.0 }},
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "url": {{ ms_sd_url | append: '?variant=' | append: ms_sd_variant.id | json }}
+      {%- if ms_sd_variant.sku != blank -%}
+      ,"sku": {{ ms_sd_variant.sku | json }}
+      {%- endif -%}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>

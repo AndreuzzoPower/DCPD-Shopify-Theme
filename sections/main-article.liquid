@@ -644,7 +644,7 @@
     {%- endif -%}
   },
   {%- if article.excerpt_or_content != blank -%}
-  "description": {{ article.excerpt_or_content | strip_html | truncate: 200 | json }},
+  "description": {{ article.excerpt_or_content | strip_html | truncate: 5000 | json }},
   {%- endif -%}
   {%- assign sd_words = article.content | strip_html | split: ' ' | size -%}
   "wordCount": {{ sd_words }},

@@ -39,7 +39,9 @@
           {% render 'card-collection',
             card_collection: collection,
             media_aspect_ratio: section.settings.image_ratio,
-            columns: 3
+            columns: 3,
+            show_icon: section.settings.card_show_icon,
+            custom_icon: section.settings.card_custom_icon
           %}
         </li>
       {%- endfor -%}
@@ -134,6 +136,22 @@
       ],
       "default": "2",
       "label": "t:sections.main-list-collections.settings.columns_mobile.label"
+    },
+    {
+      "type": "header",
+      "content": "Icona card"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_icon",
+      "label": "Mostra icona",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "card_custom_icon",
+      "label": "Icona personalizzata",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-arrow-right). Se compilato, sovrascrive la freccia predefinita."
     }
   ]
 }
