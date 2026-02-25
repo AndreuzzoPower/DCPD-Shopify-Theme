@@ -587,8 +587,8 @@
       "settings": {
         "section_width": "full_width",
         "color_scheme": "",
-        "slide_height": "medium",
-        "image_behavior": "none",
+        "slide_height": "large",
+        "image_behavior": "ambient",
         "show_arrows": true,
         "arrows_position": "overlay_sides",
         "show_pagination": true,
