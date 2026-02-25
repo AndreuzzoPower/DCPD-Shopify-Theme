@@ -1,0 +1,42 @@
+.ms-divider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.ms-divider__svg {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ms-divider__svg svg {
+  display: block;
+  width: 100%;
+  height: var(--ms-divider-height, 80px);
+}
+
+.ms-divider--flip-x .ms-divider__svg svg {
+  transform: scaleX(-1);
+}
+
+.ms-divider--flip-y .ms-divider__svg svg {
+  transform: scaleY(-1);
+}
+
+.ms-divider--flip-x.ms-divider--flip-y .ms-divider__svg svg {
+  transform: scale(-1, -1);
+}
+
+@media (max-width: 749px) {
+  .ms-divider__svg svg {
+    height: var(--ms-divider-height-mobile, var(--ms-divider-height, 50px));
+  }
+}
+
+.ms-divider__line {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
