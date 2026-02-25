@@ -99,7 +99,7 @@
   {%- comment -%} Top controls — only when auto_rotate is active {%- endcomment -%}
   {%- if has_multiple_slides and section.settings.auto_rotate -%}
     <div class="slideshow__controls slideshow__controls--top slider-buttons{% if section.settings.show_text_below %} slideshow__controls--border-radius-mobile{% endif %}">
-      {%- if show_arrows -%}
+      {%- if show_arrows and arrows_overlay == false -%}
         <button
           type="button"
           class="slider-button slider-button--prev"
@@ -138,7 +138,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
-      {%- if show_arrows -%}
+      {%- if show_arrows and arrows_overlay == false -%}
         <button
           type="button"
           class="slider-button slider-button--next"
@@ -307,8 +307,8 @@
       {%- endif -%}
     {%- endfor -%}
 
-    {%- comment -%} Overlay arrows inside the slider container {%- endcomment -%}
-    {%- if has_multiple_slides and section.settings.auto_rotate == false and arrows_overlay and show_arrows -%}
+    {%- comment -%} Overlay arrows inside the slider container — always rendered when arrows_overlay, regardless of auto_rotate {%- endcomment -%}
+    {%- if has_multiple_slides and arrows_overlay and show_arrows -%}
       <div class="ms-slideshow__arrows-overlay" role="group" aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}">
         <button
           type="button"
