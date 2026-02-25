@@ -272,8 +272,8 @@
           "settings": {
             "review_data": "sample_data",
             "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
+            "show_shop_reviews": true,
+            "empty_state": "other_products_reviews"
           }
         }
       },
