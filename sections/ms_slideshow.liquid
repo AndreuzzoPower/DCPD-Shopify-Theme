@@ -2,6 +2,27 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign sw = section.settings.section_width | default: 'full_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full' or sw == 'full_bleed'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+-%}
+
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
@@ -25,51 +46,32 @@
   {%- endstyle -%}
 {%- endif -%}
 
-{% for block in section.blocks %}
-  {% if block.type == 'section_padding' %}
-    <style>
-      #shopify-section-{{ section.id }} .slideshow__text-wrapper.banner__content {
+{%- for block in section.blocks -%}
+  {%- if block.type == 'section_padding' -%}
+    {%- style -%}
+      #section-{{ section.id }} .slideshow__text-wrapper.banner__content {
         padding-top: {{ block.settings.section_padding_top }}px;
         padding-bottom: {{ block.settings.section_padding_bottom }}px;
       }
       @media all and (min-width: 768px) and (max-width: 991px) {
-        #shopify-section-{{ section.id }} .slideshow__text-wrapper.banner__content {
+        #section-{{ section.id }} .slideshow__text-wrapper.banner__content {
           padding-top: {{ block.settings.section_padding_top_md }}px;
           padding-bottom: {{ block.settings.section_padding_bottom_md }}px;
         }
       }
       @media all and (max-width: 767px) {
-        #shopify-section-{{ section.id }} .slideshow__text-wrapper.banner__content {
+        #section-{{ section.id }} .slideshow__text-wrapper.banner__content {
           padding-top: {{ block.settings.section_padding_top_xs }}px;
           padding-bottom: {{ block.settings.section_padding_bottom_xs }}px;
         }
       }
-    </style>
-  {% endif %}
-  {% if block.type == 'section_margin' %}
-    <style>
-      #shopify-section-{{ section.id }} {
-        margin-top: {{ block.settings.section_margin_top }}px;
-        margin-bottom: {{ block.settings.section_margin_bottom }}px;
-      }
-      @media all and (min-width: 768px) and (max-width: 991px) {
-        #shopify-section-{{ section.id }} {
-          margin-top: {{ block.settings.section_margin_top_md }}px;
-          margin-bottom: {{ block.settings.section_margin_bottom_md }}px;
-        }
-      }
-      @media all and (max-width: 767px) {
-        #shopify-section-{{ section.id }} {
-          margin-top: {{ block.settings.section_margin_top_xs }}px;
-          margin-bottom: {{ block.settings.section_margin_bottom_xs }}px;
-        }
-      }
-    </style>
-  {% endif %}
-{% endfor %}
+    {%- endstyle -%}
+  {%- endif -%}
+{%- endfor -%}
 
 <slideshow-component
-  class="slider-mobile-gutter{% if section.settings.layout == 'grid' %} page-width{% endif %}{% if section.settings.show_text_below %} mobile-text-below{% endif %}"
+  id="section-{{ section.id }}"
+  class="slider-mobile-gutter color-{{ section.settings.color_scheme }}{% if sw_class != blank %} {{ sw_class }}{% endif %}{% if section.settings.show_text_below %} mobile-text-below{% endif %}"
   role="region"
   aria-roledescription="{{ 'sections.slideshow.carousel' | t }}"
   aria-label="{{ section.settings.accessibility_info | escape }}"
@@ -141,7 +143,7 @@
     data-speed="{{ section.settings.change_slides_speed }}"
   >
     {%- for block in section.blocks -%}
-      {% if block.type != 'section_padding' and block.type != 'section_margin' %}
+      {% if block.type != 'section_padding' and block.type != 'section_margin' and block.type != 'section_background' %}
         <style>
           #Slide-{{ section.id }}-{{ forloop.index }} .banner__media::after {
             opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
@@ -197,13 +199,27 @@
           <div class="slideshow__text-wrapper banner__content banner__content--{{ block.settings.box_align }} page-width{% if block.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll and forloop.index == 1 %} scroll-trigger animate--slide-in{% endif %}">
             <div class="slideshow__text banner__box content-container content-container--full-width-mobile color-{{ block.settings.color_scheme }} gradient slideshow__text--{{ block.settings.text_alignment }} slideshow__text-mobile--{{ block.settings.text_alignment_mobile }}">
               {%- if block.settings.heading != blank -%}
-                <div class="banner__heading inline-richtext {{ block.settings.heading_size }}">
+                {%- liquid
+                  assign heading_tag = block.settings.heading_tag | default: 'h2'
+                  assign heading_classes = 'banner__heading inline-richtext ' | append: block.settings.heading_size
+                  if block.settings.heading_custom_class != blank
+                    assign heading_classes = heading_classes | append: ' ' | append: block.settings.heading_custom_class
+                  endif
+                -%}
+                <{{ heading_tag }} class="{{ heading_classes }}">
                   {{ block.settings.heading }}
-                </div>
+                </{{ heading_tag }}>
               {%- endif -%}
               {%- if block.settings.subheading != blank -%}
-                <div class="banner__text rte">
-                  <p>{{ block.settings.subheading }}</p>
+                {%- liquid
+                  assign subheading_tag = block.settings.subheading_tag | default: 'p'
+                  assign subheading_classes = 'banner__text rte'
+                  if block.settings.subheading_custom_class != blank
+                    assign subheading_classes = subheading_classes | append: ' ' | append: block.settings.subheading_custom_class
+                  endif
+                -%}
+                <div class="{{ subheading_classes }}">
+                  <{{ subheading_tag }}>{{ block.settings.subheading }}</{{ subheading_tag }}>
                 </div>
               {%- endif -%}
               {%- if block.settings.button_label != blank -%}
@@ -288,13 +304,15 @@
   {%- endif -%}
 </slideshow-component>
 
+{%- render 'ms_section-style' -%}
+
 {%- if request.design_mode -%}
   <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "t:sections.slideshow.name",
+  "name": "MS Slideshow",
   "tag": "section",
   "class": "section",
   "disabled_on": {
@@ -302,20 +320,30 @@
   },
   "settings": [
     {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
       "type": "select",
-      "id": "layout",
+      "id": "section_width",
+      "label": "Larghezza sezione",
       "options": [
-        {
-          "value": "full_bleed",
-          "label": "t:sections.slideshow.settings.layout.options__1.label"
-        },
-        {
-          "value": "grid",
-          "label": "t:sections.slideshow.settings.layout.options__2.label"
-        }
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
       ],
-      "default": "full_bleed",
-      "label": "t:sections.slideshow.settings.layout.label"
+      "default": "full_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
     },
     {
       "type": "select",
@@ -340,6 +368,30 @@
       ],
       "default": "medium",
       "label": "t:sections.slideshow.settings.slide_height.label"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image_behavior",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.all.animation.image_behavior.options__1.label"
+        },
+        {
+          "value": "ambient",
+          "label": "t:sections.all.animation.image_behavior.options__2.label"
+        }
+      ],
+      "default": "none",
+      "label": "t:sections.all.animation.image_behavior.label"
+    },
+    {
+      "type": "header",
+      "content": "Carosello"
     },
     {
       "type": "select",
@@ -378,24 +430,8 @@
       "default": 5
     },
     {
-      "type": "select",
-      "id": "image_behavior",
-      "options": [
-        {
-          "value": "none",
-          "label": "t:sections.all.animation.image_behavior.options__1.label"
-        },
-        {
-          "value": "ambient",
-          "label": "t:sections.all.animation.image_behavior.options__2.label"
-        }
-      ],
-      "default": "none",
-      "label": "t:sections.all.animation.image_behavior.label"
-    },
-    {
       "type": "header",
-      "content": "t:sections.slideshow.settings.mobile.content"
+      "content": "Mobile"
     },
     {
       "type": "checkbox",
@@ -405,7 +441,7 @@
     },
     {
       "type": "header",
-      "content": "t:sections.slideshow.settings.accessibility.content"
+      "content": "Accessibilita"
     },
     {
       "type": "text",
@@ -475,10 +511,54 @@
           "label": "t:sections.all.heading_size.label"
         },
         {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "text",
+          "id": "heading_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        },
+        {
           "type": "inline_richtext",
           "id": "subheading",
           "default": "t:sections.slideshow.blocks.slide.settings.subheading.default",
           "label": "t:sections.slideshow.blocks.slide.settings.subheading.label"
+        },
+        {
+          "type": "select",
+          "id": "subheading_tag",
+          "label": "Tag sottotitolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "p"
+        },
+        {
+          "type": "text",
+          "id": "subheading_custom_class",
+          "label": "Classe CSS personalizzata sottotitolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         },
         {
           "type": "header",
@@ -647,168 +727,121 @@
         }
       ]
     },
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
         {
-       "type": "section_padding",
-       "name": "Section Padding",
-	     "limit": 1,
-         "settings": [
-          {
-		        "type": "header",
-		        "content": "Large/Desktop Device"
-		      },
-          {
-            "type": "range",
-            "id": "section_padding_top",
-            "min": 0,
-            "max": 200,
-            "step": 5,
-            "label": "Padding Top",
-            "unit": "px",
-            "default": 100
-          },
-          {
-            "type": "range",
-            "id": "section_padding_bottom",
-            "min": 0,
-            "max": 200,
-            "step": 5,
-            "label": "Padding Bottom",
-            "unit": "px",
-            "default": 100
-          },
-          {
-            "type": "header",
-            "content": "Tablet Device"
-          },
-          {
-            "type": "range",
-            "id": "section_padding_top_md",
-            "min": 0,
-            "max": 150,
-            "step": 5,
-            "label": "Padding Top",
-            "unit": "px",
-            "default": 0
-          },
-          {
-            "type": "range",
-            "id": "section_padding_bottom_md",
-            "min": 0,
-            "max": 150,
-            "step": 5,
-            "label": "Padding Bottom",
-            "unit": "px",
-            "default": 80
-          },
-          {
-            "type": "header",
-            "content": "Mobile Device"
-          },
-          {
-            "type": "range",
-            "id": "section_padding_top_xs",
-            "min": 0,
-            "max": 150,
-            "step": 5,
-            "label": "Padding Top",
-            "unit": "px",
-            "default": 0
-          },
-          {
-            "type": "range",
-            "id": "section_padding_bottom_xs",
-            "min": 0,
-            "max": 150,
-            "step": 5,
-            "label": "Padding Bottom",
-            "unit": "px",
-            "default": 60
-          }
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0, "max": 200, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 100
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0, "max": 200, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 100
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 80
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 60
+        }
       ]
     },
     {
-         "type": "section_margin",
-         "name": "Section Margin",
-         "limit": 1,
-            "settings": [
-              {
-                "type": "header",
-                "content": "Large/Desktop Device"
-              },
-              {
-                "type": "range",
-                "id": "section_margin_top",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Top",
-                "unit": "px",
-                "default": 0
-              },
-              {
-                "type": "range",
-                "id": "section_margin_bottom",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Bottom",
-                "unit": "px",
-                "default": 0
-              },
-              {
-                "type": "header",
-                "content": "Tablet Device"
-              },
-              {
-                "type": "range",
-                "id": "section_margin_top_md",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Top",
-                "unit": "px",
-                "default": 0
-              },
-              {
-                "type": "range",
-                "id": "section_margin_bottom_md",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Bottom",
-                "unit": "px",
-                "default": 0
-              },
-              {
-                "type": "header",
-                "content": "Mobile Device"
-              },
-              {
-                "type": "range",
-                "id": "section_margin_top_xs",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Top",
-                "unit": "px",
-                "default": 0
-              },
-              {
-                "type": "range",
-                "id": "section_margin_bottom_xs",
-                "min": 0,
-                "max": 150,
-                "step": 5,
-                "label": "Margin Bottom",
-                "unit": "px",
-                "default": 0
-              }
-         ]
-      }
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
   ],
   "presets": [
     {
-      "name": "t:sections.slideshow.presets.name",
+      "name": "MS Slideshow",
+      "category": "Media",
       "blocks": [
         {
           "type": "slide"
