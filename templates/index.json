@@ -485,6 +485,79 @@
         "desktop_content_alignment": "left",
         "mobile_content_alignment": "left"
       }
+    },
+    "ms_slideshow_MzHDGC": {
+      "type": "ms_slideshow",
+      "blocks": {
+        "slide_UCmBFD": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copertina_la_coppia_scoppia.png",
+            "image_overlay_opacity": 0,
+            "heading": "Slide immagine",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "heading_custom_class": "",
+            "subheading": "Racconta la storia del tuo brand con video e immagini",
+            "subheading_tag": "p",
+            "subheading_custom_class": "",
+            "button_label": "Etichetta pulsante",
+            "link": "",
+            "button_style_secondary": false,
+            "button_type": "button",
+            "button_size": "default",
+            "button_icon": "",
+            "button_icon_position": "before",
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": ""
+          }
+        },
+        "slide_WCXENJ": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/download.jpg",
+            "image_overlay_opacity": 0,
+            "heading": "Slide immagine",
+            "heading_size": "h1",
+            "heading_tag": "h2",
+            "heading_custom_class": "",
+            "subheading": "Racconta la storia del tuo brand con video e immagini",
+            "subheading_tag": "p",
+            "subheading_custom_class": "",
+            "button_label": "Etichetta pulsante",
+            "link": "",
+            "button_style_secondary": false,
+            "button_type": "button",
+            "button_size": "default",
+            "button_icon": "",
+            "button_icon_position": "before",
+            "show_text_box": true,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_UCmBFD",
+        "slide_WCXENJ"
+      ],
+      "name": "MS Slideshow",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "slide_height": "medium",
+        "image_behavior": "none",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "show_text_below": true,
+        "accessibility_info": "Presentazione sul nostro brand"
+      }
     }
   },
   "order": [
@@ -493,6 +566,7 @@
     "ms_rich_text_XjDUaG",
     "ms_image_banner_hgtaYa",
     "ms_featured_collection_gLNCjA",
-    "ms_image_with_text_7nGk7K"
+    "ms_image_with_text_7nGk7K",
+    "ms_slideshow_MzHDGC"
   ]
 }
