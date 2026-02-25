@@ -592,7 +592,7 @@
         "arrows_position": "overlay_sides",
         "show_pagination": true,
         "pagination_style": "dots",
-        "auto_rotate": false,
+        "auto_rotate": true,
         "change_slides_speed": 5,
         "show_text_below": true,
         "accessibility_info": "Presentazione sul nostro brand"
