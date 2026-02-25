@@ -99,7 +99,9 @@
           "type": "popup",
           "settings": {
             "text": "Link pop-up con testo",
-            "page": ""
+            "button_type": "pill",
+            "page": "",
+            "custom_html": "sasafsdafdsafad"
           }
         },
         "collapsible_tab_dtbbbr": {
@@ -140,12 +142,28 @@
             "icon_1": "heart",
             "custom_icon_1": "",
             "heading_1": "Titolo",
+            "link_1": "",
+            "link_target_1": "_self",
             "icon_2": "return",
             "custom_icon_2": "",
             "heading_2": "Titolo",
+            "link_2": "",
+            "link_target_2": "_self",
             "icon_3": "truck",
             "custom_icon_3": "",
-            "heading_3": "Titolo"
+            "heading_3": "Titolo",
+            "link_3": "",
+            "link_target_3": "_self",
+            "icon_4": "none",
+            "custom_icon_4": "",
+            "heading_4": "",
+            "link_4": "",
+            "link_target_4": "_self",
+            "icon_5": "none",
+            "custom_icon_5": "",
+            "heading_5": "",
+            "link_5": "",
+            "link_target_5": "_self"
           }
         },
         "share": {
