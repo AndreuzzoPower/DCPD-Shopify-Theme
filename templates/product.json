@@ -214,6 +214,12 @@
     "ms_products_from_metafield_JRyQgy": {
       "type": "ms_products-from-metafield",
       "blocks": {
+        "section_background_jz9EWn": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#e0e0e0"
+          }
+        },
         "section_padding_KyXmfQ": {
           "type": "section_padding",
           "settings": {
@@ -227,6 +233,7 @@
         }
       },
       "block_order": [
+        "section_background_jz9EWn",
         "section_padding_KyXmfQ"
       ],
       "name": "MS Prodotti da Metafield",
