@@ -493,6 +493,7 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png",
+            "image_mobile": "shopify://shop_images/EM000079-AF10094-U8060-01.jpg",
             "image_overlay_opacity": 0,
             "heading": "Slide immagine",
             "heading_size": "h1",
@@ -593,6 +594,7 @@
         "show_pagination": true,
         "pagination_style": "dots",
         "auto_rotate": true,
+        "autoplay_position": "overlay",
         "change_slides_speed": 5,
         "show_text_below": true,
         "accessibility_info": "Presentazione sul nostro brand"
