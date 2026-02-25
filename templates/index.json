@@ -493,7 +493,8 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/Copertina_la_coppia_scoppia.png",
-            "image_overlay_opacity": 0,
+            "image_mobile": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png",
+            "image_overlay_opacity": 40,
             "heading": "Slide immagine",
             "heading_size": "h1",
             "heading_tag": "h2",
@@ -514,7 +515,7 @@
             "box_align": "middle-center",
             "text_alignment": "center",
             "text_alignment_mobile": "center",
-            "color_scheme": "",
+            "color_scheme": "scheme-3",
             "slide_accessibility_label": ""
           }
         },
@@ -564,7 +565,7 @@
         "pagination_style": "counter",
         "auto_rotate": true,
         "change_slides_speed": 3,
-        "show_text_below": true,
+        "show_text_below": false,
         "accessibility_info": "Presentazione sul nostro brand"
       }
     }
