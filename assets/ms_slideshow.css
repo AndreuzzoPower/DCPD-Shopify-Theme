@@ -1,0 +1,66 @@
+/* Mobile image swap */
+@media screen and (max-width: 749px) {
+  .ms-slide__img-desktop { display: none; }
+}
+
+@media screen and (min-width: 750px) {
+  .ms-slide__img-mobile { display: none; }
+}
+
+/* Hide text/content on mobile */
+@media screen and (max-width: 749px) {
+  .ms-slideshow__content--hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Box background opacity — only background, not content */
+.slideshow__slide .banner__box {
+  position: relative;
+  isolation: isolate;
+}
+
+.slideshow__slide .ms-slide__box-custom-opacity {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.slideshow__slide .ms-slide__box-custom-opacity::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: rgb(var(--color-background) / var(--ms-box-bg-opacity, 1));
+}
+
+/* Overlay arrows on sides of the slider */
+.ms-slideshow--arrows-overlay .slideshow {
+  position: relative;
+}
+
+.ms-slideshow__arrows-overlay {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+  padding: 0 1.6rem;
+}
+
+.ms-slideshow__arrows-overlay .slider-button {
+  pointer-events: auto;
+}
+
+/* Pagination standalone (when arrows are overlay) */
+.ms-slideshow__pagination-below {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8rem 0;
+}
