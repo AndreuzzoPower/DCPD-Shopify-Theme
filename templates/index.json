@@ -621,6 +621,7 @@
         "image_VFpz7Y": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/download.jpg",
             "image_link": "",
             "image_link_target": "_self",
             "image_overlay_text": ""
@@ -629,7 +630,7 @@
         "product_kmwqkM": {
           "type": "product",
           "settings": {
-            "product": "",
+            "product": "multi-variante-test-copia-copia",
             "second_image": false,
             "show_min_order": true
           }
@@ -637,7 +638,7 @@
         "collection_gpKrnq": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "prova-1",
             "show_icon": true,
             "custom_icon": ""
           }
