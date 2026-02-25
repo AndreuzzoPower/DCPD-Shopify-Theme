@@ -244,7 +244,7 @@
               {%- when 'quantity_selector' -%}
                 <div
                   id="Quantity-Form-{{ section.id }}"
-                  class="product-form__input product-form__quantity"
+                  class="product-form__input product-form__quantity{% unless block.settings.show_cart_quantity %} quantity--hide-cart-qty{% endunless %}"
                   {{ block.shopify_attributes }}
                 >
                   {% comment %} TODO: enable theme-check once `item_count_for_variant` is accepted as valid filter {% endcomment %}
@@ -253,10 +253,9 @@
                     | item_count_for_variant: product.selected_or_first_available_variant.id
                   -%}
                   {% # theme-check-enable %}
-                  {%- assign show_cart_qty = block.settings.show_cart_quantity | default: true -%}
                   <label class="quantity__label form__label" for="Quantity-{{ section.id }}">
                     {{ 'products.product.quantity.label' | t }}
-                    {%- if show_cart_qty -%}
+                    {%- if block.settings.show_cart_quantity -%}
                       <span class="quantity__rules-cart{% if cart_qty == 0 %} hidden{% endif %}">
                         {%- render 'loading-spinner' -%}
                         <span class="ms-cart-qty-pill">
@@ -518,7 +517,7 @@
                   <modal-opener class="product-form__info-request" data-modal="#InfoRequestModal-{{ section.id }}">
                     <button
                       type="button"
-                      class="button button--secondary{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %} product-form__info-request-btn"
+                      class="button button--secondary{% if block.settings.info_request_button_type == 'pill' %} button--pill{% endif %} product-form__info-request-btn{% if block.settings.info_request_custom_class != blank %} {{ block.settings.info_request_custom_class }}{% endif %}"
                     >
                       {{ block.settings.info_request_label | default: 'Richiedi informazioni' }}
                     </button>
@@ -1708,6 +1707,12 @@
           ]
         },
         {
+          "type": "text",
+          "id": "button_custom_class",
+          "label": "Classe CSS personalizzata",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        },
+        {
           "type": "header",
           "content": "Bottone Richiedi informazioni"
         },
@@ -1761,6 +1766,12 @@
             { "value": "button", "label": "Pulsante" },
             { "value": "pill", "label": "Pill (arrotondato)" }
           ]
+        },
+        {
+          "type": "text",
+          "id": "info_request_custom_class",
+          "label": "Classe CSS personalizzata Richiedi informazioni",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
         }
       ]
     },

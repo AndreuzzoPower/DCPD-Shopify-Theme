@@ -1499,3 +1499,7 @@ a.product__text {
     border: none;
   }
 }
+
+.quantity--hide-cart-qty .quantity__rules-cart {
+  display: none !important;
+}
