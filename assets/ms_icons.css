@@ -34,6 +34,13 @@
   line-height: inherit;
 }
 
+/* Fix allineamento verticale icon-wrap nelle card e nei link con testo inline.
+   Dawn non imposta vertical-align su .icon-wrap, causando disallineamento
+   quando il wrapper è inline-flex e il parent non è un flex container. */
+.icon-wrap {
+  vertical-align: middle;
+}
+
 /* Contesti specifici: font-size per icone libreria per matchare le dimensioni degli SVG */
 .header__icon .icon-lib-wrapper i {
   font-size: 2rem;

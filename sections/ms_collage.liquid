@@ -162,13 +162,16 @@
 
               {%- when 'collection' -%}
                 {%- assign placeholder_image = 'collection-apparel-' | append: placeholder_image_index -%}
+                {%- assign coll_icon = block.settings.custom_icon | default: '' -%}
                 {%- render 'card-collection',
                   card_collection: block.settings.collection,
                   media_aspect_ratio: 'adapt',
                   columns: 2,
                   extend_height: true,
                   wrapper_class: section.settings.card_styles,
-                  placeholder_image: placeholder_image
+                  placeholder_image: placeholder_image,
+                  show_icon: block.settings.show_icon,
+                  custom_icon: coll_icon
                 -%}
 
               {%- when 'video' -%}
@@ -519,6 +522,22 @@
           "type": "collection",
           "id": "collection",
           "label": "t:sections.collage.blocks.collection.settings.collection.label"
+        },
+        {
+          "type": "header",
+          "content": "Icona"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Mostra icona",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "custom_icon",
+          "label": "Icona personalizzata",
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-arrow-right). Se compilato, sovrascrive la freccia predefinita."
         }
       ]
     },
