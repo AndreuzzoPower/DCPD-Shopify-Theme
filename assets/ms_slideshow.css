@@ -100,8 +100,8 @@
   position: absolute !important;
   bottom: 1.6rem;
   right: 1.6rem;
-  top: auto;
-  left: auto;
+  top: auto !important;
+  left: auto !important;
   z-index: 3;
   width: 4.4rem;
   height: 4.4rem;
@@ -109,9 +109,30 @@
   border-radius: 50%;
   backdrop-filter: blur(4px);
   transition: background-color 0.2s ease;
-  margin: 0;
-  padding: 0;
-  border-left: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-left: none !important;
+  /* Centering — override Dawn's desktop padding that shifts the icon */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Reset any absolute/relative positioning Dawn may apply to icons inside the button */
+.ms-slideshow__autoplay-overlay .icon,
+.ms-slideshow__autoplay-overlay .icon-pause,
+.ms-slideshow__autoplay-overlay .icon-play,
+.ms-slideshow__autoplay-overlay svg {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  right: auto !important;
+  width: 1.6rem !important;
+  height: 1.6rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
 }
 
 .ms-slideshow__autoplay-overlay:hover,
@@ -120,20 +141,46 @@
   background-color: rgba(var(--color-foreground), 0.45);
 }
 
-/* Icone play/pause: Dawn le imposta position:absolute senza top/left
-   → si posizionano all'angolo. Centramento esplicito. */
-.ms-slideshow__autoplay-overlay .icon.icon-play,
-.ms-slideshow__autoplay-overlay .icon.icon-pause {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  margin: 0;
+/* Light variant for overlay controls (dark slides) */
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light {
+  color: rgb(var(--color-background));
 }
 
-/* Preserva l'animazione hide/show di Dawn con il centramento */
-.ms-slideshow__autoplay-overlay.slideshow__autoplay--paused .icon-pause,
-.ms-slideshow__autoplay-overlay:not(.slideshow__autoplay--paused) .icon-play {
-  transform: translate(-50%, -50%) scale(0.8);
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button {
+  background-color: rgba(var(--color-background), 0.2);
+}
+
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button:hover,
+.ms-slideshow__arrows-overlay.ms-overlay-controls--light .slider-button:focus-visible {
+  background-color: rgba(var(--color-background), 0.4);
+}
+
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light,
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light.slideshow__autoplay.slider-button {
+  color: rgb(var(--color-background));
+  background-color: rgba(var(--color-background), 0.2) !important;
+}
+
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light:hover,
+.ms-slideshow__autoplay-overlay.ms-overlay-controls--light:focus-visible {
+  background-color: rgba(var(--color-background), 0.4) !important;
+}
+
+/* Slide schedulato ma fuori finestra — badge visivo in design_mode */
+.ms-slide--schedule-pending::after {
+  content: '⏰ Programmato';
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  z-index: 10;
+  pointer-events: none;
+  font-family: sans-serif;
 }
 
 /* Pagination standalone (when arrows are overlay) */

@@ -40,17 +40,7 @@
   assign real_slide_count = 0
   for block in section.blocks
     if block.type == 'slide'
-      if request.design_mode
-        assign real_slide_count = real_slide_count | plus: 1
-      else
-        capture ms_sld_vis
-          render 'ms_schedule_check', schedule_enabled: block.settings.schedule_enabled, schedule_start: block.settings.schedule_start, schedule_end: block.settings.schedule_end
-        endcapture
-        assign ms_sld_vis = ms_sld_vis | strip
-        if ms_sld_vis == 'true'
-          assign real_slide_count = real_slide_count | plus: 1
-        endif
-      endif
+      assign real_slide_count = real_slide_count | plus: 1
     endif
   endfor
   if real_slide_count > 1
@@ -221,9 +211,15 @@
           #Slide-{{ section.id }}-{{ slide_index }} .banner__media::after {
             opacity: {{ block.settings.image_overlay_opacity | divided_by: 100.0 }};
           }
-          {%- if has_custom_opacity -%}
+          {%- assign box_radius = block.settings.box_border_radius | default: 0 -%}
+          {%- if has_custom_opacity or box_radius > 0 -%}
             #Slide-{{ section.id }}-{{ slide_index }} .banner__box {
-              --ms-box-bg-opacity: {{ box_opacity | divided_by: 100.0 }};
+              {%- if has_custom_opacity -%}
+                --ms-box-bg-opacity: {{ box_opacity | divided_by: 100.0 }};
+              {%- endif -%}
+              {%- if box_radius > 0 -%}
+                border-radius: {{ box_radius }}px;
+              {%- endif -%}
             }
           {%- endif -%}
         {%- endstyle -%}
@@ -916,6 +912,17 @@
           "label": "Opacità sfondo contenitore testo",
           "default": 100,
           "info": "Riduce la trasparenza del box colorato, mantenendo titolo e testo sempre leggibili."
+        },
+        {
+          "type": "range",
+          "id": "box_border_radius",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Raggio bordi contenitore testo",
+          "default": 0,
+          "info": "Arrotonda gli angoli del box contenitore dei contenuti della slide."
         },
         {
           "type": "select",
