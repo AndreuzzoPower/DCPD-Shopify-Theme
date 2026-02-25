@@ -83,12 +83,16 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true,
             "button_type": "button",
+            "button_style_secondary": false,
+            "button_custom_class": "",
             "show_info_request": true,
             "info_request_label": "Richiedi informazioni",
             "info_request_form_type": "contact_form",
             "info_request_form_html": "",
             "info_request_modal_title": "Richiedi informazioni",
-            "info_request_button_type": "button"
+            "info_request_button_type": "button",
+            "info_request_style_secondary": true,
+            "info_request_custom_class": ""
           }
         },
         "description": {
@@ -100,6 +104,8 @@
           "settings": {
             "text": "Link pop-up con testo",
             "button_type": "pill",
+            "button_style_secondary": true,
+            "button_custom_class": "",
             "page": "",
             "custom_html": "sasafsdafdsafad"
           }
@@ -257,11 +263,32 @@
         "show_min_order": true,
         "quick_add": "none"
       }
+    },
+    "17720039561a182aba": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_xzjz68": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_xzjz68"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "ms_breadcrumbs_4xKfNa",
     "main",
-    "ms_products_from_metafield_JRyQgy"
+    "ms_products_from_metafield_JRyQgy",
+    "17720039561a182aba"
   ]
 }
