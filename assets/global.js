@@ -925,9 +925,11 @@ class SliderComponent extends HTMLElement {
     if (this.sliderItemsToShow.length < 2) return;
     this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
 
-    // After circular clones are prepended, the first real item has a large offsetLeft.
-    // Use 0 so slidesPerPage stays accurate (full clientWidth / itemOffset).
-    const firstItemOffset = this._circularInitialized ? 0 : this.sliderItemsToShow[0].offsetLeft;
+    // In circular mode items[0] is no longer :first-child so its offsetLeft is wrong.
+    // Use scroll-padding-left (same value as --desktop-margin-left-first-item) for accuracy.
+    const firstItemOffset = this._circularInitialized
+      ? (parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0)
+      : this.sliderItemsToShow[0].offsetLeft;
     this.slidesPerPage = Math.floor(
       (this.slider.clientWidth - firstItemOffset) / this.sliderItemOffset
     );
@@ -944,10 +946,9 @@ class SliderComponent extends HTMLElement {
       this.initCircularLoop();
     }
 
-    // Keep clone offset in sync after any resize — re-read offsetLeft to account for
-    // viewport-based :first-child margins (e.g. calc with vw) that change at breakpoints
+    // Keep clone offset in sync after any resize
     if (this._circularInitialized) {
-      this._circularCloneOffset = this.sliderItemsToShow[0].offsetLeft;
+      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset;
     }
 
     this.updatePaginationCount();
@@ -981,11 +982,10 @@ class SliderComponent extends HTMLElement {
 
     this._circularClonesCount = clonesCount;
     this._realSlideCount = realCount;
+    // Snap positions = offsetLeft - scrollPaddingLeft = k * sliderItemOffset (no margin).
+    // This is simply clonesCount * sliderItemOffset regardless of :first-child margins.
+    this._circularCloneOffset = clonesCount * this.sliderItemOffset;
     this._circularInitialized = true;
-    // Read offsetLeft AFTER inserting clones — forces layout reflow and correctly
-    // accounts for the :first-child CSS (e.g. --desktop-margin-left-first-item)
-    // that has now shifted onto the first clone instead of the first real item.
-    this._circularCloneOffset = this.sliderItemsToShow[0].offsetLeft;
 
     // Listen for scroll-end to perform the silent teleport
     const handler = this._onScrollEnd.bind(this);
