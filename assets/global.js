@@ -1067,8 +1067,30 @@ class SliderComponent extends HTMLElement {
     return nearest;
   }
 
+  _flushPendingCircularPageWrap(force = false) {
+    if (!this._pendingCircularPageWrap || this._isTeleporting) return false;
+    const { clonePos, realPos } = this._pendingCircularPageWrap;
+    const reachedClone = Math.abs(this.slider.scrollLeft - clonePos) <= 3;
+    if (!force && !reachedClone) return false;
+
+    if (this._pendingCircularWrapTimer) {
+      clearTimeout(this._pendingCircularWrapTimer);
+      this._pendingCircularWrapTimer = null;
+    }
+
+    this._pendingCircularPageWrap = null;
+    this._setScrollInstant(realPos);
+    if (this.autoplay && this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.startAutoplay();
+    }
+    return true;
+  }
+
   _onScrollEnd() {
     if (!this._circularInitialized || this._isTeleporting) return;
+
+    if (this._flushPendingCircularPageWrap(true)) return;
 
     const scrollLeft = this.slider.scrollLeft;
     const realZoneStart = this._realZoneStart;
@@ -1080,28 +1102,6 @@ class SliderComponent extends HTMLElement {
     );
 
     let didTeleport = false;
-    if (this.scrollMode === 'page' && this._pendingCircularPageWrap) {
-      if (this._pendingCircularWrapTimer) {
-        clearTimeout(this._pendingCircularWrapTimer);
-        this._pendingCircularWrapTimer = null;
-      }
-      if (this._pendingCircularPageWrap === 'forward') {
-        this._setScrollInstant(this._realSnapPositions[0] ?? this._circularCloneOffset);
-        didTeleport = true;
-      } else if (this._pendingCircularPageWrap === 'backward') {
-        this._setScrollInstant(this._realSnapPositions[lastPageStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset);
-        didTeleport = true;
-      }
-      this._pendingCircularPageWrap = null;
-    }
-
-    if (didTeleport) {
-      if (this.autoplay && this.autoplayInterval) {
-        clearInterval(this.autoplayInterval);
-        this.startAutoplay();
-      }
-      return;
-    }
 
     if (scrollLeft < realZoneStart - 2) {
       if (this.scrollMode === 'page') {
@@ -1169,6 +1169,8 @@ class SliderComponent extends HTMLElement {
 
   update() {
     if (!this.slider) return;
+
+    if (this._flushPendingCircularPageWrap(false)) return;
 
     const previousPage = this.currentPage;
 
@@ -1259,21 +1261,25 @@ class SliderComponent extends HTMLElement {
       const direction = event.currentTarget.name === 'next' ? 1 : -1;
       const targetPageIndex = currentPageIndex + direction;
 
+      if (this._pendingCircularWrapTimer) {
+        clearTimeout(this._pendingCircularWrapTimer);
+        this._pendingCircularWrapTimer = null;
+      }
+      this._pendingCircularPageWrap = null;
+
       if (targetPageIndex >= this.paginationPages) {
         const firstStartIndex = 0;
         const appendTargets = (this._appendCloneSnapPositions || [])
           .filter((c) => c.realIndex === firstStartIndex)
           .map((c) => c.pos);
         if (appendTargets.length) {
-          this._pendingCircularPageWrap = 'forward';
-          if (this._pendingCircularWrapTimer) clearTimeout(this._pendingCircularWrapTimer);
+          const clonePos = Math.min(...appendTargets);
+          const realPos = this._realSnapPositions[0] ?? this._circularCloneOffset;
+          this._pendingCircularPageWrap = { clonePos, realPos };
           this._pendingCircularWrapTimer = setTimeout(() => {
-            if (this._pendingCircularPageWrap === 'forward') {
-              this._setScrollInstant(this._realSnapPositions[0] ?? this._circularCloneOffset);
-              this._pendingCircularPageWrap = null;
-            }
-          }, 450);
-          this.setSlidePosition(Math.min(...appendTargets));
+            this._flushPendingCircularPageWrap(true);
+          }, 900);
+          this.setSlidePosition(clonePos);
           return;
         }
       } else if (targetPageIndex < 0) {
@@ -1285,15 +1291,13 @@ class SliderComponent extends HTMLElement {
           .filter((c) => c.realIndex === lastStartIndex)
           .map((c) => c.pos);
         if (prependTargets.length) {
-          this._pendingCircularPageWrap = 'backward';
-          if (this._pendingCircularWrapTimer) clearTimeout(this._pendingCircularWrapTimer);
+          const clonePos = Math.max(...prependTargets);
+          const realPos = this._realSnapPositions[lastStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset;
+          this._pendingCircularPageWrap = { clonePos, realPos };
           this._pendingCircularWrapTimer = setTimeout(() => {
-            if (this._pendingCircularPageWrap === 'backward') {
-              this._setScrollInstant(this._realSnapPositions[lastStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset);
-              this._pendingCircularPageWrap = null;
-            }
-          }, 450);
-          this.setSlidePosition(Math.max(...prependTargets));
+            this._flushPendingCircularPageWrap(true);
+          }, 900);
+          this.setSlidePosition(clonePos);
           return;
         }
       } else {
