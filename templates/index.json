@@ -59,7 +59,6 @@
         },
         "featured_collection_KKwGTH": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
@@ -68,7 +67,6 @@
         },
         "featured_collection_MxWnVr": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "6"
@@ -76,7 +74,6 @@
         },
         "featured_collection_YQcxGx": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "7"
@@ -84,7 +81,6 @@
         },
         "featured_collection_wHFd7P": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "8"
@@ -92,7 +88,6 @@
         },
         "featured_collection_dWiGCe": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "9"
@@ -100,7 +95,6 @@
         },
         "featured_collection_FJGyww": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "10"
@@ -108,7 +102,6 @@
         },
         "featured_collection_cUmT6B": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "11"
@@ -116,7 +109,6 @@
         },
         "featured_collection_JKEkpM": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": "12"
