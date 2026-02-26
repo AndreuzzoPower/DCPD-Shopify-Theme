@@ -944,9 +944,9 @@ class SliderComponent extends HTMLElement {
       this.initCircularLoop();
     }
 
-    // Keep clone offset in sync after any resize
     if (this._circularInitialized) {
-      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset;
+      this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
+      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset - this._scrollPaddingLeft;
     }
 
     this.updatePaginationCount();
@@ -983,9 +983,8 @@ class SliderComponent extends HTMLElement {
 
     this._circularClonesCount = clonesCount;
     this._realSlideCount = realCount;
-    // Snap positions = offsetLeft - scrollPaddingLeft = k * sliderItemOffset (no margin).
-    // This is simply clonesCount * sliderItemOffset regardless of :first-child margins.
-    this._circularCloneOffset = clonesCount * this.sliderItemOffset;
+    this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
+    this._circularCloneOffset = clonesCount * this.sliderItemOffset - this._scrollPaddingLeft;
     this._circularInitialized = true;
 
     // Listen for scroll-end to perform the silent teleport
