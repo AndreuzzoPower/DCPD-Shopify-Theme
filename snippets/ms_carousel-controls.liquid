@@ -8,6 +8,7 @@
     - pagination_style  (string): 'counter' | 'dots' | 'numbers' | 'none'  — default 'counter'
     - show_arrows       (boolean): mostra frecce prev/next                  — default true
     - show_pagination   (boolean): mostra paginazione                       — default true
+    - enable_autoplay   (boolean): mostra bottone play/pausa (WCAG 2.2.2)   — default false
 {%- endcomment -%}
 
 {%- liquid
@@ -78,6 +79,17 @@
             </div>
           </div>
       {%- endcase -%}
+    {%- endif -%}
+
+    {%- if enable_autoplay -%}
+      <button
+        type="button"
+        class="slider-button slider-autoplay-btn"
+        aria-label="{{ 'sections.slideshow.pause_slideshow' | t }}"
+      >
+        {%- render 'ms_icon', icon: settings.ms_icon_pause -%}
+        {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+      </button>
     {%- endif -%}
 
     {%- if cc_arrows -%}

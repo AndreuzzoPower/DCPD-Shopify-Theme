@@ -425,12 +425,53 @@ slider-component.ms-carousel--arrows-above-right {
   z-index: 4;
 }
 
+/* ── MS Carousel: autoplay play/pause button ── */
+
+.slider-autoplay-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.8rem;
+  color: inherit;
+}
+
+.slider-autoplay-btn .icon-play,
+.slider-autoplay-btn .icon-pause {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.slider-autoplay-btn .icon-play {
+  display: none;
+}
+
+.slider-autoplay-btn--paused .icon-pause {
+  display: none;
+}
+
+.slider-autoplay-btn--paused .icon-play {
+  display: block;
+}
+
 /* ── MS Carousel: peek size ── */
 
 slider-component[data-peek="none"]  { --ms-peek: 0rem; }
 slider-component[data-peek="small"] { --ms-peek: 2rem; }
 slider-component[data-peek="medium"] { --ms-peek: 4rem; }
 slider-component[data-peek="large"] { --ms-peek: 6rem; }
+
+/* ── MS Carousel: dark overlay arrows ── */
+
+slider-component.ms-carousel--arrows-overlay-sides.ms-carousel--arrows-overlay-dark .slider-button--prev,
+slider-component.ms-carousel--arrows-overlay-sides.ms-carousel--arrows-overlay-dark .slider-button--next {
+  background: rgba(var(--color-foreground), 0.7);
+  color: rgb(var(--color-background));
+}
 
 /* ── MS Carousel: hide arrows / pagination ── */
 

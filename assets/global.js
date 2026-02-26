@@ -861,6 +861,45 @@ class SliderComponent extends HTMLElement {
 
     if (this.autoplay) {
       this.startAutoplay();
+      this.autoplayIsActive = true;
+
+      this.autoplayButton = this.querySelector('.slider-autoplay-btn');
+      if (this.autoplayButton) {
+        this.autoplayButton.addEventListener('click', this.toggleAutoplayBtn.bind(this));
+      }
+
+      this.addEventListener('mouseover', this.pauseCarouselAutoplay.bind(this));
+      this.addEventListener('mouseleave', this.resumeCarouselAutoplay.bind(this));
+      this.addEventListener('focusin', this.pauseCarouselAutoplay.bind(this));
+      this.addEventListener('focusout', this.resumeCarouselAutoplay.bind(this));
+    }
+  }
+
+  toggleAutoplayBtn() {
+    if (this.autoplayIsActive) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+      this.autoplayIsActive = false;
+      this.autoplayButton.classList.add('slider-autoplay-btn--paused');
+      this.autoplayButton.setAttribute('aria-label', window.accessibilityStrings?.playSlideshow || 'Riproduci');
+    } else {
+      this.startAutoplay();
+      this.autoplayIsActive = true;
+      this.autoplayButton.classList.remove('slider-autoplay-btn--paused');
+      this.autoplayButton.setAttribute('aria-label', window.accessibilityStrings?.pauseSlideshow || 'Pausa');
+    }
+  }
+
+  pauseCarouselAutoplay() {
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+  }
+
+  resumeCarouselAutoplay() {
+    if (this.autoplay && this.autoplayIsActive && !this.autoplayInterval) {
+      this.startAutoplay();
     }
   }
 
