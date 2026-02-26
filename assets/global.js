@@ -920,10 +920,9 @@ class SliderComponent extends HTMLElement {
 
   _getPageStep() {
     if (this.scrollMode !== 'page') return this.slidesPerPage || 1;
-
-    const hasPeek = this.dataset.peek && this.dataset.peek !== 'none';
-    // In circular+page mode, include previewed item to avoid repeated sets (e.g. 1,2,3 -> 3,4,5).
-    const baseStep = this.enableCircularLoop && hasPeek ? this.slidesPerPage + 1 : this.slidesPerPage;
+    // In circular+page mode, always include one extra slot to avoid overlapping sets
+    // and keep page count consistent with wrapped pages (e.g. 5 items / 2 cols => 2 pages).
+    const baseStep = this.enableCircularLoop ? this.slidesPerPage + 1 : this.slidesPerPage;
     const realCount = this._realSlideCount || this.sliderItemsToShow?.length || 1;
     return Math.min(Math.max(baseStep, 1), realCount);
   }
