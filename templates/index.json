@@ -817,7 +817,7 @@
         "autoplay_speed": 5,
         "carousel_arrows_position": "overlay_sides",
         "carousel_pagination_style": "counter",
-        "carousel_scroll_mode": "page",
+        "carousel_scroll_mode": "single",
         "carousel_loop": false,
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
