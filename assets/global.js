@@ -1509,6 +1509,7 @@ class SlideshowComponent extends SliderComponent {
       },
       plugins
     );
+    this.setAttribute('data-ms-embla-active', 'true');
 
     if (this.emblaApi?.plugins()?.accessibility) {
       if (this.prevButton && this.nextButton) {

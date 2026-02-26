@@ -2,8 +2,6 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 {{ 'ms_slideshow.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'embla-carousel.umd.js' | asset_url }}" defer></script>
-<script src="{{ 'embla-carousel-accessibility.umd.js' | asset_url }}" defer></script>
 
 {%- liquid
   assign sw = section.settings.section_width | default: 'full_width'
