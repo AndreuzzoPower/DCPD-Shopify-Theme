@@ -609,7 +609,7 @@
         "show_arrows": true,
         "arrows_position": "bottom_center",
         "show_pagination": true,
-        "pagination_style": "dots",
+        "pagination_style": "counter",
         "auto_rotate": true,
         "autoplay_position": "top_bar",
         "change_slides_speed": 5,
