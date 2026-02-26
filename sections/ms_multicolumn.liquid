@@ -119,7 +119,7 @@
 
     <slider-component
       data-scroll-mode="{{ section.settings.carousel_scroll_mode | default: 'page' }}"
-      data-loop="{{ section.settings.carousel_loop | default: false }}"
+      data-loop="{{ section.settings.carousel_loop | default: 'circular' }}"
       data-peek="{{ section.settings.carousel_peek_size | default: 'medium' }}"
       data-autoplay="{{ section.settings.enable_autoplay | default: false }}"
       data-speed="{{ section.settings.autoplay_speed | default: 5 }}000"

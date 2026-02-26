@@ -832,19 +832,13 @@ class SliderComponent extends HTMLElement {
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
 
-    // Loop mode: 'none' | 'rewind' | 'circular'
-    // Backward compat: old boolean values 'true'/'false' map to rewind/none
-    this.loopMode = this.dataset.loop || 'none';
+    // Loop mode: 'rewind' | 'circular'
+    // Backward compat: old boolean 'true' → rewind, 'false'/missing → circular
+    this.loopMode = this.dataset.loop || 'circular';
     if (this.loopMode === 'true') this.loopMode = 'rewind';
-    if (this.loopMode === 'false') this.loopMode = 'none';
+    if (this.loopMode === 'false' || this.loopMode === 'none') this.loopMode = 'circular';
     this.enableSliderLooping = this.loopMode === 'rewind';
     this.enableCircularLoop = this.loopMode === 'circular';
-
-    // When autoplay is active a loop is required — upgrade 'none' to 'circular'
-    if (this.dataset.autoplay === 'true' && this.loopMode === 'none') {
-      this.loopMode = 'circular';
-      this.enableCircularLoop = true;
-    }
 
     this.scrollMode = this.dataset.scrollMode || 'page';
     this.currentPageElement = this.querySelector('.slider-counter--current');
