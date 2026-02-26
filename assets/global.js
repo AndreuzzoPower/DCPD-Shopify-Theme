@@ -1168,7 +1168,6 @@ class SliderComponent extends HTMLElement {
   startAutoplay() {
     this.autoplayInterval = setInterval(() => {
       if (this.enableCircularLoop) {
-        // Circular: always advance — clones + _onScrollEnd handle the wrap
         if (this.nextButton) {
           this.nextButton.click();
         } else {
@@ -1177,6 +1176,13 @@ class SliderComponent extends HTMLElement {
       } else {
         const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
         if (atEnd) {
+          if (this.loopMode === 'none') {
+            clearInterval(this.autoplayInterval);
+            this.autoplayInterval = null;
+            this.autoplayIsActive = false;
+            if (this.autoplayButton) this.autoplayButton.classList.add('slider-autoplay-btn--paused');
+            return;
+          }
           this.setSlidePosition(0);
         } else if (this.nextButton) {
           this.nextButton.click();
