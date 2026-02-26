@@ -857,7 +857,7 @@ class SliderComponent extends HTMLElement {
     this._circularPageWrapTargetIndex = null;
     this._circularPageWrapForceTimer = null;
 
-    // ms_slideshow with Embla manages controls/autoplay separately.
+    this.useEmbla = this.dataset.msEmbla === 'true' || this.getAttribute('data-ms-embla') === 'true';
     if (this.useEmbla) return;
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
@@ -1506,8 +1506,10 @@ class SlideshowComponent extends SliderComponent {
       );
     }
 
+    const emblaViewport = this.querySelector('.ms-slideshow__media-wrapper') || this;
+
     this.emblaApi = window.EmblaCarousel(
-      this.slider,
+      emblaViewport,
       {
         loop: this.emblaLoop,
         align: 'start',

@@ -177,14 +177,21 @@
 }
 
 /* Embla mode: neutralize native slider scroll-snap behavior to avoid conflicts. */
+slideshow-component[data-ms-embla-active="true"] .ms-slideshow__media-wrapper {
+  overflow: hidden;
+}
+
 slideshow-component[data-ms-embla-active="true"] .slideshow.slider--everywhere {
-  overflow-x: hidden;
+  overflow: visible;
   scroll-snap-type: none;
   scroll-behavior: auto;
   -webkit-overflow-scrolling: auto;
   touch-action: pan-y pinch-zoom;
+  flex-wrap: nowrap;
 }
 
 slideshow-component[data-ms-embla-active="true"] .slideshow.slider--everywhere .slideshow__slide {
   scroll-snap-align: none;
+  flex: 0 0 100%;
+  min-width: 0;
 }
