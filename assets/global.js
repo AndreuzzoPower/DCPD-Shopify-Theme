@@ -832,11 +832,11 @@ class SliderComponent extends HTMLElement {
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
 
-    // Loop mode: 'rewind' | 'circular'
-    // Backward compat: old boolean 'true' → rewind, 'false'/missing → circular
+    // Loop mode: 'none' | 'rewind' | 'circular'
+    // Backward compat: old boolean 'true' → rewind, 'false' → circular
     this.loopMode = this.dataset.loop || 'circular';
     if (this.loopMode === 'true') this.loopMode = 'rewind';
-    if (this.loopMode === 'false' || this.loopMode === 'none') this.loopMode = 'circular';
+    if (this.loopMode === 'false') this.loopMode = 'circular';
     this.enableSliderLooping = this.loopMode === 'rewind';
     this.enableCircularLoop = this.loopMode === 'circular';
 
