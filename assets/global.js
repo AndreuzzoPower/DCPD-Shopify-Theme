@@ -1061,9 +1061,17 @@ class SliderComponent extends HTMLElement {
     const scrollLeft = this.slider.scrollLeft;
     const realZoneStart = this._realZoneStart;
     const realZoneEnd = this._realZoneEnd;
+    const lastPageStartIndex = Math.min(
+      Math.max((this.paginationPages - 1) * this.slidesPerPage, 0),
+      this._realSlideCount - 1
+    );
 
     let didTeleport = false;
     if (scrollLeft < realZoneStart - 2) {
+      if (this.scrollMode === 'page') {
+        this._setScrollInstant(this._realSnapPositions[lastPageStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset);
+        didTeleport = true;
+      } else {
       const nearest = this._getNearestCloneMeta(this._prependCloneSnapPositions, scrollLeft);
       if (nearest && this._realSnapPositions[nearest.realIndex] !== undefined) {
         this._setScrollInstant(this._realSnapPositions[nearest.realIndex]);
@@ -1071,7 +1079,12 @@ class SliderComponent extends HTMLElement {
         this._setScrollInstant(scrollLeft + this._realSlideCount * this.sliderItemOffset);
       }
       didTeleport = true;
+      }
     } else if (scrollLeft >= realZoneEnd - 2) {
+      if (this.scrollMode === 'page') {
+        this._setScrollInstant(this._realSnapPositions[0] ?? this._circularCloneOffset);
+        didTeleport = true;
+      } else {
       const nearest = this._getNearestCloneMeta(this._appendCloneSnapPositions, scrollLeft);
       if (nearest && this._realSnapPositions[nearest.realIndex] !== undefined) {
         this._setScrollInstant(this._realSnapPositions[nearest.realIndex]);
@@ -1079,6 +1092,7 @@ class SliderComponent extends HTMLElement {
         this._setScrollInstant(scrollLeft - this._realSlideCount * this.sliderItemOffset);
       }
       didTeleport = true;
+      }
     }
 
     if (didTeleport && this.autoplay && this.autoplayInterval) {
