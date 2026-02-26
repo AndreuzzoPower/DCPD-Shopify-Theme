@@ -918,6 +918,16 @@ class SliderComponent extends HTMLElement {
     }
   }
 
+  _getPageStep() {
+    if (this.scrollMode !== 'page') return this.slidesPerPage || 1;
+
+    const hasPeek = this.dataset.peek && this.dataset.peek !== 'none';
+    // In circular+page mode, include previewed item to avoid repeated sets (e.g. 1,2,3 -> 3,4,5).
+    const baseStep = this.enableCircularLoop && hasPeek ? this.slidesPerPage + 1 : this.slidesPerPage;
+    const realCount = this._realSlideCount || this.sliderItemsToShow?.length || 1;
+    return Math.min(Math.max(baseStep, 1), realCount);
+  }
+
   initPages() {
     this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
     if (this.sliderItemsToShow.length < 2) return;
@@ -936,7 +946,8 @@ class SliderComponent extends HTMLElement {
     if (this.scrollMode === 'single') {
       this.paginationPages = this.sliderItemsToShow.length;
     } else {
-      this.paginationPages = Math.ceil(this.sliderItemsToShow.length / this.slidesPerPage);
+      this.pageStep = this._getPageStep();
+      this.paginationPages = Math.ceil(this.sliderItemsToShow.length / this.pageStep);
     }
 
     // First-time circular init (after slidesPerPage is known)
@@ -958,7 +969,7 @@ class SliderComponent extends HTMLElement {
     // Need slidesPerPage + 1 clones so that (clonesCount * itemOffset) >= clientWidth.
     // With just slidesPerPage clones, percentage-based widths leave scrollWidth too short
     // to reach the clone zone (browser clamps scrollTo and teleport never fires).
-    const clonesCount = this.slidesPerPage + 1;
+    const clonesCount = Math.max(this.slidesPerPage + 1, this._getPageStep());
 
     const makeClone = (item, realIndex, zone) => {
       const clone = item.cloneNode(true);
@@ -1061,8 +1072,9 @@ class SliderComponent extends HTMLElement {
     const scrollLeft = this.slider.scrollLeft;
     const realZoneStart = this._realZoneStart;
     const realZoneEnd = this._realZoneEnd;
+    const pageStep = this._getPageStep();
     const lastPageStartIndex = Math.min(
-      Math.max((this.paginationPages - 1) * this.slidesPerPage, 0),
+      Math.max((this.paginationPages - 1) * pageStep, 0),
       this._realSlideCount - 1
     );
 
@@ -1155,7 +1167,7 @@ class SliderComponent extends HTMLElement {
     if (this.scrollMode === 'single') {
       this.currentPage = Math.round(effectiveScrollLeft / this.sliderItemOffset) + 1;
     } else {
-      const pageOffset = this.slidesPerPage * this.sliderItemOffset;
+      const pageOffset = (this.pageStep || this._getPageStep()) * this.sliderItemOffset;
       this.currentPage = Math.min(
         Math.floor(effectiveScrollLeft / pageOffset) + 1,
         this.paginationPages
@@ -1222,7 +1234,7 @@ class SliderComponent extends HTMLElement {
           ? this.slider.scrollLeft + this.sliderItemOffset
           : this.slider.scrollLeft - this.sliderItemOffset;
     } else {
-      const step = event.currentTarget.dataset.step || this.slidesPerPage;
+      const step = event.currentTarget.dataset.step || this.pageStep || this._getPageStep();
       this.slideScrollPosition =
         event.currentTarget.name === 'next'
           ? this.slider.scrollLeft + step * this.sliderItemOffset
@@ -1249,7 +1261,7 @@ class SliderComponent extends HTMLElement {
     if (isNaN(index)) return;
     let targetPosition = this.scrollMode === 'single'
       ? (index - 1) * this.sliderItemOffset
-      : (index - 1) * this.slidesPerPage * this.sliderItemOffset;
+      : (index - 1) * (this.pageStep || this._getPageStep()) * this.sliderItemOffset;
     // In circular mode the real items are offset by the prepended clones
     if (this._circularInitialized) {
       targetPosition += this._circularCloneOffset;
