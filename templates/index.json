@@ -674,7 +674,7 @@
         "column_zjLaeT": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna1",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -690,7 +690,7 @@
         "column_ab8Vch": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna2",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -706,7 +706,7 @@
         "column_hwdGEP": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna3",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -722,7 +722,7 @@
         "column_yyDkVb": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna4",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -739,7 +739,7 @@
           "type": "column",
           "settings": {
             "image": "shopify://shop_images/download.jpg",
-            "title": "Colonna",
+            "title": "Colonna5",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -755,7 +755,7 @@
         "column_n9ftcr": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna6",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
@@ -771,7 +771,7 @@
         "column_LaLBEH": {
           "type": "column",
           "settings": {
-            "title": "Colonna",
+            "title": "Colonna7",
             "title_tag": "h3",
             "title_custom_class": "",
             "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
