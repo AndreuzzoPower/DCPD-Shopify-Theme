@@ -487,32 +487,3 @@ slider-component.ms-carousel--no-pagination .slider-counter {
   display: none;
 }
 
-/* ── Embla Carousel overrides for slider-component ── */
-/* Use data-ms-embla (static Liquid attr) so layout is correct BEFORE Embla measures slides */
-
-slider-component[data-ms-embla="true"] {
-  display: block;
-  overflow: hidden;
-}
-
-slider-component[data-ms-embla="true"] .slider {
-  overflow: visible;
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-  -webkit-overflow-scrolling: auto;
-  flex-wrap: nowrap;
-}
-
-slider-component[data-ms-embla="true"] .slider .slider__slide {
-  scroll-snap-align: none;
-  min-width: 0;
-}
-
-slider-component[data-ms-embla="true"] .slider::after {
-  display: none;
-}
-
-slider-component[data-ms-embla="true"] .slider .slider__slide:first-child {
-  margin-left: 0;
-  scroll-margin-left: 0;
-}
