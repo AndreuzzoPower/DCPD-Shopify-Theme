@@ -1234,25 +1234,41 @@ class SliderComponent extends HTMLElement {
       const currentPageIndex = Math.max(0, (this.currentPage || 1) - 1);
       const direction = event.currentTarget.name === 'next' ? 1 : -1;
       const targetPageIndex = currentPageIndex + direction;
+      const lastStartIndex = Math.min(
+        Math.max((this.paginationPages - 1) * pageStep, 0),
+        this._realSlideCount - 1
+      );
 
       if (targetPageIndex >= this.paginationPages) {
-        // Scroll into append-clone zone; _onScrollEnd will teleport back to page 1
-        const appendTarget = this._appendCloneSnapPositions?.find((c) => c.realIndex === 0);
-        if (appendTarget) {
-          this.setSlidePosition(appendTarget.pos);
-          return;
-        }
-      } else if (targetPageIndex < 0) {
-        // Scroll into prepend-clone zone; _onScrollEnd will teleport to last page
-        const lastStartIndex = Math.min(
-          Math.max((this.paginationPages - 1) * pageStep, 0),
-          this._realSlideCount - 1
-        );
+        // Robust wrap forward: rebase to equivalent prepend clone, then animate to real page 1.
         const prependCandidates = (this._prependCloneSnapPositions || []).filter(
           (c) => c.realIndex === lastStartIndex
         );
-        if (prependCandidates.length) {
-          this.setSlidePosition(Math.max(...prependCandidates.map((c) => c.pos)));
+        const targetRealPos = this._realSnapPositions[0] ?? this._circularCloneOffset;
+        if (prependCandidates.length && typeof targetRealPos === 'number') {
+          const sourceClonePos = Math.max(...prependCandidates.map((c) => c.pos));
+          this._setScrollInstant(sourceClonePos);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              this.setSlidePosition(targetRealPos);
+            });
+          });
+          return;
+        }
+      } else if (targetPageIndex < 0) {
+        // Robust wrap backward: rebase to equivalent append clone, then animate to last real page.
+        const appendCandidates = (this._appendCloneSnapPositions || []).filter(
+          (c) => c.realIndex === 0
+        );
+        const targetRealPos = this._realSnapPositions[lastStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset;
+        if (appendCandidates.length && typeof targetRealPos === 'number') {
+          const sourceClonePos = Math.min(...appendCandidates.map((c) => c.pos));
+          this._setScrollInstant(sourceClonePos);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              this.setSlidePosition(targetRealPos);
+            });
+          });
           return;
         }
       } else {
