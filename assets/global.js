@@ -952,7 +952,10 @@ class SliderComponent extends HTMLElement {
   initCircularLoop() {
     const realItems = this.sliderItemsToShow;
     const realCount = realItems.length;
-    const clonesCount = Math.max(1, this.slidesPerPage);
+    // Need slidesPerPage + 1 clones so that (clonesCount * itemOffset) >= clientWidth.
+    // With just slidesPerPage clones, percentage-based widths leave scrollWidth too short
+    // to reach the clone zone (browser clamps scrollTo and teleport never fires).
+    const clonesCount = this.slidesPerPage + 1;
 
     const makeClone = (item) => {
       const clone = item.cloneNode(true);
