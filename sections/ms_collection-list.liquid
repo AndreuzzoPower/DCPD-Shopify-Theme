@@ -27,6 +27,8 @@
     assign is_full_width = true
   endif
 
+  assign peek = section.settings.carousel_peek_size | default: 'medium'
+
   case sw
     when 'narrow'
       assign sw_class = 'page-width page-width--narrow'
@@ -177,12 +179,35 @@
           margin-left: 0;
           scroll-padding-left: 0;
         }
-        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 1 - var(--grid-desktop-horizontal-spacing)); }
-        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 2 - var(--grid-desktop-horizontal-spacing)); }
-        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 3 - var(--grid-desktop-horizontal-spacing)); }
-        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 4 - var(--grid-desktop-horizontal-spacing)); }
-        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 5 - var(--grid-desktop-horizontal-spacing)); }
-        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc((100% - var(--ms-peek, 4rem)) / 6 - var(--grid-desktop-horizontal-spacing)); }
+        {%- if peek == 'none' -%}
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: 100%; }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc(50% - var(--grid-desktop-horizontal-spacing) / 2); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc(25% - var(--grid-desktop-horizontal-spacing) * 3 / 4); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc(20% - var(--grid-desktop-horizontal-spacing) * 4 / 5); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc(16.66% - var(--grid-desktop-horizontal-spacing) * 5 / 6); }
+        {%- elsif peek == 'small' -%}
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc(75% - var(--grid-desktop-horizontal-spacing) * 3 / 4); }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc(42.857% - var(--grid-desktop-horizontal-spacing) * 6 / 7); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc(30% - var(--grid-desktop-horizontal-spacing) * 9 / 10); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc(23.077% - var(--grid-desktop-horizontal-spacing) * 12 / 13); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc(18.75% - var(--grid-desktop-horizontal-spacing) * 15 / 16); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc(15.789% - var(--grid-desktop-horizontal-spacing) * 18 / 19); }
+        {%- elsif peek == 'large' -%}
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc(57.143% - var(--grid-desktop-horizontal-spacing) * 4 / 7); }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc(36.364% - var(--grid-desktop-horizontal-spacing) * 8 / 11); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc(26.667% - var(--grid-desktop-horizontal-spacing) * 4 / 5); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc(21.053% - var(--grid-desktop-horizontal-spacing) * 16 / 19); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc(17.391% - var(--grid-desktop-horizontal-spacing) * 20 / 23); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc(14.815% - var(--grid-desktop-horizontal-spacing) * 8 / 9); }
+        {%- else -%}
+        #section-{{ section.id }} .slider--desktop.grid--1-col-desktop .grid__item { width: calc(66.667% - var(--grid-desktop-horizontal-spacing) * 2 / 3); }
+        #section-{{ section.id }} .slider--desktop.grid--2-col-desktop .grid__item { width: calc(40% - var(--grid-desktop-horizontal-spacing) * 4 / 5); }
+        #section-{{ section.id }} .slider--desktop.grid--3-col-desktop .grid__item { width: calc(28.571% - var(--grid-desktop-horizontal-spacing) * 6 / 7); }
+        #section-{{ section.id }} .slider--desktop.grid--4-col-desktop .grid__item { width: calc(22.222% - var(--grid-desktop-horizontal-spacing) * 8 / 9); }
+        #section-{{ section.id }} .slider--desktop.grid--5-col-desktop .grid__item { width: calc(18.182% - var(--grid-desktop-horizontal-spacing) * 10 / 11); }
+        #section-{{ section.id }} .slider--desktop.grid--6-col-desktop .grid__item { width: calc(15.385% - var(--grid-desktop-horizontal-spacing) * 12 / 13); }
+        {%- endif -%}
       }
     {% endstyle %}
   {%- endif -%}
@@ -219,7 +244,7 @@
       data-scroll-mode="{{ section.settings.carousel_scroll_mode | default: 'page' }}"
       data-loop="{{ section.settings.carousel_loop | default: false }}"
       data-peek="{{ section.settings.carousel_peek_size | default: 'medium' }}"
-      class="slider-mobile-gutter{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if is_full_width %} slider-component-full-width{% endif %}{% if section.settings.carousel_arrows_position == 'overlay_sides' %} ms-carousel--arrows-overlay-sides{% elsif section.settings.carousel_arrows_position == 'above_right' %} ms-carousel--arrows-above-right{% endif %}{% unless section.settings.carousel_show_arrows == nil %}{% unless section.settings.carousel_show_arrows %} ms-carousel--no-arrows{% endunless %}{% endunless %}{% unless section.settings.carousel_show_pagination == nil %}{% unless section.settings.carousel_show_pagination %} ms-carousel--no-pagination{% endunless %}{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      class="slider-mobile-gutter{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if is_full_width %} slider-component-full-width{% endif %}{% if section.settings.carousel_arrows_position == 'overlay_sides' %} ms-carousel--arrows-overlay-sides{% elsif section.settings.carousel_arrows_position == 'above_right' %} ms-carousel--arrows-above-right{% endif %}{% if section.settings.carousel_arrows_overlay_dark %} ms-carousel--arrows-overlay-dark{% endif %}{% unless section.settings.carousel_show_arrows == nil %}{% unless section.settings.carousel_show_arrows %} ms-carousel--no-arrows{% endunless %}{% endunless %}{% unless section.settings.carousel_show_pagination == nil %}{% unless section.settings.carousel_show_pagination %} ms-carousel--no-pagination{% endunless %}{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
       {% unless is_full_width %}style="--desktop-margin-left-first-item: 0px"{% endunless %}
     >
       <ul
@@ -263,7 +288,8 @@
           total_items: collection_blocks_count,
           pagination_style: section.settings.carousel_pagination_style,
           show_arrows: section.settings.carousel_show_arrows,
-          show_pagination: section.settings.carousel_show_pagination
+          show_pagination: section.settings.carousel_show_pagination,
+          enable_autoplay: section.settings.enable_autoplay
         -%}
       {%- endif -%}
     </slider-component>
@@ -421,6 +447,13 @@
         { "value": "overlay_sides", "label": "Ai lati (sovrapposto)" },
         { "value": "above_right", "label": "Sopra a destra" }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_arrows_overlay_dark",
+      "label": "Frecce overlay in tema scuro",
+      "default": false,
+      "info": "Attivo solo con posizionamento 'Ai lati (sovrapposto)'"
     },
     {
       "type": "select",
