@@ -858,7 +858,12 @@ class SliderComponent extends HTMLElement {
     this._circularPageWrapForceTimer = null;
 
     this.useEmbla = this.dataset.msEmbla === 'true' || this.getAttribute('data-ms-embla') === 'true';
-    if (this.useEmbla) return;
+    if (this.useEmbla) {
+      if (this.tagName.toLowerCase() !== 'slideshow-component') {
+        this.initEmblaCarousel();
+      }
+      return;
+    }
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
@@ -901,8 +906,13 @@ class SliderComponent extends HTMLElement {
       this.autoplayButton.setAttribute('aria-label', window.accessibilityStrings?.playSlideshow || 'Riproduci');
     } else {
       if (this.loopMode === 'none') {
-        const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
-        if (atEnd) this.setSlidePosition(0);
+        if (this.emblaApi) {
+          const last = this.emblaApi.snapList().length - 1;
+          if (this.emblaApi.selectedSnap() >= last) this.emblaApi.goTo(0, true);
+        } else {
+          const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
+          if (atEnd) this.setSlidePosition(0);
+        }
       }
       this.startAutoplay();
       this.autoplayIsActive = true;
@@ -1379,6 +1389,23 @@ class SliderComponent extends HTMLElement {
 
   startAutoplay() {
     this.autoplayInterval = setInterval(() => {
+      if (this.emblaApi) {
+        const current = this.emblaApi.selectedSnap();
+        const last = this.emblaApi.snapList().length - 1;
+        if (this.loopMode === 'none' && current >= last) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+          this.autoplayIsActive = false;
+          if (this.autoplayButton) this.autoplayButton.classList.add('slider-autoplay-btn--paused');
+          return;
+        }
+        if (this.loopMode === 'rewind' && current >= last) {
+          this.emblaApi.goTo(0);
+        } else {
+          this.emblaApi.goToNext();
+        }
+        return;
+      }
       if (this.enableCircularLoop) {
         if (this.nextButton) {
           this.nextButton.click();
@@ -1405,9 +1432,153 @@ class SliderComponent extends HTMLElement {
     }, this.speed);
   }
 
+  initEmblaCarousel() {
+    if (this.emblaApi) return;
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+    if (!this.slider) return;
+    if (!window.EmblaCarousel) {
+      this._emblaInitAttempts = (this._emblaInitAttempts || 0) + 1;
+      if (this._emblaInitAttempts <= 40) {
+        setTimeout(() => this.initEmblaCarousel(), 100);
+      }
+      return;
+    }
+
+    const emblaLoop = this.loopMode === 'circular';
+    const plugins = [];
+    if (window.EmblaCarouselAccessibility) {
+      plugins.push(
+        window.EmblaCarouselAccessibility({
+          announceChanges: true,
+          carouselAriaLabel: this.getAttribute('aria-label') || 'Carousel',
+        })
+      );
+    }
+
+    this.emblaApi = window.EmblaCarousel(
+      this,
+      {
+        loop: emblaLoop,
+        align: 'start',
+        container: this.slider,
+        slides: '[id^="Slide-"]',
+        slidesToScroll: this.scrollMode === 'page' ? 'auto' : 1,
+        containScroll: emblaLoop ? false : 'trimSnaps',
+      },
+      plugins
+    );
+    this.setAttribute('data-ms-embla-active', 'true');
+
+    this.emblaApi.on('select', () => this._updateEmblaCarouselState());
+    this.emblaApi.on('reInit', () => this._updateEmblaCarouselState());
+
+    this.sliderItemsToShow = Array.from(this.sliderItems).filter((el) => el.clientWidth > 0);
+    this.paginationLinks = this.querySelectorAll('.slider-counter__link');
+    this.autoplayButton = this.querySelector('.slider-autoplay-btn');
+    this._updateEmblaCarouselState();
+
+    if (this.prevButton) {
+      this.prevButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        this._onEmblaCarouselNav('previous');
+      });
+    }
+    if (this.nextButton) {
+      this.nextButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        this._onEmblaCarouselNav('next');
+      });
+    }
+    if (this.paginationLinks.length) {
+      this.paginationLinks.forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const idx = parseInt(link.dataset.slideIndex, 10);
+          if (!isNaN(idx)) this.emblaApi.goTo(idx - 1);
+        });
+      });
+    }
+
+    if (this.autoplay) {
+      this.startAutoplay();
+      this.autoplayIsActive = true;
+      if (this.autoplayButton) {
+        this.autoplayButton.addEventListener('click', this.toggleAutoplayBtn.bind(this));
+      }
+      this.addEventListener('mouseover', this.pauseCarouselAutoplay.bind(this));
+      this.addEventListener('mouseleave', this.resumeCarouselAutoplay.bind(this));
+      this.addEventListener('focusin', this.pauseCarouselAutoplay.bind(this));
+      this.addEventListener('focusout', this.resumeCarouselAutoplay.bind(this));
+    }
+  }
+
+  _onEmblaCarouselNav(direction) {
+    if (!this.emblaApi) return;
+    const current = this.emblaApi.selectedSnap();
+    const last = this.emblaApi.snapList().length - 1;
+    if (direction === 'next') {
+      if (this.loopMode === 'none' && current >= last) return;
+      if (this.loopMode === 'rewind' && current >= last) {
+        this.emblaApi.goTo(0);
+      } else {
+        this.emblaApi.goToNext();
+      }
+    } else {
+      if (this.loopMode === 'none' && current <= 0) return;
+      if (this.loopMode === 'rewind' && current <= 0) {
+        this.emblaApi.goTo(last);
+      } else {
+        this.emblaApi.goToPrev();
+      }
+    }
+  }
+
+  _updateEmblaCarouselState() {
+    if (!this.emblaApi) return;
+    const current = this.emblaApi.selectedSnap() + 1;
+    const total = this.emblaApi.snapList().length;
+    this.currentPage = current;
+    this.paginationPages = total;
+
+    if (this.currentPageElement) this.currentPageElement.textContent = current;
+    if (this.pageTotalElement) this.pageTotalElement.textContent = total;
+
+    if (this.paginationLinks?.length) {
+      this.paginationLinks.forEach((link, index) => {
+        const isActive = index + 1 === current;
+        link.classList.toggle('slider-counter__link--active', isActive);
+        link.setAttribute('aria-current', isActive ? 'true' : 'false');
+        link.style.display = index < total ? '' : 'none';
+      });
+    }
+
+    if (this.loopMode === 'none') {
+      if (this.prevButton) this.prevButton.toggleAttribute('disabled', !this.emblaApi.canGoToPrev());
+      if (this.nextButton) this.nextButton.toggleAttribute('disabled', !this.emblaApi.canGoToNext());
+    } else {
+      if (this.prevButton) this.prevButton.removeAttribute('disabled');
+      if (this.nextButton) this.nextButton.removeAttribute('disabled');
+    }
+
+    this.dispatchEvent(
+      new CustomEvent('slideChanged', {
+        detail: {
+          currentPage: current,
+          currentElement: this.sliderItemsToShow?.[this.emblaApi.selectedSnap()],
+        },
+      })
+    );
+  }
+
   disconnectedCallback() {
     if (this.autoplayInterval) {
       clearInterval(this.autoplayInterval);
+    }
+    if (this.emblaApi) {
+      this.emblaApi.destroy();
     }
   }
 }

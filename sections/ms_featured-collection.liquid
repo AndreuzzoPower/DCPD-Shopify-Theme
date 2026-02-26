@@ -143,6 +143,7 @@
 
     {%- if fc_sw_class != blank -%}<div class="{{ fc_sw_class }}">{%- endif -%}
     <slider-component
+      data-ms-embla="true"
       data-autoplay="{{ section.settings.enable_desktop_slider_autoplay }}"
       data-speed="{{ section.settings.desktop_slider_autoplay_velocita }}000"
       data-scroll-mode="{{ section.settings.carousel_scroll_mode | default: 'page' }}"

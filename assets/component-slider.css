@@ -486,3 +486,30 @@ slider-component.ms-carousel--no-arrows .slider-button {
 slider-component.ms-carousel--no-pagination .slider-counter {
   display: none;
 }
+
+/* ── Embla Carousel overrides for slider-component ── */
+
+slider-component[data-ms-embla-active="true"] {
+  overflow: hidden;
+}
+
+slider-component[data-ms-embla-active="true"] .slider {
+  overflow: visible;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: auto;
+  flex-wrap: nowrap;
+}
+
+slider-component[data-ms-embla-active="true"] .slider .slider__slide {
+  scroll-snap-align: none;
+}
+
+slider-component[data-ms-embla-active="true"] .slider::after {
+  display: none;
+}
+
+slider-component[data-ms-embla-active="true"] .slider .slider__slide:first-child {
+  margin-left: 0;
+  scroll-margin-left: 0;
+}
