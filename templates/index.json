@@ -40,6 +40,7 @@
           "type": "featured_collection",
           "settings": {
             "collection": "prova-2",
+            "custom_image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png",
             "custom_label": "2"
           }
         },
@@ -47,6 +48,7 @@
           "type": "featured_collection",
           "settings": {
             "collection": "altra-cat",
+            "custom_image": "shopify://shop_images/iphone-detects-qr-code.jpg",
             "custom_label": "3"
           }
         },
@@ -54,6 +56,7 @@
           "type": "featured_collection",
           "settings": {
             "collection": "altra-cat",
+            "custom_image": "shopify://shop_images/autumn-walk-hand-in-hand.jpg",
             "custom_label": "4"
           }
         },
