@@ -96,6 +96,7 @@
 
 <slideshow-component
   id="section-{{ section.id }}"
+  data-loop="{{ section.settings.carousel_loop | default: 'rewind' }}"
   class="slider-mobile-gutter color-{{ section.settings.color_scheme }}{% if sw_class != blank %} {{ sw_class }}{% endif %}{% if section.settings.show_text_below %} mobile-text-below{% endif %}{% if arrows_overlay and has_multiple_slides %} ms-slideshow--arrows-overlay{% endif %}"
   role="region"
   aria-roledescription="{{ 'sections.slideshow.carousel' | t }}"
@@ -678,6 +679,17 @@
       "unit": "s",
       "label": "t:sections.slideshow.settings.change_slides_speed.label",
       "default": 5
+    },
+    {
+      "type": "select",
+      "id": "carousel_loop",
+      "label": "Tipo loop",
+      "default": "rewind",
+      "options": [
+        { "value": "none", "label": "Nessuno (si ferma alla fine)" },
+        { "value": "rewind", "label": "Rewind (torna all'inizio)" },
+        { "value": "circular", "label": "Circolare (infinito)" }
+      ]
     },
     {
       "type": "header",

@@ -854,6 +854,7 @@ class SliderComponent extends HTMLElement {
     this._circularInitialized = false;
     this._isTeleporting = false;
     this._circularPageWrapTargetIndex = null;
+    this._circularPageWrapForceTimer = null;
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
@@ -1083,6 +1084,10 @@ class SliderComponent extends HTMLElement {
     if (this.scrollMode === 'page' && this._circularPageWrapTargetIndex !== null) {
       const targetPos = this._realSnapPositions[this._circularPageWrapTargetIndex];
       this._circularPageWrapTargetIndex = null;
+      if (this._circularPageWrapForceTimer) {
+        clearTimeout(this._circularPageWrapForceTimer);
+        this._circularPageWrapForceTimer = null;
+      }
       if (typeof targetPos === 'number') {
         this._setScrollInstant(targetPos);
         didTeleport = true;
@@ -1257,20 +1262,45 @@ class SliderComponent extends HTMLElement {
         this._realSlideCount - 1
       );
       this._circularPageWrapTargetIndex = null;
+      if (this._circularPageWrapForceTimer) {
+        clearTimeout(this._circularPageWrapForceTimer);
+        this._circularPageWrapForceTimer = null;
+      }
 
-      if (targetPageIndex >= this.paginationPages) {
+      const projectedPosition =
+        direction === 1
+          ? this.slider.scrollLeft + pageStep * this.sliderItemOffset
+          : this.slider.scrollLeft - pageStep * this.sliderItemOffset;
+      const shouldWrapForward = projectedPosition >= this._realZoneEnd - 2;
+      const shouldWrapBackward = projectedPosition < this._realZoneStart - 2;
+
+      if (targetPageIndex >= this.paginationPages || shouldWrapForward) {
         const appendTarget = this._appendCloneSnapPositions?.find((c) => c.realIndex === 0);
         if (appendTarget) {
           this._circularPageWrapTargetIndex = 0;
+          this._circularPageWrapForceTimer = setTimeout(() => {
+            if (this._circularPageWrapTargetIndex !== null) {
+              const fallbackPos = this._realSnapPositions[this._circularPageWrapTargetIndex];
+              this._circularPageWrapTargetIndex = null;
+              if (typeof fallbackPos === 'number') this._setScrollInstant(fallbackPos);
+            }
+          }, 700);
           this.setSlidePosition(appendTarget.pos);
           return;
         }
-      } else if (targetPageIndex < 0) {
+      } else if (targetPageIndex < 0 || shouldWrapBackward) {
         const prependCandidates = (this._prependCloneSnapPositions || []).filter(
           (c) => c.realIndex === lastStartIndex
         );
         if (prependCandidates.length) {
           this._circularPageWrapTargetIndex = lastStartIndex;
+          this._circularPageWrapForceTimer = setTimeout(() => {
+            if (this._circularPageWrapTargetIndex !== null) {
+              const fallbackPos = this._realSnapPositions[this._circularPageWrapTargetIndex];
+              this._circularPageWrapTargetIndex = null;
+              if (typeof fallbackPos === 'number') this._setScrollInstant(fallbackPos);
+            }
+          }, 700);
           this.setSlidePosition(Math.max(...prependCandidates.map((c) => c.pos)));
           return;
         }
@@ -1383,7 +1413,8 @@ class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
     this.sliderControlWrapper = this.querySelector('.slider-buttons');
-    this.enableSliderLooping = true;
+    this.enableCircularLoop = false;
+    this.enableSliderLooping = this.loopMode !== 'none';
 
     if (!this.sliderControlWrapper) return;
 
@@ -1450,6 +1481,11 @@ class SlideshowComponent extends SliderComponent {
       return;
     }
 
+    if (!this.enableSliderLooping) {
+      if (isFirstSlide && event.currentTarget.name === 'previous') return;
+      if (isLastSlide && event.currentTarget.name === 'next') return;
+    }
+
     if (isFirstSlide && event.currentTarget.name === 'previous') {
       this.slideScrollPosition =
         this.slider.scrollLeft + this.sliderFirstItemNode.clientWidth * this.sliderItemsToShow.length;
@@ -1474,7 +1510,9 @@ class SlideshowComponent extends SliderComponent {
   update() {
     super.update();
     this.sliderControlButtons = this.querySelectorAll('.slider-counter__link');
-    this.prevButton.removeAttribute('disabled');
+    if (this.prevButton && this.enableSliderLooping) {
+      this.prevButton.removeAttribute('disabled');
+    }
 
     if (!this.sliderControlButtons.length) return;
 
@@ -1539,6 +1577,15 @@ class SlideshowComponent extends SliderComponent {
   }
 
   autoRotateSlides() {
+    if (!this.enableSliderLooping && this.currentPage === this.sliderItems.length) {
+      this.pause();
+      if (this.sliderAutoplayButton) {
+        this.sliderAutoplayButton.classList.add('slideshow__autoplay--paused');
+        this.autoplayButtonIsSetToPlay = false;
+      }
+      return;
+    }
+
     const slideScrollPosition =
       this.currentPage === this.sliderItems.length ? 0 : this.slider.scrollLeft + this.sliderItemOffset;
 
