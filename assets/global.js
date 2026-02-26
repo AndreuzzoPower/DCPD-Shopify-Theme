@@ -1000,8 +1000,12 @@ class SliderComponent extends HTMLElement {
       });
     }
 
-    // Instantly position the slider at the first real item
+    // Instantly position the slider at the first real item (bypass CSS scroll-behavior:smooth)
+    this.slider.style.scrollBehavior = 'auto';
     this.slider.scrollLeft = this._circularCloneOffset;
+    requestAnimationFrame(() => {
+      this.slider.style.scrollBehavior = '';
+    });
   }
 
   _onScrollEnd() {
@@ -1012,16 +1016,21 @@ class SliderComponent extends HTMLElement {
     const realZoneEnd = this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
 
     if (scrollLeft < realZoneStart - 2) {
-      // Landed in the start-clone zone → jump to the equivalent real position
-      this._isTeleporting = true;
-      this.slider.scrollLeft = scrollLeft + this._realSlideCount * this.sliderItemOffset;
-      this._isTeleporting = false;
+      this._setScrollInstant(scrollLeft + this._realSlideCount * this.sliderItemOffset);
     } else if (scrollLeft >= realZoneEnd - 2) {
-      // Landed in the end-clone zone → jump to the equivalent real position
-      this._isTeleporting = true;
-      this.slider.scrollLeft = scrollLeft - this._realSlideCount * this.sliderItemOffset;
-      this._isTeleporting = false;
+      this._setScrollInstant(scrollLeft - this._realSlideCount * this.sliderItemOffset);
     }
+  }
+
+  _setScrollInstant(position) {
+    this._isTeleporting = true;
+    // Override CSS scroll-behavior:smooth so the jump is invisible
+    this.slider.style.scrollBehavior = 'auto';
+    this.slider.scrollLeft = position;
+    requestAnimationFrame(() => {
+      this.slider.style.scrollBehavior = '';
+      this._isTeleporting = false;
+    });
   }
 
   resetPages() {
