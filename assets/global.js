@@ -1413,6 +1413,9 @@ class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
     this.sliderControlWrapper = this.querySelector('.slider-buttons');
+    // Slideshow is always single-step; circular behaves like stable rewind here.
+    this.scrollMode = 'single';
+    if (this.loopMode === 'circular') this.loopMode = 'rewind';
     this.enableCircularLoop = false;
     this.enableSliderLooping = this.loopMode !== 'none';
 
@@ -1470,7 +1473,7 @@ class SlideshowComponent extends SliderComponent {
   }
 
   onButtonClick(event) {
-    super.onButtonClick(event);
+    event.preventDefault();
     this.wasClicked = true;
 
     const isFirstSlide = this.currentPage === 1;
@@ -1482,15 +1485,26 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (!this.enableSliderLooping) {
-      if (isFirstSlide && event.currentTarget.name === 'previous') return;
-      if (isLastSlide && event.currentTarget.name === 'next') return;
+      if (isFirstSlide && event.currentTarget.name === 'previous') {
+        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
+        return;
+      }
+      if (isLastSlide && event.currentTarget.name === 'next') {
+        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
+        return;
+      }
     }
 
     if (isFirstSlide && event.currentTarget.name === 'previous') {
       this.slideScrollPosition =
         this.slider.scrollLeft + this.sliderFirstItemNode.clientWidth * this.sliderItemsToShow.length;
-    } else if (isLastSlide && event.currentTarget.name === 'next') {
+    } else if (isLastSlide && event.currentTarget.name === 'next' && this.enableSliderLooping) {
       this.slideScrollPosition = 0;
+    } else {
+      this.slideScrollPosition =
+        event.currentTarget.name === 'next'
+          ? this.slider.scrollLeft + this.sliderItemOffset
+          : this.slider.scrollLeft - this.sliderItemOffset;
     }
 
     this.setSlidePosition(this.slideScrollPosition);
