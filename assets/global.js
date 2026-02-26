@@ -853,6 +853,7 @@ class SliderComponent extends HTMLElement {
 
     this._circularInitialized = false;
     this._isTeleporting = false;
+    this._circularPageWrapTargetIndex = null;
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
@@ -1079,6 +1080,23 @@ class SliderComponent extends HTMLElement {
 
     let didTeleport = false;
 
+    if (this.scrollMode === 'page' && this._circularPageWrapTargetIndex !== null) {
+      const targetPos = this._realSnapPositions[this._circularPageWrapTargetIndex];
+      this._circularPageWrapTargetIndex = null;
+      if (typeof targetPos === 'number') {
+        this._setScrollInstant(targetPos);
+        didTeleport = true;
+      }
+    }
+
+    if (didTeleport) {
+      if (this.autoplay && this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.startAutoplay();
+      }
+      return;
+    }
+
     if (scrollLeft < realZoneStart - 2) {
       if (this.scrollMode === 'page') {
         this._setScrollInstant(this._realSnapPositions[lastPageStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset);
@@ -1238,37 +1256,22 @@ class SliderComponent extends HTMLElement {
         Math.max((this.paginationPages - 1) * pageStep, 0),
         this._realSlideCount - 1
       );
+      this._circularPageWrapTargetIndex = null;
 
       if (targetPageIndex >= this.paginationPages) {
-        // Robust wrap forward: rebase to equivalent prepend clone, then animate to real page 1.
-        const prependCandidates = (this._prependCloneSnapPositions || []).filter(
-          (c) => c.realIndex === lastStartIndex
-        );
-        const targetRealPos = this._realSnapPositions[0] ?? this._circularCloneOffset;
-        if (prependCandidates.length && typeof targetRealPos === 'number') {
-          const sourceClonePos = Math.max(...prependCandidates.map((c) => c.pos));
-          this._setScrollInstant(sourceClonePos);
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              this.setSlidePosition(targetRealPos);
-            });
-          });
+        const appendTarget = this._appendCloneSnapPositions?.find((c) => c.realIndex === 0);
+        if (appendTarget) {
+          this._circularPageWrapTargetIndex = 0;
+          this.setSlidePosition(appendTarget.pos);
           return;
         }
       } else if (targetPageIndex < 0) {
-        // Robust wrap backward: rebase to equivalent append clone, then animate to last real page.
-        const appendCandidates = (this._appendCloneSnapPositions || []).filter(
-          (c) => c.realIndex === 0
+        const prependCandidates = (this._prependCloneSnapPositions || []).filter(
+          (c) => c.realIndex === lastStartIndex
         );
-        const targetRealPos = this._realSnapPositions[lastStartIndex] ?? this._realSnapPositions[0] ?? this._circularCloneOffset;
-        if (appendCandidates.length && typeof targetRealPos === 'number') {
-          const sourceClonePos = Math.min(...appendCandidates.map((c) => c.pos));
-          this._setScrollInstant(sourceClonePos);
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              this.setSlidePosition(targetRealPos);
-            });
-          });
+        if (prependCandidates.length) {
+          this._circularPageWrapTargetIndex = lastStartIndex;
+          this.setSlidePosition(Math.max(...prependCandidates.map((c) => c.pos)));
           return;
         }
       } else {
