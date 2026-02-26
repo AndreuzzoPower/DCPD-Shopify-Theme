@@ -1417,7 +1417,6 @@ class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
     this.useEmbla = this.dataset.msEmbla === 'true' || this.getAttribute('data-ms-embla') === 'true';
-    console.warn('[EMBLA-DEBUG] SlideshowComponent constructor, useEmbla:', this.useEmbla, 'slider:', !!this.slider);
     if (this.useEmbla) {
       this.initEmblaSlideshow();
       return;
@@ -1466,8 +1465,7 @@ class SlideshowComponent extends SliderComponent {
   }
 
   initEmblaSlideshow() {
-    console.warn('[EMBLA-DEBUG] initEmblaSlideshow called');
-    if (this.emblaApi) { console.warn('[EMBLA-DEBUG] already initialized, skip'); return; }
+    if (this.emblaApi) return;
     if (this.autoplayInterval) {
       clearInterval(this.autoplayInterval);
       this.autoplayInterval = null;
@@ -1487,12 +1485,9 @@ class SlideshowComponent extends SliderComponent {
     this.currentPage = 1;
     this.autoplayButtonIsSetToPlay = !this.autoplayEnabled;
 
-    console.warn('[EMBLA-DEBUG] slider:', !!this.slider, 'EmblaCarousel:', typeof window.EmblaCarousel, 'loopMode:', this.loopMode);
-
-    if (!this.slider) { console.warn('[EMBLA-DEBUG] ABORT: no slider'); return; }
+    if (!this.slider) return;
     if (!window.EmblaCarousel) {
       this._emblaInitAttempts = (this._emblaInitAttempts || 0) + 1;
-      console.warn('[EMBLA-DEBUG] EmblaCarousel not found, retry', this._emblaInitAttempts);
       if (this._emblaInitAttempts <= 40) {
         setTimeout(() => this.initEmblaSlideshow(), 100);
       }
@@ -1510,25 +1505,18 @@ class SlideshowComponent extends SliderComponent {
     }
 
     const emblaViewport = this.querySelector('.ms-slideshow__media-wrapper') || this;
-    console.warn('[EMBLA-DEBUG] viewport:', emblaViewport?.className, 'container:', this.slider?.id, 'slides found:', this.slider?.querySelectorAll('.slideshow__slide')?.length);
 
-    try {
-      this.emblaApi = window.EmblaCarousel(
-        emblaViewport,
-        {
-          loop: this.emblaLoop,
-          align: 'start',
-          container: this.slider,
-          slides: '.slideshow__slide',
-        },
-        plugins
-      );
-      console.warn('[EMBLA-DEBUG] EmblaCarousel initialized OK, api:', !!this.emblaApi);
-      this.setAttribute('data-ms-embla-active', 'true');
-    } catch (err) {
-      console.error('[EMBLA-DEBUG] EmblaCarousel THREW:', err);
-      return;
-    }
+    this.emblaApi = window.EmblaCarousel(
+      emblaViewport,
+      {
+        loop: this.emblaLoop,
+        align: 'start',
+        container: this.slider,
+        slides: '.slideshow__slide',
+      },
+      plugins
+    );
+    this.setAttribute('data-ms-embla-active', 'true');
 
     if (this.emblaApi?.plugins()?.accessibility) {
       if (this.prevButton && this.nextButton) {
@@ -1548,7 +1536,7 @@ class SlideshowComponent extends SliderComponent {
     this.sliderControlLinksArray.forEach((link, index) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        this.emblaApi.scrollTo(index);
+        this.emblaApi.goTo(index);
       });
     });
 
@@ -1570,30 +1558,30 @@ class SlideshowComponent extends SliderComponent {
 
   onEmblaNavClick(direction) {
     if (!this.emblaApi) return;
-    const current = this.emblaApi.selectedScrollSnap();
-    const last = this.emblaApi.scrollSnapList().length - 1;
+    const current = this.emblaApi.selectedSnap();
+    const last = this.emblaApi.snapList().length - 1;
 
     if (direction === 'next') {
       if (this.loopMode === 'none' && current >= last) return;
       if (this.loopMode === 'rewind' && current >= last) {
-        this.emblaApi.scrollTo(0);
+        this.emblaApi.goTo(0);
       } else {
-        this.emblaApi.scrollNext();
+        this.emblaApi.goToNext();
       }
     } else {
       if (this.loopMode === 'none' && current <= 0) return;
       if (this.loopMode === 'rewind' && current <= 0) {
-        this.emblaApi.scrollTo(last);
+        this.emblaApi.goTo(last);
       } else {
-        this.emblaApi.scrollPrev();
+        this.emblaApi.goToPrev();
       }
     }
   }
 
   updateEmblaState() {
     if (!this.emblaApi) return;
-    this.currentPage = this.emblaApi.selectedScrollSnap() + 1;
-    const total = this.emblaApi.scrollSnapList().length;
+    this.currentPage = this.emblaApi.selectedSnap() + 1;
+    const total = this.emblaApi.snapList().length;
     if (this.currentPageElement) this.currentPageElement.textContent = this.currentPage;
     if (this.pageTotalElement) this.pageTotalElement.textContent = total;
 
@@ -1730,8 +1718,8 @@ class SlideshowComponent extends SliderComponent {
     if (this.useEmbla) {
       const isStarting = !this.autoplayButtonIsSetToPlay;
       if (isStarting && this.loopMode === 'none' && this.emblaApi) {
-        const last = this.emblaApi.scrollSnapList().length - 1;
-        if (this.emblaApi.selectedScrollSnap() >= last) this.emblaApi.scrollTo(0, true);
+        const last = this.emblaApi.snapList().length - 1;
+        if (this.emblaApi.selectedSnap() >= last) this.emblaApi.goTo(0, true);
       }
       this.togglePlayButtonState(this.autoplayButtonIsSetToPlay);
       this.autoplayButtonIsSetToPlay ? this.pause() : this.play();
@@ -1825,8 +1813,8 @@ class SlideshowComponent extends SliderComponent {
   autoRotateSlides() {
     if (this.useEmbla) {
       if (!this.emblaApi) return;
-      const current = this.emblaApi.selectedScrollSnap();
-      const last = this.emblaApi.scrollSnapList().length - 1;
+      const current = this.emblaApi.selectedSnap();
+      const last = this.emblaApi.snapList().length - 1;
       if (this.loopMode === 'none' && current >= last) {
         this.pause();
         if (this.sliderAutoplayButton) {
@@ -1836,9 +1824,9 @@ class SlideshowComponent extends SliderComponent {
         return;
       }
       if (this.loopMode === 'rewind' && current >= last) {
-        this.emblaApi.scrollTo(0);
+        this.emblaApi.goTo(0);
       } else {
-        this.emblaApi.scrollNext();
+        this.emblaApi.goToNext();
       }
       return;
     }
