@@ -414,7 +414,7 @@
         "carousel_loop": false,
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
-        "carousel_peek_size": "large",
+        "carousel_peek_size": "medium",
         "columns_mobile": "1",
         "swipe_on_mobile": true,
         "image_ratio": "adapt",
