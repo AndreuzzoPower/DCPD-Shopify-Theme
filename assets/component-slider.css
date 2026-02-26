@@ -167,6 +167,11 @@ slider-component.slider-component-full-width {
     scroll-margin-left: var(--desktop-margin-left-first-item);
   }
 
+  .slider--desktop.slider--circular-active .slider__slide:first-child {
+    margin-left: 0;
+    scroll-margin-left: 0;
+  }
+
   .slider-component-full-width .slider--desktop {
     scroll-padding-left: 1.5rem;
   }

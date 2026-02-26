@@ -986,6 +986,7 @@ class SliderComponent extends HTMLElement {
     this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
     this._circularCloneOffset = clonesCount * this.sliderItemOffset - this._scrollPaddingLeft;
     this._circularInitialized = true;
+    this.slider.classList.add('slider--circular-active');
 
     // Listen for scroll-end to perform the silent teleport
     const handler = this._onScrollEnd.bind(this);
