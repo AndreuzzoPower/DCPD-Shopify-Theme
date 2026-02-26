@@ -821,7 +821,7 @@
         "carousel_arrows_overlay_dark": false,
         "carousel_pagination_style": "dots",
         "carousel_scroll_mode": "single",
-        "carousel_loop": "true",
+        "carousel_loop": "circular",
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
         "carousel_peek_size": "none",
