@@ -1496,9 +1496,19 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (isFirstSlide && event.currentTarget.name === 'previous') {
+      if (this.loopMode === 'circular') {
+        this.setSlidePositionInstant((this.sliderItemsToShow.length - 1) * this.sliderItemOffset);
+        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
+        return;
+      }
       this.slideScrollPosition =
         this.slider.scrollLeft + this.sliderFirstItemNode.clientWidth * this.sliderItemsToShow.length;
     } else if (isLastSlide && event.currentTarget.name === 'next' && this.enableSliderLooping) {
+      if (this.loopMode === 'circular') {
+        this.setSlidePositionInstant(0);
+        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
+        return;
+      }
       this.slideScrollPosition = 0;
     } else {
       this.slideScrollPosition =
@@ -1521,6 +1531,15 @@ class SlideshowComponent extends SliderComponent {
     }, this.announcerBarAnimationDelay);
   }
 
+  setSlidePositionInstant(position) {
+    if (this.setPositionTimeout) clearTimeout(this.setPositionTimeout);
+    this.slider.style.scrollBehavior = 'auto';
+    this.slider.scrollTo({ left: position });
+    requestAnimationFrame(() => {
+      this.slider.style.scrollBehavior = '';
+    });
+  }
+
   update() {
     super.update();
     this.sliderControlButtons = this.querySelectorAll('.slider-counter__link');
@@ -1539,6 +1558,10 @@ class SlideshowComponent extends SliderComponent {
   }
 
   autoPlayToggle() {
+    const isStarting = !this.autoplayButtonIsSetToPlay;
+    if (isStarting && !this.enableSliderLooping && this.currentPage === this.sliderItemsToShow.length) {
+      this.setSlidePosition(0);
+    }
     this.togglePlayButtonState(this.autoplayButtonIsSetToPlay);
     this.autoplayButtonIsSetToPlay ? this.pause() : this.play();
     this.autoplayButtonIsSetToPlay = !this.autoplayButtonIsSetToPlay;
@@ -1597,6 +1620,18 @@ class SlideshowComponent extends SliderComponent {
         this.sliderAutoplayButton.classList.add('slideshow__autoplay--paused');
         this.autoplayButtonIsSetToPlay = false;
       }
+      return;
+    }
+
+    if (this.enableSliderLooping && this.currentPage === this.sliderItems.length) {
+      if (this.loopMode === 'circular') {
+        this.setSlidePositionInstant(0);
+      } else {
+        this.setSlidePosition(0);
+      }
+      // Restart cycle so slide 1 keeps full dwell time.
+      this.play();
+      this.applyAnimationToAnnouncementBar();
       return;
     }
 
