@@ -1416,6 +1416,8 @@ customElements.define('slider-component', SliderComponent);
 class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
+    // Re-evaluate after upgrade/parsing in case dataset was not ready in super().
+    this.useEmbla = this.dataset.msEmbla === 'true' || this.getAttribute('data-ms-embla') === 'true';
     if (this.useEmbla) {
       this.initEmblaSlideshow();
       return;
@@ -1465,6 +1467,11 @@ class SlideshowComponent extends SliderComponent {
 
   initEmblaSlideshow() {
     if (this.emblaApi) return;
+    // Stop any legacy autoplay timer that might have started in super().
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
     this.sliderControlWrapper = this.querySelector('.slider-buttons');
     this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
     this.prevButton = this.querySelector('button[name="previous"]');
@@ -1614,6 +1621,11 @@ class SlideshowComponent extends SliderComponent {
   }
 
   onButtonClick(event) {
+    if (this.useEmbla) {
+      event.preventDefault();
+      this.onEmblaNavClick(event.currentTarget.name);
+      return;
+    }
     event.preventDefault();
     this.wasClicked = true;
 
@@ -1682,6 +1694,10 @@ class SlideshowComponent extends SliderComponent {
   }
 
   update() {
+    if (this.useEmbla) {
+      this.updateEmblaState();
+      return;
+    }
     super.update();
     this.sliderControlButtons = this.querySelectorAll('.slider-counter__link');
     if (this.prevButton && this.enableSliderLooping) {
