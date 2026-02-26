@@ -146,7 +146,7 @@
         "enable_autoplay": true,
         "autoplay_speed": 3,
         "carousel_loop": "circular",
-        "carousel_peek_size": "none",
+        "carousel_peek_size": "medium",
         "carousel_arrows_position": "below_center",
         "carousel_arrows_overlay_dark": true,
         "carousel_pagination_style": "counter",
