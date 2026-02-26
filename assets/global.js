@@ -1227,6 +1227,44 @@ class SliderComponent extends HTMLElement {
 
   onButtonClick(event) {
     event.preventDefault();
+
+    if (this.enableCircularLoop && this.scrollMode === 'page' && this._realSnapPositions?.length) {
+      const pageStep = this.pageStep || this._getPageStep();
+      const currentPageIndex = Math.max(0, (this.currentPage || 1) - 1);
+      const direction = event.currentTarget.name === 'next' ? 1 : -1;
+      const targetPageIndex = currentPageIndex + direction;
+
+      if (targetPageIndex >= this.paginationPages) {
+        const firstStartIndex = 0;
+        const appendTargets = (this._appendCloneSnapPositions || [])
+          .filter((c) => c.realIndex === firstStartIndex)
+          .map((c) => c.pos);
+        if (appendTargets.length) {
+          this.setSlidePosition(Math.min(...appendTargets));
+          return;
+        }
+      } else if (targetPageIndex < 0) {
+        const lastStartIndex = Math.min(
+          Math.max((this.paginationPages - 1) * pageStep, 0),
+          this._realSlideCount - 1
+        );
+        const prependTargets = (this._prependCloneSnapPositions || [])
+          .filter((c) => c.realIndex === lastStartIndex)
+          .map((c) => c.pos);
+        if (prependTargets.length) {
+          this.setSlidePosition(Math.max(...prependTargets));
+          return;
+        }
+      } else {
+        const realStartIndex = Math.min(targetPageIndex * pageStep, this._realSlideCount - 1);
+        const targetPos = this._realSnapPositions[realStartIndex];
+        if (typeof targetPos === 'number') {
+          this.setSlidePosition(targetPos);
+          return;
+        }
+      }
+    }
+
     if (this.scrollMode === 'single') {
       this.slideScrollPosition =
         event.currentTarget.name === 'next'
@@ -1258,6 +1296,18 @@ class SliderComponent extends HTMLElement {
     event.preventDefault();
     const index = parseInt(event.currentTarget.dataset.slideIndex);
     if (isNaN(index)) return;
+
+    if (this._circularInitialized && this._realSnapPositions?.length) {
+      const targetRealIndex = this.scrollMode === 'single'
+        ? Math.min(index - 1, this._realSlideCount - 1)
+        : Math.min((index - 1) * (this.pageStep || this._getPageStep()), this._realSlideCount - 1);
+      const targetPos = this._realSnapPositions[targetRealIndex];
+      if (typeof targetPos === 'number') {
+        this.setSlidePosition(targetPos);
+        return;
+      }
+    }
+
     let targetPosition = this.scrollMode === 'single'
       ? (index - 1) * this.sliderItemOffset
       : (index - 1) * (this.pageStep || this._getPageStep()) * this.sliderItemOffset;
