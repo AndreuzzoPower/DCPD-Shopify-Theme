@@ -731,6 +731,7 @@ class SliderComponent extends HTMLElement {
     super();
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
+    this.useEmbla = this.dataset.msEmbla === 'true';
     this.enableSliderLooping = false;
     this.currentPageElement = this.querySelector('.slider-counter--current');
     this.pageTotalElement = this.querySelector('.slider-counter--total');
@@ -855,6 +856,9 @@ class SliderComponent extends HTMLElement {
     this._isTeleporting = false;
     this._circularPageWrapTargetIndex = null;
     this._circularPageWrapForceTimer = null;
+
+    // ms_slideshow with Embla manages controls/autoplay separately.
+    if (this.useEmbla) return;
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
@@ -1412,6 +1416,10 @@ customElements.define('slider-component', SliderComponent);
 class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
+    if (this.useEmbla) {
+      this.initEmblaSlideshow();
+      return;
+    }
     this.sliderControlWrapper = this.querySelector('.slider-buttons');
     // Slideshow is always single-step; circular behaves like stable rewind here.
     this.scrollMode = 'single';
@@ -1453,6 +1461,138 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (this.slider.getAttribute('data-autoplay') === 'true') this.setAutoPlay();
+  }
+
+  initEmblaSlideshow() {
+    if (this.emblaApi) return;
+    this.sliderControlWrapper = this.querySelector('.slider-buttons');
+    this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
+    this.prevButton = this.querySelector('button[name="previous"]');
+    this.nextButton = this.querySelector('button[name="next"]');
+    this.sliderControlLinksArray = Array.from(this.querySelectorAll('.slider-counter__link'));
+    this.sliderAutoplayButton = this.querySelector('.slideshow__autoplay');
+    this.loopMode = this.dataset.loop || 'rewind';
+    if (this.loopMode === 'true') this.loopMode = 'rewind';
+    if (this.loopMode === 'false') this.loopMode = 'none';
+    this.emblaLoop = this.loopMode === 'circular';
+    this.autoplayEnabled = this.slider?.dataset?.autoplay === 'true';
+    this.autoplaySpeed = (parseInt(this.slider?.dataset?.speed, 10) || 5) * 1000;
+    this.currentPage = 1;
+    this.autoplayButtonIsSetToPlay = !this.autoplayEnabled;
+
+    if (!this.slider) return;
+    if (!window.EmblaCarousel) {
+      this._emblaInitAttempts = (this._emblaInitAttempts || 0) + 1;
+      if (this._emblaInitAttempts <= 40) {
+        setTimeout(() => this.initEmblaSlideshow(), 100);
+      }
+      return;
+    }
+
+    const plugins = [];
+    if (window.EmblaCarouselAccessibility) {
+      plugins.push(
+        window.EmblaCarouselAccessibility({
+          announceChanges: true,
+          carouselAriaLabel: this.getAttribute('aria-label') || 'Slideshow',
+        })
+      );
+    }
+
+    this.emblaApi = window.EmblaCarousel(
+      this.slider,
+      {
+        loop: this.emblaLoop,
+        align: 'start',
+        container: this.slider,
+        slides: '.slideshow__slide',
+      },
+      plugins
+    );
+
+    if (this.emblaApi?.plugins()?.accessibility) {
+      if (this.prevButton && this.nextButton) {
+        this.emblaApi.plugins().accessibility.setupPrevAndNextButtons(this.prevButton, this.nextButton);
+      }
+      if (this.sliderControlWrapper) {
+        this.emblaApi.plugins().accessibility.setupDotButtons(this.sliderControlWrapper);
+      }
+    }
+
+    this.emblaApi.on('select', () => this.updateEmblaState());
+    this.emblaApi.on('reInit', () => this.updateEmblaState());
+    this.updateEmblaState();
+
+    if (this.prevButton) this.prevButton.addEventListener('click', () => this.onEmblaNavClick('previous'));
+    if (this.nextButton) this.nextButton.addEventListener('click', () => this.onEmblaNavClick('next'));
+    this.sliderControlLinksArray.forEach((link, index) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        this.emblaApi.scrollTo(index);
+      });
+    });
+
+    if (this.sliderAutoplayButton) {
+      this.sliderAutoplayButton.addEventListener('click', this.autoPlayToggle.bind(this));
+    }
+    this.addEventListener('mouseover', this.focusInHandling.bind(this));
+    this.addEventListener('mouseleave', this.focusOutHandling.bind(this));
+    this.addEventListener('focusin', this.focusInHandling.bind(this));
+    this.addEventListener('focusout', this.focusOutHandling.bind(this));
+
+    if (this.autoplayEnabled) {
+      this.autoplayButtonIsSetToPlay = true;
+      this.play();
+    } else if (this.sliderAutoplayButton) {
+      this.sliderAutoplayButton.classList.add('slideshow__autoplay--paused');
+    }
+  }
+
+  onEmblaNavClick(direction) {
+    if (!this.emblaApi) return;
+    const current = this.emblaApi.selectedScrollSnap();
+    const last = this.emblaApi.scrollSnapList().length - 1;
+
+    if (direction === 'next') {
+      if (this.loopMode === 'none' && current >= last) return;
+      if (this.loopMode === 'rewind' && current >= last) {
+        this.emblaApi.scrollTo(0);
+      } else {
+        this.emblaApi.scrollNext();
+      }
+    } else {
+      if (this.loopMode === 'none' && current <= 0) return;
+      if (this.loopMode === 'rewind' && current <= 0) {
+        this.emblaApi.scrollTo(last);
+      } else {
+        this.emblaApi.scrollPrev();
+      }
+    }
+  }
+
+  updateEmblaState() {
+    if (!this.emblaApi) return;
+    this.currentPage = this.emblaApi.selectedScrollSnap() + 1;
+    const total = this.emblaApi.scrollSnapList().length;
+    if (this.currentPageElement) this.currentPageElement.textContent = this.currentPage;
+    if (this.pageTotalElement) this.pageTotalElement.textContent = total;
+
+    if (this.sliderControlLinksArray.length) {
+      this.sliderControlLinksArray.forEach((link, idx) => {
+        const active = idx + 1 === this.currentPage;
+        link.classList.toggle('slider-counter__link--active', active);
+        if (active) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    }
+
+    if (this.prevButton && this.nextButton && this.loopMode === 'none') {
+      this.prevButton.toggleAttribute('disabled', this.currentPage <= 1);
+      this.nextButton.toggleAttribute('disabled', this.currentPage >= total);
+    } else if (this.prevButton && this.nextButton) {
+      this.prevButton.removeAttribute('disabled');
+      this.nextButton.removeAttribute('disabled');
+    }
   }
 
   setAutoPlay() {
@@ -1558,6 +1698,18 @@ class SlideshowComponent extends SliderComponent {
   }
 
   autoPlayToggle() {
+    if (this.useEmbla) {
+      const isStarting = !this.autoplayButtonIsSetToPlay;
+      if (isStarting && this.loopMode === 'none' && this.emblaApi) {
+        const last = this.emblaApi.scrollSnapList().length - 1;
+        if (this.emblaApi.selectedScrollSnap() >= last) this.emblaApi.scrollTo(0, true);
+      }
+      this.togglePlayButtonState(this.autoplayButtonIsSetToPlay);
+      this.autoplayButtonIsSetToPlay ? this.pause() : this.play();
+      this.autoplayButtonIsSetToPlay = !this.autoplayButtonIsSetToPlay;
+      return;
+    }
+
     const isStarting = !this.autoplayButtonIsSetToPlay;
     if (isStarting && !this.enableSliderLooping && this.currentPage === this.sliderItemsToShow.length) {
       this.setSlidePosition(0);
@@ -1568,6 +1720,16 @@ class SlideshowComponent extends SliderComponent {
   }
 
   focusOutHandling(event) {
+    if (this.useEmbla) {
+      if (!this.autoplayButtonIsSetToPlay) return;
+      const focusedOnAutoplayButton =
+        this.sliderAutoplayButton &&
+        (event.target === this.sliderAutoplayButton || this.sliderAutoplayButton.contains(event.target));
+      if (focusedOnAutoplayButton) return;
+      this.play();
+      return;
+    }
+
     if (this.sliderAutoplayButton) {
       const focusedOnAutoplayButton =
         event.target === this.sliderAutoplayButton || this.sliderAutoplayButton.contains(event.target);
@@ -1579,6 +1741,15 @@ class SlideshowComponent extends SliderComponent {
   }
 
   focusInHandling(event) {
+    if (this.useEmbla) {
+      if (!this.autoplayButtonIsSetToPlay) return;
+      const focusedOnAutoplayButton =
+        this.sliderAutoplayButton &&
+        (event.target === this.sliderAutoplayButton || this.sliderAutoplayButton.contains(event.target));
+      if (!focusedOnAutoplayButton) this.pause();
+      return;
+    }
+
     if (this.sliderAutoplayButton) {
       const focusedOnAutoplayButton =
         event.target === this.sliderAutoplayButton || this.sliderAutoplayButton.contains(event.target);
@@ -1593,12 +1764,21 @@ class SlideshowComponent extends SliderComponent {
   }
 
   play() {
+    if (this.useEmbla) {
+      clearInterval(this.autoplay);
+      this.autoplay = setInterval(this.autoRotateSlides.bind(this), this.autoplaySpeed);
+      return;
+    }
     this.slider.setAttribute('aria-live', 'off');
     clearInterval(this.autoplay);
     this.autoplay = setInterval(this.autoRotateSlides.bind(this), this.autoplaySpeed);
   }
 
   pause() {
+    if (this.useEmbla) {
+      clearInterval(this.autoplay);
+      return;
+    }
     this.slider.setAttribute('aria-live', 'polite');
     clearInterval(this.autoplay);
   }
@@ -1614,6 +1794,26 @@ class SlideshowComponent extends SliderComponent {
   }
 
   autoRotateSlides() {
+    if (this.useEmbla) {
+      if (!this.emblaApi) return;
+      const current = this.emblaApi.selectedScrollSnap();
+      const last = this.emblaApi.scrollSnapList().length - 1;
+      if (this.loopMode === 'none' && current >= last) {
+        this.pause();
+        if (this.sliderAutoplayButton) {
+          this.sliderAutoplayButton.classList.add('slideshow__autoplay--paused');
+          this.autoplayButtonIsSetToPlay = false;
+        }
+        return;
+      }
+      if (this.loopMode === 'rewind' && current >= last) {
+        this.emblaApi.scrollTo(0);
+      } else {
+        this.emblaApi.scrollNext();
+      }
+      return;
+    }
+
     if (!this.enableSliderLooping && this.currentPage === this.sliderItems.length) {
       this.pause();
       if (this.sliderAutoplayButton) {
