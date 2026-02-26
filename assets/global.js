@@ -840,6 +840,12 @@ class SliderComponent extends HTMLElement {
     this.enableSliderLooping = this.loopMode === 'rewind';
     this.enableCircularLoop = this.loopMode === 'circular';
 
+    // When autoplay is active a loop is required — upgrade 'none' to 'circular'
+    if (this.dataset.autoplay === 'true' && this.loopMode === 'none') {
+      this.loopMode = 'circular';
+      this.enableCircularLoop = true;
+    }
+
     this.scrollMode = this.dataset.scrollMode || 'page';
     this.currentPageElement = this.querySelector('.slider-counter--current');
     this.pageTotalElement = this.querySelector('.slider-counter--total');
@@ -938,9 +944,10 @@ class SliderComponent extends HTMLElement {
       this.initCircularLoop();
     }
 
-    // Keep clone offset in sync after any resize
+    // Keep clone offset in sync after any resize — re-read offsetLeft to account for
+    // viewport-based :first-child margins (e.g. calc with vw) that change at breakpoints
     if (this._circularInitialized) {
-      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset;
+      this._circularCloneOffset = this.sliderItemsToShow[0].offsetLeft;
     }
 
     this.updatePaginationCount();
@@ -974,8 +981,11 @@ class SliderComponent extends HTMLElement {
 
     this._circularClonesCount = clonesCount;
     this._realSlideCount = realCount;
-    this._circularCloneOffset = clonesCount * this.sliderItemOffset;
     this._circularInitialized = true;
+    // Read offsetLeft AFTER inserting clones — forces layout reflow and correctly
+    // accounts for the :first-child CSS (e.g. --desktop-margin-left-first-item)
+    // that has now shifted onto the first clone instead of the first real item.
+    this._circularCloneOffset = this.sliderItemsToShow[0].offsetLeft;
 
     // Listen for scroll-end to perform the silent teleport
     const handler = this._onScrollEnd.bind(this);

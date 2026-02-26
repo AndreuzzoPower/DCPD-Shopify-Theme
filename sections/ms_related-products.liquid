@@ -337,6 +337,29 @@
     },
     {
       "type": "select",
+      "id": "carousel_loop",
+      "label": "Tipo loop",
+      "default": "circular",
+      "options": [
+        { "value": "none",     "label": "Nessuno" },
+        { "value": "rewind",   "label": "Rewind (torna all'inizio)" },
+        { "value": "circular", "label": "Circolare (infinito)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "carousel_peek_size",
+      "label": "Anteprima prossimo elemento",
+      "default": "medium",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "small", "label": "Piccola" },
+        { "value": "medium", "label": "Media" },
+        { "value": "large", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "select",
       "id": "carousel_arrows_position",
       "label": "Posizionamento frecce",
       "default": "below_center",
@@ -376,17 +399,6 @@
       ]
     },
     {
-      "type": "select",
-      "id": "carousel_loop",
-      "label": "Tipo loop",
-      "default": "none",
-      "options": [
-        { "value": "none",     "label": "Nessuno" },
-        { "value": "rewind",   "label": "Rewind (torna all'inizio)" },
-        { "value": "circular", "label": "Circolare (infinito)" }
-      ]
-    },
-    {
       "type": "checkbox",
       "id": "carousel_show_arrows",
       "label": "Mostra frecce",
@@ -397,18 +409,6 @@
       "id": "carousel_show_pagination",
       "label": "Mostra paginazione",
       "default": true
-    },
-    {
-      "type": "select",
-      "id": "carousel_peek_size",
-      "label": "Anteprima prossimo elemento",
-      "default": "medium",
-      "options": [
-        { "value": "none", "label": "Nessuna" },
-        { "value": "small", "label": "Piccola" },
-        { "value": "medium", "label": "Media" },
-        { "value": "large", "label": "Grande" }
-      ]
     },
     {
       "type": "header",
