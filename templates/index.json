@@ -613,7 +613,7 @@
         "auto_rotate": true,
         "autoplay_position": "top_bar",
         "change_slides_speed": 5,
-        "carousel_loop": "circular",
+        "carousel_loop": "rewind",
         "show_text_below": true,
         "accessibility_info": "Presentazione sul nostro brand"
       }
