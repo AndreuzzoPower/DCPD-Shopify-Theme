@@ -1018,13 +1018,22 @@ class SliderComponent extends HTMLElement {
     const scrollLeft = this.slider.scrollLeft;
     const realZoneStart = this._circularCloneOffset;
     const realZoneEnd = this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
+    const totalRealScroll = this._realSlideCount * this.sliderItemOffset;
 
     let didTeleport = false;
     if (scrollLeft < realZoneStart - 2) {
-      this._setScrollInstant(scrollLeft + this._realSlideCount * this.sliderItemOffset);
+      const raw = scrollLeft - this._circularCloneOffset;
+      const normalized = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
+      const snapIndex = Math.round(normalized / this.sliderItemOffset);
+      const snapped = Math.min(Math.max(snapIndex, 0), this._realSlideCount - 1) * this.sliderItemOffset;
+      this._setScrollInstant(this._circularCloneOffset + snapped);
       didTeleport = true;
     } else if (scrollLeft >= realZoneEnd - 2) {
-      this._setScrollInstant(scrollLeft - this._realSlideCount * this.sliderItemOffset);
+      const raw = scrollLeft - this._circularCloneOffset;
+      const normalized = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
+      const snapIndex = Math.round(normalized / this.sliderItemOffset);
+      const snapped = Math.min(Math.max(snapIndex, 0), this._realSlideCount - 1) * this.sliderItemOffset;
+      this._setScrollInstant(this._circularCloneOffset + snapped);
       didTeleport = true;
     }
 
