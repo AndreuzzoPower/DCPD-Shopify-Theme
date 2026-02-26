@@ -406,7 +406,7 @@
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": false,
         "desktop_slider_autoplay_velocita": 3,
-        "carousel_arrows_position": "below_center",
+        "carousel_arrows_position": "overlay_sides",
         "carousel_pagination_style": "counter",
         "carousel_scroll_mode": "page",
         "carousel_loop": false,
@@ -821,7 +821,7 @@
         "carousel_loop": false,
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
-        "carousel_peek_size": "medium",
+        "carousel_peek_size": "none",
         "columns_mobile": "1",
         "swipe_on_mobile": false
       }
