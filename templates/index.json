@@ -821,7 +821,7 @@
         "carousel_loop": false,
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
-        "carousel_peek_size": "none",
+        "carousel_peek_size": "large",
         "columns_mobile": "1",
         "swipe_on_mobile": false
       }
