@@ -175,3 +175,16 @@
   align-items: center;
   padding: 0.8rem 0;
 }
+
+/* Embla mode: neutralize native slider scroll-snap behavior to avoid conflicts. */
+slideshow-component[data-ms-embla-active="true"] .slideshow.slider--everywhere {
+  overflow-x: hidden;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: auto;
+  touch-action: pan-y pinch-zoom;
+}
+
+slideshow-component[data-ms-embla-active="true"] .slideshow.slider--everywhere .slideshow__slide {
+  scroll-snap-align: none;
+}
