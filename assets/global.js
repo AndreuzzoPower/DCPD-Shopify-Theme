@@ -920,9 +920,9 @@ class SliderComponent extends HTMLElement {
 
   _getPageStep() {
     if (this.scrollMode !== 'page') return this.slidesPerPage || 1;
-    // In circular+page mode, always include one extra slot to avoid overlapping sets
-    // and keep page count consistent with wrapped pages (e.g. 5 items / 2 cols => 2 pages).
-    const baseStep = this.enableCircularLoop ? this.slidesPerPage + 1 : this.slidesPerPage;
+    // Page mode advances by fully visible cards only.
+    // The preview (peek) card must not affect the page step.
+    const baseStep = this.slidesPerPage;
     const realCount = this._realSlideCount || this.sliderItemsToShow?.length || 1;
     return Math.min(Math.max(baseStep, 1), realCount);
   }
