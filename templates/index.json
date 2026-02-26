@@ -157,7 +157,7 @@
         "carousel_arrows_position": "below_center",
         "carousel_arrows_overlay_dark": true,
         "carousel_pagination_style": "counter",
-        "carousel_scroll_mode": "single",
+        "carousel_scroll_mode": "page",
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
         "columns_mobile": "1",
