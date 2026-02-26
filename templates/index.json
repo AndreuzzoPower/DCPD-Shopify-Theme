@@ -153,7 +153,7 @@
         "enable_desktop_slider": true,
         "enable_autoplay": true,
         "autoplay_speed": 3,
-        "carousel_loop": "none",
+        "carousel_loop": "circular",
         "carousel_peek_size": "medium",
         "carousel_arrows_position": "below_center",
         "carousel_arrows_overlay_dark": true,
