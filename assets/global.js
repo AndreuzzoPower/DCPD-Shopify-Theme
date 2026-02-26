@@ -1073,6 +1073,13 @@ class SliderComponent extends HTMLElement {
       const totalRealScroll = this._realSlideCount * this.sliderItemOffset;
       const raw = this.slider.scrollLeft - this._circularCloneOffset;
       effectiveScrollLeft = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
+
+      // Floating-point drift around the wrap boundary can map "slide 1"
+      // to a value near totalRealScroll, which appears as the last page.
+      const boundaryEpsilon = Math.max(2, this.sliderItemOffset * 0.02);
+      if (effectiveScrollLeft <= boundaryEpsilon || effectiveScrollLeft >= totalRealScroll - boundaryEpsilon) {
+        effectiveScrollLeft = 0;
+      }
     } else {
       effectiveScrollLeft = this.slider.scrollLeft;
     }
