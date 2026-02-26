@@ -997,11 +997,14 @@ class SliderComponent extends HTMLElement {
       });
     }
 
-    // Instantly position the slider at the first real item (bypass CSS scroll-behavior:smooth)
     this.slider.style.scrollBehavior = 'auto';
+    this.slider.style.scrollSnapType = 'none';
     this.slider.scrollLeft = this._circularCloneOffset;
     requestAnimationFrame(() => {
-      this.slider.style.scrollBehavior = '';
+      requestAnimationFrame(() => {
+        this.slider.style.scrollSnapType = '';
+        this.slider.style.scrollBehavior = '';
+      });
     });
   }
 
@@ -1021,12 +1024,15 @@ class SliderComponent extends HTMLElement {
 
   _setScrollInstant(position) {
     this._isTeleporting = true;
-    // Override CSS scroll-behavior:smooth so the jump is invisible
     this.slider.style.scrollBehavior = 'auto';
+    this.slider.style.scrollSnapType = 'none';
     this.slider.scrollLeft = position;
     requestAnimationFrame(() => {
-      this.slider.style.scrollBehavior = '';
-      this._isTeleporting = false;
+      requestAnimationFrame(() => {
+        this.slider.style.scrollSnapType = '';
+        this.slider.style.scrollBehavior = '';
+        this._isTeleporting = false;
+      });
     });
   }
 
