@@ -33,21 +33,21 @@
           "type": "featured_collection",
           "settings": {
             "collection": "prova-1",
-            "custom_label": ""
+            "custom_label": "1"
           }
         },
         "featured_collection_rTL389": {
           "type": "featured_collection",
           "settings": {
             "collection": "prova-2",
-            "custom_label": "Coll PErs"
+            "custom_label": "2"
           }
         },
         "featured_collection_D3N7Wc": {
           "type": "featured_collection",
           "settings": {
             "collection": "altra-cat",
-            "custom_label": ""
+            "custom_label": "3"
           }
         },
         "featured_collection_mnexwN": {
@@ -62,7 +62,7 @@
           "settings": {
             "collection": "altra-cat",
             "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
-            "custom_label": ""
+            "custom_label": "5"
           }
         },
         "featured_collection_MxWnVr": {
