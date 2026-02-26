@@ -45,7 +45,6 @@
         },
         "featured_collection_D3N7Wc": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": ""
@@ -53,7 +52,6 @@
         },
         "featured_collection_mnexwN": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_label": ""
@@ -61,7 +59,6 @@
         },
         "featured_collection_KKwGTH": {
           "type": "featured_collection",
-          "disabled": true,
           "settings": {
             "collection": "altra-cat",
             "custom_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
@@ -150,7 +147,7 @@
         "title_custom_class": "",
         "description": "<p>Testo introduttivo delle collection</p>",
         "title_alignment": "center",
-        "columns_desktop": 1,
+        "columns_desktop": 3,
         "grid_alignment": "center",
         "enable_desktop_slider": true,
         "enable_autoplay": true,
