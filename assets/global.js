@@ -945,8 +945,7 @@ class SliderComponent extends HTMLElement {
     }
 
     if (this._circularInitialized) {
-      this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
-      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset - this._scrollPaddingLeft;
+      this._refreshCircularMetrics();
     }
 
     this.updatePaginationCount();
@@ -961,10 +960,12 @@ class SliderComponent extends HTMLElement {
     // to reach the clone zone (browser clamps scrollTo and teleport never fires).
     const clonesCount = this.slidesPerPage + 1;
 
-    const makeClone = (item) => {
+    const makeClone = (item, realIndex, zone) => {
       const clone = item.cloneNode(true);
       clone.removeAttribute('id');
       clone.setAttribute('data-cloned', 'true');
+      clone.setAttribute('data-clone-for', String(realIndex));
+      clone.setAttribute('data-clone-zone', zone);
       clone.setAttribute('aria-hidden', 'true');
       clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
       clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach((el) => {
@@ -973,20 +974,22 @@ class SliderComponent extends HTMLElement {
       return clone;
     };
 
-    // Prepend copies of the last clonesCount real items (maintains visual order)
     const prependFrag = document.createDocumentFragment();
-    realItems.slice(-clonesCount).forEach((item) => prependFrag.appendChild(makeClone(item)));
+    for (let i = realCount - clonesCount; i < realCount; i++) {
+      const realIndex = (i + realCount) % realCount;
+      prependFrag.appendChild(makeClone(realItems[realIndex], realIndex, 'prepend'));
+    }
     this.slider.insertBefore(prependFrag, this.slider.firstChild);
 
-    // Append copies of the first clonesCount real items
-    realItems.slice(0, clonesCount).forEach((item) => this.slider.appendChild(makeClone(item)));
+    for (let i = 0; i < clonesCount; i++) {
+      this.slider.appendChild(makeClone(realItems[i], i, 'append'));
+    }
 
     this._circularClonesCount = clonesCount;
     this._realSlideCount = realCount;
-    this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
-    this._circularCloneOffset = clonesCount * this.sliderItemOffset - this._scrollPaddingLeft;
     this._circularInitialized = true;
     this.slider.classList.add('slider--circular-active');
+    this._refreshCircularMetrics();
 
     // Listen for scroll-end to perform the silent teleport
     const handler = this._onScrollEnd.bind(this);
@@ -1012,28 +1015,69 @@ class SliderComponent extends HTMLElement {
     });
   }
 
+  _refreshCircularMetrics() {
+    this._scrollPaddingLeft = parseFloat(getComputedStyle(this.slider).scrollPaddingLeft) || 0;
+    const getSnap = (el) => el.offsetLeft - this._scrollPaddingLeft;
+    this._realSnapPositions = this.sliderItemsToShow.map((item) => getSnap(item));
+
+    const appendClones = Array.from(this.slider.querySelectorAll('[data-cloned="true"][data-clone-zone="append"]'));
+    const prependClones = Array.from(this.slider.querySelectorAll('[data-cloned="true"][data-clone-zone="prepend"]'));
+
+    this._appendCloneSnapPositions = appendClones.map((el) => ({
+      realIndex: parseInt(el.getAttribute('data-clone-for'), 10),
+      pos: getSnap(el),
+    }));
+    this._prependCloneSnapPositions = prependClones.map((el) => ({
+      realIndex: parseInt(el.getAttribute('data-clone-for'), 10),
+      pos: getSnap(el),
+    }));
+
+    this._circularCloneOffset = this._realSnapPositions[0] ?? (this._circularClonesCount * this.sliderItemOffset - this._scrollPaddingLeft);
+    this._realZoneStart = this._circularCloneOffset;
+
+    const firstAppendPos = this._appendCloneSnapPositions.length
+      ? Math.min(...this._appendCloneSnapPositions.map((x) => x.pos))
+      : this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
+    this._realZoneEnd = firstAppendPos;
+  }
+
+  _getNearestCloneMeta(clones, position) {
+    if (!clones || !clones.length) return null;
+    let nearest = clones[0];
+    let minDelta = Math.abs(clones[0].pos - position);
+    for (let i = 1; i < clones.length; i++) {
+      const delta = Math.abs(clones[i].pos - position);
+      if (delta < minDelta) {
+        nearest = clones[i];
+        minDelta = delta;
+      }
+    }
+    return nearest;
+  }
+
   _onScrollEnd() {
     if (!this._circularInitialized || this._isTeleporting) return;
 
     const scrollLeft = this.slider.scrollLeft;
-    const realZoneStart = this._circularCloneOffset;
-    const realZoneEnd = this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
-    const totalRealScroll = this._realSlideCount * this.sliderItemOffset;
+    const realZoneStart = this._realZoneStart;
+    const realZoneEnd = this._realZoneEnd;
 
     let didTeleport = false;
     if (scrollLeft < realZoneStart - 2) {
-      const raw = scrollLeft - this._circularCloneOffset;
-      const normalized = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
-      const snapIndex = Math.round(normalized / this.sliderItemOffset);
-      const snapped = Math.min(Math.max(snapIndex, 0), this._realSlideCount - 1) * this.sliderItemOffset;
-      this._setScrollInstant(this._circularCloneOffset + snapped);
+      const nearest = this._getNearestCloneMeta(this._prependCloneSnapPositions, scrollLeft);
+      if (nearest && this._realSnapPositions[nearest.realIndex] !== undefined) {
+        this._setScrollInstant(this._realSnapPositions[nearest.realIndex]);
+      } else {
+        this._setScrollInstant(scrollLeft + this._realSlideCount * this.sliderItemOffset);
+      }
       didTeleport = true;
     } else if (scrollLeft >= realZoneEnd - 2) {
-      const raw = scrollLeft - this._circularCloneOffset;
-      const normalized = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
-      const snapIndex = Math.round(normalized / this.sliderItemOffset);
-      const snapped = Math.min(Math.max(snapIndex, 0), this._realSlideCount - 1) * this.sliderItemOffset;
-      this._setScrollInstant(this._circularCloneOffset + snapped);
+      const nearest = this._getNearestCloneMeta(this._appendCloneSnapPositions, scrollLeft);
+      if (nearest && this._realSnapPositions[nearest.realIndex] !== undefined) {
+        this._setScrollInstant(this._realSnapPositions[nearest.realIndex]);
+      } else {
+        this._setScrollInstant(scrollLeft - this._realSlideCount * this.sliderItemOffset);
+      }
       didTeleport = true;
     }
 
