@@ -497,7 +497,7 @@
             "image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png",
             "image_mobile": "shopify://shop_images/EM000079-AF10094-U8060-01.jpg",
             "image_overlay_opacity": 0,
-            "heading": "Slide immagine",
+            "heading": "Slide immagine 1",
             "heading_size": "h1",
             "heading_tag": "h2",
             "heading_custom_class": "",
@@ -531,7 +531,7 @@
           "settings": {
             "image": "shopify://shop_images/Copertina_la_coppia_scoppia.png",
             "image_overlay_opacity": 0,
-            "heading": "Slide immagine",
+            "heading": "Slide immagine 2",
             "heading_size": "h1",
             "heading_tag": "h2",
             "heading_custom_class": "",
@@ -565,7 +565,7 @@
           "settings": {
             "image": "shopify://shop_images/download.jpg",
             "image_overlay_opacity": 0,
-            "heading": "Slide immagine",
+            "heading": "Slide immagine 3",
             "heading_size": "h1",
             "heading_tag": "h2",
             "heading_custom_class": "",
