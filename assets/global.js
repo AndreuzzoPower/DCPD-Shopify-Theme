@@ -1416,8 +1416,8 @@ customElements.define('slider-component', SliderComponent);
 class SlideshowComponent extends SliderComponent {
   constructor() {
     super();
-    // Re-evaluate after upgrade/parsing in case dataset was not ready in super().
     this.useEmbla = this.dataset.msEmbla === 'true' || this.getAttribute('data-ms-embla') === 'true';
+    console.warn('[EMBLA-DEBUG] SlideshowComponent constructor, useEmbla:', this.useEmbla, 'slider:', !!this.slider);
     if (this.useEmbla) {
       this.initEmblaSlideshow();
       return;
@@ -1466,8 +1466,8 @@ class SlideshowComponent extends SliderComponent {
   }
 
   initEmblaSlideshow() {
-    if (this.emblaApi) return;
-    // Stop any legacy autoplay timer that might have started in super().
+    console.warn('[EMBLA-DEBUG] initEmblaSlideshow called');
+    if (this.emblaApi) { console.warn('[EMBLA-DEBUG] already initialized, skip'); return; }
     if (this.autoplayInterval) {
       clearInterval(this.autoplayInterval);
       this.autoplayInterval = null;
@@ -1487,9 +1487,12 @@ class SlideshowComponent extends SliderComponent {
     this.currentPage = 1;
     this.autoplayButtonIsSetToPlay = !this.autoplayEnabled;
 
-    if (!this.slider) return;
+    console.warn('[EMBLA-DEBUG] slider:', !!this.slider, 'EmblaCarousel:', typeof window.EmblaCarousel, 'loopMode:', this.loopMode);
+
+    if (!this.slider) { console.warn('[EMBLA-DEBUG] ABORT: no slider'); return; }
     if (!window.EmblaCarousel) {
       this._emblaInitAttempts = (this._emblaInitAttempts || 0) + 1;
+      console.warn('[EMBLA-DEBUG] EmblaCarousel not found, retry', this._emblaInitAttempts);
       if (this._emblaInitAttempts <= 40) {
         setTimeout(() => this.initEmblaSlideshow(), 100);
       }
@@ -1507,18 +1510,25 @@ class SlideshowComponent extends SliderComponent {
     }
 
     const emblaViewport = this.querySelector('.ms-slideshow__media-wrapper') || this;
+    console.warn('[EMBLA-DEBUG] viewport:', emblaViewport?.className, 'container:', this.slider?.id, 'slides found:', this.slider?.querySelectorAll('.slideshow__slide')?.length);
 
-    this.emblaApi = window.EmblaCarousel(
-      emblaViewport,
-      {
-        loop: this.emblaLoop,
-        align: 'start',
-        container: this.slider,
-        slides: '.slideshow__slide',
-      },
-      plugins
-    );
-    this.setAttribute('data-ms-embla-active', 'true');
+    try {
+      this.emblaApi = window.EmblaCarousel(
+        emblaViewport,
+        {
+          loop: this.emblaLoop,
+          align: 'start',
+          container: this.slider,
+          slides: '.slideshow__slide',
+        },
+        plugins
+      );
+      console.warn('[EMBLA-DEBUG] EmblaCarousel initialized OK, api:', !!this.emblaApi);
+      this.setAttribute('data-ms-embla-active', 'true');
+    } catch (err) {
+      console.error('[EMBLA-DEBUG] EmblaCarousel THREW:', err);
+      return;
+    }
 
     if (this.emblaApi?.plugins()?.accessibility) {
       if (this.prevButton && this.nextButton) {
