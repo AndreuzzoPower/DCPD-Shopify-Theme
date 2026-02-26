@@ -1015,10 +1015,18 @@ class SliderComponent extends HTMLElement {
     const realZoneStart = this._circularCloneOffset;
     const realZoneEnd = this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
 
+    let didTeleport = false;
     if (scrollLeft < realZoneStart - 2) {
       this._setScrollInstant(scrollLeft + this._realSlideCount * this.sliderItemOffset);
+      didTeleport = true;
     } else if (scrollLeft >= realZoneEnd - 2) {
       this._setScrollInstant(scrollLeft - this._realSlideCount * this.sliderItemOffset);
+      didTeleport = true;
+    }
+
+    if (didTeleport && this.autoplay && this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.startAutoplay();
     }
   }
 
@@ -1057,10 +1065,14 @@ class SliderComponent extends HTMLElement {
 
     const previousPage = this.currentPage;
 
-    // In circular mode, calculate page relative to the real-item zone
-    const effectiveScrollLeft = this._circularInitialized
-      ? Math.max(0, this.slider.scrollLeft - this._circularCloneOffset)
-      : this.slider.scrollLeft;
+    let effectiveScrollLeft;
+    if (this._circularInitialized) {
+      const totalRealScroll = this._realSlideCount * this.sliderItemOffset;
+      const raw = this.slider.scrollLeft - this._circularCloneOffset;
+      effectiveScrollLeft = ((raw % totalRealScroll) + totalRealScroll) % totalRealScroll;
+    } else {
+      effectiveScrollLeft = this.slider.scrollLeft;
+    }
 
     if (this.scrollMode === 'single') {
       this.currentPage = Math.round(effectiveScrollLeft / this.sliderItemOffset) + 1;
