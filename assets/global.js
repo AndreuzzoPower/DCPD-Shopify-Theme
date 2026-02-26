@@ -894,6 +894,10 @@ class SliderComponent extends HTMLElement {
       this.autoplayButton.classList.add('slider-autoplay-btn--paused');
       this.autoplayButton.setAttribute('aria-label', window.accessibilityStrings?.playSlideshow || 'Riproduci');
     } else {
+      if (this.loopMode === 'none') {
+        const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
+        if (atEnd) this.setSlidePosition(0);
+      }
       this.startAutoplay();
       this.autoplayIsActive = true;
       this.autoplayButton.classList.remove('slider-autoplay-btn--paused');
