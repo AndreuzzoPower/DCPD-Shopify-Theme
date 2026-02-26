@@ -831,7 +831,15 @@ class SliderComponent extends HTMLElement {
     super();
     this.slider = this.querySelector('[id^="Slider-"]');
     this.sliderItems = this.querySelectorAll('[id^="Slide-"]');
-    this.enableSliderLooping = this.dataset.loop === 'true';
+
+    // Loop mode: 'none' | 'rewind' | 'circular'
+    // Backward compat: old boolean values 'true'/'false' map to rewind/none
+    this.loopMode = this.dataset.loop || 'none';
+    if (this.loopMode === 'true') this.loopMode = 'rewind';
+    if (this.loopMode === 'false') this.loopMode = 'none';
+    this.enableSliderLooping = this.loopMode === 'rewind';
+    this.enableCircularLoop = this.loopMode === 'circular';
+
     this.scrollMode = this.dataset.scrollMode || 'page';
     this.currentPageElement = this.querySelector('.slider-counter--current');
     this.pageTotalElement = this.querySelector('.slider-counter--total');
@@ -842,6 +850,9 @@ class SliderComponent extends HTMLElement {
     this.autoplay = this.dataset.autoplay === 'true';
     this.speed = parseInt(this.dataset.speed) || 5000;
     this.autoplayInterval = null;
+
+    this._circularInitialized = false;
+    this._isTeleporting = false;
 
     if (!this.slider || (!this.nextButton && !this.paginationLinks.length)) return;
 
@@ -907,8 +918,12 @@ class SliderComponent extends HTMLElement {
     this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
     if (this.sliderItemsToShow.length < 2) return;
     this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
+
+    // After circular clones are prepended, the first real item has a large offsetLeft.
+    // Use 0 so slidesPerPage stays accurate (full clientWidth / itemOffset).
+    const firstItemOffset = this._circularInitialized ? 0 : this.sliderItemsToShow[0].offsetLeft;
     this.slidesPerPage = Math.floor(
-      (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
+      (this.slider.clientWidth - firstItemOffset) / this.sliderItemOffset
     );
     this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
 
@@ -918,8 +933,85 @@ class SliderComponent extends HTMLElement {
       this.paginationPages = Math.ceil(this.sliderItemsToShow.length / this.slidesPerPage);
     }
 
+    // First-time circular init (after slidesPerPage is known)
+    if (this.enableCircularLoop && !this._circularInitialized) {
+      this.initCircularLoop();
+    }
+
+    // Keep clone offset in sync after any resize
+    if (this._circularInitialized) {
+      this._circularCloneOffset = this._circularClonesCount * this.sliderItemOffset;
+    }
+
     this.updatePaginationCount();
     this.update();
+  }
+
+  initCircularLoop() {
+    const realItems = this.sliderItemsToShow;
+    const realCount = realItems.length;
+    const clonesCount = Math.max(1, this.slidesPerPage);
+
+    const makeClone = (item) => {
+      const clone = item.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.setAttribute('data-cloned', 'true');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+      clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach((el) => {
+        el.setAttribute('tabindex', '-1');
+      });
+      return clone;
+    };
+
+    // Prepend copies of the last clonesCount real items (maintains visual order)
+    const prependFrag = document.createDocumentFragment();
+    realItems.slice(-clonesCount).forEach((item) => prependFrag.appendChild(makeClone(item)));
+    this.slider.insertBefore(prependFrag, this.slider.firstChild);
+
+    // Append copies of the first clonesCount real items
+    realItems.slice(0, clonesCount).forEach((item) => this.slider.appendChild(makeClone(item)));
+
+    this._circularClonesCount = clonesCount;
+    this._realSlideCount = realCount;
+    this._circularCloneOffset = clonesCount * this.sliderItemOffset;
+    this._circularInitialized = true;
+
+    // Listen for scroll-end to perform the silent teleport
+    const handler = this._onScrollEnd.bind(this);
+    if ('onscrollend' in window) {
+      this.slider.addEventListener('scrollend', handler);
+    } else {
+      // Fallback: debounce the scroll event for older browsers
+      let debounceTimer;
+      this.slider.addEventListener('scroll', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(handler, 150);
+      });
+    }
+
+    // Instantly position the slider at the first real item
+    this.slider.scrollLeft = this._circularCloneOffset;
+  }
+
+  _onScrollEnd() {
+    if (!this._circularInitialized || this._isTeleporting) return;
+
+    const scrollLeft = this.slider.scrollLeft;
+    const realZoneStart = this._circularCloneOffset;
+    const realZoneEnd = this._circularCloneOffset + this._realSlideCount * this.sliderItemOffset;
+
+    if (scrollLeft < realZoneStart - 2) {
+      // Landed in the start-clone zone → jump to the equivalent real position
+      this._isTeleporting = true;
+      this.slider.scrollLeft = scrollLeft + this._realSlideCount * this.sliderItemOffset;
+      this._isTeleporting = false;
+    } else if (scrollLeft >= realZoneEnd - 2) {
+      // Landed in the end-clone zone → jump to the equivalent real position
+      this._isTeleporting = true;
+      this.slider.scrollLeft = scrollLeft - this._realSlideCount * this.sliderItemOffset;
+      this._isTeleporting = false;
+    }
   }
 
   resetPages() {
@@ -943,15 +1035,23 @@ class SliderComponent extends HTMLElement {
 
     const previousPage = this.currentPage;
 
+    // In circular mode, calculate page relative to the real-item zone
+    const effectiveScrollLeft = this._circularInitialized
+      ? Math.max(0, this.slider.scrollLeft - this._circularCloneOffset)
+      : this.slider.scrollLeft;
+
     if (this.scrollMode === 'single') {
-      this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+      this.currentPage = Math.round(effectiveScrollLeft / this.sliderItemOffset) + 1;
     } else {
       const pageOffset = this.slidesPerPage * this.sliderItemOffset;
       this.currentPage = Math.min(
-        Math.floor(this.slider.scrollLeft / pageOffset) + 1,
+        Math.floor(effectiveScrollLeft / pageOffset) + 1,
         this.paginationPages
       );
     }
+
+    // Clamp to valid range (guards against clone-zone transitions)
+    this.currentPage = Math.max(1, Math.min(this.currentPage, this.paginationPages || 1));
 
     if (this.currentPageElement) {
       this.currentPageElement.textContent = this.currentPage;
@@ -970,7 +1070,8 @@ class SliderComponent extends HTMLElement {
       );
     }
 
-    if (this.enableSliderLooping) return;
+    // Disable/enable buttons only when no loop mode is active
+    if (this.enableSliderLooping || this.enableCircularLoop) return;
 
     if (this.prevButton) {
       if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
@@ -1016,6 +1117,7 @@ class SliderComponent extends HTMLElement {
           : this.slider.scrollLeft - step * this.sliderItemOffset;
     }
 
+    // Rewind mode: jump to opposite end when going past the boundary
     if (this.enableSliderLooping) {
       if (this.slideScrollPosition < 0) {
         this.slideScrollPosition = this.slider.scrollWidth - this.slider.clientWidth;
@@ -1024,6 +1126,8 @@ class SliderComponent extends HTMLElement {
       }
     }
 
+    // Circular mode: scroll naturally into clone territory; _onScrollEnd handles teleport
+
     this.setSlidePosition(this.slideScrollPosition);
   }
 
@@ -1031,9 +1135,13 @@ class SliderComponent extends HTMLElement {
     event.preventDefault();
     const index = parseInt(event.currentTarget.dataset.slideIndex);
     if (isNaN(index)) return;
-    const targetPosition = this.scrollMode === 'single'
+    let targetPosition = this.scrollMode === 'single'
       ? (index - 1) * this.sliderItemOffset
       : (index - 1) * this.slidesPerPage * this.sliderItemOffset;
+    // In circular mode the real items are offset by the prepended clones
+    if (this._circularInitialized) {
+      targetPosition += this._circularCloneOffset;
+    }
     this.setSlidePosition(targetPosition);
   }
 
@@ -1043,13 +1151,22 @@ class SliderComponent extends HTMLElement {
 
   startAutoplay() {
     this.autoplayInterval = setInterval(() => {
-      const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
-      if (atEnd) {
-        this.setSlidePosition(0);
-      } else if (this.nextButton) {
-        this.nextButton.click();
+      if (this.enableCircularLoop) {
+        // Circular: always advance — clones + _onScrollEnd handle the wrap
+        if (this.nextButton) {
+          this.nextButton.click();
+        } else {
+          this.setSlidePosition(this.slider.scrollLeft + this.sliderItemOffset);
+        }
       } else {
-        this.setSlidePosition(this.slider.scrollLeft + this.sliderItemOffset);
+        const atEnd = this.slider.scrollLeft + this.slider.clientWidth >= this.slider.scrollWidth - 2;
+        if (atEnd) {
+          this.setSlidePosition(0);
+        } else if (this.nextButton) {
+          this.nextButton.click();
+        } else {
+          this.setSlidePosition(this.slider.scrollLeft + this.sliderItemOffset);
+        }
       }
     }, this.speed);
   }

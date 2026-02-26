@@ -577,10 +577,15 @@
       ]
     },
     {
-      "type": "checkbox",
+      "type": "select",
       "id": "carousel_loop",
-      "label": "Loop infinito",
-      "default": false
+      "label": "Tipo loop",
+      "default": "none",
+      "options": [
+        { "value": "none",     "label": "Nessuno" },
+        { "value": "rewind",   "label": "Rewind (torna all'inizio)" },
+        { "value": "circular", "label": "Circolare (infinito)" }
+      ]
     },
     {
       "type": "checkbox",
