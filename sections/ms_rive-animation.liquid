@@ -21,7 +21,7 @@
     assign aspect_ratio_class = ''
   endif
 
-  assign aria_label = section.settings.aria_label | default: 'Animated content'
+  assign aria_label = section.settings.aria_label | default: 'Contenuto animato'
 
   assign heading_tag = section.settings.heading_tag | default: 'h2'
   assign heading_classes = 'title inline-richtext ' | append: section.settings.heading_size
@@ -81,7 +81,7 @@
       <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}">
         <div class="rive-animation__placeholder" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 200px; background: rgba(var(--color-foreground), 0.04); border-radius: var(--media-radius);">
           <p style="color: rgba(var(--color-foreground), 0.5); text-align: center; padding: 2rem;">
-            Insert a Rive file URL (.riv) to display the animation
+            Inserisci un URL di file Rive (.riv) per visualizzare l'animazione
           </p>
         </div>
       </div>
@@ -119,33 +119,33 @@
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
+      "label": "Schema colori",
       "default": "scheme-1"
     },
     {
       "type": "select",
       "id": "aspect_ratio",
-      "label": "Aspect ratio",
+      "label": "Proporzioni",
       "options": [
         { "value": "16-9", "label": "16:9 (Widescreen)" },
         { "value": "4-3", "label": "4:3 (Standard)" },
-        { "value": "1-1", "label": "1:1 (Square)" },
+        { "value": "1-1", "label": "1:1 (Quadrato)" },
         { "value": "21-9", "label": "21:9 (Ultrawide)" },
-        { "value": "9-16", "label": "9:16 (Vertical)" },
-        { "value": "custom", "label": "Custom height" }
+        { "value": "9-16", "label": "9:16 (Verticale)" },
+        { "value": "custom", "label": "Altezza personalizzata" }
       ],
       "default": "16-9"
     },
     {
       "type": "range",
       "id": "custom_height",
-      "label": "Custom height",
+      "label": "Altezza personalizzata",
       "min": 100,
       "max": 800,
       "step": 10,
       "default": 400,
       "unit": "px",
-      "info": "Only used when 'Custom height' aspect ratio is selected"
+      "info": "Utilizzato solo quando e selezionata 'Altezza personalizzata'"
     },
     {
       "type": "header",
@@ -154,20 +154,20 @@
     {
       "type": "inline_richtext",
       "id": "heading",
-      "label": "t:sections.all.heading.label"
+      "label": "Titolo"
     },
     {
       "type": "select",
       "id": "heading_size",
       "options": [
-        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
-        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
-        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
-        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
-        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+        { "value": "h2", "label": "Piccola" },
+        { "value": "h1", "label": "Media" },
+        { "value": "h0", "label": "Grande" },
+        { "value": "hxl", "label": "Extra large" },
+        { "value": "hxxl", "label": "Extra extra large" }
       ],
       "default": "h1",
-      "label": "t:sections.all.heading_size.label"
+      "label": "Dimensione titolo"
     },
     {
       "type": "select",
@@ -193,42 +193,42 @@
     },
     {
       "type": "header",
-      "content": "Rive File"
+      "content": "File Rive"
     },
     {
       "type": "url",
       "id": "rive_url",
-      "label": "Rive file URL (.riv)",
-      "info": "Upload a .riv file to Shopify Files (Content > Files) or use an external URL. Find free animations at [rive.app/marketplace](https://rive.app/marketplace)"
+      "label": "URL file Rive (.riv)",
+      "info": "Carica un file .riv su Shopify Files (Contenuti > File) o usa un URL esterno. Trova animazioni gratuite su [rive.app/marketplace](https://rive.app/marketplace)"
     },
     {
       "type": "text",
       "id": "state_machine",
-      "label": "State Machine name",
-      "info": "Leave empty to use the default State Machine or animation"
+      "label": "Nome State Machine",
+      "info": "Lascia vuoto per usare la State Machine o animazione predefinita"
     },
     {
       "type": "checkbox",
       "id": "autoplay",
-      "label": "Autoplay",
+      "label": "Riproduzione automatica",
       "default": true,
-      "info": "Animation will pause automatically if user prefers reduced motion"
+      "info": "L'animazione si mettera in pausa automaticamente se l'utente preferisce movimento ridotto"
     },
     {
       "type": "checkbox",
       "id": "loop",
-      "label": "Loop animation",
+      "label": "Ripeti animazione",
       "default": true
     },
     {
       "type": "header",
-      "content": "Custom JavaScript"
+      "content": "JavaScript personalizzato"
     },
     {
       "type": "liquid",
       "id": "custom_js",
-      "label": "Custom JS code",
-      "info": "Control the animation with JavaScript. The Rive instance is available as 'riveInstance'. [View documentation](https://rive.app/docs/runtimes/web/web-js)"
+      "label": "Codice JS personalizzato",
+      "info": "Controlla l'animazione con JavaScript. L'istanza Rive e disponibile come 'riveInstance'. [Vedi documentazione](https://rive.app/docs/runtimes/web/web-js)"
     },
     {
       "type": "header",
@@ -237,9 +237,9 @@
     {
       "type": "text",
       "id": "aria_label",
-      "label": "Description for screen readers",
-      "default": "Animated content",
-      "info": "Describe the animation content for visually impaired users"
+      "label": "Descrizione per screen reader",
+      "default": "Contenuto animato",
+      "info": "Descrivi il contenuto dell'animazione per utenti con disabilita visive"
     }
   ],
   "blocks": [
