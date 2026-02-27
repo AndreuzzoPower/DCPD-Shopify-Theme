@@ -69,7 +69,7 @@ if (!customElements.get('rive-animation')) {
       }
 
       const src = this.dataset.src;
-      const stateMachine = this.dataset.stateMachine || '';
+      const stateMachineOverride = (this.dataset.stateMachine || '').trim();
       const autoplay = this.dataset.autoplay === 'true';
       const shouldAutoplay = autoplay && !this.prefersReducedMotion.matches;
 
@@ -78,6 +78,30 @@ if (!customElements.get('rive-animation')) {
         canvas: canvas,
         autoplay: shouldAutoplay,
         onLoad: () => {
+          // Auto-rileva la state machine se non specificata
+          this.resolvedStateMachine = stateMachineOverride || this.autoDetectStateMachine();
+
+          // Se trovata, riavvia Rive con la state machine corretta
+          if (this.resolvedStateMachine && !stateMachineOverride) {
+            this.riveInstance.cleanup();
+            this.riveInstance = new rive.Rive({
+              src: src,
+              canvas: canvas,
+              autoplay: shouldAutoplay,
+              stateMachines: this.resolvedStateMachine,
+              onLoad: () => {
+                this.riveInstance.resizeDrawingSurfaceToCanvas();
+                this.setupResizeHandler();
+                this.setupMouseTracking();
+                this.executeCustomJS();
+              },
+              onLoadError: (error) => {
+                console.error('Rive Animation: errore caricamento', error);
+              },
+            });
+            return;
+          }
+
           this.riveInstance.resizeDrawingSurfaceToCanvas();
           this.setupResizeHandler();
           this.setupMouseTracking();
@@ -91,8 +115,8 @@ if (!customElements.get('rive-animation')) {
         },
       };
 
-      if (stateMachine && stateMachine.trim() !== '') {
-        riveOptions.stateMachines = stateMachine;
+      if (stateMachineOverride) {
+        riveOptions.stateMachines = stateMachineOverride;
       }
 
       this.riveInstance = new rive.Rive(riveOptions);
@@ -104,12 +128,23 @@ if (!customElements.get('rive-animation')) {
       });
     }
 
+    autoDetectStateMachine() {
+      if (!this.riveInstance) return null;
+      try {
+        const names = this.riveInstance.stateMachineNames;
+        if (names && names.length > 0) {
+          return names[0];
+        }
+      } catch (e) {}
+      return null;
+    }
+
     setupMouseTracking() {
       if (!this.riveInstance) return;
       const canvas = this.querySelector('canvas');
       if (!canvas) return;
 
-      const stateMachineName = this.dataset.stateMachine || '';
+      const stateMachineName = this.resolvedStateMachine || (this.dataset.stateMachine || '').trim();
       if (!stateMachineName) return;
 
       const getInputs = () => {
