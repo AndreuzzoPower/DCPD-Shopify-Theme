@@ -1,18 +1,36 @@
-{{ 'rive-animation.css' | asset_url | stylesheet_tag }}
+{{ 'ms_rive-animation.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign aspect_ratio_class = 'rive-animation__container--' | append: section.settings.aspect_ratio
+  if section.settings.aspect_ratio == 'custom'
+    assign aspect_ratio_class = ''
+  endif
+
+  assign aria_label = section.settings.aria_label | default: 'Animated content'
+
+  assign heading_tag = section.settings.heading_tag | default: 'h2'
+  assign heading_classes = 'title inline-richtext ' | append: section.settings.heading_size
+  if section.settings.heading_custom_class != blank
+    assign heading_classes = heading_classes | append: ' ' | append: section.settings.heading_custom_class
+  endif
+-%}
 
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-
   {%- if section.settings.aspect_ratio == 'custom' and section.settings.custom_height > 0 -%}
     #RiveAnimation-{{ section.id }} .rive-animation__container {
       aspect-ratio: unset;
@@ -27,33 +45,24 @@
   {%- endif -%}
 {%- endstyle -%}
 
-{%- liquid
-  assign aspect_ratio_class = 'rive-animation__container--' | append: section.settings.aspect_ratio
-  if section.settings.aspect_ratio == 'custom'
-    assign aspect_ratio_class = ''
-  endif
-
-  assign aria_label = section.settings.aria_label | default: 'Animated content'
--%}
-
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="rive-animation-section isolate{% unless section.settings.full_width %} page-width{% endunless %} section-{{ section.id }}-padding">
+<div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
+  <div class="rive-animation-section isolate {{ sw_class }}">
     {%- unless section.settings.heading == blank -%}
       <div class="title-wrapper title-wrapper--no-top-margin{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        <div class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</div>
+        <{{ heading_tag }} class="{{ heading_classes }}">{{ section.settings.heading }}</{{ heading_tag }}>
       </div>
     {%- endunless -%}
 
     {%- if section.settings.rive_url != blank -%}
       <rive-animation
         id="RiveAnimation-{{ section.id }}"
-        class="rive-animation{% if section.settings.full_width %} rive-animation--full-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        class="rive-animation{% if sw == 'full_width' %} rive-animation--full-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
         data-src="{{ section.settings.rive_url }}"
         data-state-machine="{{ section.settings.state_machine }}"
         data-autoplay="{{ section.settings.autoplay }}"
         data-loop="{{ section.settings.loop }}"
       >
-        <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if section.settings.full_width %} global-media-settings--full-width{% endif %}">
+        <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}">
           <canvas
             id="rive-canvas-{{ section.id }}"
             class="rive-animation__canvas"
@@ -69,7 +78,7 @@
         {%- endif -%}
       </rive-animation>
     {%- else -%}
-      <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if section.settings.full_width %} global-media-settings--full-width{% endif %}">
+      <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}">
         <div class="rive-animation__placeholder" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 200px; background: rgba(var(--color-foreground), 0.04); border-radius: var(--media-radius);">
           <p style="color: rgba(var(--color-foreground), 0.5); text-align: center; padding: 2rem;">
             Insert a Rive file URL (.riv) to display the animation
@@ -80,15 +89,68 @@
   </div>
 </div>
 
+{%- render 'ms_section-style' -%}
+
 {% schema %}
 {
-  "name": "Rive Animation",
+  "name": "MS Rive Animation",
   "tag": "section",
   "class": "section",
   "disabled_on": {
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Aspect ratio",
+      "options": [
+        { "value": "16-9", "label": "16:9 (Widescreen)" },
+        { "value": "4-3", "label": "4:3 (Standard)" },
+        { "value": "1-1", "label": "1:1 (Square)" },
+        { "value": "21-9", "label": "21:9 (Ultrawide)" },
+        { "value": "9-16", "label": "9:16 (Vertical)" },
+        { "value": "custom", "label": "Custom height" }
+      ],
+      "default": "16-9"
+    },
+    {
+      "type": "range",
+      "id": "custom_height",
+      "label": "Custom height",
+      "min": 100,
+      "max": 800,
+      "step": 10,
+      "default": 400,
+      "unit": "px",
+      "info": "Only used when 'Custom height' aspect ratio is selected"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
     {
       "type": "inline_richtext",
       "id": "heading",
@@ -98,29 +160,36 @@
       "type": "select",
       "id": "heading_size",
       "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
       ],
       "default": "h1",
       "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "heading_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
       "type": "header",
@@ -163,7 +232,7 @@
     },
     {
       "type": "header",
-      "content": "Accessibility"
+      "content": "Accessibilita"
     },
     {
       "type": "text",
@@ -171,94 +240,195 @@
       "label": "Description for screen readers",
       "default": "Animated content",
       "info": "Describe the animation content for visually impaired users"
-    },
+    }
+  ],
+  "blocks": [
     {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "select",
-      "id": "aspect_ratio",
-      "label": "Aspect ratio",
-      "options": [
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
         {
-          "value": "16-9",
-          "label": "16:9 (Widescreen)"
+          "type": "header",
+          "content": "Large/Desktop Device"
         },
         {
-          "value": "4-3",
-          "label": "4:3 (Standard)"
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 36
         },
         {
-          "value": "1-1",
-          "label": "1:1 (Square)"
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 36
         },
         {
-          "value": "21-9",
-          "label": "21:9 (Ultrawide)"
+          "type": "header",
+          "content": "Tablet Device"
         },
         {
-          "value": "9-16",
-          "label": "9:16 (Vertical)"
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 28
         },
         {
-          "value": "custom",
-          "label": "Custom height"
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 28
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 20
         }
-      ],
-      "default": "16-9"
+      ]
     },
     {
-      "type": "range",
-      "id": "custom_height",
-      "label": "Custom height",
-      "min": 100,
-      "max": 800,
-      "step": 10,
-      "default": 400,
-      "unit": "px",
-      "info": "Only used when 'Custom height' aspect ratio is selected"
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        }
+      ]
     },
     {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "t:sections.video.settings.full_width.label",
-      "default": false
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Rive Animation"
+      "name": "MS Rive Animation",
+      "category": "Media",
+      "blocks": [
+        {
+          "type": "section_padding"
+        }
+      ]
     }
   ]
 }
