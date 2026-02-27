@@ -1,0 +1,55 @@
+/* ============================================================
+   MS Contact Form — stili aggiuntivi
+   ============================================================ */
+
+/* Sezione consensi */
+.ms-contact-form__consents {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.ms-contact-form__consent {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+.ms-contact-form__consent input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-top: 0.2rem;
+  cursor: pointer;
+  accent-color: rgb(var(--color-button));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.55);
+  border-radius: 0.2rem;
+}
+
+.ms-contact-form__consent-label {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  cursor: pointer;
+  flex: 1;
+}
+
+/* Rende inline i <p> generati dal richtext dentro il label */
+.ms-contact-form__consent-label p {
+  display: inline;
+  margin: 0;
+}
+
+.ms-contact-form__consent-label a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.ms-contact-form__consent-label a:hover {
+  opacity: 0.75;
+}
+
+.ms-contact-form__consent-required {
+  color: rgb(var(--color-foreground));
+  margin-left: 0.2rem;
+}

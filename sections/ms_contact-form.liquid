@@ -1,0 +1,716 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+{{ 'ms_contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+    else
+      assign sw_class = 'page-width'
+  endcase
+
+  assign contact_form_class = 'isolate'
+  if settings.animations_reveal_on_scroll
+    assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+  endif
+-%}
+
+<div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
+
+    {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+          {%- render 'ms_icon', icon: settings.ms_icon_success -%}
+          {{ 'templates.contact.form.post_success' | t }}
+        </div>
+      {%- elsif form.errors -%}
+        <div class="form__message">
+          <div class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+            {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+            {{ 'templates.contact.form.error_heading' | t }}
+          </div>
+        </div>
+        <ul class="form-status-list caption-large" role="list">
+          <li>
+            <a href="#ContactForm-email" class="link">
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}
+            </a>
+          </li>
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} ── Nome + Email (griglia affiancata) ── {%- endcomment -%}
+      <div class="contact__fields">
+        {%- if section.settings.show_name -%}
+          <div class="field">
+            <input
+              class="field__input"
+              autocomplete="name"
+              type="text"
+              id="ContactForm-name"
+              name="contact[Nome]"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              placeholder="{{ section.settings.label_name | default: 'Nome' }}"
+              {% if section.settings.required_name %}required aria-required="true"{% endif %}
+            >
+            <label class="field__label" for="ContactForm-name">
+              {{- section.settings.label_name | default: 'Nome' -}}
+              {%- if section.settings.required_name %}<span aria-hidden="true"> *</span>{%- endif -%}
+            </label>
+          </div>
+        {%- endif -%}
+
+        <div class="field field--with-error">
+          <input
+            autocomplete="email"
+            type="email"
+            id="ContactForm-email"
+            class="field__input"
+            name="contact[email]"
+            spellcheck="false"
+            autocapitalize="off"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            aria-required="true"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="ContactForm-email-error"
+            {% endif %}
+            placeholder="{{ section.settings.label_email | default: 'Email' }}"
+          >
+          <label class="field__label" for="ContactForm-email">
+            {{- section.settings.label_email | default: 'Email' -}}
+            <span aria-hidden="true"> *</span>
+          </label>
+          {%- if form.errors contains 'email' -%}
+            <small class="contact__field-error" id="ContactForm-email-error">
+              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+              <span class="form__message">
+                {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </span>
+            </small>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ── Telefono ── {%- endcomment -%}
+      {%- if section.settings.show_phone -%}
+        <div class="field">
+          <input
+            type="tel"
+            id="ContactForm-phone"
+            class="field__input"
+            autocomplete="tel"
+            name="contact[Telefono]"
+            pattern="[0-9\-\+\s]*"
+            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+            placeholder="{{ section.settings.label_phone | default: 'Telefono' }}"
+            {% if section.settings.required_phone %}required aria-required="true"{% endif %}
+          >
+          <label class="field__label" for="ContactForm-phone">
+            {{- section.settings.label_phone | default: 'Telefono' -}}
+            {%- if section.settings.required_phone %}<span aria-hidden="true"> *</span>{%- endif -%}
+          </label>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Azienda ── {%- endcomment -%}
+      {%- if section.settings.show_company -%}
+        <div class="field">
+          <input
+            type="text"
+            id="ContactForm-company"
+            class="field__input"
+            autocomplete="organization"
+            name="contact[Azienda]"
+            value="{{ form['Azienda'] }}"
+            placeholder="{{ section.settings.label_company | default: 'Azienda' }}"
+            {% if section.settings.required_company %}required aria-required="true"{% endif %}
+          >
+          <label class="field__label" for="ContactForm-company">
+            {{- section.settings.label_company | default: 'Azienda' -}}
+            {%- if section.settings.required_company %}<span aria-hidden="true"> *</span>{%- endif -%}
+          </label>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Oggetto ── {%- endcomment -%}
+      {%- if section.settings.show_subject -%}
+        <div class="field">
+          <input
+            type="text"
+            id="ContactForm-subject"
+            class="field__input"
+            name="contact[Oggetto]"
+            value="{{ form['Oggetto'] }}"
+            placeholder="{{ section.settings.label_subject | default: 'Oggetto' }}"
+            {% if section.settings.required_subject %}required aria-required="true"{% endif %}
+          >
+          <label class="field__label" for="ContactForm-subject">
+            {{- section.settings.label_subject | default: 'Oggetto' -}}
+            {%- if section.settings.required_subject %}<span aria-hidden="true"> *</span>{%- endif -%}
+          </label>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Messaggio ── {%- endcomment -%}
+      {%- if section.settings.show_message -%}
+        <div class="field">
+          <textarea
+            rows="10"
+            id="ContactForm-body"
+            class="text-area field__input"
+            name="contact[Messaggio]"
+            placeholder="{{ section.settings.label_message | default: 'Messaggio' }}"
+            {% if section.settings.required_message %}required aria-required="true"{% endif %}
+          >
+            {{- form.body -}}
+          </textarea>
+          <label class="form__label field__label" for="ContactForm-body">
+            {{- section.settings.label_message | default: 'Messaggio' -}}
+            {%- if section.settings.required_message %}<span aria-hidden="true"> *</span>{%- endif -%}
+          </label>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Consensi ── {%- endcomment -%}
+      {%- assign has_consents = false -%}
+      {%- if section.settings.show_privacy or section.settings.show_newsletter or section.settings.show_profiling -%}
+        {%- assign has_consents = true -%}
+      {%- endif -%}
+
+      {%- if has_consents -%}
+        <div class="ms-contact-form__consents">
+
+          {%- if section.settings.show_privacy and section.settings.privacy_text != blank -%}
+            <div class="ms-contact-form__consent">
+              <input
+                type="checkbox"
+                id="ContactForm-privacy-{{ section.id }}"
+                name="contact[Privacy Policy]"
+                value="Accettata"
+                {% if section.settings.required_privacy %}required aria-required="true"{% endif %}
+              >
+              <label class="ms-contact-form__consent-label rte" for="ContactForm-privacy-{{ section.id }}">
+                {{ section.settings.privacy_text }}
+                {%- if section.settings.required_privacy -%}
+                  <span class="ms-contact-form__consent-required" aria-hidden="true"> *</span>
+                {%- endif -%}
+              </label>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_newsletter and section.settings.newsletter_text != blank -%}
+            <div class="ms-contact-form__consent">
+              <input
+                type="checkbox"
+                id="ContactForm-newsletter-{{ section.id }}"
+                name="contact[Newsletter]"
+                value="Accettata"
+              >
+              <label class="ms-contact-form__consent-label rte" for="ContactForm-newsletter-{{ section.id }}">
+                {{ section.settings.newsletter_text }}
+              </label>
+            </div>
+          {%- endif -%}
+
+          {%- if section.settings.show_profiling and section.settings.profiling_text != blank -%}
+            <div class="ms-contact-form__consent">
+              <input
+                type="checkbox"
+                id="ContactForm-profiling-{{ section.id }}"
+                name="contact[Profilazione]"
+                value="Accettata"
+              >
+              <label class="ms-contact-form__consent-label rte" for="ContactForm-profiling-{{ section.id }}">
+                {{ section.settings.profiling_text }}
+              </label>
+            </div>
+          {%- endif -%}
+
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ── Pulsante invio ── {%- endcomment -%}
+      <div class="contact__button">
+        <button
+          type="submit"
+          class="{%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
+        >
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
+          {{ section.settings.button_label | default: 'Invia messaggio' | escape }}
+          {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'after' -%}
+        </button>
+      </div>
+
+    {%- endform -%}
+  </div>
+</div>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Form Contatti",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "narrow"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Campo Nome"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Mostra campo nome",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_name",
+      "label": "Label nome",
+      "default": "Nome"
+    },
+    {
+      "type": "checkbox",
+      "id": "required_name",
+      "label": "Obbligatorio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Campo Email"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Label email",
+      "default": "Email",
+      "info": "Il campo email è sempre visibile e obbligatorio."
+    },
+    {
+      "type": "header",
+      "content": "Campo Telefono"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Mostra campo telefono",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_phone",
+      "label": "Label telefono",
+      "default": "Telefono"
+    },
+    {
+      "type": "checkbox",
+      "id": "required_phone",
+      "label": "Obbligatorio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Campo Azienda"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_company",
+      "label": "Mostra campo azienda",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_company",
+      "label": "Label azienda",
+      "default": "Azienda"
+    },
+    {
+      "type": "checkbox",
+      "id": "required_company",
+      "label": "Obbligatorio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Campo Oggetto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subject",
+      "label": "Mostra campo oggetto",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "label_subject",
+      "label": "Label oggetto",
+      "default": "Oggetto"
+    },
+    {
+      "type": "checkbox",
+      "id": "required_subject",
+      "label": "Obbligatorio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Campo Messaggio"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_message",
+      "label": "Mostra campo messaggio",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_message",
+      "label": "Label messaggio",
+      "default": "Messaggio"
+    },
+    {
+      "type": "checkbox",
+      "id": "required_message",
+      "label": "Obbligatorio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Consenso Privacy Policy"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy",
+      "label": "Mostra consenso privacy",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_text",
+      "label": "Testo consenso privacy",
+      "default": "<p>Ho letto e accetto la <a href='/policies/privacy-policy'>Privacy Policy</a></p>",
+      "info": "Puoi inserire link alla tua pagina privacy policy."
+    },
+    {
+      "type": "checkbox",
+      "id": "required_privacy",
+      "label": "Obbligatorio",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Consenso Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Mostra consenso newsletter",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_text",
+      "label": "Testo consenso newsletter",
+      "default": "<p>Acconsento all'invio di comunicazioni commerciali e newsletter</p>"
+    },
+    {
+      "type": "header",
+      "content": "Consenso Profilazione"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_profiling",
+      "label": "Mostra consenso profilazione",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "profiling_text",
+      "label": "Testo consenso profilazione",
+      "default": "<p>Acconsento al trattamento dei miei dati personali per finalità di profilazione</p>"
+    },
+    {
+      "type": "header",
+      "content": "Pulsante"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Testo pulsante",
+      "default": "Invia messaggio"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "label": "Stile contorno",
+      "default": false,
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "after",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 35
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 35
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 25
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Top",
+          "unit": "px",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Padding Bottom",
+          "unit": "px",
+          "default": 20
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Large/Desktop Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Tablet Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Device"
+        },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Top",
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0,
+          "max": 150,
+          "step": 5,
+          "label": "Margin Bottom",
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Form Contatti",
+      "category": "Contenuti"
+    }
+  ]
+}
+{% endschema %}
