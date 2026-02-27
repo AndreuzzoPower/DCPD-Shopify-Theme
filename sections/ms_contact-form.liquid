@@ -23,12 +23,6 @@
   endif
 -%}
 
-{%- comment -%}
-  Macro per rendere un campo input con supporto label/placeholder e colonne.
-  Chiamata inline tramite assegnazione di variabili prima di includere
-  il blocco HTML — Liquid non supporta macro, quindi usiamo variabili.
-{%- endcomment -%}
-
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
@@ -56,216 +50,170 @@
         </ul>
       {%- endif -%}
 
+      {%- comment -%} ── Campi dinamici ── {%- endcomment -%}
       <div class="ms-contact-form__grid">
 
-        {%- comment -%} ── Nome ── {%- endcomment -%}
-        {%- if section.settings.show_name -%}
+        {%- for block in section.blocks -%}
           {%- liquid
-            assign f_cols  = section.settings.cols_name | default: '6'
-            assign f_mode  = section.settings.label_mode_name | default: 'label'
-            assign f_label = section.settings.label_name | default: 'Nome'
-            assign f_ph    = f_label
-            if section.settings.required_name
-              assign f_ph = f_label | append: ' *'
+            assign bt = block.type
+            assign is_field = false
+            if bt == 'field_text' or bt == 'field_email' or bt == 'field_tel' or bt == 'field_textarea' or bt == 'field_select'
+              assign is_field = true
             endif
           -%}
-          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
-            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-              <input
-                class="field__input"
-                autocomplete="name"
-                type="text"
-                id="ContactForm-name"
-                name="contact[Nome]"
-                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-                placeholder="{{ f_ph }}"
-                {% if section.settings.required_name %}required aria-required="true"{% endif %}
-                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
-              >
-              {%- if f_mode == 'label' -%}
-                <label class="field__label" for="ContactForm-name">
-                  {{- f_label -}}{%- if section.settings.required_name %}<span aria-hidden="true"> *</span>{%- endif -%}
-                </label>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
 
-        {%- comment -%} ── Email (sempre visibile, sempre obbligatoria) ── {%- endcomment -%}
-        {%- liquid
-          assign f_cols_em  = section.settings.cols_email | default: '6'
-          assign f_mode_em  = section.settings.label_mode_email | default: 'label'
-          assign f_label_em = section.settings.label_email | default: 'Email'
-          assign f_ph_em    = f_label_em | append: ' *'
-        -%}
-        <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols_em }}">
-          <div class="field field--with-error{% if f_mode_em == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-            <input
-              autocomplete="email"
-              type="email"
-              id="ContactForm-email"
-              class="field__input"
-              name="contact[email]"
-              spellcheck="false"
-              autocapitalize="off"
-              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-              aria-required="true"
-              {% if form.errors contains 'email' %}
-                aria-invalid="true"
-                aria-describedby="ContactForm-email-error"
-              {% endif %}
-              placeholder="{{ f_ph_em }}"
-              {% if f_mode_em == 'placeholder' %}aria-label="{{ f_label_em }}"{% endif %}
-            >
-            {%- if f_mode_em == 'label' -%}
-              <label class="field__label" for="ContactForm-email">
-                {{- f_label_em -}}<span aria-hidden="true"> *</span>
-              </label>
-            {%- endif -%}
-            {%- if form.errors contains 'email' -%}
-              <small class="contact__field-error" id="ContactForm-email-error">
-                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-                <span class="form__message">
-                  {%- render 'ms_icon', icon: settings.ms_icon_error -%}
-                  {{- form.errors.translated_fields.email | capitalize }}
-                  {{ form.errors.messages.email -}}
-                </span>
-              </small>
-            {%- endif -%}
-          </div>
-        </div>
+          {%- if is_field -%}
+            {%- liquid
+              assign f_cols     = block.settings.cols | default: '6'
+              assign f_mode     = block.settings.label_mode | default: 'label'
+              assign f_label    = block.settings.label | default: 'Campo'
+              assign f_required = block.settings.required
+              assign f_name     = block.settings.field_name | default: 'campo'
+              assign f_id       = 'ContactForm-' | append: block.id
+              if bt == 'field_email'
+                assign f_id = 'ContactForm-email'
+              endif
+              assign f_ph = f_label
+              if f_required
+                assign f_ph = f_label | append: ' *'
+              endif
+            -%}
 
-        {%- comment -%} ── Telefono ── {%- endcomment -%}
-        {%- if section.settings.show_phone -%}
-          {%- liquid
-            assign f_cols  = section.settings.cols_phone | default: '6'
-            assign f_mode  = section.settings.label_mode_phone | default: 'label'
-            assign f_label = section.settings.label_phone | default: 'Telefono'
-            assign f_ph    = f_label
-            if section.settings.required_phone
-              assign f_ph = f_label | append: ' *'
-            endif
-          -%}
-          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
-            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-              <input
-                type="tel"
-                id="ContactForm-phone"
-                class="field__input"
-                autocomplete="tel"
-                name="contact[Telefono]"
-                pattern="[0-9\-\+\s]*"
-                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-                placeholder="{{ f_ph }}"
-                {% if section.settings.required_phone %}required aria-required="true"{% endif %}
-                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
-              >
-              {%- if f_mode == 'label' -%}
-                <label class="field__label" for="ContactForm-phone">
-                  {{- f_label -}}{%- if section.settings.required_phone %}<span aria-hidden="true"> *</span>{%- endif -%}
-                </label>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
+            <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}" {{ block.shopify_attributes }}>
 
-        {%- comment -%} ── Azienda ── {%- endcomment -%}
-        {%- if section.settings.show_company -%}
-          {%- liquid
-            assign f_cols  = section.settings.cols_company | default: '6'
-            assign f_mode  = section.settings.label_mode_company | default: 'label'
-            assign f_label = section.settings.label_company | default: 'Azienda'
-            assign f_ph    = f_label
-            if section.settings.required_company
-              assign f_ph = f_label | append: ' *'
-            endif
-          -%}
-          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
-            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-              <input
-                type="text"
-                id="ContactForm-company"
-                class="field__input"
-                autocomplete="organization"
-                name="contact[Azienda]"
-                value="{{ form['Azienda'] }}"
-                placeholder="{{ f_ph }}"
-                {% if section.settings.required_company %}required aria-required="true"{% endif %}
-                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
-              >
-              {%- if f_mode == 'label' -%}
-                <label class="field__label" for="ContactForm-company">
-                  {{- f_label -}}{%- if section.settings.required_company %}<span aria-hidden="true"> *</span>{%- endif -%}
-                </label>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
+              {%- case bt -%}
 
-        {%- comment -%} ── Oggetto ── {%- endcomment -%}
-        {%- if section.settings.show_subject -%}
-          {%- liquid
-            assign f_cols  = section.settings.cols_subject | default: '12'
-            assign f_mode  = section.settings.label_mode_subject | default: 'label'
-            assign f_label = section.settings.label_subject | default: 'Oggetto'
-            assign f_ph    = f_label
-            if section.settings.required_subject
-              assign f_ph = f_label | append: ' *'
-            endif
-          -%}
-          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
-            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-              <input
-                type="text"
-                id="ContactForm-subject"
-                class="field__input"
-                name="contact[Oggetto]"
-                value="{{ form['Oggetto'] }}"
-                placeholder="{{ f_ph }}"
-                {% if section.settings.required_subject %}required aria-required="true"{% endif %}
-                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
-              >
-              {%- if f_mode == 'label' -%}
-                <label class="field__label" for="ContactForm-subject">
-                  {{- f_label -}}{%- if section.settings.required_subject %}<span aria-hidden="true"> *</span>{%- endif -%}
-                </label>
-              {%- endif -%}
-            </div>
-          </div>
-        {%- endif -%}
+                {%- when 'field_text' -%}
+                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                    <input
+                      type="text"
+                      id="{{ f_id }}"
+                      class="field__input"
+                      name="contact[{{ f_name }}]"
+                      value="{{ form[f_name] }}"
+                      placeholder="{{ f_ph }}"
+                      {% unless block.settings.autocomplete == blank or block.settings.autocomplete == 'none' %}autocomplete="{{ block.settings.autocomplete }}"{% endunless %}
+                      {% if f_required %}required aria-required="true"{% endif %}
+                      {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+                    >
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
+                  </div>
 
-        {%- comment -%} ── Messaggio ── {%- endcomment -%}
-        {%- if section.settings.show_message -%}
-          {%- liquid
-            assign f_cols  = section.settings.cols_message | default: '12'
-            assign f_mode  = section.settings.label_mode_message | default: 'label'
-            assign f_label = section.settings.label_message | default: 'Messaggio'
-            assign f_ph    = f_label
-            if section.settings.required_message
-              assign f_ph = f_label | append: ' *'
-            endif
-          -%}
-          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
-            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
-              <textarea
-                rows="{{ section.settings.rows_message | default: 8 }}"
-                id="ContactForm-body"
-                class="text-area field__input"
-                name="contact[Messaggio]"
-                placeholder="{{ f_ph }}"
-                {% if section.settings.required_message %}required aria-required="true"{% endif %}
-                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
-              >
-                {{- form.body -}}
-              </textarea>
-              {%- if f_mode == 'label' -%}
-                <label class="form__label field__label" for="ContactForm-body">
-                  {{- f_label -}}{%- if section.settings.required_message %}<span aria-hidden="true"> *</span>{%- endif -%}
-                </label>
-              {%- endif -%}
+                {%- when 'field_email' -%}
+                  <div class="field field--with-error{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                    <input
+                      type="email"
+                      id="{{ f_id }}"
+                      class="field__input"
+                      name="contact[{{ f_name }}]"
+                      autocomplete="email"
+                      spellcheck="false"
+                      autocapitalize="off"
+                      value="{{ form.email }}"
+                      placeholder="{{ f_ph }}"
+                      {% if f_required %}required aria-required="true"{% endif %}
+                      {% if form.errors contains 'email' %}
+                        aria-invalid="true"
+                        aria-describedby="{{ f_id }}-error"
+                      {% endif %}
+                      {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+                    >
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
+                    {%- if form.errors contains 'email' -%}
+                      <small class="contact__field-error" id="{{ f_id }}-error">
+                        <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                        <span class="form__message">
+                          {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+                          {{- form.errors.translated_fields.email | capitalize }}
+                          {{ form.errors.messages.email -}}
+                        </span>
+                      </small>
+                    {%- endif -%}
+                  </div>
+
+                {%- when 'field_tel' -%}
+                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                    <input
+                      type="tel"
+                      id="{{ f_id }}"
+                      class="field__input"
+                      name="contact[{{ f_name }}]"
+                      autocomplete="tel"
+                      pattern="[0-9\-\+\s]*"
+                      value="{{ form[f_name] }}"
+                      placeholder="{{ f_ph }}"
+                      {% if f_required %}required aria-required="true"{% endif %}
+                      {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+                    >
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
+                  </div>
+
+                {%- when 'field_textarea' -%}
+                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                    <textarea
+                      rows="{{ block.settings.rows | default: 8 }}"
+                      id="{{ f_id }}"
+                      class="text-area field__input"
+                      name="contact[{{ f_name }}]"
+                      placeholder="{{ f_ph }}"
+                      {% if f_required %}required aria-required="true"{% endif %}
+                      {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+                    >{{- form[f_name] -}}</textarea>
+                    {%- if f_mode == 'label' -%}
+                      <label class="form__label field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
+                  </div>
+
+                {%- when 'field_select' -%}
+                  <div class="ms-contact-form__select-wrap">
+                    {%- if f_mode == 'label' -%}
+                      <label class="form__label ms-contact-form__select-label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
+                    <div class="select">
+                      <select
+                        id="{{ f_id }}"
+                        class="select__select"
+                        name="contact[{{ f_name }}]"
+                        {% if f_required %}required aria-required="true"{% endif %}
+                        {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+                      >
+                        {%- if block.settings.placeholder_option != blank -%}
+                          <option value="" disabled selected>{{ block.settings.placeholder_option }}</option>
+                        {%- endif -%}
+                        {%- assign select_opts = block.settings.options_list | split: "\n" -%}
+                        {%- for opt in select_opts -%}
+                          {%- assign opt_val = opt | strip -%}
+                          {%- if opt_val != blank -%}
+                            <option value="{{ opt_val }}"{% if form[f_name] == opt_val %} selected{% endif %}>{{ opt_val }}</option>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </select>
+                      {%- render 'icon-caret' -%}
+                    </div>
+                  </div>
+
+              {%- endcase -%}
+
             </div>
-          </div>
-        {%- endif -%}
+          {%- endif -%}
+
+        {%- endfor -%}
 
       </div>
 
@@ -374,262 +322,6 @@
     },
     {
       "type": "header",
-      "content": "Campo Nome"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_name",
-      "label": "Mostra campo",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "label_name",
-      "label": "Etichetta",
-      "default": "Nome"
-    },
-    {
-      "type": "select",
-      "id": "label_mode_name",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "required_name",
-      "label": "Obbligatorio",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "cols_name",
-      "label": "Larghezza colonne",
-      "default": "6",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Campo Email"
-    },
-    {
-      "type": "text",
-      "id": "label_email",
-      "label": "Etichetta",
-      "default": "Email",
-      "info": "Sempre visibile e obbligatorio."
-    },
-    {
-      "type": "select",
-      "id": "label_mode_email",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "cols_email",
-      "label": "Larghezza colonne",
-      "default": "6",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Campo Telefono"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_phone",
-      "label": "Mostra campo",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "label_phone",
-      "label": "Etichetta",
-      "default": "Telefono"
-    },
-    {
-      "type": "select",
-      "id": "label_mode_phone",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "required_phone",
-      "label": "Obbligatorio",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "cols_phone",
-      "label": "Larghezza colonne",
-      "default": "6",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Campo Azienda"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_company",
-      "label": "Mostra campo",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "label_company",
-      "label": "Etichetta",
-      "default": "Azienda"
-    },
-    {
-      "type": "select",
-      "id": "label_mode_company",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "required_company",
-      "label": "Obbligatorio",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "cols_company",
-      "label": "Larghezza colonne",
-      "default": "6",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Campo Oggetto"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_subject",
-      "label": "Mostra campo",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "label_subject",
-      "label": "Etichetta",
-      "default": "Oggetto"
-    },
-    {
-      "type": "select",
-      "id": "label_mode_subject",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "required_subject",
-      "label": "Obbligatorio",
-      "default": false
-    },
-    {
-      "type": "select",
-      "id": "cols_subject",
-      "label": "Larghezza colonne",
-      "default": "12",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
-      "content": "Campo Messaggio"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_message",
-      "label": "Mostra campo",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "label_message",
-      "label": "Etichetta",
-      "default": "Messaggio"
-    },
-    {
-      "type": "select",
-      "id": "label_mode_message",
-      "label": "Stile etichetta",
-      "default": "label",
-      "options": [
-        { "value": "label", "label": "Label fluttuante" },
-        { "value": "placeholder", "label": "Solo placeholder" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "required_message",
-      "label": "Obbligatorio",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "rows_message",
-      "label": "Righe textarea",
-      "min": 3,
-      "max": 20,
-      "step": 1,
-      "default": 8
-    },
-    {
-      "type": "select",
-      "id": "cols_message",
-      "label": "Larghezza colonne",
-      "default": "12",
-      "options": [
-        { "value": "4", "label": "4/12 (un terzo)" },
-        { "value": "6", "label": "6/12 (metà)" },
-        { "value": "12", "label": "12/12 (intera riga)" }
-      ]
-    },
-    {
-      "type": "header",
       "content": "Consenso Privacy Policy"
     },
     {
@@ -701,10 +393,10 @@
       "default": "default",
       "options": [
         { "value": "default", "label": "Predefinita" },
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" },
-        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "small",   "label": "Small" },
+        { "value": "medium",  "label": "Medium" },
+        { "value": "large",   "label": "Large" },
+        { "value": "jumbo",   "label": "Jumbo" },
         { "value": "extra_jumbo", "label": "Extra Jumbo" }
       ]
     },
@@ -722,8 +414,8 @@
       "default": "button",
       "options": [
         { "value": "button", "label": "Pulsante" },
-        { "value": "pill", "label": "Pill (arrotondato)" },
-        { "value": "link", "label": "Solo link" }
+        { "value": "pill",   "label": "Pill (arrotondato)" },
+        { "value": "link",   "label": "Solo link" }
       ]
     },
     {
@@ -739,7 +431,7 @@
       "default": "after",
       "options": [
         { "value": "before", "label": "Prima del testo" },
-        { "value": "after", "label": "Dopo il testo" }
+        { "value": "after",  "label": "Dopo il testo" }
       ]
     },
     {
@@ -757,82 +449,285 @@
   ],
   "blocks": [
     {
+      "type": "field_text",
+      "name": "Campo Testo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Nome",
+          "info": "Usato come chiave nel messaggio ricevuto (es. 'Nome: Mario Rossi'). Solo lettere e trattini."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Nome"
+        },
+        {
+          "type": "select",
+          "id": "label_mode",
+          "label": "Stile etichetta",
+          "default": "label",
+          "options": [
+            { "value": "label",       "label": "Label fluttuante" },
+            { "value": "placeholder", "label": "Solo placeholder" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "6",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "autocomplete",
+          "label": "Autocomplete browser",
+          "default": "none",
+          "options": [
+            { "value": "none",           "label": "Nessuno" },
+            { "value": "name",           "label": "Nome completo" },
+            { "value": "given-name",     "label": "Nome" },
+            { "value": "family-name",    "label": "Cognome" },
+            { "value": "organization",   "label": "Azienda" },
+            { "value": "street-address", "label": "Indirizzo" },
+            { "value": "postal-code",    "label": "CAP" },
+            { "value": "country-name",   "label": "Paese" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_email",
+      "name": "Campo Email",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "email",
+          "info": "Lascia 'email' per il campo principale — usato da Shopify per le notifiche."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Email"
+        },
+        {
+          "type": "select",
+          "id": "label_mode",
+          "label": "Stile etichetta",
+          "default": "label",
+          "options": [
+            { "value": "label",       "label": "Label fluttuante" },
+            { "value": "placeholder", "label": "Solo placeholder" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "6",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_tel",
+      "name": "Campo Telefono",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Telefono"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Telefono"
+        },
+        {
+          "type": "select",
+          "id": "label_mode",
+          "label": "Stile etichetta",
+          "default": "label",
+          "options": [
+            { "value": "label",       "label": "Label fluttuante" },
+            { "value": "placeholder", "label": "Solo placeholder" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "6",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_textarea",
+      "name": "Campo Area di Testo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Messaggio"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Messaggio"
+        },
+        {
+          "type": "select",
+          "id": "label_mode",
+          "label": "Stile etichetta",
+          "default": "label",
+          "options": [
+            { "value": "label",       "label": "Label fluttuante" },
+            { "value": "placeholder", "label": "Solo placeholder" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rows",
+          "label": "Righe visibili",
+          "min": 3,
+          "max": 20,
+          "step": 1,
+          "default": 8
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "12",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_select",
+      "name": "Campo Selezione",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Selezione"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta",
+          "default": "Seleziona un'opzione"
+        },
+        {
+          "type": "select",
+          "id": "label_mode",
+          "label": "Stile etichetta",
+          "default": "label",
+          "options": [
+            { "value": "label",       "label": "Label superiore" },
+            { "value": "placeholder", "label": "Solo aria-label (nascosta)" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "placeholder_option",
+          "label": "Prima opzione (non selezionabile)",
+          "default": "Seleziona...",
+          "info": "Mostrata come voce iniziale disabilitata."
+        },
+        {
+          "type": "textarea",
+          "id": "options_list",
+          "label": "Opzioni (una per riga)",
+          "default": "Opzione 1\nOpzione 2\nOpzione 3",
+          "info": "Inserisci ogni opzione su una riga separata."
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "12",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
       "type": "section_padding",
       "name": "Section Padding",
       "limit": 1,
       "settings": [
-        {
-          "type": "header",
-          "content": "Large/Desktop Device"
-        },
-        {
-          "type": "range",
-          "id": "section_padding_top",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Top",
-          "unit": "px",
-          "default": 35
-        },
-        {
-          "type": "range",
-          "id": "section_padding_bottom",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Bottom",
-          "unit": "px",
-          "default": 35
-        },
-        {
-          "type": "header",
-          "content": "Tablet Device"
-        },
-        {
-          "type": "range",
-          "id": "section_padding_top_md",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Top",
-          "unit": "px",
-          "default": 25
-        },
-        {
-          "type": "range",
-          "id": "section_padding_bottom_md",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Bottom",
-          "unit": "px",
-          "default": 25
-        },
-        {
-          "type": "header",
-          "content": "Mobile Device"
-        },
-        {
-          "type": "range",
-          "id": "section_padding_top_xs",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Top",
-          "unit": "px",
-          "default": 20
-        },
-        {
-          "type": "range",
-          "id": "section_padding_bottom_xs",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Padding Bottom",
-          "unit": "px",
-          "default": 20
-        }
+        { "type": "header", "content": "Large/Desktop Device" },
+        { "type": "range", "id": "section_padding_top",    "min": 0, "max": 150, "step": 5, "label": "Padding Top",    "unit": "px", "default": 35 },
+        { "type": "range", "id": "section_padding_bottom", "min": 0, "max": 150, "step": 5, "label": "Padding Bottom", "unit": "px", "default": 35 },
+        { "type": "header", "content": "Tablet Device" },
+        { "type": "range", "id": "section_padding_top_md",    "min": 0, "max": 150, "step": 5, "label": "Padding Top",    "unit": "px", "default": 25 },
+        { "type": "range", "id": "section_padding_bottom_md", "min": 0, "max": 150, "step": 5, "label": "Padding Bottom", "unit": "px", "default": 25 },
+        { "type": "header", "content": "Mobile Device" },
+        { "type": "range", "id": "section_padding_top_xs",    "min": 0, "max": 150, "step": 5, "label": "Padding Top",    "unit": "px", "default": 20 },
+        { "type": "range", "id": "section_padding_bottom_xs", "min": 0, "max": 150, "step": 5, "label": "Padding Bottom", "unit": "px", "default": 20 }
       ]
     },
     {
@@ -840,78 +735,15 @@
       "name": "Section Margin",
       "limit": 1,
       "settings": [
-        {
-          "type": "header",
-          "content": "Large/Desktop Device"
-        },
-        {
-          "type": "range",
-          "id": "section_margin_top",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Top",
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "section_margin_bottom",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Bottom",
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "header",
-          "content": "Tablet Device"
-        },
-        {
-          "type": "range",
-          "id": "section_margin_top_md",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Top",
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "section_margin_bottom_md",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Bottom",
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "header",
-          "content": "Mobile Device"
-        },
-        {
-          "type": "range",
-          "id": "section_margin_top_xs",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Top",
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "section_margin_bottom_xs",
-          "min": 0,
-          "max": 150,
-          "step": 5,
-          "label": "Margin Bottom",
-          "unit": "px",
-          "default": 0
-        }
+        { "type": "header", "content": "Large/Desktop Device" },
+        { "type": "range", "id": "section_margin_top",    "min": 0, "max": 150, "step": 5, "label": "Margin Top",    "unit": "px", "default": 0 },
+        { "type": "range", "id": "section_margin_bottom", "min": 0, "max": 150, "step": 5, "label": "Margin Bottom", "unit": "px", "default": 0 },
+        { "type": "header", "content": "Tablet Device" },
+        { "type": "range", "id": "section_margin_top_md",    "min": 0, "max": 150, "step": 5, "label": "Margin Top",    "unit": "px", "default": 0 },
+        { "type": "range", "id": "section_margin_bottom_md", "min": 0, "max": 150, "step": 5, "label": "Margin Bottom", "unit": "px", "default": 0 },
+        { "type": "header", "content": "Mobile Device" },
+        { "type": "range", "id": "section_margin_top_xs",    "min": 0, "max": 150, "step": 5, "label": "Margin Top",    "unit": "px", "default": 0 },
+        { "type": "range", "id": "section_margin_bottom_xs", "min": 0, "max": 150, "step": 5, "label": "Margin Bottom", "unit": "px", "default": 0 }
       ]
     },
     {
@@ -919,24 +751,33 @@
       "name": "Section Background",
       "limit": 1,
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "section_bg_image",
-          "label": "BG Image"
-        },
-        {
-          "type": "color",
-          "id": "section_bg_color",
-          "label": "BG Color",
-          "default": "#ffffff"
-        }
+        { "type": "image_picker", "id": "section_bg_image", "label": "BG Image" },
+        { "type": "color",        "id": "section_bg_color", "label": "BG Color", "default": "#ffffff" }
       ]
     }
   ],
   "presets": [
     {
       "name": "MS Form Contatti",
-      "category": "Contenuti"
+      "category": "Contenuti",
+      "blocks": [
+        {
+          "type": "field_text",
+          "settings": { "field_name": "Nome", "label": "Nome", "cols": "6", "autocomplete": "name" }
+        },
+        {
+          "type": "field_email",
+          "settings": { "field_name": "email", "label": "Email", "required": true, "cols": "6" }
+        },
+        {
+          "type": "field_tel",
+          "settings": { "field_name": "Telefono", "label": "Telefono", "cols": "6" }
+        },
+        {
+          "type": "field_textarea",
+          "settings": { "field_name": "Messaggio", "label": "Messaggio", "cols": "12", "rows": 8 }
+        }
+      ]
     }
   ]
 }

@@ -32,12 +32,28 @@
   padding-bottom: 1.5rem;
 }
 
+/* ── Campo selezione (select) ── */
+.ms-contact-form__select-wrap {
+  width: 100%;
+}
+
+.ms-contact-form__select-label {
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+  margin-bottom: 0.6rem;
+}
+
 /* ── Allineamento pulsante ── */
 .ms-contact-form__button--left   { display: flex; justify-content: flex-start; }
 .ms-contact-form__button--center { display: flex; justify-content: center; }
 .ms-contact-form__button--right  { display: flex; justify-content: flex-end; }
+
 .ms-contact-form__button--full .button,
-.ms-contact-form__button--full .button--pill { width: 100%; justify-content: center; }
+.ms-contact-form__button--full .button--pill {
+  width: 100%;
+  justify-content: center;
+}
 
 /* ── Sezione consensi ── */
 .ms-contact-form__consents {

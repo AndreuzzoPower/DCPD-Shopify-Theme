@@ -21,22 +21,6 @@
       "settings": {
         "section_width": "narrow",
         "color_scheme": "scheme-1",
-        "show_name": true,
-        "label_name": "Nome",
-        "required_name": false,
-        "label_email": "Email",
-        "show_phone": true,
-        "label_phone": "Telefono",
-        "required_phone": false,
-        "show_company": false,
-        "label_company": "Azienda",
-        "required_company": false,
-        "show_subject": false,
-        "label_subject": "Oggetto",
-        "required_subject": false,
-        "show_message": true,
-        "label_message": "Messaggio",
-        "required_message": false,
         "show_privacy": true,
         "privacy_text": "<p>Ho letto e accetto la <a href='/policies/privacy-policy'>Privacy Policy</a></p>",
         "required_privacy": true,
@@ -49,8 +33,59 @@
         "button_style_secondary": false,
         "button_type": "button",
         "button_icon": "",
-        "button_icon_position": "after"
-      }
+        "button_icon_position": "after",
+        "button_align": "left"
+      },
+      "blocks": {
+        "campo-nome": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Nome",
+            "label": "Nome",
+            "label_mode": "label",
+            "required": false,
+            "cols": "6",
+            "autocomplete": "name"
+          }
+        },
+        "campo-email": {
+          "type": "field_email",
+          "settings": {
+            "field_name": "email",
+            "label": "Email",
+            "label_mode": "label",
+            "required": true,
+            "cols": "6"
+          }
+        },
+        "campo-telefono": {
+          "type": "field_tel",
+          "settings": {
+            "field_name": "Telefono",
+            "label": "Telefono",
+            "label_mode": "label",
+            "required": false,
+            "cols": "6"
+          }
+        },
+        "campo-messaggio": {
+          "type": "field_textarea",
+          "settings": {
+            "field_name": "Messaggio",
+            "label": "Messaggio",
+            "label_mode": "label",
+            "required": false,
+            "rows": 8,
+            "cols": "12"
+          }
+        }
+      },
+      "block_order": [
+        "campo-nome",
+        "campo-email",
+        "campo-telefono",
+        "campo-messaggio"
+      ]
     },
     "ms_dati_strutturati_yDcAMH": {
       "type": "ms_dati-strutturati",
