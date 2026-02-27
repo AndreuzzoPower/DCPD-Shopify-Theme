@@ -23,6 +23,44 @@
   endif
 -%}
 
+{%- liquid
+  assign ms_cf_has_border  = false
+  assign ms_cf_has_bg      = false
+  assign ms_cf_has_focus   = false
+  if section.settings.field_border_color != blank and section.settings.field_border_color != 'rgba(0,0,0,0)'
+    assign ms_cf_has_border = true
+  endif
+  if section.settings.field_bg_color != blank and section.settings.field_bg_color != 'rgba(0,0,0,0)'
+    assign ms_cf_has_bg = true
+  endif
+  if section.settings.field_focus_color != blank and section.settings.field_focus_color != 'rgba(0,0,0,0)'
+    assign ms_cf_has_focus = true
+  endif
+-%}
+<style>
+  #section-{{ section.id }} .ms-contact-form__grid {
+    column-gap: {{ section.settings.field_gap_h | default: 16 }}px;
+    row-gap: {{ section.settings.field_gap_v | default: 0 }}px;
+  }
+  #section-{{ section.id }} .field__input,
+  #section-{{ section.id }} .text-area.field__input,
+  #section-{{ section.id }} .select__select {
+    font-size: {{ section.settings.field_font_size | default: 14 }}px;
+    border-radius: {{ section.settings.field_border_radius | default: 0 }}px;
+    border-width: {{ section.settings.field_border_width | default: 1 }}px;
+    {%- if ms_cf_has_border %}border-color: {{ section.settings.field_border_color }};{% endif %}
+    {%- if ms_cf_has_bg %}background-color: {{ section.settings.field_bg_color }};{% endif %}
+  }
+  {%- if ms_cf_has_focus %}
+  #section-{{ section.id }} .field__input:focus,
+  #section-{{ section.id }} .text-area.field__input:focus,
+  #section-{{ section.id }} .select__select:focus {
+    border-color: {{ section.settings.field_focus_color }};
+    outline-color: {{ section.settings.field_focus_color }};
+  }
+  {%- endif %}
+</style>
+
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
@@ -357,6 +395,78 @@
       "id": "color_scheme",
       "label": "Schema colore",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Stile campi form"
+    },
+    {
+      "type": "color",
+      "id": "field_border_color",
+      "label": "Colore bordo",
+      "info": "Lascia vuoto per usare il colore del tema."
+    },
+    {
+      "type": "range",
+      "id": "field_border_width",
+      "label": "Spessore bordo",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "field_border_radius",
+      "label": "Raggio bordo (angoli)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "field_bg_color",
+      "label": "Sfondo campo",
+      "info": "Lascia vuoto per usare il colore del tema."
+    },
+    {
+      "type": "color",
+      "id": "field_focus_color",
+      "label": "Colore bordo focus",
+      "info": "Bordo visibile quando il campo è attivo. Vuoto = colore tema."
+    },
+    {
+      "type": "range",
+      "id": "field_font_size",
+      "label": "Dimensione testo campi",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "field_gap_h",
+      "label": "Spaziatura orizzontale tra campi",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "field_gap_v",
+      "label": "Spaziatura verticale tra campi",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",
