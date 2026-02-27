@@ -1,0 +1,54 @@
+.rive-animation {
+  display: block;
+  width: 100%;
+}
+
+.rive-animation__container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rive-animation__container--16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.rive-animation__container--4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.rive-animation__container--1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+.rive-animation__container--21-9 {
+  aspect-ratio: 21 / 9;
+}
+
+.rive-animation__container--9-16 {
+  aspect-ratio: 9 / 16;
+}
+
+.rive-animation__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.rive-animation--full-width {
+  max-width: none;
+}
+
+.rive-animation--full-width .rive-animation__container {
+  border-radius: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .rive-animation__container--16-9,
+  .rive-animation__container--21-9 {
+    aspect-ratio: 4 / 3;
+  }
+}
