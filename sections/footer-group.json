@@ -12,7 +12,7 @@
   "type": "footer",
   "sections": {
     "newsletter_AUNtxG": {
-      "type": "newsletter",
+      "type": "ms_newsletter",
       "blocks": {
         "heading_FpXjL7": {
           "type": "heading",
@@ -30,19 +30,29 @@
         "email_form_Nd8TDW": {
           "type": "email_form",
           "settings": {}
+        },
+        "section_padding_newsletter": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 65,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 40,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 30
+          }
         }
       },
       "block_order": [
         "heading_FpXjL7",
         "paragraph_GajKXm",
-        "email_form_Nd8TDW"
+        "email_form_Nd8TDW",
+        "section_padding_newsletter"
       ],
-      "name": "t:sections.newsletter.presets.name",
+      "name": "MS Newsletter",
       "settings": {
         "color_scheme": "scheme-2",
-        "full_width": true,
-        "padding_top": 68,
-        "padding_bottom": 52
+        "section_width": "full_width"
       }
     },
     "footer": {
