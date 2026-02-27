@@ -210,7 +210,7 @@
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
   <div class="isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}">
     {%- unless section.settings.heading == blank -%}
-      <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin" style="text-align: {{ section.settings.heading_alignment }};">
+      <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin">
         <{{ title_tag }}
           id="SectionHeading-{{ section.id }}"
           class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -584,17 +584,6 @@
       "type": "richtext",
       "id": "description",
       "label": "Testo sotto il titolo"
-    },
-    {
-      "type": "select",
-      "id": "heading_alignment",
-      "label": "Allineamento titolo e descrizione",
-      "options": [
-        { "value": "left", "label": "Sinistra" },
-        { "value": "center", "label": "Centro" },
-        { "value": "right", "label": "Destra" }
-      ],
-      "default": "left"
     },
     {
       "type": "select",
