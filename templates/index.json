@@ -1265,12 +1265,6 @@
     "ms_newsletter_zFg7n3": {
       "type": "ms_newsletter",
       "blocks": {
-        "section_background_WNMWU9": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#f3f3f3"
-          }
-        },
         "section_padding_RbFm3b": {
           "type": "section_padding",
           "settings": {
@@ -1301,7 +1295,6 @@
         }
       },
       "block_order": [
-        "section_background_WNMWU9",
         "section_padding_RbFm3b",
         "heading_xHN9dr",
         "paragraph_RaYKz4",
