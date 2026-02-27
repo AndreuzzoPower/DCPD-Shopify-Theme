@@ -158,14 +158,10 @@
                   >
                     <summary id="Summary-{{ block.id }}-{{ section.id }}">
                       <span class="summary__title">
-                        {%- liquid
-                          assign row_icon = section.settings.accordion_icon
-                          if block.settings.custom_icon != blank
-                            assign row_icon = block.settings.custom_icon
-                          endif
-                        -%}
-                        {%- if row_icon != blank -%}
-                          {%- render 'ms_icon', icon: row_icon -%}
+                        {%- if block.settings.custom_icon != blank -%}
+                          {%- render 'ms_icon', icon: block.settings.custom_icon -%}
+                        {%- elsif section.settings.accordion_icon != blank -%}
+                          {%- render 'ms_icon', icon: section.settings.accordion_icon -%}
                         {%- endif -%}
                         <span class="accordion__title inline-richtext {{ section.settings.heading_size }}">
                           {{ block.settings.heading | default: block.settings.page.title | escape }}
