@@ -144,6 +144,7 @@
       "name": "MS Elenco collezioni",
       "settings": {
         "section_width": "page_width",
+        "mobile_full_width": false,
         "title": "Collezioni",
         "heading_size": "h0",
         "title_tag": "h2",
@@ -241,7 +242,8 @@
       ],
       "name": "MS featured product",
       "settings": {
-        "section_width": "full_width",
+        "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "product": "multi-variante-test",
         "media_size": "medium",
@@ -320,6 +322,7 @@
       "name": "MS Rich text",
       "settings": {
         "section_width": "full_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "desktop_content_position": "center",
         "content_alignment": "center"
@@ -372,6 +375,7 @@
       "name": "MS Image Banner",
       "settings": {
         "section_width": "full_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "image_height": "medium",
         "image_behavior": "none",
@@ -389,6 +393,7 @@
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "collection": "prova-1",
         "products_to_show": 11,
@@ -475,6 +480,7 @@
       "name": "MS Image with text",
       "settings": {
         "section_width": "narrow",
+        "mobile_full_width": false,
         "section_color_scheme": "scheme-5",
         "color_scheme": "scheme-5",
         "layout": "image_first",
@@ -603,6 +609,7 @@
       "name": "MS Slideshow",
       "settings": {
         "section_width": "full_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "slide_height": "large",
         "image_behavior": "ambient",
@@ -798,6 +805,7 @@
       "name": "MS Multicolonna",
       "settings": {
         "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "column_alignment": "left",
         "background_style": "primary",
@@ -858,6 +866,7 @@
       "name": "MS Rive Animation",
       "settings": {
         "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "max_width": 460,
         "horizontal_align": "center",
