@@ -55,6 +55,35 @@
   justify-content: center;
 }
 
+/* ── Blocco testo / titolo ── */
+.ms-contact-form__text-block {
+  width: 100%;
+}
+
+.ms-contact-form__text-block-heading {
+  margin: 0 0 0.8rem;
+}
+
+.ms-contact-form__text-block-body {
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.ms-contact-form__text-block-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Spacer ── */
+.ms-contact-form__spacer {
+  height: var(--spacer-h, 30px);
+}
+
+@media screen and (max-width: 749px) {
+  .ms-contact-form__spacer {
+    height: var(--spacer-h-mobile, 15px);
+  }
+}
+
 /* ── Sezione consensi ── */
 .ms-contact-form__consents {
   display: flex;

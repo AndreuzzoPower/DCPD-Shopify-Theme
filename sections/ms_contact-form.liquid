@@ -57,7 +57,7 @@
           {%- liquid
             assign bt = block.type
             assign is_field = false
-            if bt == 'field_text' or bt == 'field_email' or bt == 'field_tel' or bt == 'field_textarea' or bt == 'field_select'
+            if bt == 'field_text' or bt == 'field_email' or bt == 'field_tel' or bt == 'field_textarea' or bt == 'field_select' or bt == 'text_block' or bt == 'spacer'
               assign is_field = true
             endif
           -%}
@@ -76,6 +76,9 @@
               assign f_ph = f_label
               if f_required
                 assign f_ph = f_label | append: ' *'
+              endif
+              if bt == 'spacer'
+                assign f_cols = '12'
               endif
             -%}
 
@@ -207,6 +210,31 @@
                       {%- render 'icon-caret' -%}
                     </div>
                   </div>
+
+                {%- when 'text_block' -%}
+                  {%- liquid
+                    assign tb_tag   = block.settings.heading_tag | default: 'h3'
+                    assign tb_align = block.settings.text_align | default: 'left'
+                  -%}
+                  <div class="ms-contact-form__text-block" style="text-align: {{ tb_align }};">
+                    {%- if block.settings.heading != blank -%}
+                      <{{ tb_tag }} class="ms-contact-form__text-block-heading {{ block.settings.heading_size | default: 'h3' }}">
+                        {{ block.settings.heading | escape }}
+                      </{{ tb_tag }}>
+                    {%- endif -%}
+                    {%- if block.settings.text != blank -%}
+                      <div class="ms-contact-form__text-block-body rte">
+                        {{ block.settings.text }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                {%- when 'spacer' -%}
+                  <div
+                    class="ms-contact-form__spacer"
+                    style="--spacer-h: {{ block.settings.height | default: 30 }}px; --spacer-h-mobile: {{ block.settings.height_mobile | default: 15 }}px;"
+                    aria-hidden="true"
+                  ></div>
 
               {%- endcase -%}
 
@@ -711,6 +739,99 @@
             { "value": "6",  "label": "6/12 — metà" },
             { "value": "12", "label": "12/12 — intera riga" }
           ]
+        }
+      ]
+    },
+    {
+      "type": "text_block",
+      "name": "Testo / Titolo",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titolo",
+          "info": "Lascia vuoto per non mostrare il titolo."
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag HTML titolo",
+          "default": "h3",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" },
+            { "value": "h5", "label": "H5" },
+            { "value": "h6", "label": "H6" },
+            { "value": "p",  "label": "Paragrafo (p)" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "default": "h3",
+          "options": [
+            { "value": "h2", "label": "H2 — molto grande" },
+            { "value": "h3", "label": "H3 — grande" },
+            { "value": "h4", "label": "H4 — medio" },
+            { "value": "h5", "label": "H5 — piccolo" },
+            { "value": "h6", "label": "H6 — molto piccolo" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Testo",
+          "info": "Lascia vuoto per non mostrare il testo."
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Allineamento",
+          "default": "left",
+          "options": [
+            { "value": "left",   "label": "Sinistra" },
+            { "value": "center", "label": "Centro" },
+            { "value": "right",  "label": "Destra" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "12",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "spacer",
+      "name": "Spacer",
+      "settings": [
+        {
+          "type": "range",
+          "id": "height",
+          "label": "Altezza (desktop)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "height_mobile",
+          "label": "Altezza (mobile)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "default": 15
         }
       ]
     },
