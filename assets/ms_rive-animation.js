@@ -71,8 +71,16 @@ if (!customElements.get('rive-animation')) {
         return;
       }
 
+      const container = canvas.parentElement;
+      if (container) {
+        const rect = container.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+      }
+
       const src = this.dataset.src;
-      const stateMachine = this.dataset.stateMachine || undefined;
+      const stateMachine = this.dataset.stateMachine || '';
       const autoplay = this.dataset.autoplay === 'true';
       const loop = this.dataset.loop === 'true';
 
@@ -96,7 +104,7 @@ if (!customElements.get('rive-animation')) {
         },
       };
 
-      if (stateMachine) {
+      if (stateMachine && stateMachine.trim() !== '') {
         riveOptions.stateMachines = stateMachine;
       }
 
@@ -119,6 +127,14 @@ if (!customElements.get('rive-animation')) {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
           if (this.riveInstance) {
+            const canvas = this.querySelector('canvas');
+            const container = canvas ? canvas.parentElement : null;
+            if (container && canvas) {
+              const rect = container.getBoundingClientRect();
+              const dpr = window.devicePixelRatio || 1;
+              canvas.width = rect.width * dpr;
+              canvas.height = rect.height * dpr;
+            }
             this.riveInstance.resizeDrawingSurfaceToCanvas();
           }
         }, 100);
