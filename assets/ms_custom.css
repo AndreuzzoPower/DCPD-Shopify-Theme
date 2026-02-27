@@ -1,3 +1,9 @@
+/* Previeni overflow orizzontale su mobile (slider/carousel che debordano) */
+body,
+.content-for-layout {
+  overflow-x: clip;
+}
+
 #cart-notification .cart-notification__links #cart-notification-button:focus-visible,
 .newsletter__wrapper .field input[type="email"]:focus-visible
 {
