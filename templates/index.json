@@ -1191,6 +1191,7 @@
         "section_background_EPbAyB",
         "section_padding_KPTDyV"
       ],
+      "disabled": true,
       "name": "MS Render Menu",
       "settings": {
         "menu": "menu-categorie-blog",
@@ -1224,7 +1225,19 @@
         "title_width": "page_width",
         "slider_width": "page_width",
         "color_scheme": "",
-        "mf": [],
+        "mf": [
+          "multi-variante-test",
+          "test-1",
+          "test",
+          "multi-variante-test-copia-copia",
+          "multi-variante-test-copia-copia-1",
+          "multi-variante-test-copia-copia-copia",
+          "multi-variante-test-copia-copia-copia-copia",
+          "multi-variante-test-copia-copia-copia-copia-copia",
+          "multi-variante-test-copia-copia-copia-copia-copia-copia",
+          "multi-variante-test-copia-copia-copia-copia-copia-copia-copia",
+          "multi-variante-test-copia"
+        ],
         "products_to_show": 4,
         "title": "Prodotti correlati",
         "title_tag": "h2",
