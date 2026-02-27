@@ -25,11 +25,26 @@
   }
 }
 
-/* ── Campo in modalità solo-placeholder (nessuna label fluttuante) ── */
+/* ── Modalità label fluttuante: placeholder trasparente finché non ha focus ── */
+.ms-field--has-label .field__input::placeholder,
+.ms-field--has-label .text-area.field__input::placeholder {
+  color: transparent;
+}
+
+.ms-field--has-label .field__input:focus::placeholder,
+.ms-field--has-label .text-area.field__input:focus::placeholder {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+/* ── Modalità solo placeholder: niente label, padding uniforme ── */
 .ms-field--placeholder-only .field__input,
 .ms-field--placeholder-only .text-area.field__input {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.ms-field--placeholder-only .field__label {
+  display: none;
 }
 
 /* ── Campo selezione (select) ── */
@@ -42,6 +57,30 @@
   font-size: 1.2rem;
   letter-spacing: 0.1rem;
   margin-bottom: 0.6rem;
+}
+
+.ms-contact-form__select-wrap .select {
+  position: relative;
+}
+
+.ms-contact-form__select-wrap .select__select {
+  width: 100%;
+  padding-right: 4rem;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.ms-contact-form__select-wrap .ms-select-caret {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ── Allineamento pulsante ── */

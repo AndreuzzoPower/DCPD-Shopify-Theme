@@ -123,11 +123,6 @@
               if f_required
                 assign f_ph = f_label | append: ' *'
               endif
-              if f_mode == 'label'
-                assign f_input_ph = ' '
-              else
-                assign f_input_ph = f_ph
-              endif
               if bt == 'spacer'
                 assign f_cols = '12'
               endif
@@ -138,27 +133,25 @@
               {%- case bt -%}
 
                 {%- when 'field_text' -%}
-                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="text"
                       id="{{ f_id }}"
                       class="field__input"
                       name="contact[{{ f_name }}]"
                       value="{{ form[f_name] }}"
-                      placeholder="{{ f_input_ph }}"
+                      placeholder="{{ f_ph }}"
                       {% unless block.settings.autocomplete == blank or block.settings.autocomplete == 'none' %}autocomplete="{{ block.settings.autocomplete }}"{% endunless %}
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    {%- if f_mode == 'label' -%}
-                      <label class="field__label" for="{{ f_id }}">
-                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                      </label>
-                    {%- endif -%}
+                    <label class="field__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
                   </div>
 
                 {%- when 'field_email' -%}
-                  <div class="field field--with-error{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                  <div class="field field--with-error{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="email"
                       id="{{ f_id }}"
@@ -168,7 +161,7 @@
                       spellcheck="false"
                       autocapitalize="off"
                       value="{{ form.email }}"
-                      placeholder="{{ f_input_ph }}"
+                      placeholder="{{ f_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if form.errors contains 'email' %}
                         aria-invalid="true"
@@ -176,11 +169,9 @@
                       {% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    {%- if f_mode == 'label' -%}
-                      <label class="field__label" for="{{ f_id }}">
-                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                      </label>
-                    {%- endif -%}
+                    <label class="field__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
                     {%- if form.errors contains 'email' -%}
                       <small class="contact__field-error" id="{{ f_id }}-error">
                         <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
@@ -194,7 +185,7 @@
                   </div>
 
                 {%- when 'field_tel' -%}
-                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="tel"
                       id="{{ f_id }}"
@@ -203,33 +194,29 @@
                       autocomplete="tel"
                       pattern="[0-9\-\+\s]*"
                       value="{{ form[f_name] }}"
-                      placeholder="{{ f_input_ph }}"
+                      placeholder="{{ f_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    {%- if f_mode == 'label' -%}
-                      <label class="field__label" for="{{ f_id }}">
-                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                      </label>
-                    {%- endif -%}
+                    <label class="field__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
                   </div>
 
                 {%- when 'field_textarea' -%}
-                  <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
                     <textarea
                       rows="{{ block.settings.rows | default: 8 }}"
                       id="{{ f_id }}"
                       class="text-area field__input"
                       name="contact[{{ f_name }}]"
-                      placeholder="{{ f_input_ph }}"
+                      placeholder="{{ f_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >{{- form[f_name] -}}</textarea>
-                    {%- if f_mode == 'label' -%}
-                      <label class="form__label field__label" for="{{ f_id }}">
-                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                      </label>
-                    {%- endif -%}
+                    <label class="form__label field__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
                   </div>
 
                 {%- when 'field_select' -%}
@@ -250,7 +237,7 @@
                         {%- if block.settings.placeholder_option != blank -%}
                           <option value="" disabled selected>{{ block.settings.placeholder_option }}</option>
                         {%- endif -%}
-                        {%- assign select_opts = block.settings.options_list | split: "\n" -%}
+                        {%- assign select_opts = block.settings.options_list | newline_to_br | split: '<br />' -%}
                         {%- for opt in select_opts -%}
                           {%- assign opt_val = opt | strip -%}
                           {%- if opt_val != blank -%}
@@ -258,8 +245,8 @@
                           {%- endif -%}
                         {%- endfor -%}
                       </select>
-                      <span class="svg-wrapper" aria-hidden="true">
-                        <svg class="icon icon-caret" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="none" focusable="false">
+                      <span class="ms-select-caret" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="none" focusable="false" width="12" height="12">
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/>
                         </svg>
                       </span>
@@ -268,7 +255,7 @@
 
                 {%- when 'field_radio' -%}
                   {%- liquid
-                    assign radio_opts = block.settings.options_list | split: "\n"
+                    assign radio_opts = block.settings.options_list | newline_to_br | split: '<br />'
                     assign radio_display = block.settings.display | default: 'vertical'
                   -%}
                   <fieldset class="ms-contact-form__fieldset">
@@ -299,7 +286,7 @@
 
                 {%- when 'field_checkbox_group' -%}
                   {%- liquid
-                    assign cb_opts = block.settings.options_list | split: "\n"
+                    assign cb_opts = block.settings.options_list | newline_to_br | split: '<br />'
                     assign cb_display = block.settings.display | default: 'vertical'
                   -%}
                   <fieldset class="ms-contact-form__fieldset">
@@ -334,7 +321,7 @@
                   -%}
                   <div class="ms-contact-form__text-block" style="text-align: {{ tb_align }};">
                     {%- if block.settings.heading != blank -%}
-                      <{{ tb_tag }} class="ms-contact-form__text-block-heading {{ block.settings.heading_size | default: 'h3' }}">
+                      <{{ tb_tag }} class="ms-contact-form__text-block-heading {{ block.settings.heading_size | default: 'h2' }}">
                         {{ block.settings.heading | escape }}
                       </{{ tb_tag }}>
                     {%- endif -%}
@@ -1087,13 +1074,13 @@
           "type": "select",
           "id": "heading_size",
           "label": "Dimensione titolo",
-          "default": "h3",
+          "default": "h2",
           "options": [
-            { "value": "h2", "label": "H2 — molto grande" },
-            { "value": "h3", "label": "H3 — grande" },
-            { "value": "h4", "label": "H4 — medio" },
-            { "value": "h5", "label": "H5 — piccolo" },
-            { "value": "h6", "label": "H6 — molto piccolo" }
+            { "value": "h2",   "label": "Piccolo" },
+            { "value": "h1",   "label": "Medio" },
+            { "value": "h0",   "label": "Grande" },
+            { "value": "hxl",  "label": "Extra grande" },
+            { "value": "hxxl", "label": "Extra extra grande" }
           ]
         },
         {
