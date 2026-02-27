@@ -210,34 +210,36 @@
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
   <div class="isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}">
     {%- unless section.settings.heading == blank -%}
-      <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin">
-        <{{ title_tag }}
-          id="SectionHeading-{{ section.id }}"
-          class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
-          {{ section.settings.heading }}
-        </{{ title_tag }}>
+      <div class="ms-fb__header" style="text-align: {{ section.settings.heading_alignment }};">
+        <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin">
+          <{{ title_tag }}
+            id="SectionHeading-{{ section.id }}"
+            class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+            {% endif %}
+          >
+            {{ section.settings.heading }}
+          </{{ title_tag }}>
+
+          {%- if section.settings.blog != blank
+            and section.settings.show_view_all
+            and section.settings.post_limit < section.settings.blog.articles_count
+          -%}
+            <a
+              href="{{ section.settings.blog.url }}"
+              class="link underlined-link large-up-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              aria-label="{{ 'sections.featured_blog.view_all' | t }}: {{ section.settings.blog.title | escape }}"
+            >
+              {{ 'sections.featured_blog.view_all' | t }}
+            </a>
+          {%- endif -%}
+        </div>
 
         {%- if section.settings.description != blank -%}
           <div class="ms-fb__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
             {{ section.settings.description }}
           </div>
-        {%- endif -%}
-
-        {%- if section.settings.blog != blank
-          and section.settings.show_view_all
-          and section.settings.post_limit < section.settings.blog.articles_count
-        -%}
-          <a
-            href="{{ section.settings.blog.url }}"
-            class="link underlined-link large-up-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            aria-label="{{ 'sections.featured_blog.view_all' | t }}: {{ section.settings.blog.title | escape }}"
-          >
-            {{ 'sections.featured_blog.view_all' | t }}
-          </a>
         {%- endif -%}
       </div>
     {%- endunless -%}
