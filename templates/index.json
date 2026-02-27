@@ -1012,8 +1012,7 @@
           "type": "collapsible_row",
           "settings": {
             "heading": "Riga comprimibile",
-            "icon": "check_mark",
-            "custom_icon": "",
+            "custom_icon": "fa-solid fa-arrow-down",
             "row_content": "",
             "page": ""
           }
@@ -1022,7 +1021,6 @@
           "type": "collapsible_row",
           "settings": {
             "heading": "Riga comprimibile",
-            "icon": "check_mark",
             "custom_icon": "",
             "row_content": "",
             "page": ""
@@ -1032,7 +1030,6 @@
           "type": "collapsible_row",
           "settings": {
             "heading": "Riga comprimibile",
-            "icon": "check_mark",
             "custom_icon": "",
             "row_content": "",
             "page": ""
@@ -1042,7 +1039,6 @@
           "type": "collapsible_row",
           "settings": {
             "heading": "Riga comprimibile",
-            "icon": "check_mark",
             "custom_icon": "",
             "row_content": "",
             "page": ""
@@ -1057,10 +1053,16 @@
       ],
       "name": "MS Collapsible Content",
       "settings": {
-        "layout": "none",
+        "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "",
+        "accordion_style": "standard",
+        "heading_size": "h4",
+        "accordion_icon": "",
         "open_first_collapsible_row": false,
+        "show_image": true,
         "image_ratio": "adapt",
+        "image_border_radius": 0,
         "desktop_layout": "image_second"
       }
     },
