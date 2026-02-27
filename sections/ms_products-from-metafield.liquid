@@ -39,24 +39,6 @@
 
   {%- liquid
     comment
-      ── Larghezza TITOLO ──
-    endcomment
-    assign tw = section.settings.title_width | default: 'page_width'
-    if tw == 'default'
-      assign tw = 'page_width'
-    endif
-    case tw
-      when 'narrow'
-        assign title_pw_class = 'page-width page-width--narrow'
-      when 'page_fluid'
-        assign title_pw_class = 'page-width page-width--fluid'
-      when 'full_width'
-        assign title_pw_class = ''
-      else
-        assign title_pw_class = 'page-width'
-    endcase
-
-    comment
       ── Larghezza SLIDER / GRIGLIA ──
       is_slider_full_width serve per le classi Dawn (collection--full-width,
       slider-component-full-width, title-wrapper--self-padded-tablet-down).
@@ -149,23 +131,6 @@
       data-id="{{ section.id }}"
     >
 
-      {%- comment -%} ── TITOLO / TESTO — wrapper indipendente ── {%- endcomment -%}
-      {%- if title_pw_class != blank -%}<div class="{{ title_pw_class }}">{%- endif -%}
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider and tw == 'full_width' %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
-        {%- if section.settings.title != blank -%}
-          {%- assign t_tag = section.settings.title_tag | default: 'h2' -%}
-          <{{ t_tag }} class="title {{ section.settings.heading_size }}{% if section.settings.title_custom_class != blank %} {{ section.settings.title_custom_class }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-            {{- section.settings.title | escape -}}
-          </{{ t_tag }}>
-        {%- endif -%}
-        {%- if section.settings.description != blank -%}
-          <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-            {{ section.settings.description }}
-          </div>
-        {%- endif -%}
-      </div>
-      {%- if title_pw_class != blank -%}</div>{%- endif -%}
-
       {%- comment -%}
         ── SLIDER / GRIGLIA — wrapper indipendente ──
         page-width è applicato sul wrapper (e non sullo slider) perché Dawn
@@ -186,7 +151,7 @@
           id="Slider-{{ section.id }}"
           class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
           role="list"
-          aria-label="{{ section.settings.title | default: 'Prodotti correlati' | escape }}"
+          aria-label="Prodotti correlati"
         >
           {%- for product in products_list limit: products_to_show -%}
             <li
@@ -251,18 +216,6 @@
     },
     {
       "type": "select",
-      "id": "title_width",
-      "label": "Larghezza titolo / testo",
-      "options": [
-        { "value": "narrow", "label": "Stretta (narrow)" },
-        { "value": "page_width", "label": "Larghezza pagina" },
-        { "value": "page_fluid", "label": "Larghezza fluida" },
-        { "value": "full_width", "label": "Piena larghezza" }
-      ],
-      "default": "page_width"
-    },
-    {
-      "type": "select",
       "id": "slider_width",
       "label": "Larghezza carosello / griglia",
       "options": [
@@ -298,63 +251,6 @@
       "step": 1,
       "default": 4,
       "label": "t:sections.featured-collection.settings.products_to_show.label"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "default": "Prodotti correlati",
-      "label": "t:sections.featured-collection.settings.title.label"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
-        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
-        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
-        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
-        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-    {
-      "type": "liquid",
-      "id": "description",
-      "label": "t:sections.featured-collection.settings.description.label"
-    },
-    {
-      "type": "select",
-      "id": "description_style",
-      "label": "t:sections.featured-collection.settings.description_style.label",
-      "options": [
-        { "value": "body", "label": "t:sections.featured-collection.settings.description_style.options__1.label" },
-        { "value": "subtitle", "label": "t:sections.featured-collection.settings.description_style.options__2.label" },
-        { "value": "uppercase", "label": "t:sections.featured-collection.settings.description_style.options__3.label" }
-      ],
-      "default": "body"
     },
     {
       "type": "header",
