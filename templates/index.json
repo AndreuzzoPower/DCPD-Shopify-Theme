@@ -146,12 +146,6 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
-        "title": "Collezioni",
-        "heading_size": "h0",
-        "title_tag": "h2",
-        "title_custom_class": "",
-        "description": "<p>Testo introduttivo delle collection</p>",
-        "title_alignment": "center",
         "columns_desktop": 4,
         "grid_alignment": "center",
         "enable_desktop_slider": true,
@@ -673,15 +667,7 @@
         "color_scheme": "",
         "desktop_layout": "left",
         "mobile_layout": "column",
-        "card_styles": "product-card-wrapper",
-        "heading": "Collage multimediale",
-        "heading_tag": "h2",
-        "heading_size": "h1",
-        "heading_custom_class": "",
-        "subheading": "",
-        "subheading_tag": "p",
-        "subheading_custom_class": "",
-        "heading_alignment": "left"
+        "card_styles": "product-card-wrapper"
       }
     },
     "ms_multicolumn_dNmEq4": {
@@ -818,10 +804,6 @@
         "color_scheme": "",
         "column_alignment": "left",
         "background_style": "primary",
-        "title": "Multicolonna",
-        "heading_tag": "h2",
-        "heading_size": "h1",
-        "heading_custom_class": "",
         "image_width": "full",
         "image_ratio": "adapt",
         "button_label": "Etichetta pulsante",
@@ -882,10 +864,6 @@
         "horizontal_align": "center",
         "aspect_ratio": "4-3",
         "custom_height": 320,
-        "heading": "",
-        "heading_size": "h1",
-        "heading_tag": "h2",
-        "heading_custom_class": "",
         "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/26548-49782-chracter-interaction.riv?v=1772176107",
         "state_machine": "",
         "autoplay": true,
@@ -999,11 +977,6 @@
         "carousel_show_pagination": true,
         "columns_mobile": "1",
         "swipe_on_mobile": true,
-        "heading": "Articoli del blog",
-        "description": "<p>Questa è la descrizione dell'area blog</p>",
-        "heading_size": "h1",
-        "title_tag": "h2",
-        "title_custom_class": "",
         "show_image": true,
         "image_height": "medium",
         "show_date": true,
@@ -1030,6 +1003,253 @@
         "button_icon_position": "before",
         "color_scheme": ""
       }
+    },
+    "ms_collapsible_content_n9JQG9": {
+      "type": "ms_collapsible-content",
+      "blocks": {
+        "collapsible_row_EAUxTn": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Riga comprimibile",
+            "icon": "check_mark",
+            "custom_icon": "",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_KC4An9": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Riga comprimibile",
+            "icon": "check_mark",
+            "custom_icon": "",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_jCtnEV": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Riga comprimibile",
+            "icon": "check_mark",
+            "custom_icon": "",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_TEUVXA": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Riga comprimibile",
+            "icon": "check_mark",
+            "custom_icon": "",
+            "row_content": "",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_EAUxTn",
+        "collapsible_row_KC4An9",
+        "collapsible_row_jCtnEV",
+        "collapsible_row_TEUVXA"
+      ],
+      "name": "MS Collapsible Content",
+      "settings": {
+        "caption": "",
+        "heading": "Contenuto comprimibile",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second"
+      }
+    },
+    "ms_divider_K8eL66": {
+      "type": "ms_divider",
+      "name": "MS Divisore",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "divider_type": "tilt",
+        "divider_color": "#ffffff",
+        "divider_height": 80,
+        "divider_height_mobile": 50,
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "line_weight": 1,
+        "line_style": "solid"
+      }
+    },
+    "ms_custom_html_6GQjcG": {
+      "type": "ms_custom-html",
+      "blocks": {
+        "section_padding_rtqM3L": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        },
+        "section_content_KHMgJB": {
+          "type": "section_content",
+          "settings": {
+            "custom_content": "<div class=\"container\"><div class=\"row\"><div class=\"col-12\">Contenuto con codice LIQUID</div></div></div>",
+            "custom_content_html": "<div class=\"container\"><div class=\"row\"><div class=\"col-12\">Contenuto</div></div></div>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_rtqM3L",
+        "section_content_KHMgJB"
+      ],
+      "name": "MS Custom HTML/LIQUID",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "section_title": "New Arrivals",
+        "section_sub_title": "Contrary to popular belief, Lorem Ipsum is not simply random text.",
+        "title_align": "text-center"
+      }
+    },
+    "ms_dati_strutturati_cY3GnR": {
+      "type": "ms_dati-strutturati",
+      "name": "MS Dati Strutturati",
+      "settings": {
+        "dsjson": "",
+        "dsjsonta": ""
+      }
+    },
+    "ms_breadcrumbs_9F3RU7": {
+      "type": "ms_breadcrumbs",
+      "blocks": {
+        "section_padding_MMA9nH": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 0,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 0
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_MMA9nH"
+      ],
+      "name": "MS Breadcrumbs",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "alignment": "center",
+        "home_lbl": "Home",
+        "home_icon": "",
+        "home_icon_color": "",
+        "separator": "/",
+        "separator_icon": "",
+        "separator_icon_color": "",
+        "wrapperclass": "",
+        "menu_handle": "",
+        "show_all_collections": false,
+        "collections_banned": "",
+        "show_cat_handle": false
+      }
+    },
+    "ms_render_menu_VUWCrj": {
+      "type": "ms_render_menu",
+      "blocks": {
+        "section_padding_KPTDyV": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 20,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 15,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 10
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_KPTDyV"
+      ],
+      "name": "MS Render Menu",
+      "settings": {
+        "menu": "",
+        "show_title": false,
+        "title": "",
+        "title_tag": "div",
+        "title_custom_class": "",
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "alignment": "left",
+        "style": "pills",
+        "color_scheme": ""
+      }
+    },
+    "ms_products_from_metafield_ckjLUd": {
+      "type": "ms_products-from-metafield",
+      "blocks": {
+        "section_padding_VEzUtn": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_VEzUtn"
+      ],
+      "name": "MS Prodotti Da Metafield",
+      "settings": {
+        "title_width": "page_width",
+        "slider_width": "page_width",
+        "color_scheme": "",
+        "mf": [],
+        "products_to_show": 4,
+        "title": "Prodotti correlati",
+        "title_tag": "h2",
+        "heading_size": "h1",
+        "title_custom_class": "",
+        "description": "",
+        "description_style": "body",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "enable_desktop_slider_autoplay": false,
+        "desktop_slider_autoplay_velocita": 3,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "show_min_order": true,
+        "quick_add": "none"
+      }
     }
   },
   "order": [
@@ -1044,6 +1264,13 @@
     "ms_multicolumn_dNmEq4",
     "ms_rive_animation_A6hz9Y",
     "ms_multirow_TLxyBP",
-    "ms_featured_blog_LfnawX"
+    "ms_featured_blog_LfnawX",
+    "ms_collapsible_content_n9JQG9",
+    "ms_divider_K8eL66",
+    "ms_custom_html_6GQjcG",
+    "ms_dati_strutturati_cY3GnR",
+    "ms_breadcrumbs_9F3RU7",
+    "ms_render_menu_VUWCrj",
+    "ms_products_from_metafield_ckjLUd"
   ]
 }
