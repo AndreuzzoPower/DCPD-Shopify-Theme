@@ -1307,19 +1307,15 @@
         "color_scheme": "scheme-1"
       }
     },
-    "video_HCLmpM": {
-      "type": "video",
-      "name": "t:sections.video.presets.name",
+    "ms_video_fWDKzx": {
+      "type": "ms_video",
+      "name": "MS Video",
       "settings": {
-        "heading": "Video",
-        "heading_size": "h1",
-        "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "description": "",
-        "full_width": false,
+        "section_width": "page_width",
         "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "enable_video_looping": false,
+        "video_url": "https://www.youtube.com/watch?v=yNAFtADhzss&list=RDyNAFtADhzss&start_radio=1",
+        "description": ""
       }
     }
   },
@@ -1344,6 +1340,6 @@
     "ms_render_menu_VUWCrj",
     "ms_products_from_metafield_ckjLUd",
     "ms_newsletter_zFg7n3",
-    "video_HCLmpM"
+    "ms_video_fWDKzx"
   ]
 }
