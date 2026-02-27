@@ -1169,10 +1169,16 @@
     "ms_render_menu_VUWCrj": {
       "type": "ms_render_menu",
       "blocks": {
+        "section_background_EPbAyB": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#ecff00"
+          }
+        },
         "section_padding_KPTDyV": {
           "type": "section_padding",
           "settings": {
-            "section_padding_top": 0,
+            "section_padding_top": 20,
             "section_padding_bottom": 20,
             "section_padding_top_md": 0,
             "section_padding_bottom_md": 15,
@@ -1182,6 +1188,7 @@
         }
       },
       "block_order": [
+        "section_background_EPbAyB",
         "section_padding_KPTDyV"
       ],
       "name": "MS Render Menu",
