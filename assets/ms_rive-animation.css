@@ -1,3 +1,7 @@
+.rive-animation-wrapper {
+  width: 100%;
+}
+
 .rive-animation {
   display: block;
   width: 100%;

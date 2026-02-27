@@ -31,6 +31,14 @@
 -%}
 
 {%- style -%}
+  {%- if section.settings.max_width > 0 -%}
+    #section-{{ section.id }} .rive-animation-wrapper {
+      max-width: {{ section.settings.max_width }}px;
+      margin-left: {% if section.settings.horizontal_align == 'left' %}0{% elsif section.settings.horizontal_align == 'right' %}auto{% else %}auto{% endif %};
+      margin-right: {% if section.settings.horizontal_align == 'right' %}0{% elsif section.settings.horizontal_align == 'left' %}auto{% else %}auto{% endif %};
+    }
+  {%- endif -%}
+
   {%- if section.settings.aspect_ratio == 'custom' and section.settings.custom_height > 0 -%}
     #RiveAnimation-{{ section.id }} .rive-animation__container {
       aspect-ratio: unset;
@@ -47,6 +55,7 @@
 
 <div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
   <div class="rive-animation-section isolate {{ sw_class }}">
+    <div class="rive-animation-wrapper">
     {%- unless section.settings.heading == blank -%}
       <div class="title-wrapper title-wrapper--no-top-margin{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         <{{ heading_tag }} class="{{ heading_classes }}">{{ section.settings.heading }}</{{ heading_tag }}>
@@ -86,6 +95,7 @@
         </div>
       </div>
     {%- endif -%}
+    </div>
   </div>
 </div>
 
@@ -121,6 +131,28 @@
       "id": "color_scheme",
       "label": "Schema colori",
       "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Larghezza massima",
+      "min": 0,
+      "max": 1600,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = larghezza piena del contenitore. Riduci per 'ritagliare' attorno all'animazione."
+    },
+    {
+      "type": "select",
+      "id": "horizontal_align",
+      "label": "Allineamento orizzontale",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ],
+      "default": "center"
     },
     {
       "type": "select",
