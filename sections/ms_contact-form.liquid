@@ -23,6 +23,12 @@
   endif
 -%}
 
+{%- comment -%}
+  Macro per rendere un campo input con supporto label/placeholder e colonne.
+  Chiamata inline tramite assegnazione di variabili prima di includere
+  il blocco HTML — Liquid non supporta macro, quindi usiamo variabili.
+{%- endcomment -%}
+
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
@@ -50,148 +56,221 @@
         </ul>
       {%- endif -%}
 
-      {%- comment -%} ── Nome + Email (griglia affiancata) ── {%- endcomment -%}
-      <div class="contact__fields">
+      <div class="ms-contact-form__grid">
+
+        {%- comment -%} ── Nome ── {%- endcomment -%}
         {%- if section.settings.show_name -%}
-          <div class="field">
-            <input
-              class="field__input"
-              autocomplete="name"
-              type="text"
-              id="ContactForm-name"
-              name="contact[Nome]"
-              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              placeholder="{{ section.settings.label_name | default: 'Nome' }}"
-              {% if section.settings.required_name %}required aria-required="true"{% endif %}
-            >
-            <label class="field__label" for="ContactForm-name">
-              {{- section.settings.label_name | default: 'Nome' -}}
-              {%- if section.settings.required_name %}<span aria-hidden="true"> *</span>{%- endif -%}
-            </label>
+          {%- liquid
+            assign f_cols  = section.settings.cols_name | default: '6'
+            assign f_mode  = section.settings.label_mode_name | default: 'label'
+            assign f_label = section.settings.label_name | default: 'Nome'
+            assign f_ph    = f_label
+            if section.settings.required_name
+              assign f_ph = f_label | append: ' *'
+            endif
+          -%}
+          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
+            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+              <input
+                class="field__input"
+                autocomplete="name"
+                type="text"
+                id="ContactForm-name"
+                name="contact[Nome]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="{{ f_ph }}"
+                {% if section.settings.required_name %}required aria-required="true"{% endif %}
+                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+              >
+              {%- if f_mode == 'label' -%}
+                <label class="field__label" for="ContactForm-name">
+                  {{- f_label -}}{%- if section.settings.required_name %}<span aria-hidden="true"> *</span>{%- endif -%}
+                </label>
+              {%- endif -%}
+            </div>
           </div>
         {%- endif -%}
 
-        <div class="field field--with-error">
-          <input
-            autocomplete="email"
-            type="email"
-            id="ContactForm-email"
-            class="field__input"
-            name="contact[email]"
-            spellcheck="false"
-            autocapitalize="off"
-            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            aria-required="true"
-            {% if form.errors contains 'email' %}
-              aria-invalid="true"
-              aria-describedby="ContactForm-email-error"
-            {% endif %}
-            placeholder="{{ section.settings.label_email | default: 'Email' }}"
-          >
-          <label class="field__label" for="ContactForm-email">
-            {{- section.settings.label_email | default: 'Email' -}}
-            <span aria-hidden="true"> *</span>
-          </label>
-          {%- if form.errors contains 'email' -%}
-            <small class="contact__field-error" id="ContactForm-email-error">
-              <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
-              <span class="form__message">
-                {%- render 'ms_icon', icon: settings.ms_icon_error -%}
-                {{- form.errors.translated_fields.email | capitalize }}
-                {{ form.errors.messages.email -}}
-              </span>
-            </small>
-          {%- endif -%}
+        {%- comment -%} ── Email (sempre visibile, sempre obbligatoria) ── {%- endcomment -%}
+        {%- liquid
+          assign f_cols_em  = section.settings.cols_email | default: '6'
+          assign f_mode_em  = section.settings.label_mode_email | default: 'label'
+          assign f_label_em = section.settings.label_email | default: 'Email'
+          assign f_ph_em    = f_label_em | append: ' *'
+        -%}
+        <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols_em }}">
+          <div class="field field--with-error{% if f_mode_em == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+            <input
+              autocomplete="email"
+              type="email"
+              id="ContactForm-email"
+              class="field__input"
+              name="contact[email]"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              aria-required="true"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+                aria-describedby="ContactForm-email-error"
+              {% endif %}
+              placeholder="{{ f_ph_em }}"
+              {% if f_mode_em == 'placeholder' %}aria-label="{{ f_label_em }}"{% endif %}
+            >
+            {%- if f_mode_em == 'label' -%}
+              <label class="field__label" for="ContactForm-email">
+                {{- f_label_em -}}<span aria-hidden="true"> *</span>
+              </label>
+            {%- endif -%}
+            {%- if form.errors contains 'email' -%}
+              <small class="contact__field-error" id="ContactForm-email-error">
+                <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                <span class="form__message">
+                  {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+                  {{- form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email -}}
+                </span>
+              </small>
+            {%- endif -%}
+          </div>
         </div>
+
+        {%- comment -%} ── Telefono ── {%- endcomment -%}
+        {%- if section.settings.show_phone -%}
+          {%- liquid
+            assign f_cols  = section.settings.cols_phone | default: '6'
+            assign f_mode  = section.settings.label_mode_phone | default: 'label'
+            assign f_label = section.settings.label_phone | default: 'Telefono'
+            assign f_ph    = f_label
+            if section.settings.required_phone
+              assign f_ph = f_label | append: ' *'
+            endif
+          -%}
+          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
+            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+              <input
+                type="tel"
+                id="ContactForm-phone"
+                class="field__input"
+                autocomplete="tel"
+                name="contact[Telefono]"
+                pattern="[0-9\-\+\s]*"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                placeholder="{{ f_ph }}"
+                {% if section.settings.required_phone %}required aria-required="true"{% endif %}
+                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+              >
+              {%- if f_mode == 'label' -%}
+                <label class="field__label" for="ContactForm-phone">
+                  {{- f_label -}}{%- if section.settings.required_phone %}<span aria-hidden="true"> *</span>{%- endif -%}
+                </label>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── Azienda ── {%- endcomment -%}
+        {%- if section.settings.show_company -%}
+          {%- liquid
+            assign f_cols  = section.settings.cols_company | default: '6'
+            assign f_mode  = section.settings.label_mode_company | default: 'label'
+            assign f_label = section.settings.label_company | default: 'Azienda'
+            assign f_ph    = f_label
+            if section.settings.required_company
+              assign f_ph = f_label | append: ' *'
+            endif
+          -%}
+          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
+            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+              <input
+                type="text"
+                id="ContactForm-company"
+                class="field__input"
+                autocomplete="organization"
+                name="contact[Azienda]"
+                value="{{ form['Azienda'] }}"
+                placeholder="{{ f_ph }}"
+                {% if section.settings.required_company %}required aria-required="true"{% endif %}
+                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+              >
+              {%- if f_mode == 'label' -%}
+                <label class="field__label" for="ContactForm-company">
+                  {{- f_label -}}{%- if section.settings.required_company %}<span aria-hidden="true"> *</span>{%- endif -%}
+                </label>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── Oggetto ── {%- endcomment -%}
+        {%- if section.settings.show_subject -%}
+          {%- liquid
+            assign f_cols  = section.settings.cols_subject | default: '12'
+            assign f_mode  = section.settings.label_mode_subject | default: 'label'
+            assign f_label = section.settings.label_subject | default: 'Oggetto'
+            assign f_ph    = f_label
+            if section.settings.required_subject
+              assign f_ph = f_label | append: ' *'
+            endif
+          -%}
+          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
+            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+              <input
+                type="text"
+                id="ContactForm-subject"
+                class="field__input"
+                name="contact[Oggetto]"
+                value="{{ form['Oggetto'] }}"
+                placeholder="{{ f_ph }}"
+                {% if section.settings.required_subject %}required aria-required="true"{% endif %}
+                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+              >
+              {%- if f_mode == 'label' -%}
+                <label class="field__label" for="ContactForm-subject">
+                  {{- f_label -}}{%- if section.settings.required_subject %}<span aria-hidden="true"> *</span>{%- endif -%}
+                </label>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ── Messaggio ── {%- endcomment -%}
+        {%- if section.settings.show_message -%}
+          {%- liquid
+            assign f_cols  = section.settings.cols_message | default: '12'
+            assign f_mode  = section.settings.label_mode_message | default: 'label'
+            assign f_label = section.settings.label_message | default: 'Messaggio'
+            assign f_ph    = f_label
+            if section.settings.required_message
+              assign f_ph = f_label | append: ' *'
+            endif
+          -%}
+          <div class="ms-contact-form__field-wrap ms-contact-form__field-wrap--cols-{{ f_cols }}">
+            <div class="field{% if f_mode == 'placeholder' %} ms-field--placeholder-only{% endif %}">
+              <textarea
+                rows="{{ section.settings.rows_message | default: 8 }}"
+                id="ContactForm-body"
+                class="text-area field__input"
+                name="contact[Messaggio]"
+                placeholder="{{ f_ph }}"
+                {% if section.settings.required_message %}required aria-required="true"{% endif %}
+                {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
+              >
+                {{- form.body -}}
+              </textarea>
+              {%- if f_mode == 'label' -%}
+                <label class="form__label field__label" for="ContactForm-body">
+                  {{- f_label -}}{%- if section.settings.required_message %}<span aria-hidden="true"> *</span>{%- endif -%}
+                </label>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
       </div>
 
-      {%- comment -%} ── Telefono ── {%- endcomment -%}
-      {%- if section.settings.show_phone -%}
-        <div class="field">
-          <input
-            type="tel"
-            id="ContactForm-phone"
-            class="field__input"
-            autocomplete="tel"
-            name="contact[Telefono]"
-            pattern="[0-9\-\+\s]*"
-            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-            placeholder="{{ section.settings.label_phone | default: 'Telefono' }}"
-            {% if section.settings.required_phone %}required aria-required="true"{% endif %}
-          >
-          <label class="field__label" for="ContactForm-phone">
-            {{- section.settings.label_phone | default: 'Telefono' -}}
-            {%- if section.settings.required_phone %}<span aria-hidden="true"> *</span>{%- endif -%}
-          </label>
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} ── Azienda ── {%- endcomment -%}
-      {%- if section.settings.show_company -%}
-        <div class="field">
-          <input
-            type="text"
-            id="ContactForm-company"
-            class="field__input"
-            autocomplete="organization"
-            name="contact[Azienda]"
-            value="{{ form['Azienda'] }}"
-            placeholder="{{ section.settings.label_company | default: 'Azienda' }}"
-            {% if section.settings.required_company %}required aria-required="true"{% endif %}
-          >
-          <label class="field__label" for="ContactForm-company">
-            {{- section.settings.label_company | default: 'Azienda' -}}
-            {%- if section.settings.required_company %}<span aria-hidden="true"> *</span>{%- endif -%}
-          </label>
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} ── Oggetto ── {%- endcomment -%}
-      {%- if section.settings.show_subject -%}
-        <div class="field">
-          <input
-            type="text"
-            id="ContactForm-subject"
-            class="field__input"
-            name="contact[Oggetto]"
-            value="{{ form['Oggetto'] }}"
-            placeholder="{{ section.settings.label_subject | default: 'Oggetto' }}"
-            {% if section.settings.required_subject %}required aria-required="true"{% endif %}
-          >
-          <label class="field__label" for="ContactForm-subject">
-            {{- section.settings.label_subject | default: 'Oggetto' -}}
-            {%- if section.settings.required_subject %}<span aria-hidden="true"> *</span>{%- endif -%}
-          </label>
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} ── Messaggio ── {%- endcomment -%}
-      {%- if section.settings.show_message -%}
-        <div class="field">
-          <textarea
-            rows="10"
-            id="ContactForm-body"
-            class="text-area field__input"
-            name="contact[Messaggio]"
-            placeholder="{{ section.settings.label_message | default: 'Messaggio' }}"
-            {% if section.settings.required_message %}required aria-required="true"{% endif %}
-          >
-            {{- form.body -}}
-          </textarea>
-          <label class="form__label field__label" for="ContactForm-body">
-            {{- section.settings.label_message | default: 'Messaggio' -}}
-            {%- if section.settings.required_message %}<span aria-hidden="true"> *</span>{%- endif -%}
-          </label>
-        </div>
-      {%- endif -%}
-
       {%- comment -%} ── Consensi ── {%- endcomment -%}
-      {%- assign has_consents = false -%}
       {%- if section.settings.show_privacy or section.settings.show_newsletter or section.settings.show_profiling -%}
-        {%- assign has_consents = true -%}
-      {%- endif -%}
-
-      {%- if has_consents -%}
         <div class="ms-contact-form__consents">
 
           {%- if section.settings.show_privacy and section.settings.privacy_text != blank -%}
@@ -244,7 +323,8 @@
       {%- endif -%}
 
       {%- comment -%} ── Pulsante invio ── {%- endcomment -%}
-      <div class="contact__button">
+      {%- assign btn_align = section.settings.button_align | default: 'left' -%}
+      <div class="contact__button ms-contact-form__button--{{ btn_align }}">
         <button
           type="submit"
           class="{%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
@@ -299,14 +379,24 @@
     {
       "type": "checkbox",
       "id": "show_name",
-      "label": "Mostra campo nome",
+      "label": "Mostra campo",
       "default": true
     },
     {
       "type": "text",
       "id": "label_name",
-      "label": "Label nome",
+      "label": "Etichetta",
       "default": "Nome"
+    },
+    {
+      "type": "select",
+      "id": "label_mode_name",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
     },
     {
       "type": "checkbox",
@@ -315,15 +405,47 @@
       "default": false
     },
     {
+      "type": "select",
+      "id": "cols_name",
+      "label": "Larghezza colonne",
+      "default": "6",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Campo Email"
     },
     {
       "type": "text",
       "id": "label_email",
-      "label": "Label email",
+      "label": "Etichetta",
       "default": "Email",
-      "info": "Il campo email è sempre visibile e obbligatorio."
+      "info": "Sempre visibile e obbligatorio."
+    },
+    {
+      "type": "select",
+      "id": "label_mode_email",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cols_email",
+      "label": "Larghezza colonne",
+      "default": "6",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
     },
     {
       "type": "header",
@@ -332,14 +454,24 @@
     {
       "type": "checkbox",
       "id": "show_phone",
-      "label": "Mostra campo telefono",
+      "label": "Mostra campo",
       "default": true
     },
     {
       "type": "text",
       "id": "label_phone",
-      "label": "Label telefono",
+      "label": "Etichetta",
       "default": "Telefono"
+    },
+    {
+      "type": "select",
+      "id": "label_mode_phone",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
     },
     {
       "type": "checkbox",
@@ -348,20 +480,41 @@
       "default": false
     },
     {
+      "type": "select",
+      "id": "cols_phone",
+      "label": "Larghezza colonne",
+      "default": "6",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Campo Azienda"
     },
     {
       "type": "checkbox",
       "id": "show_company",
-      "label": "Mostra campo azienda",
+      "label": "Mostra campo",
       "default": false
     },
     {
       "type": "text",
       "id": "label_company",
-      "label": "Label azienda",
+      "label": "Etichetta",
       "default": "Azienda"
+    },
+    {
+      "type": "select",
+      "id": "label_mode_company",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
     },
     {
       "type": "checkbox",
@@ -370,20 +523,41 @@
       "default": false
     },
     {
+      "type": "select",
+      "id": "cols_company",
+      "label": "Larghezza colonne",
+      "default": "6",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Campo Oggetto"
     },
     {
       "type": "checkbox",
       "id": "show_subject",
-      "label": "Mostra campo oggetto",
+      "label": "Mostra campo",
       "default": false
     },
     {
       "type": "text",
       "id": "label_subject",
-      "label": "Label oggetto",
+      "label": "Etichetta",
       "default": "Oggetto"
+    },
+    {
+      "type": "select",
+      "id": "label_mode_subject",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
     },
     {
       "type": "checkbox",
@@ -392,26 +566,67 @@
       "default": false
     },
     {
+      "type": "select",
+      "id": "cols_subject",
+      "label": "Larghezza colonne",
+      "default": "12",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
+    },
+    {
       "type": "header",
       "content": "Campo Messaggio"
     },
     {
       "type": "checkbox",
       "id": "show_message",
-      "label": "Mostra campo messaggio",
+      "label": "Mostra campo",
       "default": true
     },
     {
       "type": "text",
       "id": "label_message",
-      "label": "Label messaggio",
+      "label": "Etichetta",
       "default": "Messaggio"
+    },
+    {
+      "type": "select",
+      "id": "label_mode_message",
+      "label": "Stile etichetta",
+      "default": "label",
+      "options": [
+        { "value": "label", "label": "Label fluttuante" },
+        { "value": "placeholder", "label": "Solo placeholder" }
+      ]
     },
     {
       "type": "checkbox",
       "id": "required_message",
       "label": "Obbligatorio",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "rows_message",
+      "label": "Righe textarea",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "cols_message",
+      "label": "Larghezza colonne",
+      "default": "12",
+      "options": [
+        { "value": "4", "label": "4/12 (un terzo)" },
+        { "value": "6", "label": "6/12 (metà)" },
+        { "value": "12", "label": "12/12 (intera riga)" }
+      ]
     },
     {
       "type": "header",
@@ -525,6 +740,18 @@
       "options": [
         { "value": "before", "label": "Prima del testo" },
         { "value": "after", "label": "Dopo il testo" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_align",
+      "label": "Allineamento pulsante",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right",  "label": "Destra" },
+        { "value": "full",   "label": "Larghezza piena" }
       ]
     }
   ],

@@ -2,7 +2,44 @@
    MS Contact Form — stili aggiuntivi
    ============================================================ */
 
-/* Sezione consensi */
+/* ── Griglia campi ── */
+.ms-contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0 1.6rem;
+}
+
+.ms-contact-form__field-wrap {
+  min-width: 0;
+}
+
+.ms-contact-form__field-wrap--cols-12 { grid-column: span 12; }
+.ms-contact-form__field-wrap--cols-6  { grid-column: span 6; }
+.ms-contact-form__field-wrap--cols-4  { grid-column: span 4; }
+
+@media screen and (max-width: 749px) {
+  .ms-contact-form__field-wrap--cols-12,
+  .ms-contact-form__field-wrap--cols-6,
+  .ms-contact-form__field-wrap--cols-4 {
+    grid-column: span 12;
+  }
+}
+
+/* ── Campo in modalità solo-placeholder (nessuna label fluttuante) ── */
+.ms-field--placeholder-only .field__input,
+.ms-field--placeholder-only .text-area.field__input {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+/* ── Allineamento pulsante ── */
+.ms-contact-form__button--left   { display: flex; justify-content: flex-start; }
+.ms-contact-form__button--center { display: flex; justify-content: center; }
+.ms-contact-form__button--right  { display: flex; justify-content: flex-end; }
+.ms-contact-form__button--full .button,
+.ms-contact-form__button--full .button--pill { width: 100%; justify-content: center; }
+
+/* ── Sezione consensi ── */
 .ms-contact-form__consents {
   display: flex;
   flex-direction: column;
@@ -23,8 +60,6 @@
   margin-top: 0.2rem;
   cursor: pointer;
   accent-color: rgb(var(--color-button));
-  border: 0.1rem solid rgba(var(--color-foreground), 0.55);
-  border-radius: 0.2rem;
 }
 
 .ms-contact-form__consent-label {
@@ -34,7 +69,6 @@
   flex: 1;
 }
 
-/* Rende inline i <p> generati dal richtext dentro il label */
 .ms-contact-form__consent-label p {
   display: inline;
   margin: 0;
@@ -50,6 +84,5 @@
 }
 
 .ms-contact-form__consent-required {
-  color: rgb(var(--color-foreground));
   margin-left: 0.2rem;
 }
