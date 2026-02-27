@@ -13,51 +13,85 @@
     when 'full_width'
       assign sw_class = ''
   endcase
+
+  assign acc_style = section.settings.accordion_style | default: 'standard'
+  assign show_image = section.settings.show_image
+  assign has_image = false
+  if section.settings.image != blank and show_image
+    assign has_image = true
+  endif
 -%}
+
+{%- style -%}
+  {%- if section.settings.image_border_radius > 0 and has_image -%}
+    #section-{{ section.id }} .collapsible-content__media {
+      border-radius: {{ section.settings.image_border_radius }}px;
+      overflow: hidden;
+    }
+  {%- endif -%}
+
+  {%- if acc_style == 'bordered' -%}
+    #section-{{ section.id }} .accordion {
+      border: 1px solid rgba(var(--color-foreground), 0.12);
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    #section-{{ section.id }} .accordion:last-child {
+      margin-bottom: 0;
+    }
+    #section-{{ section.id }} .accordion summary {
+      border-top: none;
+    }
+  {%- elsif acc_style == 'boxed' -%}
+    #section-{{ section.id }} .ms-collapsible__accordion-wrapper {
+      border: 1px solid rgba(var(--color-foreground), 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 0.5rem 1.5rem;
+    }
+  {%- elsif acc_style == 'minimal' -%}
+    #section-{{ section.id }} .accordion summary {
+      border-top: none;
+    }
+  {%- endif -%}
+{%- endstyle -%}
 
 {%- render 'ms_mobile-padding' -%}
 
 <div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
-  <div class="collapsible-content collapsible-{{ section.settings.layout }}-layout isolate{% if section.settings.layout == 'section' %} {{ sw_class }}{% elsif section.settings.layout == 'none' %} content-container content-container--full-width{% endif %}">
-    <div class="collapsible-content__wrapper{% if section.settings.layout == 'section' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}">
-      <div class="{% if section.settings.image == blank %}collapsible-content-wrapper-narrow{% else %}{{ sw_class }}{% endif %}">
-        <div class="grid grid--1-col grid--2-col-tablet collapsible-content__grid{% if section.settings.desktop_layout == 'image_second' %} collapsible-content__grid--reverse{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {%- if section.settings.image != blank -%}
-            <div class="grid__item collapsible-content__grid-item">
-              <div
-                class="collapsible-content__media collapsible-content__media--{{ section.settings.image_ratio }} media global-media-settings gradient"
-                {% if section.settings.image_ratio == 'adapt' %}
-                  style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
-                {% endif %}
-              >
-                {%- liquid
-                  assign padding_multiplier = 1
-                  if section.settings.layout == 'section'
-                    assign padding_multiplier = 2
-                  endif
-                  assign desktop_tablet_padding = 100 | times: padding_multiplier | append: 'px'
-                  assign mobile_padding = 30 | times: padding_multiplier | append: 'px'
-                -%}
-                {%- capture sizes -%}
-                  (min-width: {{ settings.page_width }}px) calc(({{ settings.page_width }}px - {{ desktop_tablet_padding }}) / 2),
-                  (min-width: 750px) calc((100vw - {{ desktop_tablet_padding }}) / 2),
-                  calc(100vw - {{ mobile_padding }})
-                {%- endcapture -%}
-                {{
-                  section.settings.image
-                  | image_url: width: 3200
-                  | image_tag:
-                    sizes: sizes,
-                    widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
-                }}
-              </div>
+  <div class="{{ sw_class }} isolate">
+    <div class="{% if has_image %}page-width{% else %}collapsible-content-wrapper-narrow{% endif %}">
+      <div class="grid grid--1-col{% if has_image %} grid--2-col-tablet{% endif %} collapsible-content__grid{% if section.settings.desktop_layout == 'image_second' %} collapsible-content__grid--reverse{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        {%- if has_image -%}
+          <div class="grid__item collapsible-content__grid-item">
+            <div
+              class="collapsible-content__media collapsible-content__media--{{ section.settings.image_ratio }} media global-media-settings gradient"
+              {% if section.settings.image_ratio == 'adapt' %}
+                style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              {%- capture sizes -%}
+                (min-width: {{ settings.page_width }}px) calc({{ settings.page_width }}px / 2 - 50px),
+                (min-width: 750px) calc(50vw - 65px),
+                calc(100vw - 30px)
+              {%- endcapture -%}
+              {{
+                section.settings.image
+                | image_url: width: 3200
+                | image_tag:
+                  sizes: sizes,
+                  widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200'
+              }}
             </div>
-          {% endif %}
-          <div class="grid__item">
+          </div>
+        {%- endif -%}
+        <div class="grid__item">
+          <div class="ms-collapsible__accordion-wrapper">
             {%- for block in section.blocks -%}
-              {% if block.type == 'collapsible_row' %}
+              {%- if block.type == 'collapsible_row' -%}
                 <div
-                  class="accordion{% if section.settings.layout == 'row' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}"
+                  class="accordion"
                   {{ block.shopify_attributes }}
                   role="list"
                 >
@@ -69,7 +103,15 @@
                     role="listitem"
                   >
                     <summary id="Summary-{{ block.id }}-{{ section.id }}">
-                      {% render 'icon-accordion', icon: block.settings.icon, custom_icon: block.settings.custom_icon %}
+                      {%- liquid
+                        assign row_icon = section.settings.accordion_icon
+                        if block.settings.custom_icon != blank
+                          assign row_icon = block.settings.custom_icon
+                        endif
+                      -%}
+                      {%- if row_icon != blank -%}
+                        {%- render 'ms_icon', icon: row_icon -%}
+                      {%- endif -%}
                       <div class="accordion__title inline-richtext h4">
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
                       </div>
@@ -86,7 +128,7 @@
                     </div>
                   </details>
                 </div>
-              {% endif %}
+              {%- endif -%}
             {%- endfor -%}
           </div>
         </div>
@@ -130,27 +172,32 @@
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
-      "type": "select",
-      "id": "layout",
-      "label": "Disposizione contenuto",
-      "options": [
-        { "value": "none", "label": "Nessun contenitore" },
-        { "value": "row", "label": "Spazio tra le righe" },
-        { "value": "section", "label": "Contenitore sezione" }
-      ],
-      "default": "none"
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Combinazione colori sezione",
       "default": "scheme-1"
     },
     {
-      "type": "color_scheme",
-      "id": "container_color_scheme",
-      "label": "Combinazione colori contenitore",
-      "default": "scheme-2"
+      "type": "header",
+      "content": "Accordion"
+    },
+    {
+      "type": "select",
+      "id": "accordion_style",
+      "label": "Stile accordion",
+      "options": [
+        { "value": "standard", "label": "Standard (linee separatorie)" },
+        { "value": "bordered", "label": "Bordi attorno a ogni riga" },
+        { "value": "boxed", "label": "Contenitore unico" },
+        { "value": "minimal", "label": "Minimale (nessun separatore)" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "text",
+      "id": "accordion_icon",
+      "label": "Icona accordion (predefinita)",
+      "info": "File .svg = asset del tema (es. icon-check-mark.svg), altrimenti classe libreria icone (es. fa-solid fa-chevron-down). Vuoto = nessuna icona a sinistra del titolo. L'icona caret a destra ruota di 180° quando la riga è aperta."
     },
     {
       "type": "checkbox",
@@ -168,6 +215,13 @@
       "label": "Immagine"
     },
     {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Visualizza immagine",
+      "info": "Disattiva per nascondere l'immagine senza rimuoverla."
+    },
+    {
       "type": "select",
       "id": "image_ratio",
       "options": [
@@ -177,6 +231,16 @@
       ],
       "default": "adapt",
       "label": "Proporzioni immagine"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 0,
+      "unit": "px",
+      "label": "Raggio bordi immagine"
     },
     {
       "type": "select",
@@ -201,62 +265,10 @@
           "label": "Intestazione"
         },
         {
-          "type": "select",
-          "id": "icon",
-          "options": [
-            { "value": "none", "label": "Nessuna" },
-            { "value": "apple", "label": "Mela" },
-            { "value": "banana", "label": "Banana" },
-            { "value": "bottle", "label": "Bottiglia" },
-            { "value": "box", "label": "Scatola" },
-            { "value": "carrot", "label": "Carota" },
-            { "value": "chat_bubble", "label": "Fumetto" },
-            { "value": "check_mark", "label": "Segno di spunta" },
-            { "value": "clipboard", "label": "Appunti" },
-            { "value": "dairy", "label": "Latticini" },
-            { "value": "dairy_free", "label": "Senza lattosio" },
-            { "value": "dryer", "label": "Asciugatrice" },
-            { "value": "eye", "label": "Occhio" },
-            { "value": "fire", "label": "Fuoco" },
-            { "value": "gluten_free", "label": "Senza glutine" },
-            { "value": "heart", "label": "Cuore" },
-            { "value": "iron", "label": "Ferro da stiro" },
-            { "value": "leaf", "label": "Foglia" },
-            { "value": "leather", "label": "Pelle" },
-            { "value": "lightning_bolt", "label": "Fulmine" },
-            { "value": "lipstick", "label": "Rossetto" },
-            { "value": "lock", "label": "Lucchetto" },
-            { "value": "map_pin", "label": "Segnaposto" },
-            { "value": "nut_free", "label": "Senza frutta a guscio" },
-            { "value": "pants", "label": "Pantaloni" },
-            { "value": "paw_print", "label": "Zampa" },
-            { "value": "pepper", "label": "Peperoncino" },
-            { "value": "perfume", "label": "Profumo" },
-            { "value": "plane", "label": "Aereo" },
-            { "value": "plant", "label": "Pianta" },
-            { "value": "price_tag", "label": "Cartellino prezzo" },
-            { "value": "question_mark", "label": "Punto interrogativo" },
-            { "value": "recycle", "label": "Riciclo" },
-            { "value": "return", "label": "Reso" },
-            { "value": "ruler", "label": "Righello" },
-            { "value": "serving_dish", "label": "Piatto" },
-            { "value": "shirt", "label": "Camicia" },
-            { "value": "shoe", "label": "Scarpa" },
-            { "value": "silhouette", "label": "Silhouette" },
-            { "value": "snowflake", "label": "Fiocco di neve" },
-            { "value": "star", "label": "Stella" },
-            { "value": "stopwatch", "label": "Cronometro" },
-            { "value": "truck", "label": "Camion" },
-            { "value": "washing", "label": "Lavaggio" }
-          ],
-          "default": "check_mark",
-          "label": "Icona"
-        },
-        {
           "type": "text",
           "id": "custom_icon",
-          "label": "Icona personalizzata (SVG)",
-          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
+          "label": "Icona personalizzata",
+          "info": "File .svg o classe libreria icone. Se compilato, sovrascrive l'icona predefinita della sezione per questa riga."
         },
         {
           "type": "richtext",
