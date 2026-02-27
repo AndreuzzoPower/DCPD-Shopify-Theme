@@ -36,38 +36,97 @@
   if section.settings.field_focus_color != blank and section.settings.field_focus_color != 'rgba(0,0,0,0)'
     assign ms_cf_has_focus = true
   endif
+  assign ms_cf_bw = section.settings.field_border_width | default: 1
+  assign ms_cf_br = section.settings.field_border_radius | default: 0
+  assign ms_cf_fs = section.settings.field_font_size | default: 14
+  assign ms_cf_ls = section.settings.field_label_size | default: 14
+  assign ms_cf_gap_h = section.settings.field_gap_h | default: 16
+  assign ms_cf_gap_v = section.settings.field_gap_v | default: 0
 -%}
 <style>
   #section-{{ section.id }} .ms-contact-form__grid {
-    column-gap: {{ section.settings.field_gap_h | default: 16 }}px;
-    row-gap: {{ section.settings.field_gap_v | default: 0 }}px;
+    column-gap: {{ ms_cf_gap_h }}px;
+    row-gap: {{ ms_cf_gap_v }}px;
   }
+
+  #section-{{ section.id }} .field,
+  #section-{{ section.id }} .select,
+  #section-{{ section.id }} .ms-contact-form__select-wrap .select {
+    --inputs-border-width: {{ ms_cf_bw }}px;
+    --inputs-radius: {{ ms_cf_br }}px;
+    --inputs-radius-outset: {{ ms_cf_br | plus: ms_cf_bw }}px;
+  }
+
   #section-{{ section.id }} .field__input,
   #section-{{ section.id }} .text-area.field__input,
   #section-{{ section.id }} .select__select {
-    font-size: {{ section.settings.field_font_size | default: 14 }}px;
-    border-radius: {{ section.settings.field_border_radius | default: 0 }}px;
-    border-width: {{ section.settings.field_border_width | default: 1 }}px;
-    {%- if ms_cf_has_border %}border-color: {{ section.settings.field_border_color }};{% endif %}
-    {%- if ms_cf_has_bg %}background-color: {{ section.settings.field_bg_color }};{% endif %}
+    font-size: {{ ms_cf_fs }}px;
+    border-radius: {{ ms_cf_br }}px;
   }
-  {%- if ms_cf_has_focus %}
-  #section-{{ section.id }} .field__input:focus,
-  #section-{{ section.id }} .text-area.field__input:focus,
-  #section-{{ section.id }} .select__select:focus {
-    border-color: {{ section.settings.field_focus_color }};
-    outline-color: {{ section.settings.field_focus_color }};
+
+  {%- if ms_cf_has_bg %}
+  #section-{{ section.id }} .field__input,
+  #section-{{ section.id }} .text-area.field__input,
+  #section-{{ section.id }} .select__select {
+    background-color: {{ section.settings.field_bg_color }};
   }
   {%- endif %}
+
+  {%- if ms_cf_has_border %}
+  #section-{{ section.id }} .field:after,
+  #section-{{ section.id }} .select:after {
+    box-shadow: 0 0 0 {{ ms_cf_bw }}px {{ section.settings.field_border_color }};
+  }
+  #section-{{ section.id }} .field:hover.field:after,
+  #section-{{ section.id }} .select:hover.select:after {
+    box-shadow: 0 0 0 calc(0.1rem + {{ ms_cf_bw }}px) {{ section.settings.field_border_color }};
+  }
+  {%- endif %}
+
+  {%- if ms_cf_has_focus %}
+  #section-{{ section.id }} .field__input:focus ~ .field:after,
+  #section-{{ section.id }} .field:focus-within:after,
+  #section-{{ section.id }} .select:focus-within:after {
+    box-shadow: 0 0 0 0.2rem {{ section.settings.field_focus_color }};
+  }
+  {%- endif %}
+
+  #section-{{ section.id }} .field__label {
+    font-size: {{ ms_cf_ls }}px;
+  }
+
+  #section-{{ section.id }} .ms-contact-form__select-label,
+  #section-{{ section.id }} .ms-contact-form__fieldset-legend {
+    font-size: {{ ms_cf_ls }}px;
+  }
+
+  #section-{{ section.id }} .ms-contact-form__option-label {
+    font-size: {{ ms_cf_fs }}px;
+  }
+
+  #section-{{ section.id }} .field {
+    margin-bottom: 0;
+  }
+  #section-{{ section.id }} .contact__fields {
+    margin-bottom: 0;
+  }
 </style>
 
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
-    {%- if section.settings.use_shopify_form and section.settings.shopify_form_embed != blank -%}
+    {%- if section.settings.use_shopify_form -%}
       {%- comment -%} ── Form nativo Shopify Forms app ── {%- endcomment -%}
       <div class="ms-contact-form__shopify-embed">
-        {{ section.settings.shopify_form_embed }}
+        {%- if section.settings.shopify_form_id != blank -%}
+          <div id="shopify-form-{{ section.settings.shopify_form_id }}" data-shopify-form="{{ section.settings.shopify_form_id }}"></div>
+        {%- elsif section.settings.shopify_form_embed != blank -%}
+          {{ section.settings.shopify_form_embed }}
+        {%- else -%}
+          {%- if request.design_mode -%}
+            <p style="color:#666;padding:2rem;text-align:center;">Inserisci l'ID del form Shopify o il codice embed personalizzato.</p>
+          {%- endif -%}
+        {%- endif -%}
       </div>
 
     {%- else -%}
@@ -507,6 +566,17 @@
     },
     {
       "type": "range",
+      "id": "field_label_size",
+      "label": "Dimensione etichette e titoli gruppi",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14,
+      "info": "Applicata a label fluttuanti, label dei select, legend dei radio/checkbox."
+    },
+    {
+      "type": "range",
       "id": "field_gap_h",
       "label": "Spaziatura orizzontale tra campi",
       "min": 0,
@@ -534,13 +604,19 @@
       "id": "use_shopify_form",
       "label": "Usa form dall'app Shopify Forms",
       "default": false,
-      "info": "Se attivo, i blocchi campo e i consensi vengono ignorati: viene renderizzato il codice embed qui sotto."
+      "info": "Se attivo, i blocchi campo e i consensi vengono ignorati: viene renderizzato il form Shopify indicato sotto."
+    },
+    {
+      "type": "text",
+      "id": "shopify_form_id",
+      "label": "ID form Shopify",
+      "info": "Inserisci l'ID del form creato con l'app Shopify Forms (lo trovi nell'URL dell'editor, es: 123456789). Oppure incolla il codice embed completo nel campo Liquid qui sotto."
     },
     {
       "type": "liquid",
       "id": "shopify_form_embed",
-      "label": "Codice embed form",
-      "info": "Incolla il codice Liquid o HTML fornito dall'app Shopify Forms. Visibile solo se l'opzione sopra è attiva."
+      "label": "Codice embed personalizzato",
+      "info": "Alternativa all'ID: incolla codice Liquid/HTML personalizzato. Se l'ID sopra è compilato, questo campo viene ignorato."
     },
     {
       "type": "header",
