@@ -69,6 +69,8 @@
     endcase
   -%}
 
+  {%- render 'ms_mobile-padding' -%}
+
   <div id="section-{{ section.id }}" class="ms-breadcrumb ms-breadcrumb--{{ section.settings.alignment }} {% if has_separator_icon and separator_is_svg %}ms-breadcrumb--icon-separator{% elsif has_separator_icon %}ms-breadcrumb--class-separator{% else %}ms-breadcrumb--text-separator{% endif %} color-{{ section.settings.color_scheme }} gradient {{ section.settings.wrapperclass | escape }}">
     {%- if sw_class != blank -%}
       <div class="{{ sw_class }}">
@@ -531,6 +533,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "header",

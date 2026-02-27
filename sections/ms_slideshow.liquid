@@ -94,6 +94,8 @@
   {%- endif -%}
 {%- endfor -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <slideshow-component
   id="section-{{ section.id }}"
   data-ms-embla="true"
@@ -549,6 +551,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "full_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

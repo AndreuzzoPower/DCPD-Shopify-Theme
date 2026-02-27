@@ -133,6 +133,8 @@
     endcase
   -%}
 
+  {%- render 'ms_mobile-padding' -%}
+
   <section class="color-{{ section.settings.color_scheme }} gradient">
     <div class="{{ sw_class }} section-{{ section.id }}-padding">
       <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}isolate {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
@@ -1639,6 +1641,13 @@
         { "label": "Piena larghezza", "value": "full_width" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

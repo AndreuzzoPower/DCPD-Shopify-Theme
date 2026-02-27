@@ -213,6 +213,8 @@
   {%- endif -%}
 {%- endunless -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div
   class="color-{{ section.settings.color_scheme }} gradient{% if section.settings.card_image_round %} ms-cl--round-images{% endif %}{% if link_style == 'pill' %} ms-cl--link-pill{% elsif link_style == 'button' %} ms-cl--link-button{% endif %}{% if is_overlay %} ms-cl--overlay ms-cl--{{ link_pos }}{% endif %}{% if link_align != 'left' %} ms-cl--align-link-{{ link_align }}{% endif %}"
   id="section-{{ section.id }}"
@@ -325,6 +327,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "header",

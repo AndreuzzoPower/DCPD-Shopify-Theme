@@ -1,0 +1,54 @@
+{%- comment -%}
+  Gestione padding mobile per sezioni con section_width.
+  Ripristina il padding .page-width su mobile/tablet quando questo è stato
+  rimosso da CSS Dawn (es. section-multicolumn.css) e gestisce il flag
+  mobile_full_width per forzare la piena larghezza su mobile.
+
+  Input: nessuno — legge direttamente da section.settings
+  Richiede: section.settings.mobile_full_width (checkbox, default false)
+  Richiede: section.settings.section_width (select)
+{%- endcomment -%}
+
+{%- liquid
+  assign ms_sw = section.settings.section_width | default: 'page_width'
+  assign ms_mobile_fw = section.settings.mobile_full_width | default: false
+-%}
+
+{%- unless ms_sw == 'full_width' -%}
+  {%- if ms_mobile_fw -%}
+    {%- style -%}
+      @media screen and (max-width: 767px) {
+        #section-{{ section.id }} .page-width {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+      @media screen and (min-width: 768px) and (max-width: 989px) {
+        #section-{{ section.id }} .page-width {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+    {%- endstyle -%}
+  {%- else -%}
+    {%- style -%}
+      @media screen and (max-width: 767px) {
+        #section-{{ section.id }} .page-width {
+          padding-left: 1.5rem;
+          padding-right: 1.5rem;
+        }
+      }
+      @media screen and (min-width: 768px) and (max-width: 989px) {
+        #section-{{ section.id }} .page-width {
+          {%- if ms_sw == 'narrow' -%}
+            padding-left: 9rem;
+            padding-right: 9rem;
+          {%- else -%}
+            padding-left: 5rem;
+            padding-right: 5rem;
+          {%- endif -%}
+        }
+      }
+    {%- endstyle -%}
+  {%- endif -%}
+{%- endunless -%}

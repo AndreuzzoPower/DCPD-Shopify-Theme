@@ -98,6 +98,8 @@
   {%- endif -%}
 {%- endunless -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
   <product-recommendations
     class="related-products{% if sw_class != blank %} {{ sw_class }}{% endif %} isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -202,6 +204,13 @@
         { "label": "Piena larghezza", "value": "full_width" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

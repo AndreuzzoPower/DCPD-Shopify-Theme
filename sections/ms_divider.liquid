@@ -39,6 +39,8 @@
   }
 {%- endstyle -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
@@ -148,6 +150,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "full_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

@@ -201,6 +201,8 @@
   {%- endif -%}
 {%- endunless -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div
   class="ms-featured-blog color-{{ section.settings.color_scheme }} gradient{% if section.settings.heading == blank %} no-heading{% endif %}{% if is_full_width %} ms-fb--full-width{% endif %}"
   id="section-{{ section.id }}"
@@ -397,6 +399,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "blog",

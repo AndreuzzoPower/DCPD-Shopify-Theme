@@ -32,6 +32,8 @@
   endcase
 -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div class="isolate{% unless is_full %} {{ sw_class }}{% endunless %}">
   <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient{% if is_full %} rich-text--full-width content-container--full-width{% endif %}">
     <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}{% if is_full %} page-width{% endif %}">
@@ -206,6 +208,13 @@
         { "label": "Piena larghezza", "value": "full_width" }
       ],
       "default": "full_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

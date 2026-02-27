@@ -14,6 +14,9 @@
       assign sw_bs_class = 'container'
   endcase
 -%}
+
+{%- render 'ms_mobile-padding' -%}
+
 <div class="custom-html bootstrap-scope" id="section-{{ section.id }}">
   <div class="color-{{ section.settings.color_scheme }} {{ sw_bs_class }}">
     {% if section.settings.section_title != '' or section.settings.section_sub_title != '' %}
@@ -122,6 +125,13 @@
                  ],
                 "default": "page_width"
             },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    },
     	{
         "type": "header",
         "content": "Color"

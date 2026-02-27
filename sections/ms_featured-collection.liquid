@@ -112,6 +112,8 @@
   {%- endif -%}
 {%- endunless -%}
 
+{%- render 'ms_mobile-padding' -%}
+
 <div
   class="color-{{ section.settings.color_scheme }} isolate gradient"
   id="section-{{ section.id }}"
@@ -272,6 +274,13 @@
         { "label": "Piena larghezza", "value": "full_width" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",

@@ -52,32 +52,7 @@
   assign peek = section.settings.carousel_peek_size | default: 'medium'
 -%}
 
-{%- unless show_carousel or sw == 'full_width' -%}
-  {%- comment -%}
-    section-multicolumn.css rimuove il padding da .multicolumn .page-width su tutto
-    mobile+tablet (≤989px) per permettere al carousel di andare a bordo schermo.
-    Quando il carousel non è attivo, ripristiniamo i valori standard di .page-width.
-  {%- endcomment -%}
-  {% style %}
-    @media screen and (max-width: 767px) {
-      #section-{{ section.id }} .page-width {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-      }
-    }
-    @media screen and (min-width: 768px) and (max-width: 989px) {
-      #section-{{ section.id }} .page-width {
-        {%- if sw == 'narrow' -%}
-        padding-left: 9rem;
-        padding-right: 9rem;
-        {%- else -%}
-        padding-left: 5rem;
-        padding-right: 5rem;
-        {%- endif -%}
-      }
-    }
-  {% endstyle %}
-{%- endunless -%}
+{%- render 'ms_mobile-padding' -%}
 
 {%- unless is_full_width -%}
   {%- if show_desktop_slider -%}
@@ -330,6 +305,13 @@
         { "value": "full_width", "label": "Piena larghezza" }
       ],
       "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "color_scheme",
