@@ -4,6 +4,22 @@ body,
   overflow-x: clip;
 }
 
+/*
+ * Circular-loop clones: nascondi quando lo slider non è attivo al breakpoint.
+ * Il JS di slider-component clona gli slide per il loop infinito, ma se lo
+ * slider è attivo solo su mobile (non desktop) i cloni appaiono nella griglia.
+ */
+@media screen and (min-width: 990px) {
+  slider-component:not(.slider-component-desktop) [data-cloned="true"] {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 989px) {
+  slider-component .grid:not(.slider--tablet) > [data-cloned="true"] {
+    display: none !important;
+  }
+}
+
 #cart-notification .cart-notification__links #cart-notification-button:focus-visible,
 .newsletter__wrapper .field input[type="email"]:focus-visible
 {
