@@ -26,6 +26,14 @@
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="contact{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
+    {%- if section.settings.use_shopify_form and section.settings.shopify_form_embed != blank -%}
+      {%- comment -%} ── Form nativo Shopify Forms app ── {%- endcomment -%}
+      <div class="ms-contact-form__shopify-embed">
+        {{ section.settings.shopify_form_embed }}
+      </div>
+
+    {%- else -%}
+
     {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
 
       {%- if form.posted_successfully? -%}
@@ -312,6 +320,8 @@
       </div>
 
     {%- endform -%}
+
+    {%- endif -%}
   </div>
 </div>
 
@@ -347,6 +357,23 @@
       "id": "color_scheme",
       "label": "Schema colore",
       "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Shopify Forms (app)"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_shopify_form",
+      "label": "Usa form dall'app Shopify Forms",
+      "default": false,
+      "info": "Se attivo, i blocchi campo e i consensi vengono ignorati: viene renderizzato il codice embed qui sotto."
+    },
+    {
+      "type": "liquid",
+      "id": "shopify_form_embed",
+      "label": "Codice embed form",
+      "info": "Incolla il codice Liquid o HTML fornito dall'app Shopify Forms. Visibile solo se l'opzione sopra è attiva."
     },
     {
       "type": "header",
