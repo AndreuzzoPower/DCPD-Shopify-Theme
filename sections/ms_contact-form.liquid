@@ -335,9 +335,9 @@
                 {%- when 'spacer' -%}
                   <div
                     class="ms-contact-form__spacer"
-                    style="--spacer-h: {{ block.settings.height | default: 30 }}px; --spacer-h-mobile: {{ block.settings.height_mobile | default: 15 }}px;"
+                    style="height: {{ block.settings.height | default: 30 }}px; --spacer-h-mobile: {{ block.settings.height_mobile | default: 15 }}px;"
                     aria-hidden="true"
-                  ></div>
+                  >&nbsp;</div>
 
               {%- endcase -%}
 

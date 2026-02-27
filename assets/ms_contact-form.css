@@ -162,12 +162,15 @@
 
 /* ── Spacer ── */
 .ms-contact-form__spacer {
-  height: var(--spacer-h, 30px);
+  overflow: hidden;
+  line-height: 0;
+  font-size: 0;
+  color: transparent;
 }
 
 @media screen and (max-width: 749px) {
   .ms-contact-form__spacer {
-    height: var(--spacer-h-mobile, 15px);
+    height: var(--spacer-h-mobile, 15px) !important;
   }
 }
 
