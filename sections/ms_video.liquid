@@ -41,11 +41,29 @@
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="video-section isolate{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
 
+    {%- liquid
+      assign ms_video_media_class = 'video-section__media global-media-settings'
+      if sw == 'full_width'
+        assign ms_video_media_class = ms_video_media_class | append: ' global-media-settings--full-width'
+      endif
+      if fix_ratio
+        assign ms_video_media_class = ms_video_media_class | append: ' media-fit-cover'
+      endif
+      if settings.animations_reveal_on_scroll
+        assign ms_video_media_class = ms_video_media_class | append: ' scroll-trigger animate--slide-in'
+      endif
+
+      assign loop_param = ''
+      if section.settings.enable_video_looping
+        assign loop_param = '&loop=1&playlist=' | append: video_id
+      endif
+    -%}
+
     {%- if poster != null -%}
 
       {%- comment -%} Copertina presente → caricamento differito al click {%- endcomment -%}
       <deferred-media
-        class="video-section__media deferred-media gradient global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}{% if fix_ratio %} media-fit-cover{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        class="{{ ms_video_media_class }} deferred-media gradient"
         data-media-id="{{ video_id }}"
         style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
       >
@@ -65,31 +83,7 @@
           </span>
         </button>
         <template>
-          {%- if section.settings.video == null and section.settings.video_url != null -%}
-            {%- liquid
-              assign loop = ''
-              if section.settings.enable_video_looping
-                assign loop = '&loop=1&playlist=' | append: video_id
-              endif
-            -%}
-            {%- if section.settings.video_url.type == 'youtube' -%}
-              <iframe
-                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop }}"
-                class="js-youtube"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                title="{{ section.settings.description | escape }}"
-              ></iframe>
-            {%- else -%}
-              <iframe
-                src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop }}"
-                class="js-vimeo"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                title="{{ section.settings.description | escape }}"
-              ></iframe>
-            {%- endif -%}
-          {%- else -%}
+          {%- if section.settings.video != null -%}
             {{
               section.settings.video
               | video_tag:
@@ -99,56 +93,105 @@
                 controls: true,
                 muted: false
             }}
+          {%- elsif section.settings.video_url != null -%}
+            {%- if section.settings.video_url.type == 'youtube' -%}
+              <iframe
+                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop_param }}"
+                class="js-youtube"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="{{ section.settings.description | escape }}"
+              ></iframe>
+            {%- else -%}
+              <iframe
+                src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop_param }}"
+                class="js-vimeo"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                title="{{ section.settings.description | escape }}"
+              ></iframe>
+            {%- endif -%}
           {%- endif -%}
         </template>
       </deferred-media>
 
-    {%- else -%}
+    {%- elsif section.settings.video != null -%}
 
-      {%- comment -%} Nessuna copertina → video visibile direttamente {%- endcomment -%}
-      <div class="video-section__media global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        {%- if section.settings.video == null and section.settings.video_url != null -%}
-          {%- liquid
-            assign loop_param = ''
-            if section.settings.enable_video_looping
-              assign loop_param = '&loop=1&playlist=' | append: video_id
-            endif
-          -%}
-          {%- if section.settings.video_url.type == 'youtube' -%}
-            <iframe
-              src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
-              class="js-youtube"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-              title="{{ section.settings.description | escape }}"
-            ></iframe>
-          {%- else -%}
-            <iframe
-              src="https://player.vimeo.com/video/{{ video_id }}{{ loop_param }}"
-              class="js-vimeo"
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-              title="{{ section.settings.description | escape }}"
-            ></iframe>
-          {%- elsif section.settings.video != null -%}
-            {{
-              section.settings.video
-              | video_tag:
-                image_size: '1100x',
-                autoplay: false,
-                loop: section.settings.enable_video_looping,
-                controls: true,
-                muted: false
-            }}
-          {%- else -%}
-            {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
-          {%- endif -%}
-        </div>
+      {%- comment -%} Nessuna copertina + video Shopify → visibile direttamente {%- endcomment -%}
+      <div class="{{ ms_video_media_class }}">
+        {{
+          section.settings.video
+          | video_tag:
+            image_size: '1100x',
+            autoplay: false,
+            loop: section.settings.enable_video_looping,
+            controls: true,
+            muted: false
+        }}
+      </div>
+
+    {%- elsif section.settings.video_url != null -%}
+
+      {%- comment -%} Nessuna copertina + YouTube/Vimeo → iframe direttamente {%- endcomment -%}
+      <div class="{{ ms_video_media_class }}">
+        {%- if section.settings.video_url.type == 'youtube' -%}
+          <iframe
+            src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
+            class="js-youtube"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            title="{{ section.settings.description | escape }}"
+          ></iframe>
+        {%- else -%}
+          <iframe
+            src="https://player.vimeo.com/video/{{ video_id }}{{ loop_param }}"
+            class="js-vimeo"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            title="{{ section.settings.description | escape }}"
+          ></iframe>
+        {%- endif -%}
+      </div>
+
+    {%- elsif request.design_mode -%}
+
+      <div class="{{ ms_video_media_class }}" style="display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:#f0f0f0;">
+        <p style="color:#666;font-size:0.9rem;">Nessun video configurato. Carica un video Shopify o inserisci un URL YouTube/Vimeo.</p>
+      </div>
 
     {%- endif -%}
 
   </div>
 </div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[id^="Deferred-Poster-Modal-"]');
+    if (!btn) return;
+    var dm = btn.closest('deferred-media');
+    if (!dm) return;
+
+    var observer = new MutationObserver(function (mutations, obs) {
+      var iframe = dm.querySelector('iframe');
+      if (!iframe) return;
+      obs.disconnect();
+      iframe.addEventListener('load', function () {
+        if (iframe.src.indexOf('youtube.com') !== -1) {
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}', '*'
+          );
+        } else if (iframe.src.indexOf('vimeo.com') !== -1) {
+          iframe.contentWindow.postMessage(
+            '{"method":"play"}', '*'
+          );
+        }
+      });
+    });
+    observer.observe(dm, { childList: true, subtree: true });
+  });
+})();
+</script>
 
 {%- render 'ms_section-style' -%}
 
