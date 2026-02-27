@@ -1,45 +1,26 @@
 {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
 {{ 'collapsible-content.css' | asset_url | stylesheet_tag }}
 
-{% comment %}
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+-%}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-{% endcomment %}
+{%- render 'ms_mobile-padding' -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient"
-  id="section-{{ section.id }}"  
->
-  <div class="collapsible-content collapsible-{{ section.settings.layout }}-layout isolate{% if section.settings.layout == 'section' %} page-width{% elsif section.settings.layout == 'none' %} content-container content-container--full-width{% endif %}">
-    <div class="collapsible-content__wrapper section-{{ section.id }}-padding{% if section.settings.layout == 'section' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}">
-      <div class="{% if section.settings.image == blank %}collapsible-content-wrapper-narrow{% else %}page-width{% endif %}">
-        <div
-          class="collapsible-content__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          style="text-align: {{ section.settings.heading_alignment }};"
-        >
-          {%- if section.settings.caption != blank -%}
-            <p class="caption-with-letter-spacing">
-              {{ section.settings.caption | escape }}
-            </p>
-          {% endif %}
-          {%- if section.settings.heading != blank -%}
-            <div class="collapsible-content__heading inline-richtext {{ section.settings.heading_size }}">
-              {{ section.settings.heading }}
-            </div>
-          {%- else -%}
-            <div class="visually-hidden">{{ 'accessibility.collapsible_content_title' | t }}</div>
-          {% endif %}
-        </div>
+<div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
+  <div class="collapsible-content collapsible-{{ section.settings.layout }}-layout isolate{% if section.settings.layout == 'section' %} {{ sw_class }}{% elsif section.settings.layout == 'none' %} content-container content-container--full-width{% endif %}">
+    <div class="collapsible-content__wrapper{% if section.settings.layout == 'section' %} content-container color-{{ section.settings.container_color_scheme }} gradient{% endif %}">
+      <div class="{% if section.settings.image == blank %}collapsible-content-wrapper-narrow{% else %}{{ sw_class }}{% endif %}">
         <div class="grid grid--1-col grid--2-col-tablet collapsible-content__grid{% if section.settings.desktop_layout == 'image_second' %} collapsible-content__grid--reverse{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           {%- if section.settings.image != blank -%}
             <div class="grid__item collapsible-content__grid-item">
@@ -126,344 +107,150 @@
   },
   "settings": [
     {
-      "type": "liquid",
-      "id": "caption",
-      "label": "t:sections.collapsible_content.settings.caption.label"
-    },
-    {
-      "type": "liquid",
-      "id": "heading",
-      "label": "t:sections.collapsible_content.settings.heading.label",
-      "default": "t:sections.collapsible_content.settings.heading.default"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
-    {
-      "type": "select",
-      "id": "heading_alignment",
-      "label": "t:sections.collapsible_content.settings.heading_alignment.label",
-      "options": [
-        {
-          "value": "left",
-          "label": "t:sections.collapsible_content.settings.heading_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.collapsible_content.settings.heading_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.collapsible_content.settings.heading_alignment.options__3.label"
-        }
-      ],
-      "default": "center"
-    },
-    {
       "type": "header",
-      "content": "t:sections.collapsible_content.settings.layout_header.content"
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
       "type": "select",
       "id": "layout",
-      "label": "t:sections.collapsible_content.settings.layout.label",
+      "label": "Disposizione contenuto",
       "options": [
-        {
-          "value": "none",
-          "label": "t:sections.collapsible_content.settings.layout.options__1.label"
-        },
-        {
-          "value": "row",
-          "label": "Spazio tra le righe"
-        },
-        {
-          "value": "section",
-          "label": "t:sections.collapsible_content.settings.layout.options__3.label"
-        }
+        { "value": "none", "label": "Nessun contenitore" },
+        { "value": "row", "label": "Spazio tra le righe" },
+        { "value": "section", "label": "Contenitore sezione" }
       ],
       "default": "none"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "t:sections.collapsible_content.settings.section_color_scheme.label",
+      "label": "Combinazione colori sezione",
       "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "container_color_scheme",
+      "label": "Combinazione colori contenitore",
+      "default": "scheme-2"
     },
     {
       "type": "checkbox",
       "id": "open_first_collapsible_row",
       "default": false,
-      "label": "t:sections.collapsible_content.settings.open_first_collapsible_row.label"
+      "label": "Apri il primo elemento"
     },
     {
       "type": "header",
-      "content": "t:sections.collapsible_content.settings.header.content"
+      "content": "Immagine"
     },
     {
       "type": "image_picker",
       "id": "image",
-      "label": "t:sections.collapsible_content.settings.image.label"
+      "label": "Immagine"
     },
     {
       "type": "select",
       "id": "image_ratio",
       "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.collapsible_content.settings.image_ratio.options__1.label"
-        },
-        {
-          "value": "small",
-          "label": "t:sections.collapsible_content.settings.image_ratio.options__2.label"
-        },
-        {
-          "value": "large",
-          "label": "t:sections.collapsible_content.settings.image_ratio.options__3.label"
-        }
+        { "value": "adapt", "label": "Adatta all'immagine" },
+        { "value": "small", "label": "Piccola" },
+        { "value": "large", "label": "Grande" }
       ],
       "default": "adapt",
-      "label": "t:sections.collapsible_content.settings.image_ratio.label"
+      "label": "Proporzioni immagine"
     },
     {
       "type": "select",
       "id": "desktop_layout",
       "options": [
-        {
-          "value": "image_first",
-          "label": "t:sections.collapsible_content.settings.desktop_layout.options__1.label"
-        },
-        {
-          "value": "image_second",
-          "label": "t:sections.collapsible_content.settings.desktop_layout.options__2.label"
-        }
+        { "value": "image_first", "label": "Immagine prima" },
+        { "value": "image_second", "label": "Immagine dopo" }
       ],
       "default": "image_second",
-      "label": "t:sections.collapsible_content.settings.desktop_layout.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
+      "label": "Posizione immagine desktop"
     }
   ],
   "blocks": [
     {
       "type": "collapsible_row",
-      "name": "t:sections.collapsible_content.blocks.collapsible_row.name",
+      "name": "Riga espandibile",
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "default": "t:sections.collapsible_content.blocks.collapsible_row.settings.heading.default",
-          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.heading.label"
+          "default": "Riga espandibile",
+          "label": "Intestazione"
         },
         {
           "type": "select",
           "id": "icon",
           "options": [
-            {
-              "value": "none",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__1.label"
-            },
-            {
-              "value": "apple",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__2.label"
-            },
-            {
-              "value": "banana",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__3.label"
-            },
-            {
-              "value": "bottle",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__4.label"
-            },
-            {
-              "value": "box",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__5.label"
-            },
-            {
-              "value": "carrot",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__6.label"
-            },
-            {
-              "value": "chat_bubble",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__7.label"
-            },
-            {
-              "value": "check_mark",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__8.label"
-            },
-            {
-              "value": "clipboard",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__9.label"
-            },
-            {
-              "value": "dairy",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__10.label"
-            },
-            {
-              "value": "dairy_free",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__11.label"
-            },
-            {
-              "value": "dryer",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__12.label"
-            },
-            {
-              "value": "eye",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__13.label"
-            },
-            {
-              "value": "fire",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__14.label"
-            },
-            {
-              "value": "gluten_free",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__15.label"
-            },
-            {
-              "value": "heart",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__16.label"
-            },
-            {
-              "value": "iron",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__17.label"
-            },
-            {
-              "value": "leaf",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__18.label"
-            },
-            {
-              "value": "leather",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__19.label"
-            },
-            {
-              "value": "lightning_bolt",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__20.label"
-            },
-            {
-              "value": "lipstick",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__21.label"
-            },
-            {
-              "value": "lock",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__22.label"
-            },
-            {
-              "value": "map_pin",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__23.label"
-            },
-            {
-              "value": "nut_free",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__24.label"
-            },
-            {
-              "value": "pants",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__25.label"
-            },
-            {
-              "value": "paw_print",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__26.label"
-            },
-            {
-              "value": "pepper",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__27.label"
-            },
-            {
-              "value": "perfume",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__28.label"
-            },
-            {
-              "value": "plane",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__29.label"
-            },
-            {
-              "value": "plant",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__30.label"
-            },
-            {
-              "value": "price_tag",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__31.label"
-            },
-            {
-              "value": "question_mark",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__32.label"
-            },
-            {
-              "value": "recycle",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__33.label"
-            },
-            {
-              "value": "return",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__34.label"
-            },
-            {
-              "value": "ruler",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__35.label"
-            },
-            {
-              "value": "serving_dish",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__36.label"
-            },
-            {
-              "value": "shirt",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__37.label"
-            },
-            {
-              "value": "shoe",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__38.label"
-            },
-            {
-              "value": "silhouette",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__39.label"
-            },
-            {
-              "value": "snowflake",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__40.label"
-            },
-            {
-              "value": "star",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__41.label"
-            },
-            {
-              "value": "stopwatch",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__42.label"
-            },
-            {
-              "value": "truck",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__43.label"
-            },
-            {
-              "value": "washing",
-              "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.options__44.label"
-            }
+            { "value": "none", "label": "Nessuna" },
+            { "value": "apple", "label": "Mela" },
+            { "value": "banana", "label": "Banana" },
+            { "value": "bottle", "label": "Bottiglia" },
+            { "value": "box", "label": "Scatola" },
+            { "value": "carrot", "label": "Carota" },
+            { "value": "chat_bubble", "label": "Fumetto" },
+            { "value": "check_mark", "label": "Segno di spunta" },
+            { "value": "clipboard", "label": "Appunti" },
+            { "value": "dairy", "label": "Latticini" },
+            { "value": "dairy_free", "label": "Senza lattosio" },
+            { "value": "dryer", "label": "Asciugatrice" },
+            { "value": "eye", "label": "Occhio" },
+            { "value": "fire", "label": "Fuoco" },
+            { "value": "gluten_free", "label": "Senza glutine" },
+            { "value": "heart", "label": "Cuore" },
+            { "value": "iron", "label": "Ferro da stiro" },
+            { "value": "leaf", "label": "Foglia" },
+            { "value": "leather", "label": "Pelle" },
+            { "value": "lightning_bolt", "label": "Fulmine" },
+            { "value": "lipstick", "label": "Rossetto" },
+            { "value": "lock", "label": "Lucchetto" },
+            { "value": "map_pin", "label": "Segnaposto" },
+            { "value": "nut_free", "label": "Senza frutta a guscio" },
+            { "value": "pants", "label": "Pantaloni" },
+            { "value": "paw_print", "label": "Zampa" },
+            { "value": "pepper", "label": "Peperoncino" },
+            { "value": "perfume", "label": "Profumo" },
+            { "value": "plane", "label": "Aereo" },
+            { "value": "plant", "label": "Pianta" },
+            { "value": "price_tag", "label": "Cartellino prezzo" },
+            { "value": "question_mark", "label": "Punto interrogativo" },
+            { "value": "recycle", "label": "Riciclo" },
+            { "value": "return", "label": "Reso" },
+            { "value": "ruler", "label": "Righello" },
+            { "value": "serving_dish", "label": "Piatto" },
+            { "value": "shirt", "label": "Camicia" },
+            { "value": "shoe", "label": "Scarpa" },
+            { "value": "silhouette", "label": "Silhouette" },
+            { "value": "snowflake", "label": "Fiocco di neve" },
+            { "value": "star", "label": "Stella" },
+            { "value": "stopwatch", "label": "Cronometro" },
+            { "value": "truck", "label": "Camion" },
+            { "value": "washing", "label": "Lavaggio" }
           ],
           "default": "check_mark",
-          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.icon.label"
+          "label": "Icona"
         },
         {
           "type": "text",
@@ -474,209 +261,135 @@
         {
           "type": "richtext",
           "id": "row_content",
-          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.row_content.label"
+          "label": "Contenuto riga"
         },
         {
           "type": "page",
           "id": "page",
-          "label": "t:sections.collapsible_content.blocks.collapsible_row.settings.page.label"
+          "label": "Contenuto da pagina"
         }
       ]
     },
     {
-       "type": "section_padding",
-       "name": "Section Padding",
-	   "limit": 1,
-       "settings": [
-          {
-  		  "type": "header",
-  		  "content": "Large/Desktop Device"
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 100
         },
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_top",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Top",
-  		  "unit": "px",
-  		  "default": 100
-  		},
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_bottom",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Bottom",
-  		  "unit": "px",
-  		  "default": 100
-  		},
-  		{
-  		  "type": "header",
-  		  "content": "Tablet Device"
-  		},
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_top_md",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Top",
-  		  "unit": "px",
-  		  "default": 80
-  		},
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_bottom_md",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Bottom",
-  		  "unit": "px",
-  		  "default": 80
-  		},
-  		{
-  		  "type": "header",
-  		  "content": "Mobile Device"
-  		},
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_top_xs",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Top",
-  		  "unit": "px",
-  		  "default": 60
-  		},
-  		{
-  		  "type": "range",
-  		  "id": "section_padding_bottom_xs",
-  		  "min": 0,
-  		  "max": 150,
-  		  "step": 5,
-  		  "label": "Padding Bottom",
-  		  "unit": "px",
-  		  "default": 60
-  		}
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 100
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 80
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 80
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 60
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 60
+        }
       ]
     },
     {
-         "type": "section_margin",
-         "name": "Section Margin",
-	     "limit": 1,
-         "settings": [
-           {
-		  "type": "header",
-		  "content": "Large/Desktop Device"
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_top",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Top",
-		  "unit": "px",
-		  "default": 0
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_bottom",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Bottom",
-		  "unit": "px",
-		  "default": 0
-		},
-		{
-		  "type": "header",
-		  "content": "Tablet Device"
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_top_md",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Top",
-		  "unit": "px",
-		  "default": 0
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_bottom_md",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Bottom",
-		  "unit": "px",
-		  "default": 0
-		},
-		{
-		  "type": "header",
-		  "content": "Mobile Device"
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_top_xs",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Top",
-		  "unit": "px",
-		  "default": 0
-		},
-		{
-		  "type": "range",
-		  "id": "section_margin_bottom_xs",
-		  "min": 0,
-		  "max": 150,
-		  "step": 5,
-		  "label": "Margin Bottom",
-		  "unit": "px",
-		  "default": 0
-		}
-         ]
-      },
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
     {
       "type": "section_background",
       "name": "Section Background",
-	  "limit": 1,
-         "settings": [
-           {
-		  "type": "image_picker",
-		  "id": "section_bg_image",
-		  "label": "BG Image"
-		},
-		{
-		  "type": "color",
-		  "id": "section_bg_color",
-		  "label": "BG Color",
-		  "default": "#ffffff"
-		}
-         ]
-    },
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
   ],
   "presets": [
     {
       "name": "MS Collapsible Content",
       "category": "Contenuti",
       "blocks": [
-        {
-          "type": "collapsible_row"
-        },
-        {
-          "type": "collapsible_row"
-        },
-        {
-          "type": "collapsible_row"
-        },
-        {
-          "type": "collapsible_row"
-        }
+        { "type": "collapsible_row" },
+        { "type": "collapsible_row" },
+        { "type": "collapsible_row" },
+        { "type": "collapsible_row" }
       ]
     }
   ]
