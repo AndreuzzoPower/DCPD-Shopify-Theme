@@ -1,3 +1,13 @@
+{%- liquid
+  assign ms_has_custom_bg = false
+  for block in section.blocks
+    if block.type == 'section_background'
+      if block.settings.section_bg_color != '#ffffff' or block.settings.section_bg_image != blank
+        assign ms_has_custom_bg = true
+      endif
+    endif
+  endfor
+-%}
 {%- style -%}
    #section-{{ section.id }} {
      {%- for block in section.blocks -%}
@@ -17,6 +27,11 @@
             {%- endcase -%}
             {%- endfor -%}
    }
+   {%- if ms_has_custom_bg -%}
+   #section-{{ section.id }} .gradient {
+     background: transparent;
+   }
+   {%- endif -%}
    @media (min-width: 768px) and (max-width: 991px) {
      #section-{{ section.id }}{
        {%- for block in section.blocks -%}
