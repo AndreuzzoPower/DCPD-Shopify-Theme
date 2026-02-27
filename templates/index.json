@@ -375,6 +375,7 @@
         "text_yQRY66",
         "buttons_hYd7Qr"
       ],
+      "disabled": true,
       "name": "MS Image Banner",
       "settings": {
         "section_width": "full_width",
@@ -393,6 +394,7 @@
     },
     "ms_featured_collection_gLNCjA": {
       "type": "ms_featured-collection",
+      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "section_width": "page_width",
@@ -480,6 +482,7 @@
         "text_RUEDhP",
         "button_dYD8QL"
       ],
+      "disabled": true,
       "name": "MS Image with text",
       "settings": {
         "section_width": "narrow",
@@ -609,6 +612,7 @@
         "slide_FGW4zc",
         "slide_kWDACL"
       ],
+      "disabled": true,
       "name": "MS Slideshow",
       "settings": {
         "section_width": "full_width",
@@ -662,6 +666,7 @@
         "product_kmwqkM",
         "collection_gpKrnq"
       ],
+      "disabled": true,
       "name": "MS Collage",
       "settings": {
         "section_width": "page_width",
@@ -805,6 +810,7 @@
         "column_n9ftcr",
         "column_LaLBEH"
       ],
+      "disabled": true,
       "name": "MS Multicolonna",
       "settings": {
         "section_width": "page_width",
@@ -866,6 +872,7 @@
         "section_background_rwVUD4",
         "section_padding_NhjpQh"
       ],
+      "disabled": true,
       "name": "MS Rive Animation",
       "settings": {
         "section_width": "page_width",
