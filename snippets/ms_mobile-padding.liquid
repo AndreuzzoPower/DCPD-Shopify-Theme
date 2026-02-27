@@ -26,39 +26,43 @@
 
 {%- unless ms_sw == 'full_width' -%}
   {%- if ms_mobile_fw -%}
-    {%- style -%}
+    <style>
       @media screen and (max-width: 767px) {
-        #shopify-section-{{ section.id }} .page-width {
-          padding-left: 0;
-          padding-right: 0;
+        #shopify-section-{{ section.id }} .page-width,
+        #section-{{ section.id }} .page-width {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
         }
       }
       @media screen and (min-width: 768px) and (max-width: 989px) {
-        #shopify-section-{{ section.id }} .page-width {
-          padding-left: 0;
-          padding-right: 0;
+        #shopify-section-{{ section.id }} .page-width,
+        #section-{{ section.id }} .page-width {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
         }
       }
-    {%- endstyle -%}
+    </style>
   {%- else -%}
-    {%- style -%}
+    <style>
       @media screen and (max-width: 767px) {
-        #shopify-section-{{ section.id }} .page-width {
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
+        #shopify-section-{{ section.id }} .page-width,
+        #section-{{ section.id }} .page-width {
+          padding-left: 1.5rem !important;
+          padding-right: 1.5rem !important;
         }
       }
       @media screen and (min-width: 768px) and (max-width: 989px) {
-        #shopify-section-{{ section.id }} .page-width {
+        #shopify-section-{{ section.id }} .page-width,
+        #section-{{ section.id }} .page-width {
           {%- if ms_sw == 'narrow' -%}
-            padding-left: 9rem;
-            padding-right: 9rem;
+            padding-left: 9rem !important;
+            padding-right: 9rem !important;
           {%- else -%}
-            padding-left: 5rem;
-            padding-right: 5rem;
+            padding-left: 5rem !important;
+            padding-right: 5rem !important;
           {%- endif -%}
         }
       }
-    {%- endstyle -%}
+    </style>
   {%- endif -%}
 {%- endunless -%}
