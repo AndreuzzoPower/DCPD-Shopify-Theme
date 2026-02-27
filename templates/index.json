@@ -883,6 +883,66 @@
         "custom_js": "",
         "aria_label": "Contenuto animato"
       }
+    },
+    "ms_multirow_TLxyBP": {
+      "type": "ms_multirow",
+      "blocks": {
+        "row_cWV9LQ": {
+          "type": "row",
+          "settings": {
+            "caption": "Didascalia",
+            "heading": "Riga",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "button_label": "Etichetta pulsante",
+            "button_link": ""
+          }
+        },
+        "row_VF4799": {
+          "type": "row",
+          "settings": {
+            "caption": "Didascalia",
+            "heading": "Riga",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "button_label": "Etichetta pulsante",
+            "button_link": ""
+          }
+        },
+        "row_CXCc9H": {
+          "type": "row",
+          "settings": {
+            "caption": "Didascalia",
+            "heading": "Riga",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "button_label": "Etichetta pulsante",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_cWV9LQ",
+        "row_VF4799",
+        "row_CXCc9H"
+      ],
+      "name": "MS Multirow",
+      "settings": {
+        "image_height": "medium",
+        "desktop_image_width": "medium",
+        "image_layout": "alternate-left",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style_secondary": true,
+        "button_type": "button",
+        "button_size": "default",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "row_color_scheme": "",
+        "row_space": 16,
+        "row_space_tablet": 16,
+        "row_space_mobile": 16
+      }
     }
   },
   "order": [
@@ -895,6 +955,7 @@
     "ms_slideshow_7bym9P",
     "ms_collage_qDzJwf",
     "ms_multicolumn_dNmEq4",
-    "ms_rive_animation_A6hz9Y"
+    "ms_rive_animation_A6hz9Y",
+    "ms_multirow_TLxyBP"
   ]
 }
