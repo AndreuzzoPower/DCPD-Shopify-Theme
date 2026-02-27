@@ -859,6 +859,8 @@
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
+        "max_width": 460,
+        "horizontal_align": "center",
         "aspect_ratio": "4-3",
         "custom_height": 320,
         "heading": "",
