@@ -933,17 +933,23 @@
         "row_VF4799",
         "row_CXCc9H"
       ],
+      "disabled": true,
       "name": "MS Multirow",
       "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
         "image_height": "medium",
         "desktop_image_width": "medium",
         "image_layout": "alternate-left",
+        "heading_tag": "h2",
         "heading_size": "h1",
+        "heading_custom_class": "",
         "text_style": "body",
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
         "mobile_content_alignment": "left",
-        "button_style_secondary": true,
+        "button_style_secondary": false,
         "button_type": "button",
         "button_size": "default",
         "button_icon": "",
@@ -952,6 +958,76 @@
         "row_space": 16,
         "row_space_tablet": 16,
         "row_space_mobile": 16
+      }
+    },
+    "ms_featured_blog_LfnawX": {
+      "type": "ms_featured-blog",
+      "blocks": {
+        "section_padding_b7Ewp4": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 35,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 25,
+            "section_padding_bottom_md": 25,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_b7Ewp4"
+      ],
+      "name": "MS Blog In Evidenza",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "blog": "",
+        "blogs_menu": "menu-categorie-blog",
+        "post_limit": 3,
+        "columns_desktop": "3",
+        "enable_desktop_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "heading": "Articoli del blog",
+        "heading_size": "h1",
+        "title_tag": "h2",
+        "title_custom_class": "",
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "show_reading": false,
+        "show_excerpt": true,
+        "show_blog_name": false,
+        "show_tags": false,
+        "tags_style": "pill",
+        "show_icons": false,
+        "custom_icon_date": "",
+        "custom_icon_reading": "",
+        "custom_icon_author": "",
+        "card_info_vertical": false,
+        "card_info_padding_top": 0,
+        "card_info_padding_right": 0,
+        "card_info_padding_bottom": 0,
+        "card_info_padding_left": 0,
+        "show_view_all": true,
+        "button_size": "default",
+        "button_style_secondary": false,
+        "button_type": "button",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "color_scheme": ""
       }
     }
   },
@@ -966,6 +1042,7 @@
     "ms_collage_qDzJwf",
     "ms_multicolumn_dNmEq4",
     "ms_rive_animation_A6hz9Y",
-    "ms_multirow_TLxyBP"
+    "ms_multirow_TLxyBP",
+    "ms_featured_blog_LfnawX"
   ]
 }
