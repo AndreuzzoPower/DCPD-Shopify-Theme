@@ -221,6 +221,12 @@
           {{ section.settings.heading }}
         </{{ title_tag }}>
 
+        {%- if section.settings.description != blank -%}
+          <div class="ms-fb__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+
         {%- if section.settings.blog != blank
           and section.settings.show_view_all
           and section.settings.post_limit < section.settings.blog.articles_count
@@ -573,6 +579,11 @@
       "id": "heading",
       "default": "t:sections.featured-blog.settings.heading.default",
       "label": "t:sections.featured-blog.settings.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Testo sotto il titolo"
     },
     {
       "type": "select",

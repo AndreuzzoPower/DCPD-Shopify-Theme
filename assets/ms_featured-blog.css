@@ -25,7 +25,15 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. View All — Button (default Dawn .button)
+   3. Description
+   -------------------------------------------------------------------------- */
+.ms-featured-blog .ms-fb__description {
+  margin: 0.5rem 0 1.5rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+/* --------------------------------------------------------------------------
+   4. View All — Button (default Dawn .button)
    -------------------------------------------------------------------------- */
 .ms-featured-blog .ms-fb__view-all {
   margin-top: 3rem;
