@@ -103,16 +103,6 @@
   endif
 
   comment
-    ── Title tag e classe ──
-  endcomment
-  assign title_tag = section.settings.title_tag | default: 'h2'
-  assign title_base_class = 'ms-fb__title blog__title inline-richtext'
-  assign title_classes = title_base_class | append: ' ' | append: section.settings.heading_size
-  if section.settings.title_custom_class != blank
-    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-  endif
-
-  comment
     ── Button style + sizing ──
   endcomment
 -%}
@@ -204,46 +194,11 @@
 {%- render 'ms_mobile-padding' -%}
 
 <div
-  class="ms-featured-blog color-{{ section.settings.color_scheme }} gradient{% if section.settings.heading == blank %} no-heading{% endif %}{% if is_full_width %} ms-fb--full-width{% endif %}"
+  class="ms-featured-blog color-{{ section.settings.color_scheme }} gradient{% if is_full_width %} ms-fb--full-width{% endif %}"
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
   <div class="isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}">
-    {%- unless section.settings.heading == blank -%}
-      <div class="ms-fb__header" style="text-align: {{ section.settings.heading_alignment }};">
-        <div class="title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %} title-wrapper--no-top-margin">
-          <{{ title_tag }}
-            id="SectionHeading-{{ section.id }}"
-            class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-            {% endif %}
-          >
-            {{ section.settings.heading }}
-          </{{ title_tag }}>
-
-          {%- if section.settings.blog != blank
-            and section.settings.show_view_all
-            and section.settings.post_limit < section.settings.blog.articles_count
-          -%}
-            <a
-              href="{{ section.settings.blog.url }}"
-              class="link underlined-link large-up-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-              aria-label="{{ 'sections.featured_blog.view_all' | t }}: {{ section.settings.blog.title | escape }}"
-            >
-              {{ 'sections.featured_blog.view_all' | t }}
-            </a>
-          {%- endif -%}
-        </div>
-
-        {%- if section.settings.description != blank -%}
-          <div class="ms-fb__description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-            {{ section.settings.description }}
-          </div>
-        {%- endif -%}
-      </div>
-    {%- endunless -%}
-
     <slider-component
       data-autoplay="{{ section.settings.enable_autoplay }}"
       data-speed="{{ section.settings.autoplay_speed }}000"
@@ -257,7 +212,7 @@
         id="Slider-{{ section.id }}"
         class="blog__posts articles-wrapper contains-card contains-card--article{% if settings.blog_card_style == 'standard' %} contains-card--standard{% endif %} grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
         role="list"
-        aria-label="{{ section.settings.heading | default: 'Blog in evidenza' | strip_html | escape }}"
+        aria-label="Blog in evidenza"
       >
         {%- if has_selected_blog and section.settings.blog.articles_count > 0 -%}
           {%- comment -%} ── Blog specifico selezionato ── {%- endcomment -%}
@@ -370,7 +325,7 @@
           href="{{ section.settings.blog.url }}"
           id="ViewAll-{{ section.id }}"
           class="ms-fb__view-all-btn {%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
-          aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
+          aria-label="{{ 'sections.featured_blog.view_all' | t }}"
         >
           {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
           {{ view_all_text }}
@@ -571,56 +526,6 @@
       "label": "Abilita swipe / carosello",
       "default": true,
       "info": "Se disattivato, gli articoli verranno visualizzati in una griglia su mobile."
-    },
-    {
-      "type": "header",
-      "content": "Titolo"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "heading",
-      "default": "t:sections.featured-blog.settings.heading.default",
-      "label": "t:sections.featured-blog.settings.heading.label"
-    },
-    {
-      "type": "richtext",
-      "id": "description",
-      "label": "Testo sotto il titolo"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
-        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
-        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
-        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
-        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
       "type": "header",
