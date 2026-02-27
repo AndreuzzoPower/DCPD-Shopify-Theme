@@ -30,10 +30,16 @@
     }
   {%- endif -%}
 
+  /* Align summary items vertically */
+  #section-{{ section.id }} .accordion summary {
+    align-items: center;
+  }
+
   {%- if acc_style == 'bordered' -%}
     #section-{{ section.id }} .accordion {
       border: 1px solid rgba(var(--color-foreground), 0.12);
       border-radius: 8px;
+      margin-top: 0;
       margin-bottom: 0.8rem;
       overflow: hidden;
     }
@@ -42,15 +48,57 @@
     }
     #section-{{ section.id }} .accordion summary {
       border-top: none;
+      padding: 1.5rem;
     }
+    #section-{{ section.id }} .accordion .accordion__content {
+      padding: 0 1.5rem 1.5rem;
+    }
+
   {%- elsif acc_style == 'boxed' -%}
     #section-{{ section.id }} .ms-collapsible__accordion-wrapper {
       border: 1px solid rgba(var(--color-foreground), 0.12);
       border-radius: 8px;
       overflow: hidden;
-      padding: 0.5rem 1.5rem;
     }
+    #section-{{ section.id }} .ms-collapsible__accordion-wrapper .accordion {
+      margin-top: 0;
+      border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+    }
+    #section-{{ section.id }} .ms-collapsible__accordion-wrapper .accordion:first-child {
+      border-top: none;
+    }
+    #section-{{ section.id }} .ms-collapsible__accordion-wrapper .accordion:last-child {
+      border-bottom: none;
+    }
+    #section-{{ section.id }} .ms-collapsible__accordion-wrapper .accordion summary {
+      border-top: none;
+    }
+
+  {%- elsif acc_style == 'filled' -%}
+    #section-{{ section.id }} .accordion {
+      background-color: rgba(var(--color-foreground), 0.04);
+      border: none;
+      border-radius: 8px;
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      overflow: hidden;
+    }
+    #section-{{ section.id }} .accordion:last-child {
+      margin-bottom: 0;
+    }
+    #section-{{ section.id }} .accordion summary {
+      border-top: none;
+      padding: 1.5rem;
+    }
+    #section-{{ section.id }} .accordion .accordion__content {
+      padding: 0 1.5rem 1.5rem;
+    }
+
   {%- elsif acc_style == 'minimal' -%}
+    #section-{{ section.id }} .accordion {
+      border: none;
+      margin-top: 0;
+    }
     #section-{{ section.id }} .accordion summary {
       border-top: none;
     }
@@ -112,7 +160,7 @@
                       {%- if row_icon != blank -%}
                         {%- render 'ms_icon', icon: row_icon -%}
                       {%- endif -%}
-                      <div class="accordion__title inline-richtext h4">
+                      <div class="accordion__title inline-richtext {{ section.settings.heading_size }}">
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
                       </div>
                       {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
@@ -189,9 +237,23 @@
         { "value": "standard", "label": "Standard (linee separatorie)" },
         { "value": "bordered", "label": "Bordi attorno a ogni riga" },
         { "value": "boxed", "label": "Contenitore unico" },
+        { "value": "filled", "label": "Sfondo per ogni riga" },
         { "value": "minimal", "label": "Minimale (nessun separatore)" }
       ],
       "default": "standard"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione intestazione",
+      "options": [
+        { "value": "h6", "label": "Extra piccola" },
+        { "value": "h5", "label": "Piccola" },
+        { "value": "h4", "label": "Media" },
+        { "value": "h3", "label": "Grande" },
+        { "value": "h2", "label": "Extra grande" }
+      ],
+      "default": "h4"
     },
     {
       "type": "text",
