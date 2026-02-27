@@ -1355,6 +1355,18 @@
     "ms_contact_form_tBRqqy": {
       "type": "ms_contact-form",
       "blocks": {
+        "field_select_6VMCgV": {
+          "type": "field_select",
+          "settings": {
+            "field_name": "Selezione",
+            "label": "Motivo del contatto",
+            "label_mode": "label",
+            "required": true,
+            "placeholder_option": "Seleziona...",
+            "options_list": "Opzione 1\nOpzione 2\nOpzione 3",
+            "cols": "12"
+          }
+        },
         "field_text_DAFTUC": {
           "type": "field_text",
           "settings": {
@@ -1410,37 +1422,36 @@
             "autocomplete": "none"
           }
         },
+        "field_tel_U7CVgk": {
+          "type": "field_tel",
+          "settings": {
+            "field_name": "Telefono",
+            "label": "Telefono",
+            "label_mode": "label",
+            "required": false,
+            "cols": "6"
+          }
+        },
         "field_email_L4RdzM": {
           "type": "field_email",
           "settings": {
             "field_name": "email",
             "label": "Email",
-            "label_mode": "placeholder",
-            "required": true,
-            "cols": "6"
-          }
-        },
-        "field_select_6VMCgV": {
-          "type": "field_select",
-          "settings": {
-            "field_name": "Selezione",
-            "label": "Seleziona un'opzione",
             "label_mode": "label",
-            "required": false,
-            "placeholder_option": "Seleziona...",
-            "options_list": "Opzione 1\nOpzione 2\nOpzione 3",
+            "required": true,
             "cols": "6"
           }
         }
       },
       "block_order": [
+        "field_select_6VMCgV",
         "field_text_DAFTUC",
         "field_text_fVCzKX",
         "field_text_adyXCE",
         "field_text_RmHfPe",
         "field_text_8RMDk6",
-        "field_email_L4RdzM",
-        "field_select_6VMCgV"
+        "field_tel_U7CVgk",
+        "field_email_L4RdzM"
       ],
       "name": "MS Form Contatti",
       "settings": {
