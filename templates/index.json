@@ -956,6 +956,7 @@
       "block_order": [
         "section_padding_b7Ewp4"
       ],
+      "disabled": true,
       "name": "MS Blog In Evidenza",
       "settings": {
         "section_width": "page_width",
@@ -1056,10 +1057,6 @@
       ],
       "name": "MS Collapsible Content",
       "settings": {
-        "caption": "",
-        "heading": "Contenuto comprimibile",
-        "heading_size": "h1",
-        "heading_alignment": "center",
         "layout": "none",
         "color_scheme": "",
         "open_first_collapsible_row": false,
