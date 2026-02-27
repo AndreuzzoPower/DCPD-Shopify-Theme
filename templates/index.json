@@ -833,6 +833,12 @@
     "ms_rive_animation_A6hz9Y": {
       "type": "ms_rive-animation",
       "blocks": {
+        "section_background_rwVUD4": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#af0e0e"
+          }
+        },
         "section_padding_NhjpQh": {
           "type": "section_padding",
           "settings": {
@@ -846,14 +852,15 @@
         }
       },
       "block_order": [
+        "section_background_rwVUD4",
         "section_padding_NhjpQh"
       ],
       "name": "MS Rive Animation",
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
-        "aspect_ratio": "16-9",
-        "custom_height": 100,
+        "aspect_ratio": "4-3",
+        "custom_height": 320,
         "heading": "",
         "heading_size": "h1",
         "heading_tag": "h2",
