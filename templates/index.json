@@ -1354,26 +1354,108 @@
     },
     "ms_contact_form_tBRqqy": {
       "type": "ms_contact-form",
+      "blocks": {
+        "field_text_DAFTUC": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Nome",
+            "label": "Nome",
+            "label_mode": "label",
+            "required": false,
+            "cols": "6",
+            "autocomplete": "none"
+          }
+        },
+        "field_text_fVCzKX": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Cognome",
+            "label": "Cognome",
+            "label_mode": "label",
+            "required": false,
+            "cols": "6",
+            "autocomplete": "none"
+          }
+        },
+        "field_text_adyXCE": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "CAP",
+            "label": "CAP",
+            "label_mode": "label",
+            "required": false,
+            "cols": "4",
+            "autocomplete": "none"
+          }
+        },
+        "field_text_RmHfPe": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Città",
+            "label": "Città",
+            "label_mode": "label",
+            "required": false,
+            "cols": "4",
+            "autocomplete": "none"
+          }
+        },
+        "field_text_8RMDk6": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Provincia",
+            "label": "Provincia",
+            "label_mode": "label",
+            "required": false,
+            "cols": "4",
+            "autocomplete": "none"
+          }
+        },
+        "field_email_L4RdzM": {
+          "type": "field_email",
+          "settings": {
+            "field_name": "email",
+            "label": "Email",
+            "label_mode": "placeholder",
+            "required": true,
+            "cols": "6"
+          }
+        },
+        "field_select_6VMCgV": {
+          "type": "field_select",
+          "settings": {
+            "field_name": "Selezione",
+            "label": "Seleziona un'opzione",
+            "label_mode": "label",
+            "required": false,
+            "placeholder_option": "Seleziona...",
+            "options_list": "Opzione 1\nOpzione 2\nOpzione 3",
+            "cols": "6"
+          }
+        }
+      },
+      "block_order": [
+        "field_text_DAFTUC",
+        "field_text_fVCzKX",
+        "field_text_adyXCE",
+        "field_text_RmHfPe",
+        "field_text_8RMDk6",
+        "field_email_L4RdzM",
+        "field_select_6VMCgV"
+      ],
       "name": "MS Form Contatti",
       "settings": {
         "section_width": "narrow",
         "color_scheme": "",
-        "show_name": true,
-        "label_name": "Nome",
-        "required_name": false,
-        "label_email": "Email",
-        "show_phone": true,
-        "label_phone": "Telefono",
-        "required_phone": false,
-        "show_company": false,
-        "label_company": "Azienda",
-        "required_company": false,
-        "show_subject": false,
-        "label_subject": "Oggetto",
-        "required_subject": false,
-        "show_message": true,
-        "label_message": "Messaggio",
-        "required_message": false,
+        "field_border_color": "",
+        "field_border_width": 1,
+        "field_border_radius": 0,
+        "field_bg_color": "",
+        "field_focus_color": "",
+        "field_font_size": 14,
+        "field_gap_h": 16,
+        "field_gap_v": 0,
+        "use_shopify_form": false,
+        "shopify_form_embed": "",
         "show_privacy": true,
         "privacy_text": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>",
         "required_privacy": true,
@@ -1386,7 +1468,8 @@
         "button_style_secondary": false,
         "button_type": "pill",
         "button_icon": "",
-        "button_icon_position": "after"
+        "button_icon_position": "after",
+        "button_align": "left"
       }
     }
   },
