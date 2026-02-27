@@ -1069,6 +1069,7 @@
     },
     "ms_divider_K8eL66": {
       "type": "ms_divider",
+      "disabled": true,
       "name": "MS Divisore",
       "settings": {
         "section_width": "full_width",
@@ -1110,6 +1111,7 @@
         "section_padding_rtqM3L",
         "section_content_KHMgJB"
       ],
+      "disabled": true,
       "name": "MS Custom HTML/LIQUID",
       "settings": {
         "section_width": "page_width",
@@ -1119,6 +1121,7 @@
     },
     "ms_dati_strutturati_cY3GnR": {
       "type": "ms_dati-strutturati",
+      "disabled": true,
       "name": "MS Dati Strutturati",
       "settings": {
         "dsjson": "",
@@ -1143,6 +1146,7 @@
       "block_order": [
         "section_padding_MMA9nH"
       ],
+      "disabled": true,
       "name": "MS Breadcrumbs",
       "settings": {
         "section_width": "page_width",
@@ -1182,14 +1186,10 @@
       ],
       "name": "MS Render Menu",
       "settings": {
-        "menu": "",
-        "show_title": false,
-        "title": "",
-        "title_tag": "div",
-        "title_custom_class": "",
+        "menu": "menu-categorie-blog",
         "section_width": "page_width",
         "mobile_full_width": false,
-        "alignment": "left",
+        "alignment": "center",
         "style": "pills",
         "color_scheme": ""
       }
