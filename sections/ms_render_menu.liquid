@@ -15,12 +15,6 @@
   {%- if menu.links.size > 0 -%}
 
     {%- liquid
-      assign title_tag = section.settings.title_tag | default: 'div'
-      assign title_classes = 'ms-render-menu__title h3'
-      if section.settings.title_custom_class != blank
-        assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-      endif
-
       assign sw = section.settings.section_width | default: 'page_width'
       if sw == 'default'
         assign sw = 'page_width'
@@ -47,13 +41,7 @@
         <div class="{{ sw_class }}">
       {%- endif -%}
 
-        {%- if section.settings.show_title and section.settings.title != blank -%}
-          <{{ title_tag }} class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-            {{ section.settings.title }}
-          </{{ title_tag }}>
-        {%- endif -%}
-
-        <nav aria-label="{{ section.settings.title | default: 'Navigazione menu' | escape }}">
+        <nav aria-label="Navigazione menu">
           <ul
             class="ms-render-menu__list{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
             role="list"
@@ -103,43 +91,6 @@
       "id": "menu",
       "label": "Menu navigazione",
       "info": "Seleziona un menu di navigazione creato in Shopify Admin > Navigazione."
-    },
-    {
-      "type": "header",
-      "content": "Intestazione"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_title",
-      "default": false,
-      "label": "Mostra titolo"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titolo"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "div"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti (h3) vengono mantenute."
     },
     {
       "type": "header",
