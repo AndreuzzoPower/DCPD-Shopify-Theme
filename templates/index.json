@@ -1367,13 +1367,6 @@
             "cols": "12"
           }
         },
-        "spacer_HerjKQ": {
-          "type": "spacer",
-          "settings": {
-            "height": 30,
-            "height_mobile": 15
-          }
-        },
         "field_text_DAFTUC": {
           "type": "field_text",
           "settings": {
@@ -1439,6 +1432,29 @@
             "cols": "6"
           }
         },
+        "field_radio_TcNCnm": {
+          "type": "field_radio",
+          "settings": {
+            "field_name": "Selezione",
+            "label": "Seleziona un'opzione",
+            "show_label": true,
+            "required": false,
+            "options_list": "Opzione 1\nOpzione 2\nOpzione 3",
+            "display": "vertical",
+            "cols": "12"
+          }
+        },
+        "field_checkbox_group_9h3Ux9": {
+          "type": "field_checkbox_group",
+          "settings": {
+            "field_name": "Opzioni",
+            "label": "Seleziona le opzioni",
+            "show_label": false,
+            "options_list": "Opzione 1\nOpzione 2\nOpzione 3",
+            "display": "inline",
+            "cols": "12"
+          }
+        },
         "field_email_L4RdzM": {
           "type": "field_email",
           "settings": {
@@ -1452,26 +1468,27 @@
       },
       "block_order": [
         "field_select_6VMCgV",
-        "spacer_HerjKQ",
         "field_text_DAFTUC",
         "field_text_fVCzKX",
         "field_text_adyXCE",
         "field_text_RmHfPe",
         "field_text_8RMDk6",
         "field_tel_U7CVgk",
+        "field_radio_TcNCnm",
+        "field_checkbox_group_9h3Ux9",
         "field_email_L4RdzM"
       ],
       "name": "MS Form Contatti",
       "settings": {
         "section_width": "narrow",
         "color_scheme": "",
-        "field_border_color": "",
-        "field_border_width": 1,
-        "field_border_radius": 0,
-        "field_bg_color": "",
+        "field_border_color": "#af0e0e",
+        "field_border_width": 3,
+        "field_border_radius": 9,
+        "field_bg_color": "#ecff00",
         "field_focus_color": "",
-        "field_font_size": 14,
-        "field_gap_h": 16,
+        "field_font_size": 15,
+        "field_gap_h": 36,
         "field_gap_v": 0,
         "use_shopify_form": false,
         "shopify_form_embed": "",
