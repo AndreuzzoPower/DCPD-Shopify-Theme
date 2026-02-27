@@ -1090,7 +1090,7 @@
         "section_padding_rtqM3L": {
           "type": "section_padding",
           "settings": {
-            "section_padding_top": 0,
+            "section_padding_top": 75,
             "section_padding_bottom": 100,
             "section_padding_top_md": 0,
             "section_padding_bottom_md": 80,
@@ -1114,10 +1114,7 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
-        "color_scheme": "",
-        "section_title": "New Arrivals",
-        "section_sub_title": "Contrary to popular belief, Lorem Ipsum is not simply random text.",
-        "title_align": "text-center"
+        "color_scheme": ""
       }
     },
     "ms_dati_strutturati_cY3GnR": {
