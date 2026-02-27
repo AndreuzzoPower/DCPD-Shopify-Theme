@@ -1261,6 +1261,38 @@
         "show_min_order": true,
         "quick_add": "none"
       }
+    },
+    "ms_newsletter_zFg7n3": {
+      "type": "ms_newsletter",
+      "blocks": {
+        "heading_xHN9dr": {
+          "type": "heading",
+          "settings": {
+            "heading": "Iscriviti alla newsletter",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph_RaYKz4": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Ricevi le ultime novità, offerte esclusive e aggiornamenti direttamente nella tua casella di posta.</p>"
+          }
+        },
+        "email_form_zFjaCM": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_xHN9dr",
+        "paragraph_RaYKz4",
+        "email_form_zFjaCM"
+      ],
+      "name": "MS Newsletter",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": ""
+      }
     }
   },
   "order": [
@@ -1282,6 +1314,7 @@
     "ms_dati_strutturati_cY3GnR",
     "ms_breadcrumbs_9F3RU7",
     "ms_render_menu_VUWCrj",
-    "ms_products_from_metafield_ckjLUd"
+    "ms_products_from_metafield_ckjLUd",
+    "ms_newsletter_zFg7n3"
   ]
 }
