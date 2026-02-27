@@ -829,6 +829,42 @@
         "columns_mobile": "1",
         "swipe_on_mobile": false
       }
+    },
+    "ms_rive_animation_A6hz9Y": {
+      "type": "ms_rive-animation",
+      "blocks": {
+        "section_padding_NhjpQh": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 35,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_NhjpQh"
+      ],
+      "name": "MS Rive Animation",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "aspect_ratio": "16-9",
+        "custom_height": 400,
+        "heading": "",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "heading_custom_class": "",
+        "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/26548-49782-chracter-interaction.riv?v=1772176107",
+        "state_machine": "",
+        "autoplay": true,
+        "loop": true,
+        "custom_js": "",
+        "aria_label": "Contenuto animato"
+      }
     }
   },
   "order": [
@@ -840,6 +876,7 @@
     "ms_image_with_text_7nGk7K",
     "ms_slideshow_7bym9P",
     "ms_collage_qDzJwf",
-    "ms_multicolumn_dNmEq4"
+    "ms_multicolumn_dNmEq4",
+    "ms_rive_animation_A6hz9Y"
   ]
 }
