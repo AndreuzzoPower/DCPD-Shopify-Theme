@@ -1319,15 +1319,36 @@
         "description": ""
       }
     },
-    "page_pdDRWn": {
-      "type": "page",
-      "name": "t:sections.page.presets.name",
+    "ms_page_wmtXtT": {
+      "type": "ms_page",
+      "blocks": {
+        "section_padding_fjMcXd": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 35,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 25,
+            "section_padding_bottom_md": 25,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        },
+        "section_background_fz4gzJ": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#ffe7ff"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_fjMcXd",
+        "section_background_fz4gzJ"
+      ],
+      "name": "MS Pagina",
       "settings": {
-        "page": "cookie-policy",
-        "heading_size": "h1",
+        "section_width": "narrow",
         "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "page": "cookie-policy"
       }
     }
   },
@@ -1353,6 +1374,6 @@
     "ms_products_from_metafield_ckjLUd",
     "ms_newsletter_zFg7n3",
     "ms_video_fWDKzx",
-    "page_pdDRWn"
+    "ms_page_wmtXtT"
   ]
 }
