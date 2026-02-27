@@ -103,7 +103,7 @@
           {%- liquid
             assign bt = block.type
             assign is_field = false
-            if bt == 'field_text' or bt == 'field_email' or bt == 'field_tel' or bt == 'field_textarea' or bt == 'field_select' or bt == 'text_block' or bt == 'spacer'
+            if bt == 'field_text' or bt == 'field_email' or bt == 'field_tel' or bt == 'field_textarea' or bt == 'field_select' or bt == 'field_radio' or bt == 'field_checkbox_group' or bt == 'text_block' or bt == 'spacer'
               assign is_field = true
             endif
           -%}
@@ -123,6 +123,11 @@
               if f_required
                 assign f_ph = f_label | append: ' *'
               endif
+              if f_mode == 'label'
+                assign f_input_ph = ' '
+              else
+                assign f_input_ph = f_ph
+              endif
               if bt == 'spacer'
                 assign f_cols = '12'
               endif
@@ -140,7 +145,7 @@
                       class="field__input"
                       name="contact[{{ f_name }}]"
                       value="{{ form[f_name] }}"
-                      placeholder="{{ f_ph }}"
+                      placeholder="{{ f_input_ph }}"
                       {% unless block.settings.autocomplete == blank or block.settings.autocomplete == 'none' %}autocomplete="{{ block.settings.autocomplete }}"{% endunless %}
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
@@ -163,7 +168,7 @@
                       spellcheck="false"
                       autocapitalize="off"
                       value="{{ form.email }}"
-                      placeholder="{{ f_ph }}"
+                      placeholder="{{ f_input_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if form.errors contains 'email' %}
                         aria-invalid="true"
@@ -198,7 +203,7 @@
                       autocomplete="tel"
                       pattern="[0-9\-\+\s]*"
                       value="{{ form[f_name] }}"
-                      placeholder="{{ f_ph }}"
+                      placeholder="{{ f_input_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
@@ -216,7 +221,7 @@
                       id="{{ f_id }}"
                       class="text-area field__input"
                       name="contact[{{ f_name }}]"
-                      placeholder="{{ f_ph }}"
+                      placeholder="{{ f_input_ph }}"
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >{{- form[f_name] -}}</textarea>
@@ -253,9 +258,74 @@
                           {%- endif -%}
                         {%- endfor -%}
                       </select>
-                      {%- render 'icon-caret' -%}
+                      <span class="svg-wrapper" aria-hidden="true">
+                        <svg class="icon icon-caret" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6" fill="none" focusable="false">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/>
+                        </svg>
+                      </span>
                     </div>
                   </div>
+
+                {%- when 'field_radio' -%}
+                  {%- liquid
+                    assign radio_opts = block.settings.options_list | split: "\n"
+                    assign radio_display = block.settings.display | default: 'vertical'
+                  -%}
+                  <fieldset class="ms-contact-form__fieldset">
+                    {%- if block.settings.show_label -%}
+                      <legend class="ms-contact-form__fieldset-legend">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </legend>
+                    {%- endif -%}
+                    <div class="ms-contact-form__options ms-contact-form__options--{{ radio_display }}">
+                      {%- for opt in radio_opts -%}
+                        {%- assign opt_val = opt | strip -%}
+                        {%- if opt_val != blank -%}
+                          {%- assign r_id = f_id | append: '-' | append: forloop.index -%}
+                          <label class="ms-contact-form__option-label" for="{{ r_id }}">
+                            <input
+                              type="radio"
+                              id="{{ r_id }}"
+                              name="contact[{{ f_name }}]"
+                              value="{{ opt_val }}"
+                              {% if f_required and forloop.first %}required aria-required="true"{% endif %}
+                            >
+                            {{- opt_val -}}
+                          </label>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+
+                {%- when 'field_checkbox_group' -%}
+                  {%- liquid
+                    assign cb_opts = block.settings.options_list | split: "\n"
+                    assign cb_display = block.settings.display | default: 'vertical'
+                  -%}
+                  <fieldset class="ms-contact-form__fieldset">
+                    {%- if block.settings.show_label -%}
+                      <legend class="ms-contact-form__fieldset-legend">
+                        {{- f_label -}}
+                      </legend>
+                    {%- endif -%}
+                    <div class="ms-contact-form__options ms-contact-form__options--{{ cb_display }}">
+                      {%- for opt in cb_opts -%}
+                        {%- assign opt_val = opt | strip -%}
+                        {%- if opt_val != blank -%}
+                          {%- assign cb_id = f_id | append: '-' | append: forloop.index -%}
+                          <label class="ms-contact-form__option-label" for="{{ cb_id }}">
+                            <input
+                              type="checkbox"
+                              id="{{ cb_id }}"
+                              name="contact[{{ f_name }}][]"
+                              value="{{ opt_val }}"
+                            >
+                            {{- opt_val -}}
+                          </label>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
 
                 {%- when 'text_block' -%}
                   {%- liquid
@@ -865,6 +935,116 @@
           "label": "Opzioni (una per riga)",
           "default": "Opzione 1\nOpzione 2\nOpzione 3",
           "info": "Inserisci ogni opzione su una riga separata."
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "12",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_radio",
+      "name": "Radio Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Selezione",
+          "info": "Usato come chiave nel messaggio ricevuto."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta gruppo",
+          "default": "Seleziona un'opzione"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_label",
+          "label": "Mostra etichetta gruppo",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Obbligatorio",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "options_list",
+          "label": "Opzioni (una per riga)",
+          "default": "Opzione 1\nOpzione 2\nOpzione 3"
+        },
+        {
+          "type": "select",
+          "id": "display",
+          "label": "Layout opzioni",
+          "default": "vertical",
+          "options": [
+            { "value": "vertical", "label": "Verticale (una per riga)" },
+            { "value": "inline",   "label": "Inline (affiancate)" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "cols",
+          "label": "Larghezza colonne",
+          "default": "12",
+          "options": [
+            { "value": "4",  "label": "4/12 — un terzo" },
+            { "value": "6",  "label": "6/12 — metà" },
+            { "value": "12", "label": "12/12 — intera riga" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "field_checkbox_group",
+      "name": "Checkbox Multipli",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_name",
+          "label": "Nome campo",
+          "default": "Opzioni",
+          "info": "I valori selezionati vengono inviati come lista nella chiave specificata."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etichetta gruppo",
+          "default": "Seleziona le opzioni"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_label",
+          "label": "Mostra etichetta gruppo",
+          "default": true
+        },
+        {
+          "type": "textarea",
+          "id": "options_list",
+          "label": "Opzioni (una per riga)",
+          "default": "Opzione 1\nOpzione 2\nOpzione 3"
+        },
+        {
+          "type": "select",
+          "id": "display",
+          "label": "Layout opzioni",
+          "default": "vertical",
+          "options": [
+            { "value": "vertical", "label": "Verticale (una per riga)" },
+            { "value": "inline",   "label": "Inline (affiancate)" }
+          ]
         },
         {
           "type": "select",
