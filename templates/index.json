@@ -1344,11 +1344,49 @@
         "section_padding_fjMcXd",
         "section_background_fz4gzJ"
       ],
+      "disabled": true,
       "name": "MS Pagina",
       "settings": {
         "section_width": "narrow",
         "color_scheme": "",
         "page": "cookie-policy"
+      }
+    },
+    "ms_contact_form_tBRqqy": {
+      "type": "ms_contact-form",
+      "name": "MS Form Contatti",
+      "settings": {
+        "section_width": "narrow",
+        "color_scheme": "",
+        "show_name": true,
+        "label_name": "Nome",
+        "required_name": false,
+        "label_email": "Email",
+        "show_phone": true,
+        "label_phone": "Telefono",
+        "required_phone": false,
+        "show_company": false,
+        "label_company": "Azienda",
+        "required_company": false,
+        "show_subject": false,
+        "label_subject": "Oggetto",
+        "required_subject": false,
+        "show_message": true,
+        "label_message": "Messaggio",
+        "required_message": false,
+        "show_privacy": true,
+        "privacy_text": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>",
+        "required_privacy": true,
+        "show_newsletter": true,
+        "newsletter_text": "<p>Acconsento all'invio di comunicazioni commerciali e newsletter</p>",
+        "show_profiling": true,
+        "profiling_text": "<p>Acconsento al trattamento dei miei dati personali per finalità di profilazione</p>",
+        "button_label": "Invia messaggio",
+        "button_size": "default",
+        "button_style_secondary": false,
+        "button_type": "pill",
+        "button_icon": "",
+        "button_icon_position": "after"
       }
     }
   },
@@ -1374,6 +1412,7 @@
     "ms_products_from_metafield_ckjLUd",
     "ms_newsletter_zFg7n3",
     "ms_video_fWDKzx",
-    "ms_page_wmtXtT"
+    "ms_page_wmtXtT",
+    "ms_contact_form_tBRqqy"
   ]
 }

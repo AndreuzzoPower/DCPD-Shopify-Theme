@@ -1,1 +1,69 @@
-{"sections":{"main":{"type":"main-page","settings":{"padding_top":36,"padding_bottom":36}},"form":{"type":"ms_contact-form","settings":{"section_width":"narrow","color_scheme":"scheme-1","show_name":true,"label_name":"Nome","required_name":false,"label_email":"Email","show_phone":true,"label_phone":"Telefono","required_phone":false,"show_company":false,"label_company":"Azienda","required_company":false,"show_subject":false,"label_subject":"Oggetto","required_subject":false,"show_message":true,"label_message":"Messaggio","required_message":false,"show_privacy":true,"privacy_text":"\u003cp\u003eHo letto e accetto la \u003ca href='/policies/privacy-policy'\u003ePrivacy Policy\u003c/a\u003e\u003c/p\u003e","required_privacy":true,"show_newsletter":false,"newsletter_text":"\u003cp\u003eAcconsento all'invio di comunicazioni commerciali e newsletter\u003c/p\u003e","show_profiling":false,"profiling_text":"\u003cp\u003eAcconsento al trattamento dei miei dati personali per finalit\u00e0 di profilazione\u003c/p\u003e","button_label":"Invia messaggio","button_size":"default","button_style_secondary":false,"button_type":"button","button_icon":"","button_icon_position":"after"}},"ms_dati_strutturati_yDcAMH":{"type":"ms_dati-strutturati","name":"MS Dati strutturati","settings":{"dsjson":"{{ page.metafields.custom.dati_strutturati.value }}","dsjsonta":""}}},"order":["main","form","ms_dati_strutturati_yDcAMH"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "form": {
+      "type": "ms_contact-form",
+      "settings": {
+        "section_width": "narrow",
+        "color_scheme": "scheme-1",
+        "show_name": true,
+        "label_name": "Nome",
+        "required_name": false,
+        "label_email": "Email",
+        "show_phone": true,
+        "label_phone": "Telefono",
+        "required_phone": false,
+        "show_company": false,
+        "label_company": "Azienda",
+        "required_company": false,
+        "show_subject": false,
+        "label_subject": "Oggetto",
+        "required_subject": false,
+        "show_message": true,
+        "label_message": "Messaggio",
+        "required_message": false,
+        "show_privacy": true,
+        "privacy_text": "<p>Ho letto e accetto la <a href='/policies/privacy-policy'>Privacy Policy</a></p>",
+        "required_privacy": true,
+        "show_newsletter": false,
+        "newsletter_text": "<p>Acconsento all'invio di comunicazioni commerciali e newsletter</p>",
+        "show_profiling": false,
+        "profiling_text": "<p>Acconsento al trattamento dei miei dati personali per finalità di profilazione</p>",
+        "button_label": "Invia messaggio",
+        "button_size": "default",
+        "button_style_secondary": false,
+        "button_type": "button",
+        "button_icon": "",
+        "button_icon_position": "after"
+      }
+    },
+    "ms_dati_strutturati_yDcAMH": {
+      "type": "ms_dati-strutturati",
+      "name": "MS Dati strutturati",
+      "settings": {
+        "dsjson": "{{ page.metafields.custom.dati_strutturati.value }}",
+        "dsjsonta": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "form",
+    "ms_dati_strutturati_yDcAMH"
+  ]
+}
