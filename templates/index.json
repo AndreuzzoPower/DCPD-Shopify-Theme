@@ -141,6 +141,7 @@
         "featured_collection_cUmT6B",
         "featured_collection_JKEkpM"
       ],
+      "disabled": true,
       "name": "MS Elenco collezioni",
       "settings": {
         "section_width": "page_width",
@@ -240,6 +241,7 @@
         "buy_buttons_yfnGTy",
         "share_NP7DMm"
       ],
+      "disabled": true,
       "name": "MS featured product",
       "settings": {
         "section_width": "page_width",
@@ -319,6 +321,7 @@
         "text_WM7xP6",
         "button_UceQ6J"
       ],
+      "disabled": true,
       "name": "MS Rich text",
       "settings": {
         "section_width": "full_width",
@@ -930,14 +933,14 @@
         "image_layout": "alternate-left",
         "heading_size": "h1",
         "text_style": "body",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
         "button_style_secondary": true,
         "button_type": "button",
         "button_size": "default",
         "button_icon": "",
         "button_icon_position": "before",
-        "desktop_content_position": "middle",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
         "row_color_scheme": "",
         "row_space": 16,
         "row_space_tablet": 16,
