@@ -829,26 +829,6 @@
         "columns_mobile": "1",
         "swipe_on_mobile": false
       }
-    },
-    "ms_rive_animation_Uif3FQ": {
-      "type": "ms_rive-animation",
-      "name": "Rive Animation",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/26548-49782-chracter-interaction.riv?v=1772176107",
-        "state_machine": "",
-        "autoplay": true,
-        "loop": true,
-        "custom_js": "",
-        "aria_label": "Animated content",
-        "aspect_ratio": "16-9",
-        "custom_height": 400,
-        "full_width": false,
-        "color_scheme": "",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     }
   },
   "order": [
@@ -860,7 +840,6 @@
     "ms_image_with_text_7nGk7K",
     "ms_slideshow_7bym9P",
     "ms_collage_qDzJwf",
-    "ms_multicolumn_dNmEq4",
-    "ms_rive_animation_Uif3FQ"
+    "ms_multicolumn_dNmEq4"
   ]
 }
