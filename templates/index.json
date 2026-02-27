@@ -1367,6 +1367,13 @@
             "cols": "12"
           }
         },
+        "spacer_HerjKQ": {
+          "type": "spacer",
+          "settings": {
+            "height": 30,
+            "height_mobile": 15
+          }
+        },
         "field_text_DAFTUC": {
           "type": "field_text",
           "settings": {
@@ -1445,6 +1452,7 @@
       },
       "block_order": [
         "field_select_6VMCgV",
+        "spacer_HerjKQ",
         "field_text_DAFTUC",
         "field_text_fVCzKX",
         "field_text_adyXCE",
