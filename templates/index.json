@@ -1220,6 +1220,7 @@
       "block_order": [
         "section_padding_VEzUtn"
       ],
+      "disabled": true,
       "name": "MS Prodotti Da Metafield",
       "settings": {
         "slider_width": "page_width",
@@ -1242,8 +1243,8 @@
         "image_shape": "default",
         "show_secondary_image": false,
         "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "enable_desktop_slider_autoplay": false,
+        "enable_desktop_slider": true,
+        "enable_desktop_slider_autoplay": true,
         "desktop_slider_autoplay_velocita": 3,
         "carousel_loop": "circular",
         "carousel_peek_size": "medium",
