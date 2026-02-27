@@ -52,6 +52,23 @@
   assign peek = section.settings.carousel_peek_size | default: 'medium'
 -%}
 
+{%- unless show_carousel -%}
+  {% style %}
+    @media screen and (max-width: 749px) {
+      #section-{{ section.id }} .multicolumn-list {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+    @media screen and (min-width: 750px) and (max-width: 989px) {
+      #section-{{ section.id }} .multicolumn-list {
+        padding-left: 5rem;
+        padding-right: 5rem;
+      }
+    }
+  {% endstyle %}
+{%- endunless -%}
+
 {%- unless is_full_width -%}
   {%- if show_desktop_slider -%}
     {% style %}
