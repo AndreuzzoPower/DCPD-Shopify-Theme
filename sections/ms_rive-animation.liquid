@@ -23,11 +23,6 @@
 
   assign aria_label = section.settings.aria_label | default: 'Contenuto animato'
 
-  assign heading_tag = section.settings.heading_tag | default: 'h2'
-  assign heading_classes = 'title inline-richtext ' | append: section.settings.heading_size
-  if section.settings.heading_custom_class != blank
-    assign heading_classes = heading_classes | append: ' ' | append: section.settings.heading_custom_class
-  endif
 -%}
 
 {%- style -%}
@@ -58,12 +53,6 @@
 <div class="color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
   <div class="rive-animation-section isolate {{ sw_class }}">
     <div class="rive-animation-wrapper">
-    {%- unless section.settings.heading == blank -%}
-      <div class="title-wrapper title-wrapper--no-top-margin{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        <{{ heading_tag }} class="{{ heading_classes }}">{{ section.settings.heading }}</{{ heading_tag }}>
-      </div>
-    {%- endunless -%}
-
     {%- if section.settings.rive_url != blank -%}
       <rive-animation
         id="RiveAnimation-{{ section.id }}"
@@ -187,50 +176,6 @@
       "default": 400,
       "unit": "px",
       "info": "Utilizzato solo quando e selezionata 'Altezza personalizzata'"
-    },
-    {
-      "type": "header",
-      "content": "Contenuto"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "heading",
-      "label": "Titolo"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        { "value": "h2", "label": "Piccola" },
-        { "value": "h1", "label": "Media" },
-        { "value": "h0", "label": "Grande" },
-        { "value": "hxl", "label": "Extra large" },
-        { "value": "hxxl", "label": "Extra extra large" }
-      ],
-      "default": "h1",
-      "label": "Dimensione titolo"
-    },
-    {
-      "type": "select",
-      "id": "heading_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "text",
-      "id": "heading_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
       "type": "header",

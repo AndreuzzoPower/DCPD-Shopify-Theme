@@ -18,17 +18,6 @@
       assign sw_class = ''
   endcase
 
-  assign heading_tag = section.settings.heading_tag | default: 'h2'
-  assign heading_classes = 'collage-wrapper-title inline-richtext ' | append: section.settings.heading_size
-  if section.settings.heading_custom_class != blank
-    assign heading_classes = heading_classes | append: ' ' | append: section.settings.heading_custom_class
-  endif
-
-  assign subheading_tag = section.settings.subheading_tag | default: 'p'
-  assign subheading_classes = 'collage-wrapper-subheading rte'
-  if section.settings.subheading_custom_class != blank
-    assign subheading_classes = subheading_classes | append: ' ' | append: section.settings.subheading_custom_class
-  endif
 -%}
 
 <div
@@ -36,24 +25,6 @@
   id="section-{{ section.id }}"
 >
   <div class="{{ sw_class }}">
-    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
-      <div
-        class="collage-wrapper-headers{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-        style="text-align: {{ section.settings.heading_alignment | default: 'left' }};"
-      >
-        {%- if section.settings.heading != blank -%}
-          <{{ heading_tag }} class="{{ heading_classes }}">
-            {{ section.settings.heading }}
-          </{{ heading_tag }}>
-        {%- endif -%}
-        {%- if section.settings.subheading != blank -%}
-          <{{ subheading_tag }} class="{{ subheading_classes }}">
-            {{ section.settings.subheading }}
-          </{{ subheading_tag }}>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
-
     <div class="collage{% if section.settings.mobile_layout == 'collage' %} collage--mobile{% endif %}">
       {% assign skip_card_product_styles = false %}
       {%- for block in section.blocks -%}
@@ -364,89 +335,6 @@
       "info": "t:sections.collage.settings.card_styles.info",
       "label": "t:sections.collage.settings.card_styles.label"
     },
-    {
-      "type": "header",
-      "content": "Contenuto"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "heading",
-      "default": "t:sections.collage.settings.heading.default",
-      "label": "t:sections.collage.settings.heading.label"
-    },
-    {
-      "type": "select",
-      "id": "heading_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
-        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
-        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
-        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
-        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
-    {
-      "type": "text",
-      "id": "heading_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-    {
-      "type": "inline_richtext",
-      "id": "subheading",
-      "label": "Sottotitolo",
-      "info": "Testo descrittivo opzionale sotto il titolo."
-    },
-    {
-      "type": "select",
-      "id": "subheading_tag",
-      "label": "Tag sottotitolo",
-      "options": [
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "p"
-    },
-    {
-      "type": "text",
-      "id": "subheading_custom_class",
-      "label": "Classe CSS personalizzata sottotitolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-    {
-      "type": "select",
-      "id": "heading_alignment",
-      "label": "Allineamento intestazione",
-      "options": [
-        { "value": "left", "label": "Sinistra" },
-        { "value": "center", "label": "Centro" },
-        { "value": "right", "label": "Destra" }
-      ],
-      "default": "left"
-    }
   ],
   "blocks": [
     {

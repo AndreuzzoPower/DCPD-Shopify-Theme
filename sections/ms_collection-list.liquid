@@ -65,16 +65,6 @@
     assign show_desktop_slider = true
   endif
 
-  comment
-    ── Title tag e classe ──
-  endcomment
-  assign title_tag = section.settings.title_tag | default: 'h2'
-  assign title_base_class = 'collection-list-title inline-richtext'
-  assign title_classes = title_base_class | append: ' ' | append: section.settings.heading_size
-  if section.settings.title_custom_class != blank
-    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-  endif
-
   assign columns = collection_blocks_count
   if columns > 3
     assign columns = 3
@@ -94,13 +84,6 @@
 
 {%- comment -%} ── Stili dinamici (dipendono dai settings) ── {%- endcomment -%}
 {%- style -%}
-  /* Title & description alignment */
-  {%- if section.settings.title_alignment != 'left' -%}
-    #section-{{ section.id }} .ms-cl-header {
-      text-align: {{ section.settings.title_alignment }};
-    }
-  {%- endif -%}
-
   /* Grid alignment */
   {%- if section.settings.grid_alignment != 'left' -%}
     #section-{{ section.id }} .collection-list:not(.slider) {
@@ -220,26 +203,7 @@
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
-  <div class="collection-list-wrapper isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}{% if section.settings.title == blank and section.settings.description == blank %} no-heading{% endif %}">
-    {%- unless section.settings.title == blank and section.settings.description == blank -%}
-      <div class="ms-cl-header title-wrapper-with-link{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% else %} title-wrapper--self-padded-mobile{% endif %} title-wrapper--no-top-margin">
-        {%- unless section.settings.title == blank -%}
-          <{{ title_tag }}
-            id="SectionHeading-{{ section.id }}"
-            class="{{ title_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          >
-            {{ section.settings.title }}
-          </{{ title_tag }}>
-        {%- endunless -%}
-
-        {%- unless section.settings.description == blank -%}
-          <div class="ms-cl-description rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-            {{ section.settings.description }}
-          </div>
-        {%- endunless -%}
-      </div>
-    {%- endunless -%}
-
+  <div class="collection-list-wrapper isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}">
     <slider-component
       data-autoplay="{{ section.settings.enable_autoplay }}"
       data-speed="{{ section.settings.autoplay_speed }}000"
@@ -253,7 +217,7 @@
         class="collection-list contains-card contains-card--collection{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %} collection-list--{{ collection_blocks_count }}-items"
         id="Slider-{{ section.id }}"
         role="list"
-        aria-label="{{ section.settings.title | default: 'Elenco collezioni' | strip_html | escape }}"
+        aria-label="Elenco collezioni"
       >
         {%- assign slide_index = 0 -%}
         {%- for block in section.blocks -%}
@@ -334,67 +298,6 @@
       "label": "Full width da mobile",
       "default": false,
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
-    },
-    {
-      "type": "header",
-      "content": "Titolo"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "title",
-      "default": "t:sections.collection-list.settings.title.default",
-      "label": "t:sections.collection-list.settings.title.label"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
-        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
-        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
-        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
-        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-    {
-      "type": "richtext",
-      "id": "description",
-      "label": "Testo sotto il titolo"
-    },
-    {
-      "type": "select",
-      "id": "title_alignment",
-      "label": "Allineamento titolo e testo",
-      "default": "left",
-      "options": [
-        { "value": "left", "label": "Sinistra" },
-        { "value": "center", "label": "Centro" },
-        { "value": "right", "label": "Destra" }
-      ]
     },
     {
       "type": "header",
