@@ -68,8 +68,8 @@
         "image_A6JJ6G": {
           "type": "image",
           "settings": {
-            "desktop_layout": 2,
-            "tablet_layout": 3,
+            "desktop_layout": 4,
+            "tablet_layout": 6,
             "mobile_layout": 12,
             "hide_mobile": false,
             "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
@@ -80,30 +80,42 @@
         "brand_information_dUBAQz": {
           "type": "brand_information",
           "settings": {
-            "desktop_layout": 3,
+            "desktop_layout": 8,
             "tablet_layout": 6,
             "mobile_layout": 12,
+            "mobile_accordion": false,
+            "mobile_accordion_open": false,
+            "heading": "",
+            "heading_tag": "div",
+            "heading_size": "h5",
             "show_social": false
           }
         },
         "text_D7QNgh": {
           "type": "text",
           "settings": {
-            "desktop_layout": 3,
+            "desktop_layout": 6,
             "tablet_layout": 6,
             "mobile_layout": 12,
+            "mobile_accordion": false,
+            "mobile_accordion_open": false,
             "heading": "Titolo",
+            "heading_tag": "div",
+            "heading_size": "h5",
             "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
           }
         },
         "link_list_acCFJB": {
           "type": "link_list",
           "settings": {
-            "desktop_layout": 3,
+            "desktop_layout": 6,
             "tablet_layout": 6,
             "mobile_layout": 12,
             "mobile_accordion": true,
+            "mobile_accordion_open": false,
             "heading": "Link rapidi",
+            "heading_tag": "div",
+            "heading_size": "h5",
             "menu": "footer"
           }
         },
@@ -128,6 +140,7 @@
       ],
       "settings": {
         "section_width": "page_width",
+        "mobile_full_width": false,
         "color_scheme": "scheme-1",
         "newsletter_enable": false,
         "newsletter_heading": "",
