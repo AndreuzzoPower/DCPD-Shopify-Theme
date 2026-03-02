@@ -93,14 +93,14 @@
               {%- endif -%}
 
                 {%- if b_mobile_accordion and block.type != 'image' -%}
-                  <details class="ms-footer-accordion" open{% unless b_mobile_open %} data-mobile-closed{% endunless %}>
+                  <div class="ms-footer-accordion{% if b_mobile_open %} ms-footer-accordion--open{% endif %}">
                     {%- if block.settings.heading != blank -%}
-                      <summary>
+                      <div class="ms-footer-accordion__trigger" role="button" tabindex="0" aria-expanded="{{ b_mobile_open }}">
                         <{{ b_heading_tag }} class="footer-block__heading inline-richtext {{ b_heading_size }}">
                           {{- block.settings.heading -}}
                         </{{ b_heading_tag }}>
                         <svg class="ms-footer-accordion__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                      </summary>
+                      </div>
                     {%- endif -%}
                     <div class="ms-footer-accordion__content">
                 {%- else -%}
@@ -272,7 +272,7 @@
 
                 {%- if b_mobile_accordion and block.type != 'image' -%}
                     </div>
-                  </details>
+                  </div>
                 {%- endif -%}
 
               </div>
@@ -515,15 +515,17 @@
 
 <script>
   (function() {
-    if (window.matchMedia('(max-width: 749px)').matches) {
-      document.querySelectorAll('.ms-footer-accordion[data-mobile-closed]').forEach(function(el) {
-        el.removeAttribute('open');
+    document.querySelectorAll('.ms-footer-accordion__trigger').forEach(function(trigger) {
+      trigger.addEventListener('click', function() {
+        var acc = this.closest('.ms-footer-accordion');
+        acc.classList.toggle('ms-footer-accordion--open');
+        this.setAttribute('aria-expanded', acc.classList.contains('ms-footer-accordion--open'));
       });
-    }
-    window.matchMedia('(max-width: 749px)').addEventListener('change', function(e) {
-      document.querySelectorAll('.ms-footer-accordion[data-mobile-closed]').forEach(function(el) {
-        if (e.matches) el.removeAttribute('open');
-        else el.setAttribute('open', '');
+      trigger.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
       });
     });
   })();

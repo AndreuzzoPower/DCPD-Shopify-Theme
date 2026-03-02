@@ -30,49 +30,54 @@
   margin-bottom: 1rem;
 }
 
-.ms-footer-accordion {
-  border: none;
-}
-
-.ms-footer-accordion summary {
-  list-style: none;
-  cursor: pointer;
+.ms-footer-accordion__trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  cursor: pointer;
 }
 
-.ms-footer-accordion summary::-webkit-details-marker {
-  display: none;
+.ms-footer-accordion__trigger .footer-block__heading {
+  margin-bottom: 0;
 }
 
-.ms-footer-accordion .ms-footer-accordion__icon {
+.ms-footer-accordion__icon {
   transition: transform 0.3s ease;
   flex-shrink: 0;
   width: 1.2rem;
   height: 1.2rem;
 }
 
-.ms-footer-accordion[open] .ms-footer-accordion__icon {
+.ms-footer-accordion--open .ms-footer-accordion__icon {
   transform: rotate(180deg);
 }
 
-.ms-footer-accordion .ms-footer-accordion__content {
+.ms-footer-accordion__content {
+  display: none;
   padding-top: 0.75rem;
 }
 
+.ms-footer-accordion--open .ms-footer-accordion__content {
+  display: block;
+}
+
 @media (min-width: 750px) {
-  .ms-footer-accordion .ms-footer-accordion__icon {
+  .ms-footer-accordion__icon {
     display: none;
   }
 
-  .ms-footer-accordion summary {
+  .ms-footer-accordion__trigger {
     cursor: default;
     pointer-events: none;
   }
 
-  .ms-footer-accordion .ms-footer-accordion__content {
+  .ms-footer-accordion__trigger .footer-block__heading {
+    margin-bottom: 1rem;
+  }
+
+  .ms-footer-accordion__content {
+    display: block;
     padding-top: 0;
   }
 }
