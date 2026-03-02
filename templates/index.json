@@ -1519,7 +1519,8 @@
           "settings": {
             "desktop_layout": 6,
             "tablet_layout": 6,
-            "mobile_layout": 12
+            "mobile_layout": 12,
+            "block_image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png"
           },
           "blocks": {}
         },
@@ -1534,11 +1535,24 @@
             "alignment": "left"
           },
           "blocks": {}
+        },
+        "text_Hkb4Rj": {
+          "type": "text",
+          "name": "Testo",
+          "settings": {
+            "desktop_layout": 12,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "text": "<p>Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.</p>",
+            "alignment": "left"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
         "image_mkpxd3",
-        "text_FAzpdE"
+        "text_FAzpdE",
+        "text_Hkb4Rj"
       ],
       "name": "MS Blocchi Liberi",
       "settings": {
