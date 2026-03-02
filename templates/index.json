@@ -1478,6 +1478,7 @@
         "field_radio_TcNCnm",
         "field_checkbox_group_9h3Ux9"
       ],
+      "disabled": true,
       "name": "MS Form Contatti",
       "settings": {
         "section_width": "narrow",
