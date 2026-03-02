@@ -1521,6 +1521,7 @@
             "desktop_layout": 6,
             "tablet_layout": 6,
             "mobile_layout": 12,
+            "vertical_align": "start",
             "block_image": "shopify://shop_images/Gemini_Generated_Image_b1l9d7b1l9d7b1l9.png"
           },
           "blocks": {}
@@ -1532,6 +1533,7 @@
             "desktop_layout": 6,
             "tablet_layout": 4,
             "mobile_layout": 12,
+            "vertical_align": "center",
             "text": "<p>queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione </p>",
             "alignment": "left"
           },
@@ -1544,6 +1546,7 @@
             "desktop_layout": 12,
             "tablet_layout": 6,
             "mobile_layout": 12,
+            "vertical_align": "start",
             "text": "<p>Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.Inserisci il tuo contenuto qui.</p>",
             "alignment": "left"
           },
