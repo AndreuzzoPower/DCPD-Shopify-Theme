@@ -1,7 +1,14 @@
 <style>
+  #shopify-block-{{ block.id }},
   #ms-block-{{ block.id }} { grid-column: span {{ block.settings.mobile_layout }}; }
-  @media (min-width: 750px) { #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; } }
-  @media (min-width: 990px) { #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; } }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
 </style>
 
 <div id="ms-block-{{ block.id }}" class="ms-block text-{{ block.settings.alignment }}">
