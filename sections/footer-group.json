@@ -89,10 +89,10 @@
             "mobile_layout": 12,
             "mobile_accordion": true,
             "mobile_accordion_open": false,
-            "heading": "<strong>Link rapidi</strong>",
+            "heading": "<strong>Blog</strong>",
             "heading_tag": "div",
             "heading_size": "h5",
-            "menu": "menu-categorie-blog"
+            "menu": "shop_categorie"
           }
         },
         "newsletter_aEqTgb": {
