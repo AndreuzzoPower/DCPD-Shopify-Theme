@@ -65,6 +65,18 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "section_background_yKmnMj": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#ecff00"
+          }
+        },
+        "brand_information_rQBKcB": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
         "section_margin_D9gBxn": {
           "type": "section_margin",
           "settings": {
@@ -117,6 +129,8 @@
         }
       },
       "block_order": [
+        "section_background_yKmnMj",
+        "brand_information_rQBKcB",
         "section_margin_D9gBxn",
         "image_A6JJ6G",
         "brand_information_dUBAQz",
