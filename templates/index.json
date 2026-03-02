@@ -1432,6 +1432,16 @@
             "cols": "6"
           }
         },
+        "field_email_L4RdzM": {
+          "type": "field_email",
+          "settings": {
+            "field_name": "email",
+            "label": "Email",
+            "label_mode": "label",
+            "required": true,
+            "cols": "6"
+          }
+        },
         "field_radio_TcNCnm": {
           "type": "field_radio",
           "settings": {
@@ -1454,16 +1464,6 @@
             "display": "inline",
             "cols": "12"
           }
-        },
-        "field_email_L4RdzM": {
-          "type": "field_email",
-          "settings": {
-            "field_name": "email",
-            "label": "Email",
-            "label_mode": "label",
-            "required": true,
-            "cols": "6"
-          }
         }
       },
       "block_order": [
@@ -1474,23 +1474,23 @@
         "field_text_RmHfPe",
         "field_text_8RMDk6",
         "field_tel_U7CVgk",
+        "field_email_L4RdzM",
         "field_radio_TcNCnm",
-        "field_checkbox_group_9h3Ux9",
-        "field_email_L4RdzM"
+        "field_checkbox_group_9h3Ux9"
       ],
       "name": "MS Form Contatti",
       "settings": {
         "section_width": "narrow",
         "color_scheme": "",
-        "field_border_color": "#af0e0e",
-        "field_border_width": 3,
-        "field_border_radius": 9,
-        "field_bg_color": "#ecff00",
+        "field_border_color": "#e0e0e0",
+        "field_border_width": 1,
+        "field_border_radius": 5,
+        "field_bg_color": "#ffffff",
         "field_focus_color": "",
         "field_font_size": 15,
         "field_label_size": 14,
-        "field_gap_h": 36,
-        "field_gap_v": 0,
+        "field_gap_h": 16,
+        "field_gap_v": 16,
         "use_shopify_form": false,
         "shopify_form_id": "",
         "shopify_form_embed": "",
