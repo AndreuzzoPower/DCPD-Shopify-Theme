@@ -99,7 +99,7 @@
             "mobile_layout": 12,
             "mobile_accordion": false,
             "mobile_accordion_open": false,
-            "heading": "Titolo",
+            "heading": "<strong>Titolo</strong>",
             "heading_tag": "div",
             "heading_size": "h5",
             "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
@@ -113,7 +113,7 @@
             "mobile_layout": 12,
             "mobile_accordion": true,
             "mobile_accordion_open": false,
-            "heading": "Link rapidi",
+            "heading": "<strong>Link rapidi</strong>",
             "heading_tag": "div",
             "heading_size": "h5",
             "menu": "footer"
