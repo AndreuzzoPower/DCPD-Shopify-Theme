@@ -77,8 +77,7 @@
             "heading_tag": "div",
             "heading_size": "h3",
             "description": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>",
-            "privacy_label": "Ho letto e accetto la Privacy Policy",
-            "privacy_url": "shopify://policies/privacy-policy"
+            "privacy_label": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a></p>"
           }
         },
         "image_A6JJ6G": {
