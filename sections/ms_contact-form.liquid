@@ -91,7 +91,8 @@
   }
   {%- endif %}
 
-  #section-{{ section.id }} .field__label {
+  #section-{{ section.id }} .field__label,
+  #section-{{ section.id }} .ms-field--external-label__label {
     font-size: {{ ms_cf_ls }}px;
   }
 
@@ -192,7 +193,12 @@
               {%- case bt -%}
 
                 {%- when 'field_text' -%}
-                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
+                  {%- if f_mode == 'external' -%}
+                    <label class="ms-field--external-label__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
+                  {%- endif -%}
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% elsif f_mode == 'external' %} ms-field--external{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="text"
                       id="{{ f_id }}"
@@ -204,13 +210,20 @@
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    <label class="field__label" for="{{ f_id }}">
-                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                    </label>
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
                   </div>
 
                 {%- when 'field_email' -%}
-                  <div class="field field--with-error{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
+                  {%- if f_mode == 'external' -%}
+                    <label class="ms-field--external-label__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
+                  {%- endif -%}
+                  <div class="field field--with-error{% if f_mode == 'label' %} ms-field--has-label{% elsif f_mode == 'external' %} ms-field--external{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="email"
                       id="{{ f_id }}"
@@ -228,9 +241,11 @@
                       {% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    <label class="field__label" for="{{ f_id }}">
-                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                    </label>
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
                     {%- if form.errors contains 'email' -%}
                       <small class="contact__field-error" id="{{ f_id }}-error">
                         <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
@@ -244,7 +259,12 @@
                   </div>
 
                 {%- when 'field_tel' -%}
-                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
+                  {%- if f_mode == 'external' -%}
+                    <label class="ms-field--external-label__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
+                  {%- endif -%}
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% elsif f_mode == 'external' %} ms-field--external{% else %} ms-field--placeholder-only{% endif %}">
                     <input
                       type="tel"
                       id="{{ f_id }}"
@@ -257,13 +277,20 @@
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >
-                    <label class="field__label" for="{{ f_id }}">
-                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                    </label>
+                    {%- if f_mode == 'label' -%}
+                      <label class="field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
                   </div>
 
                 {%- when 'field_textarea' -%}
-                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% else %} ms-field--placeholder-only{% endif %}">
+                  {%- if f_mode == 'external' -%}
+                    <label class="ms-field--external-label__label" for="{{ f_id }}">
+                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                    </label>
+                  {%- endif -%}
+                  <div class="field{% if f_mode == 'label' %} ms-field--has-label{% elsif f_mode == 'external' %} ms-field--external{% else %} ms-field--placeholder-only{% endif %}">
                     <textarea
                       rows="{{ block.settings.rows | default: 8 }}"
                       id="{{ f_id }}"
@@ -273,14 +300,16 @@
                       {% if f_required %}required aria-required="true"{% endif %}
                       {% if f_mode == 'placeholder' %}aria-label="{{ f_label }}"{% endif %}
                     >{{- form[f_name] -}}</textarea>
-                    <label class="form__label field__label" for="{{ f_id }}">
-                      {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
-                    </label>
+                    {%- if f_mode == 'label' -%}
+                      <label class="form__label field__label" for="{{ f_id }}">
+                        {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
+                      </label>
+                    {%- endif -%}
                   </div>
 
                 {%- when 'field_select' -%}
                   <div class="ms-contact-form__select-wrap">
-                    {%- if f_mode == 'label' -%}
+                    {%- if f_mode == 'label' or f_mode == 'external' -%}
                       <label class="form__label ms-contact-form__select-label" for="{{ f_id }}">
                         {{- f_label -}}{%- if f_required %}<span aria-hidden="true"> *</span>{%- endif -%}
                       </label>
@@ -770,6 +799,7 @@
           "default": "label",
           "options": [
             { "value": "label",       "label": "Label fluttuante" },
+            { "value": "external",    "label": "Label esterna (sopra)" },
             { "value": "placeholder", "label": "Solo placeholder" }
           ]
         },
@@ -832,6 +862,7 @@
           "default": "label",
           "options": [
             { "value": "label",       "label": "Label fluttuante" },
+            { "value": "external",    "label": "Label esterna (sopra)" },
             { "value": "placeholder", "label": "Solo placeholder" }
           ]
         },
@@ -877,6 +908,7 @@
           "default": "label",
           "options": [
             { "value": "label",       "label": "Label fluttuante" },
+            { "value": "external",    "label": "Label esterna (sopra)" },
             { "value": "placeholder", "label": "Solo placeholder" }
           ]
         },
@@ -922,6 +954,7 @@
           "default": "label",
           "options": [
             { "value": "label",       "label": "Label fluttuante" },
+            { "value": "external",    "label": "Label esterna (sopra)" },
             { "value": "placeholder", "label": "Solo placeholder" }
           ]
         },
@@ -975,8 +1008,8 @@
           "label": "Stile etichetta",
           "default": "label",
           "options": [
-            { "value": "label",       "label": "Label superiore" },
-            { "value": "placeholder", "label": "Solo aria-label (nascosta)" }
+            { "value": "label",       "label": "Label visibile (sopra)" },
+            { "value": "placeholder", "label": "Solo placeholder (nessuna label)" }
           ]
         },
         {

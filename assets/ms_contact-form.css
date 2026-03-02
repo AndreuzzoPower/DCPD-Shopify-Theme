@@ -36,6 +36,24 @@
   color: rgba(var(--color-foreground), 0.5);
 }
 
+/* ── Modalità label esterna (sopra il campo) ── */
+.ms-field--external-label__label {
+  display: block;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.04rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.ms-field--external .field__input,
+.ms-field--external .text-area.field__input {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.ms-field--external .field__label {
+  display: none;
+}
+
 /* ── Modalità solo placeholder: niente label, padding uniforme ── */
 .ms-field--placeholder-only .field__input,
 .ms-field--placeholder-only .text-area.field__input {
