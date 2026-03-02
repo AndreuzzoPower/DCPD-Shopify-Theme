@@ -1291,7 +1291,9 @@
         },
         "email_form_zFjaCM": {
           "type": "email_form",
-          "settings": {}
+          "settings": {
+            "privacy_label": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>"
+          }
         }
       },
       "block_order": [
@@ -1558,6 +1560,7 @@
         "text_FAzpdE",
         "text_Hkb4Rj"
       ],
+      "disabled": true,
       "name": "MS Blocchi Liberi",
       "settings": {
         "section_width": "page_width",
