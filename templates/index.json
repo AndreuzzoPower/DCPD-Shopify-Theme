@@ -1372,7 +1372,7 @@
           "settings": {
             "field_name": "Nome",
             "label": "Nome",
-            "label_mode": "label",
+            "label_mode": "external",
             "required": false,
             "cols": "6",
             "autocomplete": "none"
@@ -1437,7 +1437,7 @@
           "settings": {
             "field_name": "email",
             "label": "Email",
-            "label_mode": "label",
+            "label_mode": "external",
             "required": true,
             "cols": "6"
           }
