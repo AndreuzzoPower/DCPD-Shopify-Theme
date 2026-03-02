@@ -65,6 +65,19 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "newsletter_aEqTgb": {
+          "type": "newsletter",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "mobile_accordion": false,
+            "mobile_accordion_open": false,
+            "heading": "Iscriviti alle nostre email",
+            "heading_tag": "div",
+            "heading_size": "h5"
+          }
+        },
         "image_A6JJ6G": {
           "type": "image",
           "settings": {
@@ -146,6 +159,7 @@
         }
       },
       "block_order": [
+        "newsletter_aEqTgb",
         "image_A6JJ6G",
         "brand_information_dUBAQz",
         "text_D7QNgh",
@@ -157,8 +171,6 @@
         "section_width": "page_width",
         "mobile_full_width": false,
         "color_scheme": "scheme-1",
-        "newsletter_enable": false,
-        "newsletter_heading": "",
         "enable_follow_on_shop": true,
         "show_social": true,
         "enable_country_selector": true,
