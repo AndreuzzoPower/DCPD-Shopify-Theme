@@ -4,6 +4,26 @@
 {{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{{ 'ms_footer.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+    else
+      assign sw_class = 'page-width'
+  endcase
+-%}
+
+{%- render 'ms_mobile-padding' -%}
 
 <footer id="section-{{ section.id }}" class="footer color-{{ section.settings.color_scheme }} gradient">
   {%- liquid
@@ -16,48 +36,80 @@
       assign brand_empty = true
     endif
 
-    if section.blocks.size == 1 and section.blocks[0].type == 'brand_information' and brand_empty and has_social_icons == false and section.settings.newsletter_enable == false and section.settings.enable_follow_on_shop == false
+    assign content_blocks_count = 0
+    for block in section.blocks
+      unless block.type == 'section_padding' or block.type == 'section_margin' or block.type == 'section_background'
+        assign content_blocks_count = content_blocks_count | plus: 1
+      endunless
+    endfor
+
+    if content_blocks_count == 1 and section.blocks[0].type == 'brand_information' and brand_empty and has_social_icons == false and section.settings.newsletter_enable == false and section.settings.enable_follow_on_shop == false
       assign only_empty_brand = true
     endif
   -%}
-  {%- if section.blocks.size > 0
+
+  {%- if content_blocks_count > 0
     or section.settings.newsletter_enable
     or section.settings.show_social
     and has_social_icons == true
     or section.settings.enable_follow_on_shop
   -%}
     {%- unless only_empty_brand -%}
-      <div class="footer__content-top page-width">
-        {%- if section.blocks.size > 0 -%}
-          {%- liquid
-            if section.blocks.size == 9
-              assign footer_grid_class = 'grid--3-col-tablet'
-            elsif section.blocks.size > 6
-              assign footer_grid_class = 'grid--4-col-desktop'
-            elsif section.blocks.size > 4
-              assign footer_grid_class = 'grid--3-col-tablet'
-            endif
-          -%}
-          <div
-            class="footer__blocks-wrapper grid grid--1-col grid--2-col grid--4-col-tablet {{ footer_grid_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-            {% endif %}
-          >
+      <div class="footer__content-top {{ sw_class }}">
+        {%- if content_blocks_count > 0 -%}
+          <div class="ms-footer-grid">
             {%- for block in section.blocks -%}
               {%- if block.type == 'section_padding' or block.type == 'section_margin' or block.type == 'section_background' -%}
                 {%- continue -%}
               {%- endif -%}
-              <div
-                class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {{ block.shopify_attributes }}
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                {%- if block.settings.heading != blank -%}
-                  <div class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</div>
+
+              {%- liquid
+                assign b_desk = block.settings.desktop_layout | default: 3
+                assign b_tab = block.settings.tablet_layout | default: 6
+                assign b_mob = block.settings.mobile_layout | default: 12
+                assign b_heading_tag = block.settings.heading_tag | default: 'div'
+                assign b_heading_size = block.settings.heading_size | default: 'h5'
+                assign b_mobile_accordion = block.settings.mobile_accordion | default: false
+                assign b_mobile_open = block.settings.mobile_accordion_open | default: false
+              -%}
+
+              <style>
+                #footer-block-{{ block.id }} { grid-column: span {{ b_mob }}; }
+                @media (min-width: 750px) { #footer-block-{{ block.id }} { grid-column: span {{ b_tab }}; } }
+                @media (min-width: 990px) { #footer-block-{{ block.id }} { grid-column: span {{ b_desk }}; } }
+              </style>
+
+              {%- if block.type == 'image' and block.settings.hide_mobile -%}
+                <div
+                  id="footer-block-{{ block.id }}"
+                  class="ms-footer-block ms-footer-block--hidden-mobile footer-block"
+                  {{ block.shopify_attributes }}
+                >
+              {%- else -%}
+                <div
+                  id="footer-block-{{ block.id }}"
+                  class="ms-footer-block footer-block{% if block.type == 'link_list' %} footer-block--menu{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+              {%- endif -%}
+
+                {%- if b_mobile_accordion and block.type != 'image' -%}
+                  <details class="ms-footer-accordion"{% if b_mobile_open %} open{% endif %}>
+                    {%- if block.settings.heading != blank -%}
+                      <summary>
+                        <{{ b_heading_tag }} class="footer-block__heading inline-richtext {{ b_heading_size }}">
+                          {{- block.settings.heading -}}
+                        </{{ b_heading_tag }}>
+                        <svg class="ms-footer-accordion__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </summary>
+                    {%- endif -%}
+                    <div class="ms-footer-accordion__content">
+                {%- else -%}
+                  {%- if block.settings.heading != blank -%}
+                    <{{ b_heading_tag }} class="footer-block__heading inline-richtext {{ b_heading_size }}">
+                      {{- block.settings.heading -}}
+                    </{{ b_heading_tag }}>
+                  {%- endif -%}
                 {%- endif -%}
 
                 {%- case block.type -%}
@@ -134,18 +186,23 @@
                         {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
                       {%- endif -%}
                     </div>
+                  {%- when 'html_liquid' -%}
+                    <div class="footer-block__details-content rte">
+                      {{ block.settings.custom_content }}
+                    </div>
                 {%- endcase -%}
+
+                {%- if b_mobile_accordion and block.type != 'image' -%}
+                    </div>
+                  </details>
+                {%- endif -%}
+
               </div>
             {%- endfor -%}
           </div>
         {%- endif -%}
 
-        <div
-          class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
+        <div class="footer-block--newsletter">
           {%- if section.settings.newsletter_enable -%}
             <div class="footer-block__newsletter">
               {%- if section.settings.newsletter_heading != blank -%}
@@ -225,12 +282,7 @@
     {%- endunless -%}
   {%- endif -%}
 
-  <div
-    class="footer__content-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-    {% if settings.animations_reveal_on_scroll %}
-      data-cascade
-    {% endif %}
-  >
+  <div class="footer__content-bottom">
     <div class="footer__content-bottom-wrapper page-width">
       <div class="footer__column footer__localization isolate">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
@@ -462,10 +514,85 @@
       "name": "Menu",
       "settings": [
         {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "desktop_layout",
+          "label": "Colonne desktop",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 3,
+          "info": "Schermi maggiori di 990px"
+        },
+        {
+          "id": "tablet_layout",
+          "label": "Colonne tablet",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 6,
+          "info": "Schermi tra 750px e 990px"
+        },
+        {
+          "id": "mobile_layout",
+          "label": "Colonne mobile",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 12,
+          "info": "Schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion",
+          "label": "Chiudibile su mobile",
+          "default": true,
+          "info": "Il blocco diventa un accordion su mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion_open",
+          "label": "Aperto di default su mobile",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Contenuto"
+        },
+        {
           "type": "inline_richtext",
           "id": "heading",
           "default": "Link rapidi",
           "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h6" },
+            { "label": "Media", "value": "h5" },
+            { "label": "Grande", "value": "h4" },
+            { "label": "Extra grande", "value": "h3" }
+          ],
+          "default": "h5"
         },
         {
           "type": "link_list",
@@ -476,9 +603,183 @@
       ]
     },
     {
-      "type": "brand_information",
-      "name": "Informazioni sul brand",
+      "type": "text",
+      "name": "Testo",
       "settings": [
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "desktop_layout",
+          "label": "Colonne desktop",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 3,
+          "info": "Schermi maggiori di 990px"
+        },
+        {
+          "id": "tablet_layout",
+          "label": "Colonne tablet",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 6,
+          "info": "Schermi tra 750px e 990px"
+        },
+        {
+          "id": "mobile_layout",
+          "label": "Colonne mobile",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 12,
+          "info": "Schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion",
+          "label": "Chiudibile su mobile",
+          "default": false,
+          "info": "Il blocco diventa un accordion su mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion_open",
+          "label": "Aperto di default su mobile",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Contenuto"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Titolo",
+          "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h6" },
+            { "label": "Media", "value": "h5" },
+            { "label": "Grande", "value": "h4" },
+            { "label": "Extra grande", "value": "h3" }
+          ],
+          "default": "h5"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>",
+          "label": "Sottotesto"
+        }
+      ]
+    },
+    {
+      "type": "brand_information",
+      "name": "Informazioni Sul Brand",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "desktop_layout",
+          "label": "Colonne desktop",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 3,
+          "info": "Schermi maggiori di 990px"
+        },
+        {
+          "id": "tablet_layout",
+          "label": "Colonne tablet",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 6,
+          "info": "Schermi tra 750px e 990px"
+        },
+        {
+          "id": "mobile_layout",
+          "label": "Colonne mobile",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 12,
+          "info": "Schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion",
+          "label": "Chiudibile su mobile",
+          "default": false,
+          "info": "Il blocco diventa un accordion su mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion_open",
+          "label": "Aperto di default su mobile",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Contenuto"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h6" },
+            { "label": "Media", "value": "h5" },
+            { "label": "Grande", "value": "h4" },
+            { "label": "Extra grande", "value": "h3" }
+          ],
+          "default": "h5"
+        },
         {
           "type": "paragraph",
           "content": "Gestisci le informazioni sul brand nelle impostazioni tema"
@@ -493,27 +794,52 @@
       ]
     },
     {
-      "type": "text",
-      "name": "Testo",
-      "settings": [
-        {
-          "type": "inline_richtext",
-          "id": "heading",
-          "default": "Titolo",
-          "label": "Titolo"
-        },
-        {
-          "type": "richtext",
-          "id": "subtext",
-          "default": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>",
-          "label": "Sottotesto"
-        }
-      ]
-    },
-    {
       "type": "image",
       "name": "Immagine",
       "settings": [
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "desktop_layout",
+          "label": "Colonne desktop",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 3,
+          "info": "Schermi maggiori di 990px"
+        },
+        {
+          "id": "tablet_layout",
+          "label": "Colonne tablet",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 6,
+          "info": "Schermi tra 750px e 990px"
+        },
+        {
+          "id": "mobile_layout",
+          "label": "Colonne mobile",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 12,
+          "info": "Schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_mobile",
+          "label": "Nascondi su mobile",
+          "default": false,
+          "info": "L'immagine non sarà visibile su schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Contenuto"
+        },
         {
           "type": "image_picker",
           "id": "image",
@@ -539,6 +865,98 @@
             { "value": "right", "label": "Destra" }
           ],
           "default": "center"
+        }
+      ]
+    },
+    {
+      "type": "html_liquid",
+      "name": "HTML / Liquid",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "desktop_layout",
+          "label": "Colonne desktop",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 3,
+          "info": "Schermi maggiori di 990px"
+        },
+        {
+          "id": "tablet_layout",
+          "label": "Colonne tablet",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 6,
+          "info": "Schermi tra 750px e 990px"
+        },
+        {
+          "id": "mobile_layout",
+          "label": "Colonne mobile",
+          "type": "range",
+          "min": 1, "max": 12, "step": 1, "unit": "col",
+          "default": 12,
+          "info": "Schermi sotto i 750px"
+        },
+        {
+          "type": "header",
+          "content": "Mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion",
+          "label": "Chiudibile su mobile",
+          "default": false,
+          "info": "Il blocco diventa un accordion su mobile"
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_accordion_open",
+          "label": "Aperto di default su mobile",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Contenuto"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h6" },
+            { "label": "Media", "value": "h5" },
+            { "label": "Grande", "value": "h4" },
+            { "label": "Extra grande", "value": "h3" }
+          ],
+          "default": "h5"
+        },
+        {
+          "type": "liquid",
+          "id": "custom_content",
+          "label": "Contenuto HTML / Liquid",
+          "info": "Puoi inserire codice HTML, Liquid e classi Bootstrap"
         }
       ]
     },
@@ -642,6 +1060,29 @@
     }
   ],
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile senza padding laterale."
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",

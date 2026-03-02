@@ -1,0 +1,68 @@
+.ms-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem 1.5rem;
+  align-items: start;
+}
+
+.ms-footer-block {
+  grid-column: span 12;
+  min-width: 0;
+}
+
+.ms-footer-block--hidden-mobile {
+  display: none;
+}
+
+@media (min-width: 750px) {
+  .ms-footer-block--hidden-mobile {
+    display: block;
+  }
+}
+
+.ms-footer-accordion {
+  border: none;
+}
+
+.ms-footer-accordion summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ms-footer-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.ms-footer-accordion .ms-footer-accordion__icon {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.ms-footer-accordion[open] .ms-footer-accordion__icon {
+  transform: rotate(180deg);
+}
+
+.ms-footer-accordion .ms-footer-accordion__content {
+  padding-top: 0.75rem;
+}
+
+@media (min-width: 750px) {
+  .ms-footer-accordion .ms-footer-accordion__icon {
+    display: none;
+  }
+
+  .ms-footer-accordion .ms-footer-accordion__content {
+    display: block !important;
+    padding-top: 0;
+  }
+
+  .ms-footer-accordion:not([open]) .ms-footer-accordion__content {
+    display: block !important;
+  }
+}

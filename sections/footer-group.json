@@ -65,46 +65,33 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "section_background_yKmnMj": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#ecff00"
-          }
-        },
-        "brand_information_rQBKcB": {
-          "type": "brand_information",
-          "settings": {
-            "show_social": true
-          }
-        },
-        "section_margin_D9gBxn": {
-          "type": "section_margin",
-          "settings": {
-            "section_margin_top": 0,
-            "section_margin_bottom": 0,
-            "section_margin_top_md": 0,
-            "section_margin_bottom_md": 0,
-            "section_margin_top_xs": 0,
-            "section_margin_bottom_xs": 0
-          }
-        },
         "image_A6JJ6G": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/download.jpg",
-            "image_width": 550,
+            "desktop_layout": 2,
+            "tablet_layout": 3,
+            "mobile_layout": 12,
+            "hide_mobile": false,
+            "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
+            "image_width": 50,
             "alignment": "center"
           }
         },
         "brand_information_dUBAQz": {
           "type": "brand_information",
           "settings": {
+            "desktop_layout": 3,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
             "show_social": false
           }
         },
         "text_D7QNgh": {
           "type": "text",
           "settings": {
+            "desktop_layout": 3,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
             "heading": "Titolo",
             "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
           }
@@ -112,6 +99,10 @@
         "link_list_acCFJB": {
           "type": "link_list",
           "settings": {
+            "desktop_layout": 3,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "mobile_accordion": true,
             "heading": "Link rapidi",
             "menu": "footer"
           }
@@ -129,9 +120,6 @@
         }
       },
       "block_order": [
-        "section_background_yKmnMj",
-        "brand_information_rQBKcB",
-        "section_margin_D9gBxn",
         "image_A6JJ6G",
         "brand_information_dUBAQz",
         "text_D7QNgh",
@@ -139,13 +127,14 @@
         "section_padding_footer"
       ],
       "settings": {
+        "section_width": "page_width",
         "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Iscriviti alla newsletter",
+        "newsletter_enable": false,
+        "newsletter_heading": "",
         "enable_follow_on_shop": false,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
         "payment_enable": true,
         "show_policy": true
       }
