@@ -75,7 +75,10 @@
             "mobile_accordion_open": false,
             "heading": "Iscriviti alle nostre email",
             "heading_tag": "div",
-            "heading_size": "h5"
+            "heading_size": "h3",
+            "description": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>",
+            "privacy_label": "Ho letto e accetto la Privacy Policy",
+            "privacy_url": "shopify://policies/privacy-policy"
           }
         },
         "image_A6JJ6G": {
