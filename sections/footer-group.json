@@ -138,6 +138,20 @@
             "custom_content": "Il nome dello shop è: {{shop.name}}"
           }
         },
+        "html_liquid_J3jyra": {
+          "type": "html_liquid",
+          "settings": {
+            "desktop_layout": 3,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "mobile_accordion": false,
+            "mobile_accordion_open": false,
+            "heading": "",
+            "heading_tag": "div",
+            "heading_size": "h5",
+            "custom_content": "<br><br>"
+          }
+        },
         "section_padding_footer": {
           "type": "section_padding",
           "settings": {
@@ -156,6 +170,7 @@
         "newsletter_aEqTgb",
         "text_D7QNgh",
         "html_liquid_KmgHwL",
+        "html_liquid_J3jyra",
         "section_padding_footer"
       ],
       "settings": {
