@@ -65,6 +65,20 @@
     "footer": {
       "type": "footer",
       "blocks": {
+        "text_NGkikM": {
+          "type": "text",
+          "settings": {
+            "heading": "Titolo",
+            "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
+          }
+        },
+        "link_list_6QK4tt": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Link rapidi",
+            "menu": "footer"
+          }
+        },
         "image_A6JJ6G": {
           "type": "image",
           "settings": {
@@ -92,25 +106,15 @@
             "heading": "Link rapidi",
             "menu": "footer"
           }
-        },
-        "section_padding_footer": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 35,
-            "section_padding_bottom": 35,
-            "section_padding_top_md": 25,
-            "section_padding_bottom_md": 25,
-            "section_padding_top_xs": 25,
-            "section_padding_bottom_xs": 25
-          }
         }
       },
       "block_order": [
+        "text_NGkikM",
+        "link_list_6QK4tt",
         "image_A6JJ6G",
         "brand_information_dUBAQz",
         "text_D7QNgh",
-        "link_list_acCFJB",
-        "section_padding_footer"
+        "link_list_acCFJB"
       ],
       "settings": {
         "color_scheme": "scheme-1",
