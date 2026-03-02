@@ -127,7 +127,7 @@
         "html_liquid_KmgHwL": {
           "type": "html_liquid",
           "settings": {
-            "desktop_layout": 12,
+            "desktop_layout": 6,
             "tablet_layout": 6,
             "mobile_layout": 12,
             "mobile_accordion": false,
