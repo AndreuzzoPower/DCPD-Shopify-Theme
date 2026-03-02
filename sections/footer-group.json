@@ -14,10 +14,10 @@
     "newsletter_AUNtxG": {
       "type": "ms_newsletter",
       "blocks": {
-        "section_background_pDzfBq": {
+        "section_background_Mwyj6X": {
           "type": "section_background",
           "settings": {
-            "section_bg_color": "rgba(0,0,0,0)"
+            "section_bg_color": "#000000"
           }
         },
         "heading_FpXjL7": {
@@ -52,7 +52,7 @@
         }
       },
       "block_order": [
-        "section_background_pDzfBq",
+        "section_background_Mwyj6X",
         "heading_FpXjL7",
         "paragraph_GajKXm",
         "email_form_Nd8TDW",
