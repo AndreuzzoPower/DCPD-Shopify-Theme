@@ -1513,11 +1513,21 @@
     "ms_blocks_section_rHeqkc": {
       "type": "ms_blocks-section",
       "blocks": {
+        "image_mkpxd3": {
+          "type": "image",
+          "name": "Immagine",
+          "settings": {
+            "desktop_layout": 6,
+            "tablet_layout": 6,
+            "mobile_layout": 12
+          },
+          "blocks": {}
+        },
         "text_FAzpdE": {
           "type": "text",
           "name": "Text",
           "settings": {
-            "desktop_layout": 4,
+            "desktop_layout": 12,
             "tablet_layout": 4,
             "mobile_layout": 12,
             "text": "<p>queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione </p>",
@@ -1527,6 +1537,7 @@
         }
       },
       "block_order": [
+        "image_mkpxd3",
         "text_FAzpdE"
       ],
       "name": "MS Blocchi Liberi",
