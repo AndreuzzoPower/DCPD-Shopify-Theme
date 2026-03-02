@@ -1,6 +1,9 @@
 <style>
   #shopify-block-{{ block.id }},
-  #ms-block-{{ block.id }} { grid-column: span {{ block.settings.mobile_layout }}; }
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
   @media (min-width: 750px) {
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
@@ -57,6 +60,18 @@
       "info": "Schermi sotto i 750px"
     },
     {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
       "type": "header",
       "content": "Contenuto"
     },
@@ -69,7 +84,7 @@
     {
       "type": "text_alignment",
       "id": "alignment",
-      "label": "Allineamento",
+      "label": "Allineamento testo",
       "default": "left"
     }
   ],
