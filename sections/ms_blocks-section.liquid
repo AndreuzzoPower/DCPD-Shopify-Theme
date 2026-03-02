@@ -1,0 +1,74 @@
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+    else
+      assign sw_class = 'page-width'
+  endcase
+-%}
+
+{%- render 'ms_mobile-padding' -%}
+
+<div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
+  <div{% unless sw_class == blank %} class="{{ sw_class }}"{% endunless %}>
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Blocchi Liberi",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Blocchi Liberi"
+    }
+  ]
+}
+{% endschema %}
