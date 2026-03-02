@@ -67,13 +67,13 @@
     display: none;
   }
 
-  .ms-footer-accordion .ms-footer-accordion__content {
-    display: block !important;
-    padding-top: 0;
+  .ms-footer-accordion summary {
+    cursor: default;
+    pointer-events: none;
   }
 
-  .ms-footer-accordion:not([open]) .ms-footer-accordion__content {
-    display: block !important;
+  .ms-footer-accordion .ms-footer-accordion__content {
+    padding-top: 0;
   }
 }
 
