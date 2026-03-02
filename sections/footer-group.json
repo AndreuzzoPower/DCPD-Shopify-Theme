@@ -17,7 +17,7 @@
         "section_background_pDzfBq": {
           "type": "section_background",
           "settings": {
-            "section_bg_color": "#f3f3f3"
+            "section_bg_color": "rgba(0,0,0,0)"
           }
         },
         "heading_FpXjL7": {
@@ -61,7 +61,7 @@
       "name": "MS Newsletter",
       "settings": {
         "section_width": "full_width",
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-4"
       }
     },
     "footer": {
