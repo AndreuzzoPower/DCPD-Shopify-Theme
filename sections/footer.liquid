@@ -239,26 +239,22 @@
                             </small>
                           {%- endif -%}
                         </div>
-                        <div class="ms-newsletter-privacy">
-                          <label class="ms-newsletter-privacy__label">
-                            <input
-                              type="checkbox"
-                              name="contact[privacy_accepted]"
-                              required
-                              aria-required="true"
-                              class="ms-newsletter-privacy__checkbox"
-                            >
-                            <span class="ms-newsletter-privacy__text">
-                              {%- if block.settings.privacy_url != blank -%}
-                                <a href="{{ block.settings.privacy_url }}" target="_blank" rel="noopener">
-                                  {{- block.settings.privacy_label | default: 'Ho letto e accetto la Privacy Policy' -}}
-                                </a>
-                              {%- else -%}
-                                {{- block.settings.privacy_label | default: 'Ho letto e accetto la Privacy Policy' -}}
-                              {%- endif -%}
-                            </span>
-                          </label>
-                        </div>
+                        {%- if block.settings.privacy_label != blank -%}
+                          <div class="ms-newsletter-privacy">
+                            <label class="ms-newsletter-privacy__label">
+                              <input
+                                type="checkbox"
+                                name="contact[privacy_accepted]"
+                                required
+                                aria-required="true"
+                                class="ms-newsletter-privacy__checkbox"
+                              >
+                              <span class="ms-newsletter-privacy__text rte">
+                                {{ block.settings.privacy_label }}
+                              </span>
+                            </label>
+                          </div>
+                        {%- endif -%}
                         {%- if form.posted_successfully? -%}
                           <h3
                             class="newsletter-form__message newsletter-form__message--success form__message"
@@ -1070,15 +1066,10 @@
           "default": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>"
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "privacy_label",
           "label": "Testo accettazione privacy",
-          "default": "Ho letto e accetto la Privacy Policy"
-        },
-        {
-          "type": "url",
-          "id": "privacy_url",
-          "label": "Link Privacy Policy"
+          "default": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>"
         }
       ]
     },
