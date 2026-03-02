@@ -119,6 +119,20 @@
             "menu": "footer"
           }
         },
+        "html_liquid_KmgHwL": {
+          "type": "html_liquid",
+          "settings": {
+            "desktop_layout": 12,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "mobile_accordion": false,
+            "mobile_accordion_open": false,
+            "heading": "<strong>Titolo HTML</strong>",
+            "heading_tag": "h2",
+            "heading_size": "h5",
+            "custom_content": "Il nome dello shop è: {{shop.name}}"
+          }
+        },
         "section_padding_footer": {
           "type": "section_padding",
           "settings": {
@@ -136,6 +150,7 @@
         "brand_information_dUBAQz",
         "text_D7QNgh",
         "link_list_acCFJB",
+        "html_liquid_KmgHwL",
         "section_padding_footer"
       ],
       "settings": {
