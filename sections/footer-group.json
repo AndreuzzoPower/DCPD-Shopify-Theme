@@ -71,7 +71,7 @@
             "desktop_layout": 4,
             "tablet_layout": 6,
             "mobile_layout": 12,
-            "hide_mobile": false,
+            "hide_mobile": true,
             "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
             "image_width": 50,
             "alignment": "center"
