@@ -1,0 +1,29 @@
+.ms-blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--ms-blocks-gap, 1.5rem);
+  align-items: start;
+}
+
+.ms-block {
+  grid-column: span var(--ms-block-cols-mobile, 12);
+  min-width: 0;
+}
+
+@media (min-width: 750px) {
+  .ms-block {
+    grid-column: span var(--ms-block-cols-tablet, var(--ms-block-cols-mobile, 12));
+  }
+}
+
+@media (min-width: 990px) {
+  .ms-block {
+    grid-column: span var(--ms-block-cols-desktop, var(--ms-block-cols-tablet, var(--ms-block-cols-mobile, 12)));
+  }
+}
+
+.ms-block img,
+.ms-block video {
+  max-width: 100%;
+  height: auto;
+}

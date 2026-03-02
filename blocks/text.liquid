@@ -1,10 +1,17 @@
-<div class="text-block text-{{ block.settings.alignment }} col-{{ block.settings.mobile_layout }} col-md-{{ block.settings.tablet_layout }} col-lg-{{ block.settings.desktop_layout }} ">
+<div
+  class="ms-block text-{{ block.settings.alignment }}"
+  style="
+    --ms-block-cols-desktop: {{ block.settings.desktop_layout }};
+    --ms-block-cols-tablet: {{ block.settings.tablet_layout }};
+    --ms-block-cols-mobile: {{ block.settings.mobile_layout }};
+  "
+>
   {{ block.settings.text }}
 </div>
 
 {% schema %}
 {
-  "name": "Text",
+  "name": "Testo",
   "settings": [
     {
       "type": "header",
@@ -12,54 +19,56 @@
     },
     {
       "id": "desktop_layout",
-      "label": "Desktop",
+      "label": "Colonne desktop",
       "type": "range",
       "min": 1,
       "max": 12,
       "step": 1,
       "unit": "col",
       "default": 4,
-      "info":"Schermi maggiori di 1200 px"
+      "info": "Schermi maggiori di 990px"
     },
     {
       "id": "tablet_layout",
-      "label": "Tablet",
+      "label": "Colonne tablet",
       "type": "range",
       "min": 1,
       "max": 12,
       "step": 1,
       "unit": "col",
-      "default": 4,
-      "info":"Schermi tra 768px e 1200 px"
+      "default": 6,
+      "info": "Schermi tra 750px e 990px"
     },
     {
       "id": "mobile_layout",
-      "label": "Mobile",
+      "label": "Colonne mobile",
       "type": "range",
       "min": 1,
       "max": 12,
       "step": 1,
       "unit": "col",
       "default": 12,
-      "info":"Schermi sotto i 768px"
+      "info": "Schermi sotto i 750px"
     },
     {
       "type": "header",
-      "content": "Content"
+      "content": "Contenuto"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Text"
+      "label": "Testo",
+      "default": "<p>Inserisci il tuo contenuto qui.</p>"
     },
     {
       "type": "text_alignment",
       "id": "alignment",
-      "label": "Alignment"
+      "label": "Allineamento",
+      "default": "left"
     }
   ],
   "presets": [
-    { "name": "Text" }
+    { "name": "Testo" }
   ]
 }
 {% endschema %}

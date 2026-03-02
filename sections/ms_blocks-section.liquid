@@ -1,3 +1,5 @@
+{{ 'ms_blocks.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
   assign sw = section.settings.section_width | default: 'page_width'
   if sw == 'default'
@@ -19,7 +21,9 @@
 
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div{% unless sw_class == blank %} class="{{ sw_class }}"{% endunless %}>
-    {% content_for 'blocks' %}
+    <div class="ms-blocks-grid">
+      {% content_for 'blocks' %}
+    </div>
   </div>
 </div>
 
