@@ -1,5 +1,6 @@
 {{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
 {{ 'newsletter-section.css' | asset_url | stylesheet_tag }}
+{{ 'ms_footer.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sw = section.settings.section_width | default: 'page_width'
@@ -99,6 +100,22 @@
                   </small>
                 {%- endif -%}
               </div>
+              {%- if block.settings.privacy_label != blank -%}
+                <div class="ms-newsletter-privacy">
+                  <label class="ms-newsletter-privacy__label">
+                    <input
+                      type="checkbox"
+                      name="contact[privacy_accepted]"
+                      required
+                      aria-required="true"
+                      class="ms-newsletter-privacy__checkbox"
+                    >
+                    <span class="ms-newsletter-privacy__text rte">
+                      {{ block.settings.privacy_label }}
+                    </span>
+                  </label>
+                </div>
+              {%- endif -%}
               {%- if form.posted_successfully? -%}
                 <h3
                   class="newsletter-form__message newsletter-form__message--success form__message"
@@ -194,7 +211,15 @@
     {
       "type": "email_form",
       "name": "Form Email",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "privacy_label",
+          "label": "Testo accettazione privacy",
+          "default": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>"
+        }
+      ]
     },
     {
       "type": "@app"
