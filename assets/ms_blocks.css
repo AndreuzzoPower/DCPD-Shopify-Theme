@@ -6,20 +6,8 @@
 }
 
 .ms-block {
-  grid-column: span var(--ms-block-cols-mobile, 12);
   min-width: 0;
-}
-
-@media (min-width: 750px) {
-  .ms-block {
-    grid-column: span var(--ms-block-cols-tablet, var(--ms-block-cols-mobile, 12));
-  }
-}
-
-@media (min-width: 990px) {
-  .ms-block {
-    grid-column: span var(--ms-block-cols-desktop, var(--ms-block-cols-tablet, var(--ms-block-cols-mobile, 12)));
-  }
+  grid-column: span 12;
 }
 
 .ms-block img,
