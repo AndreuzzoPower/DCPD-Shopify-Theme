@@ -141,7 +141,7 @@
         "html_liquid_J3jyra": {
           "type": "html_liquid",
           "settings": {
-            "desktop_layout": 3,
+            "desktop_layout": 12,
             "tablet_layout": 6,
             "mobile_layout": 12,
             "mobile_accordion": false,
