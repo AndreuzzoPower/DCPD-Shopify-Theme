@@ -90,15 +90,15 @@
   align-items: flex-start;
   gap: 0.6rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.5;
 }
 
 .ms-newsletter-privacy__checkbox {
   flex-shrink: 0;
   margin-top: 0.2rem;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   accent-color: rgb(var(--color-foreground));
 }
 
