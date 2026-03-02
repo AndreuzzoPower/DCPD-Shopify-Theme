@@ -1509,6 +1509,32 @@
         "button_icon_position": "after",
         "button_align": "left"
       }
+    },
+    "ms_blocks_section_rHeqkc": {
+      "type": "ms_blocks-section",
+      "blocks": {
+        "text_FAzpdE": {
+          "type": "text",
+          "name": "Text",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 4,
+            "mobile_layout": 12,
+            "text": "<p>queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione queto è il testo della sessione </p>",
+            "alignment": "left"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_FAzpdE"
+      ],
+      "name": "MS Blocchi Liberi",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": ""
+      }
     }
   },
   "order": [
@@ -1534,6 +1560,7 @@
     "ms_newsletter_zFg7n3",
     "ms_video_fWDKzx",
     "ms_page_wmtXtT",
-    "ms_contact_form_tBRqqy"
+    "ms_contact_form_tBRqqy",
+    "ms_blocks_section_rHeqkc"
   ]
 }
