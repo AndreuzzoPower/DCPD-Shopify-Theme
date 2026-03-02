@@ -65,25 +65,22 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "text_NGkikM": {
-          "type": "text",
+        "section_margin_D9gBxn": {
+          "type": "section_margin",
           "settings": {
-            "heading": "Titolo",
-            "subtext": "<p>Condividi informazioni di contatto, dettagli del negozio e contenuti del brand con i clienti.</p>"
-          }
-        },
-        "link_list_6QK4tt": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Link rapidi",
-            "menu": "footer"
+            "section_margin_top": 0,
+            "section_margin_bottom": 0,
+            "section_margin_top_md": 0,
+            "section_margin_bottom_md": 0,
+            "section_margin_top_xs": 0,
+            "section_margin_bottom_xs": 0
           }
         },
         "image_A6JJ6G": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
-            "image_width": 50,
+            "image": "shopify://shop_images/download.jpg",
+            "image_width": 550,
             "alignment": "center"
           }
         },
@@ -106,15 +103,26 @@
             "heading": "Link rapidi",
             "menu": "footer"
           }
+        },
+        "section_padding_footer": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 35,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 25,
+            "section_padding_bottom_md": 25,
+            "section_padding_top_xs": 25,
+            "section_padding_bottom_xs": 25
+          }
         }
       },
       "block_order": [
-        "text_NGkikM",
-        "link_list_6QK4tt",
+        "section_margin_D9gBxn",
         "image_A6JJ6G",
         "brand_information_dUBAQz",
         "text_D7QNgh",
-        "link_list_acCFJB"
+        "link_list_acCFJB",
+        "section_padding_footer"
       ],
       "settings": {
         "color_scheme": "scheme-1",
