@@ -191,6 +191,9 @@
                     </div>
                   {%- when 'newsletter' -%}
                     <div class="footer-block__newsletter">
+                      {%- if block.settings.description != blank -%}
+                        <div class="footer-block__description rte">{{ block.settings.description }}</div>
+                      {%- endif -%}
                       {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
                         <input type="hidden" name="contact[tags]" value="newsletter">
                         <div class="newsletter-form__field-wrapper">
@@ -235,6 +238,26 @@
                               {{ form.errors.messages.email -}}
                             </small>
                           {%- endif -%}
+                        </div>
+                        <div class="ms-newsletter-privacy">
+                          <label class="ms-newsletter-privacy__label">
+                            <input
+                              type="checkbox"
+                              name="contact[privacy_accepted]"
+                              required
+                              aria-required="true"
+                              class="ms-newsletter-privacy__checkbox"
+                            >
+                            <span class="ms-newsletter-privacy__text">
+                              {%- if block.settings.privacy_url != blank -%}
+                                <a href="{{ block.settings.privacy_url }}" target="_blank" rel="noopener">
+                                  {{- block.settings.privacy_label | default: 'Ho letto e accetto la Privacy Policy' -}}
+                                </a>
+                              {%- else -%}
+                                {{- block.settings.privacy_label | default: 'Ho letto e accetto la Privacy Policy' -}}
+                              {%- endif -%}
+                            </span>
+                          </label>
                         </div>
                         {%- if form.posted_successfully? -%}
                           <h3
@@ -1039,6 +1062,23 @@
             { "label": "Extra grande", "value": "h3" }
           ],
           "default": "h5"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Descrizione",
+          "default": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>"
+        },
+        {
+          "type": "text",
+          "id": "privacy_label",
+          "label": "Testo accettazione privacy",
+          "default": "Ho letto e accetto la Privacy Policy"
+        },
+        {
+          "type": "url",
+          "id": "privacy_url",
+          "label": "Link Privacy Policy"
         }
       ]
     },

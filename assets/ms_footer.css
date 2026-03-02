@@ -66,3 +66,33 @@
     display: block !important;
   }
 }
+
+.footer-block__description {
+  margin-bottom: 1rem;
+}
+
+.ms-newsletter-privacy {
+  margin-top: 1rem;
+}
+
+.ms-newsletter-privacy__label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.ms-newsletter-privacy__checkbox {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: rgb(var(--color-foreground));
+}
+
+.ms-newsletter-privacy__text a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
