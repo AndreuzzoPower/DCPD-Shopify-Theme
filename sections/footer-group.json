@@ -103,9 +103,9 @@
             "mobile_layout": 12,
             "mobile_accordion": false,
             "mobile_accordion_open": false,
-            "heading": "Iscriviti alle nostre email",
+            "heading": "<strong>Iscriviti alle nostre email</strong>",
             "heading_tag": "div",
-            "heading_size": "h4",
+            "heading_size": "h5",
             "description": "<p>Sii tra i primi a scoprire le nuove collezioni e le offerte esclusive.</p>",
             "privacy_label": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a></p>"
           }
