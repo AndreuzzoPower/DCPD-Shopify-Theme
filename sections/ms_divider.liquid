@@ -127,9 +127,15 @@
 
       {%- if fill_mode == 'scheme_gradient' -%}
         {%- capture mask_shape -%}{{ divider_shape | replace: '_FILL_', 'fill="white"' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' | strip | strip_newlines }}{%- endcapture -%}
-        {%- capture mask_svg -%}{{ mask_shape | prepend: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">' | append: '</svg>' }}{%- endcapture -%}
-        {%- assign mask_uri = mask_svg | replace: '"', "'" | replace: '#', '%23' -%}
-        <div class="ms-divider__scheme-mask gradient" style="-webkit-mask-image: url(&quot;data:image/svg+xml,{{ mask_uri }}&quot;); mask-image: url(&quot;data:image/svg+xml,{{ mask_uri }}&quot;);"></div>
+        {%- capture mask_svg -%}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">{{ mask_shape }}</svg>{%- endcapture -%}
+        {%- assign mask_encoded = mask_svg | url_encode -%}
+        <style>
+          #section-{{ section.id }} .ms-divider__scheme-mask {
+            -webkit-mask-image: url("data:image/svg+xml,{{ mask_encoded }}");
+            mask-image: url("data:image/svg+xml,{{ mask_encoded }}");
+          }
+        </style>
+        <div class="ms-divider__scheme-mask gradient"></div>
       {%- else -%}
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           {{ svg_defs }}
