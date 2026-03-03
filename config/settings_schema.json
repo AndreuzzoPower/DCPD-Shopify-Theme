@@ -1883,17 +1883,22 @@
       },
       {
         "type": "text",
-        "id": "ms_guest_price_text",
-        "label": "Testo alternativo al prezzo",
-        "default": "Accedi per vedere i prezzi",
-        "info": "Mostrato al posto del prezzo quando nascosto."
-      },
-      {
-        "type": "text",
         "id": "ms_guest_buy_text",
         "label": "Testo alternativo ai bottoni acquisto",
         "default": "Accedi per acquistare",
-        "info": "Mostrato al posto dei bottoni quando nascosti."
+        "info": "Mostrato al posto dei bottoni quando nascosti, con link alla pagina di login."
+      },
+      {
+        "type": "select",
+        "id": "ms_guest_buy_style",
+        "label": "Stile messaggio acquisto",
+        "default": "button",
+        "options": [
+          { "value": "button", "label": "Pulsante" },
+          { "value": "pill",   "label": "Pill (arrotondato)" },
+          { "value": "link",   "label": "Solo link" }
+        ],
+        "info": "Come visualizzare il link di accesso al posto dei bottoni acquisto."
       }
     ]
   }

@@ -49,16 +49,17 @@ div[class*='ms_multirow'] div[class*='image-with-text'] .button:focus-visible {
 .article__info > span > .svg-wrapper{margin-right:5px;}
 
 /* ── Catalogo / Guest visibility ── */
-.ms-guest-price-msg,
 .ms-guest-buy-msg { display: none; }
 
 body.ms-hide-prices .price { display: none !important; }
-body.ms-hide-prices:not(.ms-catalog-mode) .ms-guest-price-msg { display: block; }
 
 body.ms-hide-cart #cart-icon-bubble,
+body.ms-hide-cart .header__icon--cart,
 body.ms-hide-cart .cart-count-bubble,
 body.ms-hide-cart cart-drawer,
-body.ms-hide-cart .cart-drawer { display: none !important; }
+body.ms-hide-cart .cart-drawer,
+body.ms-hide-cart cart-notification,
+body.ms-hide-cart .cart-notification { display: none !important; }
 
 body.ms-hide-buy product-form,
 body.ms-hide-buy .quick-add,
@@ -75,12 +76,14 @@ body.ms-hide-variants variant-radios,
 body.ms-hide-variants .product-form__input--pill,
 body.ms-hide-variants .product-form__input--dropdown { display: none !important; }
 
-.ms-guest-price-msg,
 .ms-guest-buy-msg {
+  margin-top: 1rem;
+}
+.ms-guest-buy-msg a.link {
   font-size: 1.4rem;
   font-style: italic;
-  opacity: 0.8;
-}
-.ms-guest-buy-msg a {
   text-decoration: underline;
+}
+.ms-guest-buy-msg a.button--pill {
+  border-radius: 50rem;
 }
