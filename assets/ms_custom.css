@@ -49,33 +49,46 @@ div[class*='ms_multirow'] div[class*='image-with-text'] .button:focus-visible {
 .article__info > span > .svg-wrapper{margin-right:5px;}
 
 /* ── Catalogo / Guest visibility ── */
+
+/* Default: guest messages hidden */
 .ms-guest-buy-msg { display: none; }
 
-body.ms-hide-prices .price { display: none !important; }
-
-body.ms-hide-cart #cart-icon-bubble,
-body.ms-hide-cart .header__icon--cart,
-body.ms-hide-cart .cart-count-bubble,
-body.ms-hide-cart cart-drawer,
-body.ms-hide-cart .cart-drawer,
-body.ms-hide-cart cart-notification,
-body.ms-hide-cart .cart-notification { display: none !important; }
-
-body.ms-hide-buy product-form,
-body.ms-hide-buy .quick-add,
-body.ms-hide-buy .shopify-payment-button,
-body.ms-hide-buy .product-form__buttons { display: none !important; }
-body.ms-hide-buy .ms-guest-buy-msg { display: block; }
-
+/* ─ Catalog mode (tutti gli utenti) ─ */
+body.ms-catalog-mode product-form,
+body.ms-catalog-mode .quick-add,
+body.ms-catalog-mode .shopify-payment-button,
+body.ms-catalog-mode .product-form__buttons,
 body.ms-catalog-mode quantity-popover,
 body.ms-catalog-mode .quantity,
 body.ms-catalog-mode .product-form__quantity { display: none !important; }
 
-body.ms-hide-variants variant-selects,
-body.ms-hide-variants variant-radios,
-body.ms-hide-variants .product-form__input--pill,
-body.ms-hide-variants .product-form__input--dropdown { display: none !important; }
+body.ms-catalog-hide-prices .price { display: none !important; }
 
+body.ms-catalog-mode .ms-guest-buy-msg { display: none !important; }
+
+/* ─ Guest visibility (utenti non loggati) ─ */
+body.ms-guest-hide-prices .price { display: none !important; }
+
+body.ms-guest-hide-cart #cart-icon-bubble,
+body.ms-guest-hide-cart .header__icon--cart,
+body.ms-guest-hide-cart .cart-count-bubble,
+body.ms-guest-hide-cart cart-drawer,
+body.ms-guest-hide-cart .cart-drawer,
+body.ms-guest-hide-cart cart-notification,
+body.ms-guest-hide-cart .cart-notification { display: none !important; }
+
+body.ms-guest-hide-buy product-form,
+body.ms-guest-hide-buy .quick-add,
+body.ms-guest-hide-buy .shopify-payment-button,
+body.ms-guest-hide-buy .product-form__buttons { display: none !important; }
+body.ms-guest-hide-buy .ms-guest-buy-msg { display: block; }
+
+body.ms-guest-hide-variants variant-selects,
+body.ms-guest-hide-variants variant-radios,
+body.ms-guest-hide-variants .product-form__input--pill,
+body.ms-guest-hide-variants .product-form__input--dropdown { display: none !important; }
+
+/* ─ Stile messaggio guest ─ */
 .ms-guest-buy-msg {
   margin-top: 1rem;
 }

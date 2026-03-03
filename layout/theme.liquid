@@ -550,33 +550,34 @@
 
   {%- liquid
     assign ms_catalog_active = settings.ms_catalog_mode
-    assign ms_hide_prices = false
-    assign ms_hide_cart = false
-    assign ms_hide_buy = false
-    assign ms_hide_variants = false
+    assign ms_is_guest = false
+    unless customer
+      assign ms_is_guest = true
+    endunless
 
+    assign ms_vis_classes = ''
     if ms_catalog_active
+      assign ms_vis_classes = ms_vis_classes | append: ' ms-catalog-mode'
       if settings.ms_catalog_hide_prices
-        assign ms_hide_prices = true
+        assign ms_vis_classes = ms_vis_classes | append: ' ms-catalog-hide-prices'
       endif
     endif
-
-    unless customer
+    if ms_is_guest
       if settings.ms_guest_hide_prices
-        assign ms_hide_prices = true
+        assign ms_vis_classes = ms_vis_classes | append: ' ms-guest-hide-prices'
       endif
       if settings.ms_guest_hide_cart
-        assign ms_hide_cart = true
+        assign ms_vis_classes = ms_vis_classes | append: ' ms-guest-hide-cart'
       endif
       if settings.ms_guest_hide_buy_buttons
-        assign ms_hide_buy = true
+        assign ms_vis_classes = ms_vis_classes | append: ' ms-guest-hide-buy'
       endif
       if settings.ms_guest_hide_variants
-        assign ms_hide_variants = true
+        assign ms_vis_classes = ms_vis_classes | append: ' ms-guest-hide-variants'
       endif
-    endunless
+    endif
   -%}
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if ms_catalog_active %} ms-catalog-mode{% endif %}{% if ms_hide_prices %} ms-hide-prices{% endif %}{% if ms_hide_cart %} ms-hide-cart{% endif %}{% if ms_hide_buy %} ms-hide-buy{% endif %}{% if ms_hide_variants %} ms-hide-variants{% endif %}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{{ ms_vis_classes }}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
