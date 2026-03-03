@@ -125,6 +125,27 @@
                         </div>
                       {%- endif -%}
 
+                      {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+                        {%- liquid
+                          assign unit_iva_rate = settings.ms_iva_rate | plus: 0
+                          if item.product.metafields.custom.aliquota_iva.value
+                            assign unit_iva_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                          endif
+                          assign unit_iva_divisor = 100.0 | plus: unit_iva_rate
+                          if settings.ms_iva_prices_included
+                            assign unit_iva = item.final_price | times: unit_iva_rate | divided_by: unit_iva_divisor | round
+                          else
+                            assign unit_iva = item.final_price | times: unit_iva_rate | divided_by: 100.0 | round
+                          endif
+                          if settings.currency_code_enabled
+                            assign unit_iva_fmt = unit_iva | money_with_currency
+                          else
+                            assign unit_iva_fmt = unit_iva | money
+                          endif
+                        -%}
+                        <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', unit_iva_fmt }}</div>
+                      {%- endif -%}
+
                       {%- if item.product.has_only_default_variant == false
                         or item.properties.size != 0
                         or item.selling_plan_allocation != null
