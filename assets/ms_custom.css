@@ -47,3 +47,19 @@ div[class*='ms_multirow'] div[class*='image-with-text'] .button:focus-visible {
 .article__info > span.circle-divider{display: inline-flex;align-items: center;}
 .article-card__info > span > .svg-wrapper,
 .article__info > span > .svg-wrapper{margin-right:5px;}
+
+/* ── Solo catalogo ── */
+body.ms-catalog-mode #cart-icon-bubble,
+body.ms-catalog-mode .cart-count-bubble,
+body.ms-catalog-mode cart-drawer,
+body.ms-catalog-mode .cart-drawer,
+body.ms-catalog-mode cart-notification,
+body.ms-catalog-mode .cart-notification { display: none !important; }
+
+body.ms-catalog-mode product-form,
+body.ms-catalog-mode .quick-add,
+body.ms-catalog-mode .shopify-payment-button,
+body.ms-catalog-mode .product-form__buttons,
+body.ms-catalog-mode quantity-popover,
+body.ms-catalog-mode .quantity,
+body.ms-catalog-mode .product-form__quantity { display: none !important; }
