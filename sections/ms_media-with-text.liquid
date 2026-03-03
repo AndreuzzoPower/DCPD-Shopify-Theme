@@ -51,14 +51,14 @@
 {%- render 'ms_mobile-padding' -%}
 
 <style>
-  #ImageWithText--{{ section.id }} {
-    padding-left: {{ content_pl_mob }}px;
-    padding-right: {{ content_pr_mob }}px;
+  #ImageWithText--{{ section.id }}.image-with-text__content {
+    padding-left: {{ content_pl_mob }}px !important;
+    padding-right: {{ content_pr_mob }}px !important;
   }
   @media (min-width: 750px) {
-    #ImageWithText--{{ section.id }} {
-      padding-left: {{ content_pl }}px;
-      padding-right: {{ content_pr }}px;
+    #ImageWithText--{{ section.id }}.image-with-text__content {
+      padding-left: {{ content_pl }}px !important;
+      padding-right: {{ content_pr }}px !important;
     }
   }
 </style>
