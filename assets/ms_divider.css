@@ -40,3 +40,7 @@
   border: none;
   margin: 0;
 }
+
+div.ms-divider__line {
+  border: none;
+}

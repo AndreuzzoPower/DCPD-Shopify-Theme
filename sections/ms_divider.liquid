@@ -3,6 +3,7 @@
 {%- liquid
   assign divider_type = section.settings.divider_type | default: 'tilt'
   assign divider_color = section.settings.divider_color | default: '#ffffff'
+  assign fill_mode = section.settings.fill_mode | default: 'solid'
   assign divider_height = section.settings.divider_height | default: 80
   assign divider_height_mobile = section.settings.divider_height_mobile | default: 50
   assign flip_x = section.settings.flip_horizontal
@@ -30,6 +31,11 @@
   if flip_y
     assign css_classes = css_classes | append: ' ms-divider--flip-y'
   endif
+
+  assign fill_ref = divider_color
+  if fill_mode == 'gradient' or fill_mode == 'image'
+    assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
+  endif
 -%}
 
 {%- style -%}
@@ -41,84 +47,133 @@
 
 {%- render 'ms_mobile-padding' -%}
 
+{%- capture svg_defs -%}
+  {%- if fill_mode == 'gradient' -%}
+    {%- liquid
+      assign g_color_1 = section.settings.gradient_color_1 | default: '#ffffff'
+      assign g_color_2 = section.settings.gradient_color_2 | default: '#000000'
+      assign g_angle = section.settings.gradient_angle | default: 0
+
+      assign g_angle_rad = g_angle | times: 3.14159265 | divided_by: 180.0
+      assign cos_val = g_angle_rad | at_most: 1.5708
+      assign sin_val = g_angle_rad | at_most: 1.5708
+    -%}
+    <defs>
+      <linearGradient id="ms-divider-fill-{{ section.id }}" gradientTransform="rotate({{ g_angle }}, 0.5, 0.5)" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stop-color="{{ g_color_1 }}"/>
+        {%- if section.settings.gradient_color_3 != blank -%}
+          <stop offset="50%" stop-color="{{ section.settings.gradient_color_3 }}"/>
+        {%- endif -%}
+        <stop offset="100%" stop-color="{{ g_color_2 }}"/>
+      </linearGradient>
+    </defs>
+  {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
+    <defs>
+      <pattern id="ms-divider-fill-{{ section.id }}" patternUnits="objectBoundingBox" width="1" height="1">
+        <image href="{{ section.settings.fill_image | image_url: width: 1920 }}" x="0" y="0" width="1200" height="120" preserveAspectRatio="xMidYMid slice"/>
+      </pattern>
+    </defs>
+  {%- endif -%}
+{%- endcapture -%}
+
 <div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
-    <hr class="ms-divider__line" style="border-top: {{ section.settings.line_weight }}px {{ section.settings.line_style }} {{ divider_color }};">
+    {%- if fill_mode == 'gradient' -%}
+      <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
+    {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
+      <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: url('{{ section.settings.fill_image | image_url: width: 1920 }}') center/cover no-repeat;"></div>
+    {%- else -%}
+      <hr class="ms-divider__line" style="border-top: {{ section.settings.line_weight }}px {{ section.settings.line_style }} {{ divider_color }};">
+    {%- endif -%}
   {%- else -%}
     <div class="ms-divider__svg">
       {%- case divider_type -%}
 
         {%- when 'tilt' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon fill="{{ divider_color }}" points="1200 0 1200 120 0 120"/>
+            {{ svg_defs }}
+            <polygon fill="{{ fill_ref }}" points="1200 0 1200 120 0 120"/>
           </svg>
 
         {%- when 'triangle' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon fill="{{ divider_color }}" points="600 0 1200 120 0 120"/>
+            {{ svg_defs }}
+            <polygon fill="{{ fill_ref }}" points="600 0 1200 120 0 120"/>
           </svg>
 
         {%- when 'arrow' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M649.97 0L550.03 0 0 120 600 75 1200 120z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M649.97 0L550.03 0 0 120 600 75 1200 120z"/>
           </svg>
 
         {%- when 'split' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon fill="{{ divider_color }}" points="0 0 600 120 1200 0 1200 120 0 120"/>
+            {{ svg_defs }}
+            <polygon fill="{{ fill_ref }}" points="0 0 600 120 1200 0 1200 120 0 120"/>
           </svg>
 
         {%- when 'waves' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.1,118.92,130.23,103.37,193,87.11,241.07,75.15,286.54,66,321.39,56.44Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.1,118.92,130.23,103.37,193,87.11,241.07,75.15,286.54,66,321.39,56.44Z"/>
           </svg>
 
         {%- when 'waves_multi' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" opacity=".25" d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"/>
-            <path fill="{{ divider_color }}" opacity=".5" d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V120H0Z"/>
-            <path fill="{{ divider_color }}" d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V120H0Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" opacity=".25" d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"/>
+            <path fill="{{ fill_ref }}" opacity=".5" d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V120H0Z"/>
+            <path fill="{{ fill_ref }}" d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V120H0Z"/>
           </svg>
 
         {%- when 'curve' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"/>
           </svg>
 
         {%- when 'curve_asymmetric' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V120H0Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V120H0Z"/>
           </svg>
 
         {%- when 'zigzag' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,0 L60,120 L120,0 L180,120 L240,0 L300,120 L360,0 L420,120 L480,0 L540,120 L600,0 L660,120 L720,0 L780,120 L840,0 L900,120 L960,0 L1020,120 L1080,0 L1140,120 L1200,0 V120 H0 Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,0 L60,120 L120,0 L180,120 L240,0 L300,120 L360,0 L420,120 L480,0 L540,120 L600,0 L660,120 L720,0 L780,120 L840,0 L900,120 L960,0 L1020,120 L1080,0 L1140,120 L1200,0 V120 H0 Z"/>
           </svg>
 
         {%- when 'mountains' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M1200,0H0V120l214.67-72,223.33,48L602.34,12l183.32,72,198-36.67Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M1200,0H0V120l214.67-72,223.33,48L602.34,12l183.32,72,198-36.67Z"/>
           </svg>
 
         {%- when 'clouds' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,0V120H1200V0s-79.51,68.49-181,68.49c-68.4,0-112.65-26.09-161-44.49-53.67-20.39-112.53-24-169,0-52.09,22.13-95.54,44.49-164,44.49C456.31,68.49,400,40,345.65,23.51,285.39,5.1,234.34,0,185,12.49,127.52,27.1,82.43,68.49,0,68.49Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,0V120H1200V0s-79.51,68.49-181,68.49c-68.4,0-112.65-26.09-161-44.49-53.67-20.39-112.53-24-169,0-52.09,22.13-95.54,44.49-164,44.49C456.31,68.49,400,40,345.65,23.51,285.39,5.1,234.34,0,185,12.49,127.52,27.1,82.43,68.49,0,68.49Z"/>
           </svg>
 
         {%- when 'drops' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,120V73.07c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82S222.73,44.45,261,48.16c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62V120Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,120V73.07c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82S222.73,44.45,261,48.16c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62V120Z"/>
           </svg>
 
         {%- when 'book' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,0S350,100,600,100,1200,0,1200,0V120H0Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,0S350,100,600,100,1200,0,1200,0V120H0Z"/>
           </svg>
 
         {%- when 'fan' -%}
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="{{ divider_color }}" d="M0,0V120l100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10V0Z"/>
+            {{ svg_defs }}
+            <path fill="{{ fill_ref }}" d="M0,0V120l100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10V0Z"/>
           </svg>
 
       {%- endcase -%}
@@ -192,11 +247,72 @@
       "default": "tilt"
     },
     {
+      "type": "select",
+      "id": "fill_mode",
+      "label": "Modalita riempimento",
+      "options": [
+        { "value": "solid", "label": "Colore solido" },
+        { "value": "gradient", "label": "Gradiente" },
+        { "value": "image", "label": "Immagine" }
+      ],
+      "default": "solid",
+      "info": "Scegli come riempire la forma del divisore."
+    },
+    {
+      "type": "header",
+      "content": "Colore solido"
+    },
+    {
       "type": "color",
       "id": "divider_color",
       "label": "Colore divisore",
       "default": "#ffffff",
-      "info": "Colore della forma SVG. Tipicamente il colore di sfondo della sezione sottostante."
+      "info": "Usato quando la modalita e Colore solido. Tipicamente il colore di sfondo della sezione sottostante."
+    },
+    {
+      "type": "header",
+      "content": "Gradiente"
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_1",
+      "label": "Colore iniziale",
+      "default": "#ffffff",
+      "info": "Primo colore del gradiente."
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_2",
+      "label": "Colore finale",
+      "default": "#000000",
+      "info": "Ultimo colore del gradiente."
+    },
+    {
+      "type": "color",
+      "id": "gradient_color_3",
+      "label": "Colore intermedio (opzionale)",
+      "info": "Se impostato, viene aggiunto al centro del gradiente."
+    },
+    {
+      "type": "range",
+      "id": "gradient_angle",
+      "label": "Angolo gradiente",
+      "min": 0,
+      "max": 360,
+      "step": 5,
+      "unit": "°",
+      "default": 0,
+      "info": "Direzione del gradiente in gradi. 0 = da sinistra a destra, 90 = dall'alto al basso."
+    },
+    {
+      "type": "header",
+      "content": "Immagine"
+    },
+    {
+      "type": "image_picker",
+      "id": "fill_image",
+      "label": "Immagine riempimento",
+      "info": "L'immagine viene usata come riempimento della forma. Usata quando la modalita e Immagine."
     },
     {
       "type": "range",
