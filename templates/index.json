@@ -494,11 +494,15 @@
         "desktop_image_width": "medium",
         "desktop_media_position": "middle",
         "content_layout": "no-overlap",
-        "desktop_content_position": "top",
+        "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
-        "content_padding_left": 100,
+        "content_padding_top": 0,
+        "content_padding_bottom": 0,
+        "content_padding_left": 40,
         "content_padding_right": 40,
         "mobile_content_alignment": "left",
+        "content_padding_top_mobile": 30,
+        "content_padding_bottom_mobile": 30,
         "content_padding_left_mobile": 20,
         "content_padding_right_mobile": 20
       }
