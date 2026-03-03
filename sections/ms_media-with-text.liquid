@@ -42,8 +42,12 @@
   endif
 
   assign media_valign = section.settings.desktop_media_position | default: 'middle'
+  assign content_pt = section.settings.content_padding_top | default: 40
+  assign content_pb = section.settings.content_padding_bottom | default: 40
   assign content_pl = section.settings.content_padding_left | default: 40
   assign content_pr = section.settings.content_padding_right | default: 40
+  assign content_pt_mob = section.settings.content_padding_top_mobile | default: 30
+  assign content_pb_mob = section.settings.content_padding_bottom_mobile | default: 30
   assign content_pl_mob = section.settings.content_padding_left_mobile | default: 20
   assign content_pr_mob = section.settings.content_padding_right_mobile | default: 20
 -%}
@@ -52,13 +56,11 @@
 
 <style>
   #ImageWithText--{{ section.id }}.image-with-text__content {
-    padding-left: {{ content_pl_mob }}px !important;
-    padding-right: {{ content_pr_mob }}px !important;
+    padding: {{ content_pt_mob }}px {{ content_pr_mob }}px {{ content_pb_mob }}px {{ content_pl_mob }}px !important;
   }
   @media (min-width: 750px) {
     #ImageWithText--{{ section.id }}.image-with-text__content {
-      padding-left: {{ content_pl }}px !important;
-      padding-right: {{ content_pr }}px !important;
+      padding: {{ content_pt }}px {{ content_pr }}px {{ content_pb }}px {{ content_pl }}px !important;
     }
   }
 </style>
@@ -523,26 +525,36 @@
       "label": "Allineamento orizzontale contenuto"
     },
     {
+      "type": "header",
+      "content": "Padding contenuto (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    },
+    {
       "type": "range",
       "id": "content_padding_left",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding sinistro contenuto",
-      "default": 40,
-      "info": "Applicato al riquadro testo su desktop"
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding sinistro",
+      "default": 40
     },
     {
       "type": "range",
       "id": "content_padding_right",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding destro contenuto",
-      "default": 40,
-      "info": "Applicato al riquadro testo su desktop"
+      "min": 0, "max": 100, "step": 5, "unit": "px",
+      "label": "Padding destro",
+      "default": 40
     },
     {
       "type": "header",
@@ -560,23 +572,35 @@
       "label": "Allineamento contenuto mobile"
     },
     {
+      "type": "header",
+      "content": "Padding contenuto (mobile)"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top_mobile",
+      "min": 0, "max": 60, "step": 5, "unit": "px",
+      "label": "Padding top",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom_mobile",
+      "min": 0, "max": 60, "step": 5, "unit": "px",
+      "label": "Padding bottom",
+      "default": 30
+    },
+    {
       "type": "range",
       "id": "content_padding_left_mobile",
-      "min": 0,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding sinistro contenuto mobile",
+      "min": 0, "max": 60, "step": 5, "unit": "px",
+      "label": "Padding sinistro",
       "default": 20
     },
     {
       "type": "range",
       "id": "content_padding_right_mobile",
-      "min": 0,
-      "max": 60,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding destro contenuto mobile",
+      "min": 0, "max": 60, "step": 5, "unit": "px",
+      "label": "Padding destro",
       "default": 20
     }
   ],
