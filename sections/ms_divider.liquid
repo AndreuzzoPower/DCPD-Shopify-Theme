@@ -38,6 +38,18 @@
   endif
 
   assign fill_ref_attr = 'fill="' | append: fill_ref | append: '"'
+
+  assign selected_scheme_id = section.settings.color_scheme | append: ''
+  assign selected_scheme = settings.color_schemes[selected_scheme_id]
+  if selected_scheme == blank
+    assign selected_scheme = settings.color_schemes | first
+  endif
+
+  if selected_scheme.settings.background_gradient != blank
+    assign scheme_background_value = selected_scheme.settings.background_gradient
+  else
+    assign scheme_background_value = selected_scheme.settings.background
+  endif
 -%}
 
 {%- style -%}
@@ -114,7 +126,7 @@
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
     {%- if fill_mode == 'scheme_gradient' -%}
-      <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: var(--gradient-background); background-attachment: local;"></div>
+      <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ scheme_background_value }}; background-attachment: local;"></div>
     {%- elsif fill_mode == 'gradient' -%}
       <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
     {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
@@ -126,15 +138,17 @@
     <div class="ms-divider__svg">
 
       {%- if fill_mode == 'scheme_gradient' -%}
-        {%- assign clip_shapes = divider_shape | replace: '_FILL_', 'transform="scale(0.000833333,0.008333333)"' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' | strip | strip_newlines -%}
-        <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+        {%- assign clip_shapes = divider_shape | replace: '_FILL_', '' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' -%}
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <clipPath id="ms-divider-clip-{{ section.id }}" clipPathUnits="objectBoundingBox">
+            <clipPath id="ms-divider-clip-{{ section.id }}">
               {{ clip_shapes }}
             </clipPath>
           </defs>
+          <foreignObject width="1200" height="120" clip-path="url(#ms-divider-clip-{{ section.id }})">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;background: {{ scheme_background_value }};"></div>
+          </foreignObject>
         </svg>
-        <div class="ms-divider__scheme-mask gradient" style="-webkit-clip-path: url(#ms-divider-clip-{{ section.id }}); clip-path: url(#ms-divider-clip-{{ section.id }});"></div>
       {%- else -%}
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           {{ svg_defs }}
