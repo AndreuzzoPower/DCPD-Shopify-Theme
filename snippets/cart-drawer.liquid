@@ -504,6 +504,31 @@
             <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
           </div>
 
+          {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+            {%- liquid
+              assign cart_iva_total = 0
+              for item in cart.items
+                assign cart_item_rate = settings.ms_iva_rate | plus: 0
+                if item.product.metafields.custom.aliquota_iva.value
+                  assign cart_item_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                endif
+                assign cart_item_divisor = 100.0 | plus: cart_item_rate
+                if settings.ms_iva_prices_included
+                  assign cart_item_iva = item.final_line_price | times: cart_item_rate | divided_by: cart_item_divisor | round
+                else
+                  assign cart_item_iva = item.final_line_price | times: cart_item_rate | divided_by: 100.0 | round
+                endif
+                assign cart_iva_total = cart_iva_total | plus: cart_item_iva
+              endfor
+              if settings.currency_code_enabled
+                assign cart_iva_formatted = cart_iva_total | money_with_currency
+              else
+                assign cart_iva_formatted = cart_iva_total | money
+              endif
+            -%}
+            <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', cart_iva_formatted }}</div>
+          {%- endif -%}
+
           <small class="tax-note caption-large rte">
             {%- if cart.duties_included and cart.taxes_included -%}
               {%- if shop.shipping_policy.body == blank -%}
