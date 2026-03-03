@@ -1840,7 +1840,7 @@
         "id": "ms_catalog_mode",
         "label": "Attiva modalita solo catalogo",
         "default": false,
-        "info": "Nasconde carrello e bottoni di acquisto per tutti gli utenti."
+        "info": "Nasconde bottoni di acquisto e quantita per tutti gli utenti. Il carrello si visita ma non si puo acquistare."
       },
       {
         "type": "checkbox",
