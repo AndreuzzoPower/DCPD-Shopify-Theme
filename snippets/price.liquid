@@ -129,8 +129,9 @@
         if product.metafields.custom.aliquota_iva.value
           assign iva_rate = product.metafields.custom.aliquota_iva.value | plus: 0
         endif
+        assign iva_divisor = 100.0 | plus: iva_rate
+
         if settings.ms_iva_prices_included
-          assign iva_divisor = 100.0 | plus: iva_rate
           assign iva_amount = price | times: iva_rate | divided_by: iva_divisor | round
         else
           assign iva_amount = price | times: iva_rate | divided_by: 100.0 | round
@@ -140,9 +141,28 @@
         else
           assign iva_formatted = iva_amount | money
         endif
-        assign iva_label = settings.ms_iva_label | replace: '{amount}', iva_formatted
+
+        assign iva_has_compare = false
+        if compare_at_price > price
+          assign iva_has_compare = true
+          if settings.ms_iva_prices_included
+            assign iva_compare_amount = compare_at_price | times: iva_rate | divided_by: iva_divisor | round
+          else
+            assign iva_compare_amount = compare_at_price | times: iva_rate | divided_by: 100.0 | round
+          endif
+          if settings.currency_code_enabled
+            assign iva_compare_formatted = iva_compare_amount | money_with_currency
+          else
+            assign iva_compare_formatted = iva_compare_amount | money
+          endif
+        endif
       -%}
-      <div class="price__iva caption">{{ iva_label }}</div>
+      <div class="price__iva caption">
+        {%- if iva_has_compare -%}
+          <s class="price__iva-compare">{{ settings.ms_iva_label | replace: '{amount}', iva_compare_formatted }}</s>
+        {%- endif -%}
+        {{ settings.ms_iva_label | replace: '{amount}', iva_formatted }}
+      </div>
     {%- endif -%}
     {%- if show_badges -%}
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
