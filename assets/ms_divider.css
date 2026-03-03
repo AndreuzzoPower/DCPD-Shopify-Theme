@@ -45,12 +45,25 @@ div.ms-divider__line {
   border: none;
 }
 
-.ms-divider__line--scheme {
-  background: var(--gradient-background);
+.ms-divider__scheme-mask {
+  width: 100%;
+  height: var(--ms-divider-height, 80px);
 }
 
-.ms-divider__scheme-fill {
-  width: 100%;
-  height: 100%;
-  background: var(--gradient-background);
+.ms-divider--flip-x .ms-divider__scheme-mask {
+  transform: scaleX(-1);
+}
+
+.ms-divider--flip-y .ms-divider__scheme-mask {
+  transform: scaleY(-1);
+}
+
+.ms-divider--flip-x.ms-divider--flip-y .ms-divider__scheme-mask {
+  transform: scale(-1, -1);
+}
+
+@media (max-width: 749px) {
+  .ms-divider__scheme-mask {
+    height: var(--ms-divider-height-mobile, var(--ms-divider-height, 50px));
+  }
 }
