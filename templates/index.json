@@ -433,6 +433,17 @@
     "ms_image_with_text_7nGk7K": {
       "type": "ms_media-with-text",
       "blocks": {
+        "section_padding_B6fzGB": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 100,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 80,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 50,
+            "section_padding_bottom_xs": 60
+          }
+        },
         "caption_NFiGFN": {
           "type": "caption",
           "settings": {
@@ -471,6 +482,7 @@
         }
       },
       "block_order": [
+        "section_padding_B6fzGB",
         "caption_NFiGFN",
         "heading_zrKPxi",
         "text_RUEDhP",
