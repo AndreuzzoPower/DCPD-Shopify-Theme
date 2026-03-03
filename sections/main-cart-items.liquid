@@ -40,6 +40,26 @@
         {{ 'general.continue_shopping' | t }}
       </a>
 
+      {%- liquid
+        assign ms_cart_blocked = false
+        if settings.ms_catalog_mode
+          assign ms_cart_blocked = true
+        endif
+        unless customer
+          if settings.ms_guest_hide_buy_buttons or settings.ms_guest_hide_cart
+            assign ms_cart_blocked = true
+          endif
+        endunless
+      -%}
+      {%- if ms_cart_blocked -%}
+        <div class="ms-cart-blocked-msg" style="margin-top: 2rem; text-align: center;">
+          <p>{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</p>
+          {%- unless customer -%}
+            <a href="{{ routes.account_login_url }}" class="button">Accedi</a>
+          {%- endunless -%}
+        </div>
+      {%- endif -%}
+
       {%- if shop.customer_accounts_enabled and customer == null -%}
         <div class="cart__login-title">{{ 'sections.cart.login.title' | t }}</div>
         <p class="cart__login-paragraph">

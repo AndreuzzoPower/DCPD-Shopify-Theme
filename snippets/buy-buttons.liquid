@@ -162,4 +162,9 @@
 
     <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
+  {%- if settings.ms_guest_buy_text != blank -%}
+    <p class="ms-guest-buy-msg">
+      <a href="{{ routes.account_login_url }}">{{ settings.ms_guest_buy_text }}</a>
+    </p>
+  {%- endif -%}
 </div>
