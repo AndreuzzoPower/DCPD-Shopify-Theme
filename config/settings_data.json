@@ -160,6 +160,7 @@
     "ms_guest_hide_cart": true,
     "ms_guest_hide_variants": true,
     "ms_guest_hide_buy_buttons": true,
+    "ms_guest_buy_style": "link",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
