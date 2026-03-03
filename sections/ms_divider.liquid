@@ -32,22 +32,8 @@
     assign css_classes = css_classes | append: ' ms-divider--flip-y'
   endif
 
-  assign selected_scheme_id = section.settings.color_scheme | append: ''
-  assign selected_scheme = settings.color_schemes[selected_scheme_id]
-  if selected_scheme == blank
-    assign selected_scheme = settings.color_schemes | first
-  endif
-
-  if selected_scheme.settings.background_gradient != blank
-    assign scheme_background_value = selected_scheme.settings.background_gradient
-  else
-    assign scheme_background_value = selected_scheme.settings.background
-  endif
-
   assign gradient_css_value = blank
-  if fill_mode == 'scheme_gradient'
-    assign gradient_css_value = scheme_background_value
-  elsif fill_mode == 'gradient' and section.settings.gradient_css != blank
+  if fill_mode == 'gradient' and section.settings.gradient_css != blank
     assign gradient_css_value = section.settings.gradient_css
   endif
 
@@ -59,12 +45,6 @@
   assign fill_ref = divider_color
   if fill_mode == 'image' or fill_mode == 'gradient'
     assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
-  elsif fill_mode == 'scheme_gradient'
-    if uses_css_gradient
-      assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
-    else
-      assign fill_ref = scheme_background_value
-    endif
   endif
 
   assign fill_ref_attr = 'fill="' | append: fill_ref | append: '"'
@@ -147,11 +127,9 @@
 <div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
-    {%- if fill_mode == 'scheme_gradient' -%}
-      <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ scheme_background_value }};"></div>
-    {%- elsif fill_mode == 'gradient' -%}
+    {%- if fill_mode == 'gradient' -%}
       {%- if uses_css_gradient -%}
-        <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ gradient_css_value }};"></div>
+        <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: {{ gradient_css_value }};"></div>
       {%- else -%}
         <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
       {%- endif -%}
@@ -384,12 +362,11 @@
       "label": "Modalita riempimento",
       "options": [
         { "value": "solid", "label": "Colore solido" },
-        { "value": "scheme_gradient", "label": "Gradiente schema colore" },
-        { "value": "gradient", "label": "Gradiente personalizzato" },
+        { "value": "gradient", "label": "Gradiente" },
         { "value": "image", "label": "Immagine" }
       ],
       "default": "solid",
-      "info": "Scegli come riempire la forma del divisore. Il gradiente dello schema colore usa il gradiente configurato nello schema colore selezionato."
+      "info": "Scegli come riempire la forma del divisore."
     },
     {
       "type": "header",
