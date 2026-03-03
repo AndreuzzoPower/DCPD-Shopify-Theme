@@ -480,8 +480,8 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
-        "section_color_scheme": "scheme-5",
-        "color_scheme": "scheme-5",
+        "section_color_scheme": "scheme-1",
+        "color_scheme": "scheme-1",
         "layout": "image_first",
         "media_type": "video",
         "image": "shopify://shop_images/download.jpg",
@@ -492,7 +492,7 @@
         "height": "medium",
         "desktop_image_width": "medium",
         "content_layout": "no-overlap",
-        "desktop_content_position": "middle",
+        "desktop_content_position": "top",
         "desktop_content_alignment": "left",
         "mobile_content_alignment": "left"
       }
