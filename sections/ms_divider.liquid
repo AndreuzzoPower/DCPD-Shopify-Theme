@@ -126,16 +126,15 @@
     <div class="ms-divider__svg">
 
       {%- if fill_mode == 'scheme_gradient' -%}
-        {%- capture mask_shape -%}{{ divider_shape | replace: '_FILL_', 'fill="white"' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' | strip | strip_newlines }}{%- endcapture -%}
-        {%- capture mask_svg -%}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">{{ mask_shape }}</svg>{%- endcapture -%}
-        {%- assign mask_encoded = mask_svg | url_encode -%}
-        <style>
-          #section-{{ section.id }} .ms-divider__scheme-mask {
-            -webkit-mask-image: url("data:image/svg+xml,{{ mask_encoded }}");
-            mask-image: url("data:image/svg+xml,{{ mask_encoded }}");
-          }
-        </style>
-        <div class="ms-divider__scheme-mask gradient"></div>
+        {%- assign clip_shapes = divider_shape | replace: '_FILL_', 'transform="scale(0.000833333,0.008333333)"' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' | strip | strip_newlines -%}
+        <svg style="position:absolute;width:0;height:0" aria-hidden="true">
+          <defs>
+            <clipPath id="ms-divider-clip-{{ section.id }}" clipPathUnits="objectBoundingBox">
+              {{ clip_shapes }}
+            </clipPath>
+          </defs>
+        </svg>
+        <div class="ms-divider__scheme-mask gradient" style="-webkit-clip-path: url(#ms-divider-clip-{{ section.id }}); clip-path: url(#ms-divider-clip-{{ section.id }});"></div>
       {%- else -%}
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           {{ svg_defs }}
