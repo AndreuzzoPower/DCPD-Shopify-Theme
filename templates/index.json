@@ -431,7 +431,7 @@
       }
     },
     "ms_image_with_text_7nGk7K": {
-      "type": "ms_image-with-text",
+      "type": "ms_media-with-text",
       "blocks": {
         "caption_NFiGFN": {
           "type": "caption",

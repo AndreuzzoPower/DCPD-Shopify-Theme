@@ -1,0 +1,770 @@
+{{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+  if section.settings.color_scheme == section.settings.section_color_scheme and section.settings.content_layout == 'no-overlap'
+    assign remove_color_classes = true
+  endif
+
+  assign sw = section.settings.section_width | default: 'page_width'
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign media_type = section.settings.media_type
+  assign video_id = section.settings.video.id | default: section.settings.video_url.id
+  assign video_alt = section.settings.video.alt | default: section.settings.video_description
+  assign alt = 'sections.video.load_video' | t: description: video_alt | escape
+  assign poster = section.settings.cover_image | default: section.settings.video.preview_image
+
+  if section.settings.video != null
+    assign ratio_diff = section.settings.video.aspect_ratio | minus: poster.aspect_ratio | abs
+    if ratio_diff < 0.01 and ratio_diff > 0
+      assign fix_ratio = true
+    endif
+  endif
+
+  assign loop_param = ''
+  if section.settings.enable_video_looping
+    assign loop_param = '&loop=1&playlist=' | append: video_id
+  endif
+-%}
+
+{%- render 'ms_mobile-padding' -%}
+
+<div class="gradient color-{{ section.settings.section_color_scheme }}" id="section-{{ section.id }}">
+  <div class="{{ sw_class }}">
+    <div class="image-with-text image-with-text--{{ section.settings.content_layout }} isolate{% if settings.text_boxes_border_thickness > 0 and settings.text_boxes_border_opacity > 0 and settings.media_border_thickness > 0 and settings.media_border_opacity > 0 %} collapse-borders{% endif %}{% unless section.settings.color_scheme == section.settings.section_color_scheme and settings.media_border_thickness > 0 and settings.text_boxes_shadow == 'none' and settings.text_boxes_border_thickness == 0 or settings.text_boxes_border_opacity == 0 %} collapse-corners{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.layout == 'text_first' %} image-with-text__grid--reverse{% endif %}">
+        <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
+
+          {%- if media_type == 'video' -%}
+
+            {%- comment -%} === VIDEO === {%- endcomment -%}
+            <div
+              class="image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if fix_ratio %} media-fit-cover{% endif %}"
+              {% if section.settings.height == 'adapt' and poster != blank %}
+                style="padding-bottom: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              {%- if poster != blank -%}
+                <deferred-media
+                  class="deferred-media media"
+                  data-media-id="{{ video_id }}"
+                  style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+                >
+                  <button
+                    id="Deferred-Poster-{{ section.id }}"
+                    class="video-section__poster media deferred-media__poster media--landscape"
+                    type="button"
+                    aria-label="{{ alt }}"
+                  >
+                    {{
+                      poster
+                      | image_url: width: 1500
+                      | image_tag: sizes: '(min-width: 750px) 50vw, 100vw', widths: '375, 750, 1100, 1500', alt: alt, loading: 'lazy'
+                    }}
+                    <span class="deferred-media__poster-button motion-reduce">
+                      {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+                    </span>
+                  </button>
+                  <template>
+                    {%- if section.settings.video != null -%}
+                      {{
+                        section.settings.video
+                        | video_tag:
+                          image_size: '1100x',
+                          autoplay: true,
+                          loop: section.settings.enable_video_looping,
+                          controls: true,
+                          muted: false
+                      }}
+                    {%- elsif section.settings.video_url != null -%}
+                      {%- if section.settings.video_url.type == 'youtube' -%}
+                        <iframe
+                          src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop_param }}"
+                          class="js-youtube"
+                          allow="autoplay; encrypted-media"
+                          allowfullscreen
+                          title="{{ section.settings.video_description | escape }}"
+                        ></iframe>
+                      {%- else -%}
+                        <iframe
+                          src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop_param }}"
+                          class="js-vimeo"
+                          allow="autoplay; encrypted-media"
+                          allowfullscreen
+                          title="{{ section.settings.video_description | escape }}"
+                        ></iframe>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </template>
+                </deferred-media>
+
+              {%- elsif section.settings.video != null -%}
+                <div class="media">
+                  {{
+                    section.settings.video
+                    | video_tag:
+                      image_size: '1100x',
+                      autoplay: false,
+                      loop: section.settings.enable_video_looping,
+                      controls: true,
+                      muted: false
+                  }}
+                </div>
+
+              {%- elsif section.settings.video_url != null -%}
+                <div class="media" style="aspect-ratio: 16/9;">
+                  {%- if section.settings.video_url.type == 'youtube' -%}
+                    <iframe
+                      src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
+                      class="js-youtube"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                      title="{{ section.settings.video_description | escape }}"
+                      style="width:100%;height:100%;border:0;"
+                    ></iframe>
+                  {%- else -%}
+                    <iframe
+                      src="https://player.vimeo.com/video/{{ video_id }}{{ loop_param }}"
+                      class="js-vimeo"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                      title="{{ section.settings.video_description | escape }}"
+                      style="width:100%;height:100%;border:0;"
+                    ></iframe>
+                  {%- endif -%}
+                </div>
+
+              {%- elsif request.design_mode -%}
+                <div class="media" style="display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:#f0f0f0;">
+                  <p style="color:#666;font-size:0.9rem;">Nessun video configurato.</p>
+                </div>
+              {%- endif -%}
+            </div>
+
+          {%- else -%}
+
+            {%- comment -%} === IMMAGINE (default) === {%- endcomment -%}
+            <div
+              class="image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if section.settings.image != blank %} media{% else %} image-with-text__media--placeholder placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}"
+              {% if section.settings.height == 'adapt' and section.settings.image != blank %}
+                style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              {%- if section.settings.image != blank -%}
+                {%- if section.settings.image_behavior == 'ambient' or section.settings.image_behavior == 'zoom-in' -%}
+                  {%- assign widths = '198, 432, 642, 900, 1284, 1800' -%}
+                  {%- capture sizes -%}
+                    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 1.6667 }}px,
+                    (min-width: 750px) calc((100vw - 130px) / 1.667), calc((100vw - 50px) / 1.667)
+                  {%- endcapture -%}
+                {%- else -%}
+                  {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+                  {%- capture sizes -%}
+                    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                    (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                  {%- endcapture -%}
+                {%- endif -%}
+                {{
+                  section.settings.image
+                  | image_url: width: 1500
+                  | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                }}
+              {%- else -%}
+                {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+
+          {%- endif -%}
+
+        </div>
+        <div class="image-with-text__text-item grid__item">
+          <div
+            id="ImageWithText--{{ section.id }}"
+            class="image-with-text__content image-with-text__content--{{ section.settings.desktop_content_position }} image-with-text__content--desktop-{{ section.settings.desktop_content_alignment }} image-with-text__content--mobile-{{ section.settings.mobile_content_alignment }} image-with-text__content--{{ section.settings.height }} content-container{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}"
+          >
+            {%- for block in section.blocks -%}
+              {% case block.type %}
+                {%- when 'heading' -%}
+                  {%- liquid
+                    assign title_tag = block.settings.title_tag | default: 'h2'
+                    assign title_classes = 'image-with-text__heading inline-richtext ' | append: block.settings.heading_size
+                    if block.settings.title_custom_class != blank
+                      assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+                    endif
+                  -%}
+                  <{{ title_tag }}
+                    class="{{ title_classes }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block.settings.heading }}
+                  </{{ title_tag }}>
+                {%- when 'caption' -%}
+                  <p
+                    class="image-with-text__text image-with-text__text--caption {{ block.settings.text_style }} {{ block.settings.text_style }}--{{ block.settings.text_size }} {{ block.settings.text_style }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block.settings.caption | escape }}
+                  </p>
+                {%- when 'text' -%}
+                  <div class="image-with-text__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                    {{ block.settings.text }}
+                  </div>
+                {%- when 'button' -%}
+                  {%- if block.settings.button_label != blank -%}
+                    <a
+                      {% if block.settings.button_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link }}"
+                      {% endif %}
+                      class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}"
+                      {{ block.shopify_attributes }}
+                    >
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'before' -%}
+                      {{ block.settings.button_label | escape }}
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'after' -%}
+                    </a>
+                  {%- endif -%}
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[id^="Deferred-Poster-{{ section.id }}"]');
+    if (!btn) return;
+    var dm = btn.closest('deferred-media');
+    if (!dm) return;
+    var observer = new MutationObserver(function (mutations, obs) {
+      var iframe = dm.querySelector('iframe');
+      if (!iframe) return;
+      obs.disconnect();
+      iframe.addEventListener('load', function () {
+        if (iframe.src.indexOf('youtube.com') !== -1) {
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        } else if (iframe.src.indexOf('vimeo.com') !== -1) {
+          iframe.contentWindow.postMessage('{"method":"play"}', '*');
+        }
+      });
+    });
+    observer.observe(dm, { childList: true, subtree: true });
+  });
+})();
+</script>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Media Con Testo",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    },
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "Schema colore sezione",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore contenitore",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        { "value": "image_first", "label": "Media a sinistra" },
+        { "value": "text_first", "label": "Media a destra" }
+      ],
+      "default": "image_first",
+      "label": "Posizione media"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Tipo media",
+      "options": [
+        { "value": "image", "label": "Immagine" },
+        { "value": "video", "label": "Video" }
+      ],
+      "default": "image",
+      "info": "Scegli se mostrare un'immagine o un video nel riquadro media."
+    },
+    {
+      "type": "header",
+      "content": "Immagine"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Immagine"
+    },
+    {
+      "type": "select",
+      "id": "image_behavior",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "ambient", "label": "Movimento ambientale" },
+        { "value": "zoom-in", "label": "Zoom in" }
+      ],
+      "default": "none",
+      "label": "Animazione immagine"
+    },
+    {
+      "type": "header",
+      "content": "Video Shopify"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video caricato"
+    },
+    {
+      "type": "header",
+      "content": "Video YouTube / Vimeo"
+    },
+    {
+      "type": "paragraph",
+      "content": "Se è caricato un video Shopify, questo campo viene ignorato."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["youtube", "vimeo"],
+      "label": "URL video (YouTube o Vimeo)"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Immagine di copertina video",
+      "info": "Se presente, il video viene caricato al click sulla copertina."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "Abilita loop video",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "video_description",
+      "label": "Descrizione accessibile video",
+      "info": "Testo alternativo del video e titolo degli iframe YouTube/Vimeo."
+    },
+    {
+      "type": "header",
+      "content": "Dimensioni media"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        { "value": "adapt", "label": "Adatta all'immagine/video" },
+        { "value": "small", "label": "Piccola" },
+        { "value": "medium", "label": "Media" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "adapt",
+      "label": "Altezza media"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_width",
+      "options": [
+        { "value": "small", "label": "Piccola" },
+        { "value": "medium", "label": "Media" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "medium",
+      "label": "Larghezza media desktop"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "select",
+      "id": "content_layout",
+      "options": [
+        { "value": "no-overlap", "label": "Nessuna sovrapposizione" },
+        { "value": "overlap", "label": "Sovrapposto" }
+      ],
+      "default": "no-overlap",
+      "label": "Layout contenuto"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        { "value": "top", "label": "In alto" },
+        { "value": "middle", "label": "Al centro" },
+        { "value": "bottom", "label": "In basso" }
+      ],
+      "default": "top",
+      "label": "Posizione contenuto desktop"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ],
+      "default": "left",
+      "label": "Allineamento contenuto desktop"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ],
+      "default": "left",
+      "label": "Allineamento contenuto mobile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Intestazione",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Immagine con testo",
+          "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            { "value": "h2", "label": "Piccola" },
+            { "value": "h1", "label": "Media" },
+            { "value": "h0", "label": "Grande" },
+            { "value": "hxl", "label": "Extra grande" },
+            { "value": "hxxl", "label": "Enorme" }
+          ],
+          "default": "h1",
+          "label": "Dimensione titolo"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        }
+      ]
+    },
+    {
+      "type": "caption",
+      "name": "Didascalia",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "caption",
+          "default": "Aggiungi una didascalia",
+          "label": "Testo"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            { "value": "subtitle", "label": "Sottotitolo" },
+            { "value": "caption-with-letter-spacing", "label": "Maiuscoletto" }
+          ],
+          "default": "caption-with-letter-spacing",
+          "label": "Stile testo"
+        },
+        {
+          "type": "select",
+          "id": "text_size",
+          "options": [
+            { "value": "small", "label": "Piccola" },
+            { "value": "medium", "label": "Media" },
+            { "value": "large", "label": "Grande" }
+          ],
+          "default": "medium",
+          "label": "Dimensione testo"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Testo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Abbina testo con un'immagine o un video per concentrarti sul prodotto, la collezione o il post del blog.</p>",
+          "label": "Testo"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            { "value": "body", "label": "Corpo" },
+            { "value": "subtitle", "label": "Sottotitolo" }
+          ],
+          "default": "body",
+          "label": "Stile testo"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Pulsante",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Etichetta pulsante",
+          "label": "Etichetta pulsante",
+          "info": "Lascia vuoto per nascondere il pulsante."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link pulsante"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary",
+          "default": false,
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "Tipo pulsante",
+          "default": "button",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Dimensione pulsante",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon",
+          "label": "Icona pulsante",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position",
+          "label": "Posizione icona",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Desktop" },
+        {
+          "type": "range", "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 100
+        },
+        {
+          "type": "range", "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 100
+        },
+        { "type": "header", "content": "Tablet" },
+        {
+          "type": "range", "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 80
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 80
+        },
+        { "type": "header", "content": "Mobile" },
+        {
+          "type": "range", "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 50
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 60
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Desktop" },
+        {
+          "type": "range", "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet" },
+        {
+          "type": "range", "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile" },
+        {
+          "type": "range", "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "Immagine sfondo"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "Colore sfondo",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Media Con Testo",
+      "category": "Media",
+      "blocks": [
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}
