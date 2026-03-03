@@ -11,21 +11,11 @@
   "sections": {
     "ms_breadcrumbs_4xKfNa": {
       "type": "ms_breadcrumbs",
-      "blocks": {
-        "section_background_7hYHcr": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#919191"
-          }
-        }
-      },
-      "block_order": [
-        "section_background_7hYHcr"
-      ],
       "name": "MS Breadcrumbs",
       "settings": {
         "section_width": "default",
-        "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
+        "mobile_full_width": false,
+        "color_scheme": "scheme-4",
         "alignment": "left",
         "home_lbl": "Home",
         "home_icon": "icon-house-solid-full.svg",
@@ -232,9 +222,16 @@
       "name": "MS Divisore",
       "settings": {
         "section_width": "full_width",
+        "mobile_full_width": false,
         "color_scheme": "",
         "divider_type": "clouds",
+        "fill_mode": "solid",
         "divider_color": "#e0e0e0",
+        "gradient_color_1": "#ffffff",
+        "gradient_color_2": "#000000",
+        "gradient_color_3": "",
+        "gradient_angle": 0,
+        "gradient_css": "",
         "divider_height": 80,
         "divider_height_mobile": 50,
         "flip_horizontal": false,
@@ -284,6 +281,7 @@
         "carousel_loop": "circle",
         "carousel_peek_size": "medium",
         "carousel_arrows_position": "overlay_sides",
+        "carousel_arrows_overlay_dark": false,
         "carousel_pagination_style": "dots",
         "carousel_scroll_mode": "single",
         "carousel_show_arrows": false,
