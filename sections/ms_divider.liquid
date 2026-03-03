@@ -97,7 +97,7 @@
     </defs>
   {%- elsif uses_css_gradient -%}
     <defs>
-      <linearGradient id="ms-divider-fill-{{ section.id }}" gradientUnits="objectBoundingBox"></linearGradient>
+      <linearGradient id="ms-divider-fill-{{ section.id }}" gradientUnits="userSpaceOnUse"></linearGradient>
     </defs>
   {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
     <defs>
@@ -259,15 +259,17 @@
           lastKnown = nextKnown;
         }
 
+        var w = 1200, h = 120;
         var rad = (angle * Math.PI) / 180;
         var dx = Math.sin(rad);
         var dy = -Math.cos(rad);
+        var halfLen = Math.abs(w / 2 * dx) + Math.abs(h / 2 * dy);
 
         return {
-          x1: 0.5 - dx / 2,
-          y1: 0.5 - dy / 2,
-          x2: 0.5 + dx / 2,
-          y2: 0.5 + dy / 2,
+          x1: w / 2 - dx * halfLen,
+          y1: h / 2 + dy * halfLen,
+          x2: w / 2 + dx * halfLen,
+          y2: h / 2 - dy * halfLen,
           stops: stops
         };
       }
@@ -288,7 +290,7 @@
           gradientNode.setAttribute('y1', parsed.y1);
           gradientNode.setAttribute('x2', parsed.x2);
           gradientNode.setAttribute('y2', parsed.y2);
-          gradientNode.setAttribute('gradientUnits', 'objectBoundingBox');
+          gradientNode.setAttribute('gradientUnits', 'userSpaceOnUse');
           gradientNode.innerHTML = '';
 
           parsed.stops.forEach(function(stopData) {
