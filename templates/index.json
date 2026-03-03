@@ -474,7 +474,7 @@
             "button_label": "Etichetta pulsante",
             "button_link": "",
             "button_style_secondary": false,
-            "button_type": "button",
+            "button_type": "pill",
             "button_size": "large",
             "button_icon": "",
             "button_icon_position": "before"
