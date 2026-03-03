@@ -157,9 +157,10 @@
     "ms_min_order_show_label": true,
     "ms_catalog_mode": true,
     "ms_guest_hide_prices": false,
-    "ms_guest_hide_cart": true,
+    "ms_guest_hide_cart": false,
     "ms_guest_hide_variants": true,
-    "ms_guest_hide_buy_buttons": true,
+    "ms_guest_hide_buy_buttons": false,
+    "ms_guest_buy_style": "button",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
