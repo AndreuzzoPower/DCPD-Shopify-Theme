@@ -1,5 +1,6 @@
 {{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+{{ 'ms_media-with-text.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign fetch_priority = 'auto'
@@ -71,21 +72,33 @@
           {%- if media_type == 'video' -%}
 
             {%- comment -%} === VIDEO === {%- endcomment -%}
+            {%- liquid
+              assign v_ratio = section.settings.video_aspect_ratio | default: '16_9'
+              case v_ratio
+                when '16_9'
+                  assign v_ratio_css = '56.25%'
+                when '4_3'
+                  assign v_ratio_css = '75%'
+                when '1_1'
+                  assign v_ratio_css = '100%'
+                when '21_9'
+                  assign v_ratio_css = '42.86%'
+                when '9_16'
+                  assign v_ratio_css = '177.78%'
+              endcase
+            -%}
             <div
-              class="image-with-text__media image-with-text__media--{{ section.settings.height }} global-media-settings{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% else %} background-transparent{% endunless %}{% if fix_ratio %} media-fit-cover{% endif %}"
-              {% if section.settings.height == 'adapt' and poster != blank %}
-                style="padding-bottom: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
-              {% endif %}
+              class="ms-media-video ms-media-video--border-radius{% unless remove_color_classes %} gradient color-{{ section.settings.color_scheme }}{% endunless %}"
+              style="--ms-video-ratio: {{ v_ratio_css }};"
             >
               {%- if poster != blank -%}
                 <deferred-media
                   class="deferred-media media"
                   data-media-id="{{ video_id }}"
-                  style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
                 >
                   <button
                     id="Deferred-Poster-{{ section.id }}"
-                    class="video-section__poster media deferred-media__poster media--landscape"
+                    class="deferred-media__poster"
                     type="button"
                     aria-label="{{ alt }}"
                   >
@@ -145,7 +158,7 @@
                 </div>
 
               {%- elsif section.settings.video_url != null -%}
-                <div class="media" style="aspect-ratio: 16/9;">
+                <div class="media">
                   {%- if section.settings.video_url.type == 'youtube' -%}
                     <iframe
                       src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
@@ -153,7 +166,6 @@
                       allow="autoplay; encrypted-media"
                       allowfullscreen
                       title="{{ section.settings.video_description | escape }}"
-                      style="width:100%;height:100%;border:0;"
                     ></iframe>
                   {%- else -%}
                     <iframe
@@ -162,13 +174,12 @@
                       allow="autoplay; encrypted-media"
                       allowfullscreen
                       title="{{ section.settings.video_description | escape }}"
-                      style="width:100%;height:100%;border:0;"
                     ></iframe>
                   {%- endif -%}
                 </div>
 
               {%- elsif request.design_mode -%}
-                <div class="media" style="display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:#f0f0f0;">
+                <div class="media" style="display:flex;align-items:center;justify-content:center;background:#f0f0f0;">
                   <p style="color:#666;font-size:0.9rem;">Nessun video configurato.</p>
                 </div>
               {%- endif -%}
@@ -411,6 +422,20 @@
       "info": "Se presente, il video viene caricato al click sulla copertina."
     },
     {
+      "type": "select",
+      "id": "video_aspect_ratio",
+      "label": "Proporzioni video",
+      "options": [
+        { "value": "16_9", "label": "16:9 (Widescreen)" },
+        { "value": "4_3", "label": "4:3 (Classico)" },
+        { "value": "1_1", "label": "1:1 (Quadrato)" },
+        { "value": "21_9", "label": "21:9 (Ultrawide)" },
+        { "value": "9_16", "label": "9:16 (Verticale)" }
+      ],
+      "default": "16_9",
+      "info": "Applicato solo quando il tipo media è Video."
+    },
+    {
       "type": "checkbox",
       "id": "enable_video_looping",
       "label": "Abilita loop video",
@@ -430,13 +455,14 @@
       "type": "select",
       "id": "height",
       "options": [
-        { "value": "adapt", "label": "Adatta all'immagine/video" },
+        { "value": "adapt", "label": "Adatta all'immagine" },
         { "value": "small", "label": "Piccola" },
         { "value": "medium", "label": "Media" },
         { "value": "large", "label": "Grande" }
       ],
       "default": "adapt",
-      "label": "Altezza media"
+      "label": "Altezza immagine",
+      "info": "Applicato solo quando il tipo media è Immagine. Per il video usa Proporzioni video."
     },
     {
       "type": "select",

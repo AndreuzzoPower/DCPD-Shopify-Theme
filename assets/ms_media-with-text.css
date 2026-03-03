@@ -1,0 +1,44 @@
+.ms-media-video {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ms-media-video .media,
+.ms-media-video .deferred-media {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: var(--ms-video-ratio, 56.25%);
+}
+
+.ms-media-video .media iframe,
+.ms-media-video .media video,
+.ms-media-video .deferred-media iframe,
+.ms-media-video .deferred-media video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
+.ms-media-video .deferred-media__poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ms-media-video .deferred-media__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ms-media-video--border-radius {
+  border-radius: var(--media-radius);
+}
