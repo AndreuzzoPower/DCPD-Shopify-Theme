@@ -7,8 +7,6 @@
 <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  assign qol_product = section.settings.product_ref | default: product
-
   assign sw = section.settings.section_width | default: 'page_width'
   case sw
     when 'narrow'
@@ -25,23 +23,11 @@
 {%- render 'ms_mobile-padding' -%}
 
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
-  {%- if qol_product != blank and qol_product.has_only_default_variant == false -%}
-    {%- render 'quick-order-list',
-      product: qol_product,
-      show_image: section.settings.show_image,
-      show_sku: section.settings.show_sku
-    -%}
-  {%- elsif request.design_mode -%}
-    <div class="{{ sw_class }}" style="padding: 2rem 0;">
-      <p style="text-align:center;color:#666;">
-        {%- if qol_product == blank -%}
-          Seleziona un prodotto con varianti per visualizzare la lista ordine rapido.
-        {%- else -%}
-          Il prodotto selezionato non ha varianti multiple.
-        {%- endif -%}
-      </p>
-    </div>
-  {%- endif -%}
+  {%- render 'quick-order-list',
+    product: product,
+    show_image: section.settings.show_image,
+    show_sku: section.settings.show_sku
+  -%}
 </div>
 
 {%- render 'ms_section-style' -%}
@@ -51,6 +37,9 @@
   "name": "MS Ordine Rapido",
   "class": "section",
   "limit": 1,
+  "enabled_on": {
+    "templates": ["product"]
+  },
   "settings": [
     {
       "type": "header",
@@ -84,12 +73,6 @@
     {
       "type": "header",
       "content": "Contenuto"
-    },
-    {
-      "type": "product",
-      "id": "product_ref",
-      "label": "Prodotto",
-      "info": "Seleziona un prodotto con varianti. Su pagine prodotto, se vuoto utilizza il prodotto della pagina."
     },
     {
       "type": "range",
