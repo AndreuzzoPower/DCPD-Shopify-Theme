@@ -28,7 +28,7 @@
         "mobile_full_width": false,
         "color_scheme": "scheme-5",
         "divider_type": "waves",
-        "fill_mode": "scheme_gradient",
+        "fill_mode": "gradient",
         "divider_color": "#121212",
         "gradient_color_1": "#0aeaed",
         "gradient_color_2": "#fa0dfd",
