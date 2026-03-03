@@ -11,6 +11,29 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
+    "ms_divider_jcmrWn": {
+      "type": "ms_divider",
+      "name": "MS Divisore",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "divider_type": "waves",
+        "fill_mode": "solid",
+        "divider_color": "#000000",
+        "gradient_color_1": "#ffffff",
+        "gradient_color_2": "#000000",
+        "gradient_color_3": "",
+        "gradient_angle": 0,
+        "gradient_css": "",
+        "divider_height": 80,
+        "divider_height_mobile": 50,
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "line_weight": 1,
+        "line_style": "solid"
+      }
+    },
     "newsletter_AUNtxG": {
       "type": "ms_newsletter",
       "blocks": {
@@ -187,6 +210,7 @@
     }
   },
   "order": [
+    "ms_divider_jcmrWn",
     "newsletter_AUNtxG",
     "footer"
   ]
