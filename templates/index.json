@@ -17,7 +17,7 @@
         "mobile_full_width": false,
         "color_scheme": "scheme-1",
         "divider_type": "tilt",
-        "divider_color": "#121212",
+        "divider_color": "#000000",
         "divider_height": 80,
         "divider_height_mobile": 50,
         "flip_horizontal": false,
