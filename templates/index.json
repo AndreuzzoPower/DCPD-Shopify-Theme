@@ -478,7 +478,7 @@
       ],
       "name": "MS Image with text",
       "settings": {
-        "section_width": "narrow",
+        "section_width": "page_width",
         "mobile_full_width": false,
         "section_color_scheme": "scheme-5",
         "color_scheme": "scheme-5",
@@ -492,7 +492,7 @@
         "height": "medium",
         "desktop_image_width": "medium",
         "content_layout": "no-overlap",
-        "desktop_content_position": "bottom",
+        "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
         "mobile_content_alignment": "left"
       }
