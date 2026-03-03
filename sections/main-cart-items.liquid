@@ -42,16 +42,18 @@
 
       {%- unless customer -%}
         {%- if settings.ms_guest_hide_buy_buttons or settings.ms_guest_hide_cart -%}
-          <div class="ms-cart-blocked-msg" style="margin-top: 2rem; text-align: center;">
-            {%- case settings.ms_guest_buy_style -%}
-              {%- when 'button' -%}
-                <a href="{{ routes.account_login_url }}" class="button">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-              {%- when 'pill' -%}
-                <a href="{{ routes.account_login_url }}" class="button button--pill" style="border-radius: 50rem;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-              {%- when 'link' -%}
-                <a href="{{ routes.account_login_url }}" class="link" style="text-decoration: underline;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-            {%- endcase -%}
-          </div>
+          {%- unless settings.ms_catalog_mode -%}
+            <div class="ms-cart-blocked-msg" style="margin-top: 2rem; text-align: center;">
+              {%- case settings.ms_guest_buy_style -%}
+                {%- when 'button' -%}
+                  <a href="{{ routes.account_login_url }}" class="button">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
+                {%- when 'pill' -%}
+                  <a href="{{ routes.account_login_url }}" class="button button--pill" style="border-radius: 50rem;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
+                {%- when 'link' -%}
+                  <a href="{{ routes.account_login_url }}" class="link" style="text-decoration: underline;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
+              {%- endcase -%}
+            </div>
+          {%- endunless -%}
         {%- endif -%}
       {%- endunless -%}
 
