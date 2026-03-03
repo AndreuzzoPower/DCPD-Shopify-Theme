@@ -65,11 +65,11 @@ body.ms-hide-buy product-form,
 body.ms-hide-buy .quick-add,
 body.ms-hide-buy .shopify-payment-button,
 body.ms-hide-buy .product-form__buttons { display: none !important; }
-body.ms-hide-buy:not(.ms-catalog-mode) .ms-guest-buy-msg { display: block; }
+body.ms-hide-buy .ms-guest-buy-msg { display: block; }
 
-body.ms-hide-buy quantity-popover,
-body.ms-hide-buy .quantity,
-body.ms-hide-buy .product-form__quantity { display: none !important; }
+body.ms-catalog-mode quantity-popover,
+body.ms-catalog-mode .quantity,
+body.ms-catalog-mode .product-form__quantity { display: none !important; }
 
 body.ms-hide-variants variant-selects,
 body.ms-hide-variants variant-radios,
