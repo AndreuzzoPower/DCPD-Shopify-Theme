@@ -211,6 +211,27 @@
                             {{ item.unit_price_measurement.reference_unit }}
                           </div>
                         {%- endif -%}
+
+                        {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+                          {%- liquid
+                            assign line_iva_rate = settings.ms_iva_rate | plus: 0
+                            if item.product.metafields.custom.aliquota_iva.value
+                              assign line_iva_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                            endif
+                            assign line_iva_divisor = 100.0 | plus: line_iva_rate
+                            if settings.ms_iva_prices_included
+                              assign line_iva = item.final_line_price | times: line_iva_rate | divided_by: line_iva_divisor | round
+                            else
+                              assign line_iva = item.final_line_price | times: line_iva_rate | divided_by: 100.0 | round
+                            endif
+                            if settings.currency_code_enabled
+                              assign line_iva_fmt = line_iva | money_with_currency
+                            else
+                              assign line_iva_fmt = line_iva | money
+                            endif
+                          -%}
+                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', line_iva_fmt }}</div>
+                        {%- endif -%}
                       </div>
                     </td>
                     {%- liquid
@@ -438,6 +459,27 @@
                             {%- endif -%}
                             {{ item.unit_price_measurement.reference_unit }}
                           </div>
+                        {%- endif -%}
+
+                        {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+                          {%- liquid
+                            assign line_iva_rate = settings.ms_iva_rate | plus: 0
+                            if item.product.metafields.custom.aliquota_iva.value
+                              assign line_iva_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                            endif
+                            assign line_iva_divisor = 100.0 | plus: line_iva_rate
+                            if settings.ms_iva_prices_included
+                              assign line_iva = item.final_line_price | times: line_iva_rate | divided_by: line_iva_divisor | round
+                            else
+                              assign line_iva = item.final_line_price | times: line_iva_rate | divided_by: 100.0 | round
+                            endif
+                            if settings.currency_code_enabled
+                              assign line_iva_fmt = line_iva | money_with_currency
+                            else
+                              assign line_iva_fmt = line_iva | money
+                            endif
+                          -%}
+                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', line_iva_fmt }}</div>
                         {%- endif -%}
                       </div>
                     </td>
