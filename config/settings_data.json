@@ -244,7 +244,7 @@
       "scheme-5": {
         "settings": {
           "background": "#334fb4",
-          "background_gradient": "linear-gradient(136deg, rgba(10, 234, 237, 1) 11%, rgba(250, 13, 253, 1) 84%)",
+          "background_gradient": "linear-gradient(136deg, rgba(10, 234, 237, 1) 11%, rgba(250, 13, 253, 1) 82%)",
           "text": "#ffffff",
           "button": "#ffffff",
           "button_label": "#334fb4",
