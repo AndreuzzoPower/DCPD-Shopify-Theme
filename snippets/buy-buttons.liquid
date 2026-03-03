@@ -162,16 +162,4 @@
 
     <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
   {%- endif -%}
-  {%- if settings.ms_guest_buy_text != blank -%}
-    <div class="ms-guest-buy-msg">
-      {%- case settings.ms_guest_buy_style -%}
-        {%- when 'button' -%}
-          <a href="{{ routes.account_login_url }}" class="button">{{ settings.ms_guest_buy_text }}</a>
-        {%- when 'pill' -%}
-          <a href="{{ routes.account_login_url }}" class="button button--pill">{{ settings.ms_guest_buy_text }}</a>
-        {%- when 'link' -%}
-          <a href="{{ routes.account_login_url }}" class="link">{{ settings.ms_guest_buy_text }}</a>
-      {%- endcase -%}
-    </div>
-  {%- endif -%}
 </div>

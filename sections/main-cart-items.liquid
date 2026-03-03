@@ -40,23 +40,6 @@
         {{ 'general.continue_shopping' | t }}
       </a>
 
-      {%- unless customer -%}
-        {%- if settings.ms_guest_hide_buy_buttons or settings.ms_guest_hide_cart -%}
-          {%- unless settings.ms_catalog_mode -%}
-            <div class="ms-cart-blocked-msg" style="margin-top: 2rem; text-align: center;">
-              {%- case settings.ms_guest_buy_style -%}
-                {%- when 'button' -%}
-                  <a href="{{ routes.account_login_url }}" class="button">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-                {%- when 'pill' -%}
-                  <a href="{{ routes.account_login_url }}" class="button button--pill" style="border-radius: 50rem;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-                {%- when 'link' -%}
-                  <a href="{{ routes.account_login_url }}" class="link" style="text-decoration: underline;">{{ settings.ms_guest_buy_text | default: 'Accedi per acquistare' }}</a>
-              {%- endcase -%}
-            </div>
-          {%- endunless -%}
-        {%- endif -%}
-      {%- endunless -%}
-
       {%- if shop.customer_accounts_enabled and customer == null -%}
         <div class="cart__login-title">{{ 'sections.cart.login.title' | t }}</div>
         <p class="cart__login-paragraph">
