@@ -32,13 +32,6 @@
     assign css_classes = css_classes | append: ' ms-divider--flip-y'
   endif
 
-  assign fill_ref = divider_color
-  if fill_mode == 'gradient' or fill_mode == 'image'
-    assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
-  endif
-
-  assign fill_ref_attr = 'fill="' | append: fill_ref | append: '"'
-
   assign selected_scheme_id = section.settings.color_scheme | append: ''
   assign selected_scheme = settings.color_schemes[selected_scheme_id]
   if selected_scheme == blank
@@ -50,6 +43,31 @@
   else
     assign scheme_background_value = selected_scheme.settings.background
   endif
+
+  assign gradient_css_value = blank
+  if fill_mode == 'scheme_gradient'
+    assign gradient_css_value = scheme_background_value
+  elsif fill_mode == 'gradient' and section.settings.gradient_css != blank
+    assign gradient_css_value = section.settings.gradient_css
+  endif
+
+  assign uses_css_gradient = false
+  if gradient_css_value contains 'gradient('
+    assign uses_css_gradient = true
+  endif
+
+  assign fill_ref = divider_color
+  if fill_mode == 'image' or fill_mode == 'gradient'
+    assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
+  elsif fill_mode == 'scheme_gradient'
+    if uses_css_gradient
+      assign fill_ref = 'url(#ms-divider-fill-' | append: section.id | append: ')'
+    else
+      assign fill_ref = scheme_background_value
+    endif
+  endif
+
+  assign fill_ref_attr = 'fill="' | append: fill_ref | append: '"'
 -%}
 
 {%- style -%}
@@ -62,7 +80,7 @@
 {%- render 'ms_mobile-padding' -%}
 
 {%- capture svg_defs -%}
-  {%- if fill_mode == 'gradient' -%}
+  {%- if fill_mode == 'gradient' and uses_css_gradient != true -%}
     {%- liquid
       assign g_color_1 = section.settings.gradient_color_1 | default: '#ffffff'
       assign g_color_2 = section.settings.gradient_color_2 | default: '#000000'
@@ -76,6 +94,10 @@
         {%- endif -%}
         <stop offset="100%" stop-color="{{ g_color_2 }}"/>
       </linearGradient>
+    </defs>
+  {%- elsif uses_css_gradient -%}
+    <defs>
+      <linearGradient id="ms-divider-fill-{{ section.id }}" gradientUnits="objectBoundingBox"></linearGradient>
     </defs>
   {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
     <defs>
@@ -126,9 +148,13 @@
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
     {%- if fill_mode == 'scheme_gradient' -%}
-      <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ scheme_background_value }}; background-attachment: local;"></div>
+      <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ scheme_background_value }};"></div>
     {%- elsif fill_mode == 'gradient' -%}
-      <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
+      {%- if uses_css_gradient -%}
+        <div class="ms-divider__line ms-divider__line--scheme" style="height: {{ section.settings.line_weight }}px; background: {{ gradient_css_value }};"></div>
+      {%- else -%}
+        <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
+      {%- endif -%}
     {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
       <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: url('{{ section.settings.fill_image | image_url: width: 1920 }}') center/cover no-repeat;"></div>
     {%- else -%}
@@ -136,30 +162,155 @@
     {%- endif -%}
   {%- else -%}
     <div class="ms-divider__svg">
-
-      {%- if fill_mode == 'scheme_gradient' -%}
-        {%- assign clip_shapes = divider_shape | replace: '_FILL_', '' | replace: ' opacity=".25"', '' | replace: ' opacity=".5"', '' -%}
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="ms-divider-clip-{{ section.id }}">
-              {{ clip_shapes }}
-            </clipPath>
-          </defs>
-          <foreignObject width="1200" height="120" clip-path="url(#ms-divider-clip-{{ section.id }})">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;background: {{ scheme_background_value }};"></div>
-          </foreignObject>
-        </svg>
-      {%- else -%}
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          {{ svg_defs }}
-          {{ divider_shape | replace: '_FILL_', fill_ref_attr }}
-        </svg>
-      {%- endif -%}
-
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        {{ svg_defs }}
+        {{ divider_shape | replace: '_FILL_', fill_ref_attr }}
+      </svg>
     </div>
   {%- endif -%}
   </div>
 </div>
+
+{%- if uses_css_gradient and divider_type != 'line' -%}
+  <script>
+    (function() {
+      var sectionId = 'section-{{ section.id }}';
+      var gradientId = 'ms-divider-fill-{{ section.id }}';
+      var gradientCss = {{ gradient_css_value | json }};
+
+      function splitTopLevel(input) {
+        var parts = [];
+        var current = '';
+        var depth = 0;
+        for (var i = 0; i < input.length; i++) {
+          var ch = input[i];
+          if (ch === '(') depth += 1;
+          if (ch === ')') depth = Math.max(0, depth - 1);
+          if (ch === ',' && depth === 0) {
+            parts.push(current.trim());
+            current = '';
+          } else {
+            current += ch;
+          }
+        }
+        if (current.trim()) parts.push(current.trim());
+        return parts;
+      }
+
+      function parseLinearGradient(css) {
+        var match = css && css.match(/linear-gradient\((.*)\)/i);
+        if (!match || !match[1]) return null;
+
+        var parts = splitTopLevel(match[1]);
+        if (!parts.length) return null;
+
+        var angle = 180;
+        var startIndex = 0;
+        var first = parts[0].trim();
+
+        if (/^-?\d+(\.\d+)?deg$/i.test(first)) {
+          angle = parseFloat(first);
+          startIndex = 1;
+        }
+
+        var stops = [];
+        for (var i = startIndex; i < parts.length; i++) {
+          var token = parts[i].trim();
+          var m = token.match(/^(.*)\s+(-?\d+(\.\d+)?%)$/);
+          if (m) {
+            stops.push({ color: m[1].trim(), offset: m[2] });
+          } else {
+            stops.push({ color: token, offset: null });
+          }
+        }
+
+        if (!stops.length) return null;
+
+        if (stops.length === 1) {
+          stops = [
+            { color: stops[0].color, offset: '0%' },
+            { color: stops[0].color, offset: '100%' }
+          ];
+        }
+
+        if (!stops[0].offset) stops[0].offset = '0%';
+        if (!stops[stops.length - 1].offset) stops[stops.length - 1].offset = '100%';
+
+        var lastKnown = 0;
+        for (var j = 1; j < stops.length - 1; j++) {
+          if (stops[j].offset) {
+            lastKnown = j;
+            continue;
+          }
+
+          var nextKnown = j + 1;
+          while (nextKnown < stops.length && !stops[nextKnown].offset) nextKnown++;
+
+          var startVal = parseFloat(stops[lastKnown].offset);
+          var endVal = parseFloat(stops[nextKnown].offset);
+          var span = nextKnown - lastKnown;
+
+          for (var k = 1; k < span; k++) {
+            var val = startVal + ((endVal - startVal) * k) / span;
+            stops[lastKnown + k].offset = val + '%';
+          }
+
+          j = nextKnown;
+          lastKnown = nextKnown;
+        }
+
+        var rad = (angle * Math.PI) / 180;
+        var dx = Math.sin(rad);
+        var dy = -Math.cos(rad);
+
+        return {
+          x1: 0.5 - dx / 2,
+          y1: 0.5 - dy / 2,
+          x2: 0.5 + dx / 2,
+          y2: 0.5 + dy / 2,
+          stops: stops
+        };
+      }
+
+      function applySvgGradient() {
+        if (!gradientCss || gradientCss.indexOf('gradient(') === -1) return;
+        var parsed = parseLinearGradient(gradientCss);
+        if (!parsed) return;
+
+        var section = document.getElementById(sectionId);
+        if (!section) return;
+
+        var gradients = section.querySelectorAll('linearGradient#' + gradientId);
+        if (!gradients.length) return;
+
+        gradients.forEach(function(gradientNode) {
+          gradientNode.setAttribute('x1', parsed.x1);
+          gradientNode.setAttribute('y1', parsed.y1);
+          gradientNode.setAttribute('x2', parsed.x2);
+          gradientNode.setAttribute('y2', parsed.y2);
+          gradientNode.setAttribute('gradientUnits', 'objectBoundingBox');
+          gradientNode.innerHTML = '';
+
+          parsed.stops.forEach(function(stopData) {
+            var stopNode = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+            stopNode.setAttribute('offset', stopData.offset);
+            stopNode.setAttribute('stop-color', stopData.color);
+            gradientNode.appendChild(stopNode);
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applySvgGradient, { once: true });
+      } else {
+        applySvgGradient();
+      }
+
+      document.addEventListener('shopify:section:load', applySvgGradient);
+      document.addEventListener('shopify:section:reorder', applySvgGradient);
+    })();
+  </script>
+{%- endif -%}
 
 {%- render 'ms_section-style' -%}
 
@@ -283,6 +434,12 @@
       "unit": "°",
       "default": 0,
       "info": "Direzione del gradiente in gradi. 0 = da sinistra a destra, 90 = dall'alto al basso."
+    },
+    {
+      "type": "textarea",
+      "id": "gradient_css",
+      "label": "Codice gradiente CSS (opzionale)",
+      "info": "Se compilato, questo valore (es. linear-gradient(...)) ha priorita e viene usato per riprodurre il gradiente in modo fedele."
     },
     {
       "type": "header",

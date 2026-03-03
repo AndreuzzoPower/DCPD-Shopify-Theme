@@ -46,6 +46,5 @@ div.ms-divider__line {
 }
 
 .ms-divider__line--scheme {
-  background: var(--gradient-background);
   background-attachment: local;
 }
