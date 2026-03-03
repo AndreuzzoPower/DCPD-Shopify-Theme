@@ -44,3 +44,13 @@
 div.ms-divider__line {
   border: none;
 }
+
+.ms-divider__line--scheme {
+  background: var(--gradient-background);
+}
+
+.ms-divider__scheme-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-background);
+}
