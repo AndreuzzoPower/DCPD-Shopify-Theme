@@ -39,15 +39,34 @@
   if section.settings.enable_video_looping
     assign loop_param = '&loop=1&playlist=' | append: video_id
   endif
+
+  assign media_valign = section.settings.desktop_media_position | default: 'middle'
+  assign content_pl = section.settings.content_padding_left | default: 40
+  assign content_pr = section.settings.content_padding_right | default: 40
+  assign content_pl_mob = section.settings.content_padding_left_mobile | default: 20
+  assign content_pr_mob = section.settings.content_padding_right_mobile | default: 20
 -%}
 
 {%- render 'ms_mobile-padding' -%}
+
+<style>
+  #ImageWithText--{{ section.id }} {
+    padding-left: {{ content_pl_mob }}px;
+    padding-right: {{ content_pr_mob }}px;
+  }
+  @media (min-width: 750px) {
+    #ImageWithText--{{ section.id }} {
+      padding-left: {{ content_pl }}px;
+      padding-right: {{ content_pr }}px;
+    }
+  }
+</style>
 
 <div class="gradient color-{{ section.settings.section_color_scheme }}" id="section-{{ section.id }}">
   <div class="{{ sw_class }}">
     <div class="image-with-text image-with-text--{{ section.settings.content_layout }} isolate{% if settings.text_boxes_border_thickness > 0 and settings.text_boxes_border_opacity > 0 and settings.media_border_thickness > 0 and settings.media_border_opacity > 0 %} collapse-borders{% endif %}{% unless section.settings.color_scheme == section.settings.section_color_scheme and settings.media_border_thickness > 0 and settings.text_boxes_shadow == 'none' and settings.text_boxes_border_thickness == 0 or settings.text_boxes_border_opacity == 0 %} collapse-corners{% endunless %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <div class="image-with-text__grid grid grid--gapless grid--1-col grid--{% if section.settings.desktop_image_width == 'medium' %}2-col-tablet{% else %}3-col-tablet{% endif %}{% if section.settings.layout == 'text_first' %} image-with-text__grid--reverse{% endif %}">
-        <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ section.settings.desktop_content_position }} grid__item">
+        <div class="image-with-text__media-item image-with-text__media-item--{{ section.settings.desktop_image_width }} image-with-text__media-item--{{ media_valign }} grid__item">
 
           {%- if media_type == 'video' -%}
 
@@ -405,7 +424,7 @@
     },
     {
       "type": "header",
-      "content": "Dimensioni media"
+      "content": "Dimensioni e allineamento media"
     },
     {
       "type": "select",
@@ -431,6 +450,17 @@
       "label": "Larghezza media desktop"
     },
     {
+      "type": "select",
+      "id": "desktop_media_position",
+      "options": [
+        { "value": "top", "label": "In alto" },
+        { "value": "middle", "label": "Al centro" },
+        { "value": "bottom", "label": "In basso" }
+      ],
+      "default": "middle",
+      "label": "Allineamento verticale media"
+    },
+    {
       "type": "header",
       "content": "Contenuto"
     },
@@ -453,7 +483,7 @@
         { "value": "bottom", "label": "In basso" }
       ],
       "default": "top",
-      "label": "Posizione contenuto desktop"
+      "label": "Allineamento verticale contenuto"
     },
     {
       "type": "select",
@@ -464,7 +494,29 @@
         { "value": "right", "label": "Destra" }
       ],
       "default": "left",
-      "label": "Allineamento contenuto desktop"
+      "label": "Allineamento orizzontale contenuto"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_left",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding sinistro contenuto",
+      "default": 40,
+      "info": "Applicato al riquadro testo su desktop"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_right",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding destro contenuto",
+      "default": 40,
+      "info": "Applicato al riquadro testo su desktop"
     },
     {
       "type": "header",
@@ -480,6 +532,26 @@
       ],
       "default": "left",
       "label": "Allineamento contenuto mobile"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_left_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding sinistro contenuto mobile",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_padding_right_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding destro contenuto mobile",
+      "default": 20
     }
   ],
   "blocks": [
