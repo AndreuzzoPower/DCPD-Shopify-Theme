@@ -1823,25 +1823,5 @@
         "info": "Se attivo, mostra il testo 'Quantità minima d'ordine: X' ovunque sia visualizzato un prodotto con minimo > 1."
       }
     ]
-  },
-  {
-    "name": "Catalogo e Visibilita",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Modalita solo catalogo"
-      },
-      {
-        "type": "paragraph",
-        "content": "La modalita catalogo impedisce l'acquisto a tutti gli utenti, nascondendo carrello e bottoni acquisto."
-      },
-      {
-        "type": "checkbox",
-        "id": "ms_catalog_mode",
-        "label": "Attiva modalita solo catalogo",
-        "default": false,
-        "info": "Nasconde icona carrello, bottoni di acquisto e quantita per tutti gli utenti. La pagina carrello ridireziona alla home."
-      }
-    ]
   }
 ]
