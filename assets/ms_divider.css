@@ -45,9 +45,19 @@ div.ms-divider__line {
   border: none;
 }
 
+.ms-divider__line--scheme {
+  background: var(--gradient-background);
+  background-attachment: local;
+}
+
 .ms-divider__scheme-mask {
   width: 100%;
   height: var(--ms-divider-height, 80px);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-attachment: local;
 }
 
 .ms-divider--flip-x .ms-divider__scheme-mask {
