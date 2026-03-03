@@ -63,3 +63,9 @@ body.ms-catalog-mode .product-form__buttons,
 body.ms-catalog-mode quantity-popover,
 body.ms-catalog-mode .quantity,
 body.ms-catalog-mode .product-form__quantity { display: none !important; }
+
+/* ── IVA ── */
+.price__iva {
+  margin-top: 0.2rem;
+  opacity: 0.7;
+}

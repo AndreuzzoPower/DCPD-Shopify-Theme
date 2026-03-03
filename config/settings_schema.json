@@ -1823,5 +1823,60 @@
         "info": "Se attivo, mostra il testo 'Quantità minima d'ordine: X' ovunque sia visualizzato un prodotto con minimo > 1."
       }
     ]
+  },
+  {
+    "name": "Catalogo e Visibilita",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Modalita solo catalogo"
+      },
+      {
+        "type": "paragraph",
+        "content": "La modalita catalogo impedisce l'acquisto a tutti gli utenti, nascondendo carrello e bottoni acquisto."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_catalog_mode",
+        "label": "Attiva modalita solo catalogo",
+        "default": false,
+        "info": "Nasconde icona carrello, bottoni di acquisto e quantita per tutti gli utenti. La pagina carrello ridireziona alla home."
+      },
+      {
+        "type": "header",
+        "content": "IVA"
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_show_iva",
+        "label": "Mostra importo IVA sotto il prezzo",
+        "default": false,
+        "info": "Visibile solo per Italia. L'aliquota puo essere sovrascritta per prodotto tramite metafield 'custom.aliquota_iva'."
+      },
+      {
+        "type": "range",
+        "id": "ms_iva_rate",
+        "label": "Aliquota IVA %",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 22,
+        "info": "Aliquota predefinita. Sovrascrivibile per prodotto con metafield 'custom.aliquota_iva'."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_iva_prices_included",
+        "label": "I prezzi includono gia l'IVA",
+        "default": true,
+        "info": "Se attivo, l'IVA viene estratta dal prezzo. Se disattivo, viene calcolata in aggiunta."
+      },
+      {
+        "type": "text",
+        "id": "ms_iva_label",
+        "label": "Formato etichetta IVA",
+        "default": "+ IVA: {amount}",
+        "info": "Usa {amount} come segnaposto per l'importo calcolato."
+      }
+    ]
   }
 ]
