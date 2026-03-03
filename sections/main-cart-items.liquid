@@ -233,7 +233,7 @@
                           </div>
                         {%- endif -%}
 
-                        {%- if settings.ms_show_iva -%}
+                        {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
                           {%- liquid
                             assign line_iva_rate = settings.ms_iva_rate | plus: 0
                             if item.product.metafields.custom.aliquota_iva.value
@@ -482,7 +482,7 @@
                           </div>
                         {%- endif -%}
 
-                        {%- if settings.ms_show_iva -%}
+                        {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
                           {%- liquid
                             assign line_iva_rate = settings.ms_iva_rate | plus: 0
                             if item.product.metafields.custom.aliquota_iva.value
