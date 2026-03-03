@@ -841,19 +841,21 @@
                       if (!modal) return;
 
                       var productTitle = {{ product.title | json }};
-                      subscribe(PUB_SUB_EVENTS.variantChange, function(event) {
-                        if (event.data.sectionId !== sectionId) return;
-                        var variant = event.data.variant;
-                        if (!variant) return;
+                      document.addEventListener('DOMContentLoaded', function() {
+                        subscribe(PUB_SUB_EVENTS.variantChange, function(event) {
+                          if (event.data.sectionId !== sectionId) return;
+                          var variant = event.data.variant;
+                          if (!variant) return;
 
-                        modal.querySelectorAll('input[name="contact[product_variant_id]"], input[name="product_variant_id"]').forEach(function(el) { el.value = variant.id; });
-                        modal.querySelectorAll('input[name="contact[product_variant_title]"], input[name="product_variant_title"]').forEach(function(el) { el.value = variant.title; });
+                          modal.querySelectorAll('input[name="contact[product_variant_id]"], input[name="product_variant_id"]').forEach(function(el) { el.value = variant.id; });
+                          modal.querySelectorAll('input[name="contact[product_variant_title]"], input[name="product_variant_title"]').forEach(function(el) { el.value = variant.title; });
 
-                        var ref = modal.querySelector('.info-request-form__product-ref');
-                        if (ref) {
-                          ref.innerHTML = 'Prodotto: <strong>' + productTitle + '</strong>' +
-                            (variant.title && variant.title !== 'Default Title' ? ' &mdash; ' + variant.title : '');
-                        }
+                          var ref = modal.querySelector('.info-request-form__product-ref');
+                          if (ref) {
+                            ref.innerHTML = 'Prodotto: <strong>' + productTitle + '</strong>' +
+                              (variant.title && variant.title !== 'Default Title' ? ' &mdash; ' + variant.title : '');
+                          }
+                        });
                       });
 
                       {%- if block.settings.info_request_form_type == 'custom_html' -%}
