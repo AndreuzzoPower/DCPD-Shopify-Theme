@@ -87,6 +87,8 @@
                   <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
                 </div>
 
+                <p style="color:red;font-size:12px;">DEBUG-IVA: show_iva={{ settings.ms_show_iva }} | country={{ localization.country.iso_code }}</p>
+
                 {%- if settings.ms_show_iva -%}
                   {%- comment -%}DEBUG: country={{ localization.country.iso_code }}{%- endcomment -%}
                   {%- liquid
