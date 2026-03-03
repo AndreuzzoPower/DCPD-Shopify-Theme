@@ -62,6 +62,9 @@
     },
     "header": {
       "type": "header",
+      "custom_css": [
+        "#cart-notification{background: #000 !important}"
+      ],
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
