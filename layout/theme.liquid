@@ -549,17 +549,17 @@
   </head>
 
   {%- liquid
+    assign ms_catalog_active = settings.ms_catalog_mode
     assign ms_hide_prices = false
     assign ms_hide_cart = false
     assign ms_hide_buy = false
     assign ms_hide_variants = false
 
-    if settings.ms_catalog_mode
+    if ms_catalog_active
+      assign ms_hide_prices = true
       assign ms_hide_buy = true
       assign ms_hide_cart = true
-      if settings.ms_catalog_hide_prices
-        assign ms_hide_prices = true
-      endif
+      assign ms_hide_variants = true
     endif
 
     unless customer
@@ -577,7 +577,7 @@
       endif
     endunless
   -%}
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if ms_hide_prices %} ms-hide-prices{% endif %}{% if ms_hide_cart %} ms-hide-cart{% endif %}{% if ms_hide_buy %} ms-hide-buy{% endif %}{% if ms_hide_variants %} ms-hide-variants{% endif %}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if ms_catalog_active %} ms-catalog-mode{% endif %}{% if ms_hide_prices %} ms-hide-prices{% endif %}{% if ms_hide_cart %} ms-hide-cart{% endif %}{% if ms_hide_buy %} ms-hide-buy{% endif %}{% if ms_hide_variants %} ms-hide-variants{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

@@ -53,7 +53,7 @@ div[class*='ms_multirow'] div[class*='image-with-text'] .button:focus-visible {
 .ms-guest-buy-msg { display: none; }
 
 body.ms-hide-prices .price { display: none !important; }
-body.ms-hide-prices .ms-guest-price-msg { display: block; }
+body.ms-hide-prices:not(.ms-catalog-mode) .ms-guest-price-msg { display: block; }
 
 body.ms-hide-cart #cart-icon-bubble,
 body.ms-hide-cart .cart-count-bubble,
@@ -64,7 +64,11 @@ body.ms-hide-buy product-form,
 body.ms-hide-buy .quick-add,
 body.ms-hide-buy .shopify-payment-button,
 body.ms-hide-buy .product-form__buttons { display: none !important; }
-body.ms-hide-buy .ms-guest-buy-msg { display: block; }
+body.ms-hide-buy:not(.ms-catalog-mode) .ms-guest-buy-msg { display: block; }
+
+body.ms-hide-buy quantity-popover,
+body.ms-hide-buy .quantity,
+body.ms-hide-buy .product-form__quantity { display: none !important; }
 
 body.ms-hide-variants variant-selects,
 body.ms-hide-variants variant-radios,
