@@ -112,10 +112,10 @@
             "mobile_layout": 12,
             "mobile_accordion": true,
             "mobile_accordion_open": false,
-            "heading": "<strong>Blog</strong>",
+            "heading": "<strong>Informative</strong>",
             "heading_tag": "div",
             "heading_size": "h5",
-            "menu": "menu-categorie-blog"
+            "menu": "policies"
           }
         },
         "newsletter_aEqTgb": {
