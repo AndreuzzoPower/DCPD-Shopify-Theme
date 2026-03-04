@@ -124,34 +124,6 @@
     },
     "ms_rive_animation_D9K7Lw": {
       "type": "ms_rive-animation",
-      "blocks": {
-        "section_margin_Bbp9Cq": {
-          "type": "section_margin",
-          "settings": {
-            "section_margin_top": 0,
-            "section_margin_bottom": 0,
-            "section_margin_top_md": 0,
-            "section_margin_bottom_md": 0,
-            "section_margin_top_xs": 0,
-            "section_margin_bottom_xs": 0
-          }
-        },
-        "section_padding_qrBj3x": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 35,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "section_margin_Bbp9Cq",
-        "section_padding_qrBj3x"
-      ],
       "name": "MS Rive Animation",
       "settings": {
         "section_width": "page_width",
