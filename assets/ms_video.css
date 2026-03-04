@@ -1,0 +1,182 @@
+/* ============================================================
+   MS Video Section — Background mode & video controls
+   ============================================================ */
+
+/* Background video: fill the banner area */
+.ms-video-banner__media {
+  overflow: hidden;
+}
+
+.ms-video-banner__media video,
+.ms-video-banner__media iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+/* Viewport height option (not in Dawn's banner CSS) */
+.banner--viewport:not(.banner--adapt) {
+  min-height: 100vh;
+}
+
+@media screen and (max-width: 749px) {
+  .banner--viewport.banner--mobile-bottom:not(.banner--adapt) .banner__media,
+  .banner--viewport.banner--stacked:not(.banner--mobile-bottom):not(.banner--adapt) > .banner__media {
+    height: 50vh;
+  }
+
+  .banner--viewport:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
+    min-height: 50vh;
+  }
+}
+
+/* Design mode placeholder */
+.ms-video-banner__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 30rem;
+  background: #f0f0f0;
+}
+
+.ms-video-banner__placeholder p {
+  color: #666;
+  font-size: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ---- Video Controls ---- */
+
+.ms-video-controls {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  gap: 0.8rem;
+  padding: 1.2rem;
+}
+
+.ms-video-controls--bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.ms-video-controls--bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.ms-video-controls--top-right {
+  top: 0;
+  right: 0;
+}
+
+.ms-video-controls--top-left {
+  top: 0;
+  left: 0;
+}
+
+.ms-video-controls__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border: 0.1rem solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  padding: 0;
+  line-height: 1;
+}
+
+.ms-video-controls__btn:hover,
+.ms-video-controls__btn:focus-visible {
+  background: rgba(0, 0, 0, 0.55);
+  border-color: rgba(255, 255, 255, 0.9);
+  outline: none;
+}
+
+.ms-video-controls__btn:focus-visible {
+  box-shadow: 0 0 0 0.3rem rgba(255, 255, 255, 0.5);
+}
+
+.ms-video-controls__btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+/* ---- Icon toggle states ---- */
+
+/* Default: video NOT playing, video IS muted */
+.ms-video-controls__icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.ms-video-controls__icon--play,
+.ms-video-controls__icon--muted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* When playing: show pause, hide play */
+ms-video-bg[data-playing] .ms-video-controls__icon--pause {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ms-video-bg[data-playing] .ms-video-controls__icon--play {
+  display: none;
+}
+
+/* When NOT muted: show unmuted, hide muted */
+ms-video-bg:not([data-muted]) .ms-video-controls__icon--unmuted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ms-video-bg:not([data-muted]) .ms-video-controls__icon--muted {
+  display: none;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .ms-video-controls__btn {
+    transition: none;
+  }
+}
+
+/* ---- Mobile adjustments ---- */
+@media screen and (max-width: 749px) {
+  .ms-video-controls {
+    gap: 0.6rem;
+    padding: 1rem;
+  }
+
+  .ms-video-controls__btn {
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+
+  .ms-video-controls__btn svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}

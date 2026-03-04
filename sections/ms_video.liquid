@@ -1,20 +1,107 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+{{ 'ms_video.css' | asset_url | stylesheet_tag }}
 {{ 'video-section.css' | asset_url | stylesheet_tag }}
 {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
+{%- comment -%} Block-driven styles (padding, margin, background) {%- endcomment -%}
+{% for block in section.blocks %}
+  {% assign bs = block.settings %}
+  {% if block.type == 'section_padding' %}
+    {%- if section.settings.video_mode == 'background' -%}
+      <style>
+        #shopify-section-{{ section.id }} .banner__content {
+          padding-top: {{ bs.section_padding_top }}px;
+          padding-bottom: {{ bs.section_padding_bottom }}px;
+        }
+        @media all and (min-width: 768px) and (max-width: 991px) {
+          #shopify-section-{{ section.id }} .banner__content {
+            padding-top: {{ bs.section_padding_top_md }}px;
+            padding-bottom: {{ bs.section_padding_bottom_md }}px;
+          }
+        }
+        @media all and (max-width: 767px) {
+          #shopify-section-{{ section.id }} .banner__content {
+            padding-top: {{ bs.section_padding_top_xs }}px;
+            padding-bottom: {{ bs.section_padding_bottom_xs }}px;
+          }
+        }
+      </style>
+    {%- else -%}
+      <style>
+        #shopify-section-{{ section.id }} {
+          padding-top: {{ bs.section_padding_top }}px;
+          padding-bottom: {{ bs.section_padding_bottom }}px;
+        }
+        @media all and (min-width: 768px) and (max-width: 991px) {
+          #shopify-section-{{ section.id }} {
+            padding-top: {{ bs.section_padding_top_md }}px;
+            padding-bottom: {{ bs.section_padding_bottom_md }}px;
+          }
+        }
+        @media all and (max-width: 767px) {
+          #shopify-section-{{ section.id }} {
+            padding-top: {{ bs.section_padding_top_xs }}px;
+            padding-bottom: {{ bs.section_padding_bottom_xs }}px;
+          }
+        }
+      </style>
+    {%- endif -%}
+  {% endif %}
+  {% if block.type == 'section_margin' %}
+    <style>
+      #shopify-section-{{ section.id }} {
+        margin-top: {{ bs.section_margin_top }}px;
+        margin-bottom: {{ bs.section_margin_bottom }}px;
+      }
+      @media all and (min-width: 768px) and (max-width: 991px) {
+        #shopify-section-{{ section.id }} {
+          margin-top: {{ bs.section_margin_top_md }}px;
+          margin-bottom: {{ bs.section_margin_bottom_md }}px;
+        }
+      }
+      @media all and (max-width: 767px) {
+        #shopify-section-{{ section.id }} {
+          margin-top: {{ bs.section_margin_top_xs }}px;
+          margin-bottom: {{ bs.section_margin_bottom_xs }}px;
+        }
+      }
+    </style>
+  {% endif %}
+  {% if block.type == 'section_background' %}
+    <style>
+      #shopify-section-{{ section.id }} {
+        background-color: {{ bs.section_bg_color }};
+        {% if bs.section_bg_image != blank %}
+          background-image: url({{ bs.section_bg_image | image_url }});
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        {% endif %}
+      }
+    </style>
+  {% endif %}
+{% endfor %}
+
 {%- liquid
-  assign sw = section.settings.section_width | default: 'page_width'
-  if sw == 'default'
+  assign video_mode = section.settings.video_mode | default: 'normal'
+
+  assign sw = section.settings.section_width | default: 'full_width'
+  if sw == 'default' or sw == 'contained'
     assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
   endif
   case sw
     when 'narrow'
       assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
     when 'page_fluid'
       assign sw_class = 'page-width page-width--fluid'
     when 'full_width'
       assign sw_class = ''
-    else
-      assign sw_class = 'page-width'
   endcase
 
   assign video_id = section.settings.video.id | default: section.settings.video_url.id
@@ -22,150 +109,377 @@
   assign alt = 'sections.video.load_video' | t: description: video_alt | escape
   assign poster = section.settings.video.preview_image | default: section.settings.cover_image
 
+  assign has_shopify_video = false
   if section.settings.video != null
+    assign has_shopify_video = true
+  endif
+
+  assign has_video_url = false
+  if section.settings.video_url != null
+    assign has_video_url = true
+  endif
+
+  if has_shopify_video and poster != null
     assign ratio_diff = section.settings.video.aspect_ratio | minus: poster.aspect_ratio | abs
     if ratio_diff < 0.01 and ratio_diff > 0
       assign fix_ratio = true
     endif
   endif
+
+  assign loop_param = ''
+  if section.settings.enable_video_looping
+    assign loop_param = '&loop=1&playlist=' | append: video_id
+  endif
 -%}
 
-{%- capture sizes -%}
-  {%- if sw == 'full_width' -%}
-    100vw
-  {%- else -%}
-    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw
-  {%- endif -%}
-{%- endcapture -%}
+{%- if video_mode == 'background' -%}
+  {%- comment -%} ======================== BACKGROUND MODE ======================== {%- endcomment -%}
 
-<div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="video-section isolate{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
+  {%- liquid
+    assign content_width_class = sw_class
+    if sw == 'full_width'
+      assign content_width_class = 'page-width'
+    endif
+  -%}
 
-    {%- liquid
-      assign ms_video_media_class = 'video-section__media global-media-settings'
-      if sw == 'full_width'
-        assign ms_video_media_class = ms_video_media_class | append: ' global-media-settings--full-width'
-      endif
-      if fix_ratio
-        assign ms_video_media_class = ms_video_media_class | append: ' media-fit-cover'
-      endif
-      if settings.animations_reveal_on_scroll
-        assign ms_video_media_class = ms_video_media_class | append: ' scroll-trigger animate--slide-in'
-      endif
+  {%- style -%}
+    #Banner-{{ section.id }}::after {
+      opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    }
+  {%- endstyle -%}
 
-      assign loop_param = ''
-      if section.settings.enable_video_looping
-        assign loop_param = '&loop=1&playlist=' | append: video_id
-      endif
-    -%}
-
-    {%- if poster != null -%}
-
-      {%- comment -%} Copertina presente → caricamento differito al click {%- endcomment -%}
-      <deferred-media
-        class="{{ ms_video_media_class }} deferred-media gradient"
-        data-media-id="{{ video_id }}"
-        style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
-      >
-        <button
-          id="Deferred-Poster-Modal-{{ video_id }}"
-          class="video-section__poster media deferred-media__poster media--landscape"
-          type="button"
-          aria-label="{{ alt }}"
-        >
+  <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
+    <ms-video-bg
+      id="Banner-{{ section.id }}"
+      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.video_height }}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      data-playing
+      data-muted
+    >
+      <div class="banner__media media ms-video-banner__media">
+        {%- if has_shopify_video -%}
           {{
-            poster
-            | image_url: width: 3840
-            | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
+            section.settings.video
+            | video_tag:
+              image_size: '3840x',
+              autoplay: true,
+              loop: section.settings.enable_video_looping,
+              muted: true,
+              controls: false
           }}
-          <span class="deferred-media__poster-button motion-reduce">
-            {%- render 'ms_icon', icon: settings.ms_icon_play -%}
-          </span>
-        </button>
-        <template>
-          {%- if section.settings.video != null -%}
-            {{
-              section.settings.video
-              | video_tag:
-                image_size: '1100x',
-                autoplay: true,
-                loop: section.settings.enable_video_looping,
-                controls: true,
-                muted: false
-            }}
-          {%- elsif section.settings.video_url != null -%}
-            {%- if section.settings.video_url.type == 'youtube' -%}
-              <iframe
-                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop_param }}"
-                class="js-youtube"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                title="{{ section.settings.description | escape }}"
-              ></iframe>
-            {%- else -%}
-              <iframe
-                src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop_param }}"
-                class="js-vimeo"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                title="{{ section.settings.description | escape }}"
-              ></iframe>
-            {%- endif -%}
+        {%- elsif has_video_url -%}
+          {%- if section.settings.video_url.type == 'youtube' -%}
+            <iframe
+              src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1{{ loop_param }}&controls=0&showinfo=0&rel=0&playsinline=1"
+              class="js-youtube"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
+          {%- else -%}
+            <iframe
+              src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&muted=1{{ loop_param }}&controls=0&background=1"
+              class="js-vimeo"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
           {%- endif -%}
-        </template>
-      </deferred-media>
-
-    {%- elsif section.settings.video != null -%}
-
-      {%- comment -%} Nessuna copertina + video Shopify → visibile direttamente {%- endcomment -%}
-      <div class="{{ ms_video_media_class }}">
-        {{
-          section.settings.video
-          | video_tag:
-            image_size: '1100x',
-            autoplay: false,
-            loop: section.settings.enable_video_looping,
-            controls: true,
-            muted: false
-        }}
-      </div>
-
-    {%- elsif section.settings.video_url != null -%}
-
-      {%- comment -%} Nessuna copertina + YouTube/Vimeo → iframe direttamente {%- endcomment -%}
-      <div class="{{ ms_video_media_class }}">
-        {%- if section.settings.video_url.type == 'youtube' -%}
-          <iframe
-            src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
-            class="js-youtube"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            title="{{ section.settings.description | escape }}"
-          ></iframe>
-        {%- else -%}
-          <iframe
-            src="https://player.vimeo.com/video/{{ video_id }}{{ loop_param }}"
-            class="js-vimeo"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            title="{{ section.settings.description | escape }}"
-          ></iframe>
+        {%- elsif request.design_mode -%}
+          <div class="ms-video-banner__placeholder">
+            <p>Nessun video configurato. Carica un video Shopify o inserisci un URL YouTube/Vimeo.</p>
+          </div>
         {%- endif -%}
       </div>
 
-    {%- elsif request.design_mode -%}
+      {%- if section.settings.show_controls and has_shopify_video -%}
+        {%- liquid
+          assign vol_icon = section.settings.icon_unmute | default: 'icon-volume.svg'
+          assign vol_mute_icon = section.settings.icon_mute | default: 'icon-volume-mute.svg'
+        -%}
+        <div class="ms-video-controls ms-video-controls--{{ section.settings.controls_position }}" role="group" aria-label="Controlli video">
+          <button
+            class="ms-video-controls__btn"
+            data-ms-video-action="play-pause"
+            type="button"
+            aria-label="Pausa"
+          >
+            <span class="ms-video-controls__icon ms-video-controls__icon--play" aria-hidden="true">
+              {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+            </span>
+            <span class="ms-video-controls__icon ms-video-controls__icon--pause" aria-hidden="true">
+              {%- render 'ms_icon', icon: settings.ms_icon_pause -%}
+            </span>
+          </button>
+          <button
+            class="ms-video-controls__btn"
+            data-ms-video-action="mute-unmute"
+            type="button"
+            aria-label="Attiva audio"
+          >
+            <span class="ms-video-controls__icon ms-video-controls__icon--unmuted" aria-hidden="true">
+              {%- render 'ms_icon', icon: vol_icon -%}
+            </span>
+            <span class="ms-video-controls__icon ms-video-controls__icon--muted" aria-hidden="true">
+              {%- render 'ms_icon', icon: vol_mute_icon -%}
+            </span>
+          </button>
+        </div>
+      {%- endif -%}
 
-      <div class="{{ ms_video_media_class }}" style="display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:#f0f0f0;">
-        <p style="color:#666;font-size:0.9rem;">Nessun video configurato. Carica un video Shopify o inserisci un URL YouTube/Vimeo.</p>
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }} {{ content_width_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+        <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'heading' -%}
+                {%- liquid
+                  assign title_tag = block.settings.title_tag | default: 'div'
+                  assign title_classes = 'banner__heading inline-richtext ' | append: block.settings.heading_size
+                  if block.settings.title_custom_class != blank
+                    assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+                  endif
+                -%}
+                <{{ title_tag }}
+                  class="{{ title_classes }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.heading }}
+                </{{ title_tag }}>
+              {%- when 'text' -%}
+                <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
+                  <p>{{ block.settings.text }}</p>
+                </div>
+              {%- when 'buttons' -%}
+                <div
+                  class="banner__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} banner__buttons--multiple{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if block.settings.button_label_1 != blank and block.settings.button_link_1 != blank -%}
+                    <a
+                      {% if block.settings.button_link_1 == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link_1 }}"
+                      {% endif %}
+                      class="{%- render 'ms_button_classes', type: block.settings.button_type_1, secondary: block.settings.button_style_secondary_1, size: block.settings.button_size_1 -%}"
+                    >
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon_1, position: block.settings.button_icon_position_1, slot: 'before' -%}
+                      {{- block.settings.button_label_1 | escape -}}
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon_1, position: block.settings.button_icon_position_1, slot: 'after' -%}
+                    </a>
+                  {%- endif -%}
+                  {%- if block.settings.button_label_2 != blank and block.settings.button_link_2 != blank -%}
+                    <a
+                      {% if block.settings.button_link_2 == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block.settings.button_link_2 }}"
+                      {% endif %}
+                      class="{%- render 'ms_button_classes', type: block.settings.button_type_2, secondary: block.settings.button_style_secondary_2, size: block.settings.button_size_2 -%}"
+                    >
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'before' -%}
+                      {{- block.settings.button_label_2 | escape -}}
+                      {%- render 'ms_button_icon', icon: block.settings.button_icon_2, position: block.settings.button_icon_position_2, slot: 'after' -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
       </div>
-
-    {%- endif -%}
-
+    </ms-video-bg>
   </div>
-</div>
+
+{%- else -%}
+  {%- comment -%} ======================== NORMAL MODE ======================== {%- endcomment -%}
+
+  {%- capture sizes -%}
+    {%- if sw == 'full_width' -%}
+      100vw
+    {%- else -%}
+      (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="video-section isolate{% unless sw_class == blank %} {{ sw_class }}{% endunless %}">
+
+      {%- liquid
+        assign ms_video_media_class = 'video-section__media global-media-settings'
+        if sw == 'full_width'
+          assign ms_video_media_class = ms_video_media_class | append: ' global-media-settings--full-width'
+        endif
+        if fix_ratio
+          assign ms_video_media_class = ms_video_media_class | append: ' media-fit-cover'
+        endif
+        if settings.animations_reveal_on_scroll
+          assign ms_video_media_class = ms_video_media_class | append: ' scroll-trigger animate--slide-in'
+        endif
+      -%}
+
+      {%- if poster != null -%}
+        <deferred-media
+          class="{{ ms_video_media_class }} deferred-media gradient"
+          data-media-id="{{ video_id }}"
+          style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+        >
+          <button
+            id="Deferred-Poster-Modal-{{ video_id }}"
+            class="video-section__poster media deferred-media__poster media--landscape"
+            type="button"
+            aria-label="{{ alt }}"
+          >
+            {{
+              poster
+              | image_url: width: 3840
+              | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
+            }}
+            <span class="deferred-media__poster-button motion-reduce">
+              {%- render 'ms_icon', icon: settings.ms_icon_play -%}
+            </span>
+          </button>
+          <template>
+            {%- if has_shopify_video -%}
+              {{
+                section.settings.video
+                | video_tag:
+                  image_size: '1100x',
+                  autoplay: true,
+                  loop: section.settings.enable_video_looping,
+                  controls: true,
+                  muted: false
+              }}
+            {%- elsif has_video_url -%}
+              {%- if section.settings.video_url.type == 'youtube' -%}
+                <iframe
+                  src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop_param }}"
+                  class="js-youtube"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  title="{{ section.settings.description | escape }}"
+                ></iframe>
+              {%- else -%}
+                <iframe
+                  src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop_param }}"
+                  class="js-vimeo"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  title="{{ section.settings.description | escape }}"
+                ></iframe>
+              {%- endif -%}
+            {%- endif -%}
+          </template>
+        </deferred-media>
+
+      {%- elsif has_shopify_video -%}
+        <div class="{{ ms_video_media_class }}">
+          {{
+            section.settings.video
+            | video_tag:
+              image_size: '1100x',
+              autoplay: false,
+              loop: section.settings.enable_video_looping,
+              controls: true,
+              muted: false
+          }}
+        </div>
+
+      {%- elsif has_video_url -%}
+        <div class="{{ ms_video_media_class }}">
+          {%- if section.settings.video_url.type == 'youtube' -%}
+            <iframe
+              src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1{{ loop_param }}"
+              class="js-youtube"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
+          {%- else -%}
+            <iframe
+              src="https://player.vimeo.com/video/{{ video_id }}{{ loop_param }}"
+              class="js-vimeo"
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              title="{{ section.settings.description | escape }}"
+            ></iframe>
+          {%- endif -%}
+        </div>
+
+      {%- elsif request.design_mode -%}
+        <div class="{{ ms_video_media_class }}" style="display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:#f0f0f0;">
+          <p style="color:#666;font-size:0.9rem;">Nessun video configurato. Carica un video Shopify o inserisci un URL YouTube/Vimeo.</p>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+{%- endif -%}
 
 <script>
 (function () {
+  if (customElements.get('ms-video-bg')) return;
+
+  class MsVideoBg extends HTMLElement {
+    connectedCallback() {
+      this.video = this.querySelector('video');
+      if (!this.video) return;
+
+      this.video.setAttribute('playsinline', '');
+      this.video.playsInline = true;
+
+      this.querySelectorAll('[data-ms-video-action]').forEach(function (btn) {
+        btn.addEventListener('click', this.onControlClick.bind(this));
+      }.bind(this));
+
+      this.video.addEventListener('play', this.syncState.bind(this));
+      this.video.addEventListener('pause', this.syncState.bind(this));
+      this.video.addEventListener('volumechange', this.syncState.bind(this));
+
+      requestAnimationFrame(this.syncState.bind(this));
+    }
+
+    onControlClick(e) {
+      var action = e.currentTarget.getAttribute('data-ms-video-action');
+      if (action === 'play-pause') {
+        if (this.video.paused) {
+          this.video.play();
+        } else {
+          this.video.pause();
+        }
+      } else if (action === 'mute-unmute') {
+        this.video.muted = !this.video.muted;
+      }
+    }
+
+    syncState() {
+      if (!this.video) return;
+
+      if (this.video.paused) {
+        this.removeAttribute('data-playing');
+      } else {
+        this.setAttribute('data-playing', '');
+      }
+
+      if (this.video.muted) {
+        this.setAttribute('data-muted', '');
+      } else {
+        this.removeAttribute('data-muted');
+      }
+
+      var playBtn = this.querySelector('[data-ms-video-action="play-pause"]');
+      if (playBtn) {
+        playBtn.setAttribute('aria-label', this.video.paused ? 'Play' : 'Pausa');
+      }
+
+      var muteBtn = this.querySelector('[data-ms-video-action="mute-unmute"]');
+      if (muteBtn) {
+        muteBtn.setAttribute('aria-label', this.video.muted ? 'Attiva audio' : 'Disattiva audio');
+      }
+    }
+  }
+
+  customElements.define('ms-video-bg', MsVideoBg);
+
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[id^="Deferred-Poster-Modal-"]');
     if (!btn) return;
@@ -193,8 +507,6 @@
 })();
 </script>
 
-{%- render 'ms_section-style' -%}
-
 {% schema %}
 {
   "name": "MS Video",
@@ -218,7 +530,7 @@
         { "label": "Larghezza fluida", "value": "page_fluid" },
         { "label": "Piena larghezza", "value": "full_width" }
       ],
-      "default": "page_width"
+      "default": "full_width"
     },
     {
       "type": "color_scheme",
@@ -228,7 +540,18 @@
     },
     {
       "type": "header",
-      "content": "Contenuto"
+      "content": "Video"
+    },
+    {
+      "type": "select",
+      "id": "video_mode",
+      "label": "Modalita visualizzazione",
+      "options": [
+        { "label": "Normale (click per riprodurre)", "value": "normal" },
+        { "label": "Sfondo (autoplay silenzioso)", "value": "background" }
+      ],
+      "default": "normal",
+      "info": "In modalita sfondo il video parte automaticamente senza audio, con possibilita di sovrapporre testo e pulsanti."
     },
     {
       "type": "checkbox",
@@ -251,7 +574,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Se è caricato un video Shopify, questo campo viene ignorato."
+      "content": "Se e caricato un video Shopify, questo campo viene ignorato."
     },
     {
       "type": "video_url",
@@ -270,9 +593,339 @@
       "id": "description",
       "label": "Descrizione accessibile",
       "info": "Utilizzata come testo alternativo del video e come titolo degli iframe YouTube/Vimeo."
+    },
+    {
+      "type": "header",
+      "content": "Modalita sfondo"
+    },
+    {
+      "type": "paragraph",
+      "content": "Queste impostazioni si applicano solo quando la modalita e \"Sfondo\"."
+    },
+    {
+      "type": "select",
+      "id": "video_height",
+      "label": "Altezza banner",
+      "options": [
+        { "label": "Piccola", "value": "small" },
+        { "label": "Media", "value": "medium" },
+        { "label": "Grande", "value": "large" },
+        { "label": "Altezza viewport (100vh)", "value": "viewport" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Opacita overlay scuro",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "label": "Posizione contenuto desktop",
+      "options": [
+        { "label": "Alto sinistra", "value": "top-left" },
+        { "label": "Alto centro", "value": "top-center" },
+        { "label": "Alto destra", "value": "top-right" },
+        { "label": "Centro sinistra", "value": "middle-left" },
+        { "label": "Centro", "value": "middle-center" },
+        { "label": "Centro destra", "value": "middle-right" },
+        { "label": "Basso sinistra", "value": "bottom-left" },
+        { "label": "Basso centro", "value": "bottom-center" },
+        { "label": "Basso destra", "value": "bottom-right" }
+      ],
+      "default": "middle-center"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Allineamento testo desktop",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Centro", "value": "center" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_box",
+      "label": "Mostra box contenuto",
+      "default": true,
+      "info": "Se disattivato, il contenuto appare su sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Allineamento testo mobile",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Centro", "value": "center" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_below",
+      "label": "Mostra testo sotto il video su mobile",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Controlli video"
+    },
+    {
+      "type": "paragraph",
+      "content": "I controlli personalizzati funzionano solo con video Shopify in modalita sfondo."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Mostra controlli play/pausa e mute/unmute",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "controls_position",
+      "label": "Posizione controlli",
+      "options": [
+        { "label": "Basso destra", "value": "bottom-right" },
+        { "label": "Basso sinistra", "value": "bottom-left" },
+        { "label": "Alto destra", "value": "top-right" },
+        { "label": "Alto sinistra", "value": "top-left" }
+      ],
+      "default": "bottom-right"
+    },
+    {
+      "type": "text",
+      "id": "icon_mute",
+      "label": "Icona muto",
+      "default": "icon-volume-mute.svg",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-volume-xmark). Se compilato, sovrascrive l'icona predefinita."
+    },
+    {
+      "type": "text",
+      "id": "icon_unmute",
+      "label": "Icona audio attivo",
+      "default": "icon-volume.svg",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-volume-high). Se compilato, sovrascrive l'icona predefinita."
     }
   ],
   "blocks": [
+    {
+      "type": "heading",
+      "name": "Titolo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Video Banner",
+          "label": "Titolo"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h1", "label": "H1" },
+            { "value": "h0", "label": "H0" },
+            { "value": "hxl", "label": "HXL" },
+            { "value": "hxxl", "label": "HXXL" }
+          ],
+          "default": "h1",
+          "label": "Dimensione titolo"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "div"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Testo",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Descrizione del video o call to action.",
+          "label": "Testo"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            { "value": "body", "label": "Corpo" },
+            { "value": "subtitle", "label": "Sottotitolo" },
+            { "value": "caption-with-letter-spacing", "label": "Didascalia" }
+          ],
+          "default": "body",
+          "label": "Stile testo"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Pulsanti",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Pulsante 1"
+        },
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Scopri di piu",
+          "label": "Testo pulsante 1",
+          "info": "Lascia vuoto per nascondere il pulsante."
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Link pulsante 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type_1",
+          "label": "Tipo pulsante 1",
+          "default": "button",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size_1",
+          "label": "Dimensione pulsante 1",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema - Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon_1",
+          "label": "Icona pulsante 1",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position_1",
+          "label": "Posizione icona 1",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Pulsante 2"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "label": "Testo pulsante 2",
+          "info": "Lascia vuoto per nascondere il pulsante."
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Link pulsante 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "Stile contorno",
+          "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+        },
+        {
+          "type": "select",
+          "id": "button_type_2",
+          "label": "Tipo pulsante 2",
+          "default": "button",
+          "options": [
+            { "value": "button", "label": "Pulsante" },
+            { "value": "pill", "label": "Pill (arrotondato)" },
+            { "value": "link", "label": "Solo link" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size_2",
+          "label": "Dimensione pulsante 2",
+          "info": "\"Predefinita\" usa il valore globale da Impostazioni tema - Pulsanti.",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Predefinita" },
+            { "value": "small", "label": "Small" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "large", "label": "Large" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "extra_jumbo", "label": "Extra Jumbo" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_icon_2",
+          "label": "Icona pulsante 2",
+          "info": "Nome file SVG (es. icon-arrow.svg) o classe icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+        },
+        {
+          "type": "select",
+          "id": "button_icon_position_2",
+          "label": "Posizione icona 2",
+          "default": "before",
+          "options": [
+            { "value": "before", "label": "Prima del testo" },
+            { "value": "after", "label": "Dopo il testo" }
+          ]
+        }
+      ]
+    },
     {
       "type": "section_padding",
       "name": "Section Padding",
@@ -453,7 +1106,18 @@
   "presets": [
     {
       "name": "MS Video",
-      "category": "Media"
+      "category": "Media",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
     }
   ]
 }
