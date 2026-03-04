@@ -1,0 +1,477 @@
+{%- comment -%}
+  Renders an invoice request checkbox and billing form fields.
+  When checked, invoice data is saved as cart attributes on the order.
+  Fields: Ragione Sociale, Codice Fiscale, Partita IVA, Codice SDI (IT only), PEC (IT only).
+  SDI and PEC are alternatively required (at least one) for Italy.
+
+  Accepts:
+  - checkout_id: {String} The ID of the checkout button to control.
+  - form_id: {String} The ID of the cart form to attach inputs to.
+
+  Usage:
+  {%- render 'ms_invoice-request', checkout_id: 'checkout', form_id: 'cart' -%}
+  {%- render 'ms_invoice-request', checkout_id: 'CartDrawer-Checkout', form_id: 'CartDrawer-Form' -%}
+{%- endcomment -%}
+
+{%- if settings.ms_invoice_enabled -%}
+  {{ 'ms_invoice-request.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign invoice_uid = checkout_id | default: 'checkout'
+    assign invoice_form = form_id | default: 'cart'
+    assign is_italy = false
+    if localization.country.iso_code == 'IT'
+      assign is_italy = true
+    endif
+
+    assign invoice_checked = settings.ms_invoice_default_checked
+    if cart.attributes['Richiesta Fattura'] == 'Sì'
+      assign invoice_checked = true
+    elsif cart.attributes['Richiesta Fattura'] == 'No'
+      assign invoice_checked = false
+    endif
+  -%}
+
+  <ms-invoice-request
+    class="ms-invoice-request"
+    data-checkout-id="{{ invoice_uid }}"
+    data-country="{{ localization.country.iso_code }}"
+    data-error-ragione-sociale="{{ settings.ms_invoice_error_ragione_sociale | escape }}"
+    data-error-codice-fiscale="{{ settings.ms_invoice_error_codice_fiscale | escape }}"
+    data-error-partita-iva="{{ settings.ms_invoice_error_partita_iva | escape }}"
+    data-error-codice-sdi="{{ settings.ms_invoice_error_codice_sdi | escape }}"
+    data-error-pec="{{ settings.ms_invoice_error_pec | escape }}"
+    data-error-sdi-or-pec="{{ settings.ms_invoice_error_sdi_or_pec | escape }}"
+  >
+    <input
+      type="hidden"
+      name="attributes[Richiesta Fattura]"
+      value="{% if invoice_checked %}Sì{% else %}No{% endif %}"
+      form="{{ invoice_form }}"
+      class="ms-invoice-request__hidden-flag"
+    >
+
+    <div class="ms-invoice-request__trigger">
+      <input
+        type="checkbox"
+        id="ms-invoice-{{ invoice_uid }}"
+        class="ms-invoice-request__checkbox"
+        {% if invoice_checked %}checked{% endif %}
+        aria-controls="ms-invoice-fields-{{ invoice_uid }}"
+        aria-expanded="{% if invoice_checked %}true{% else %}false{% endif %}"
+      >
+      <label for="ms-invoice-{{ invoice_uid }}" class="ms-invoice-request__label">
+        {{ settings.ms_invoice_label }}
+      </label>
+    </div>
+
+    <div
+      id="ms-invoice-fields-{{ invoice_uid }}"
+      class="ms-invoice-request__fields{% if invoice_checked %} ms-invoice-request__fields--visible{% endif %}"
+      role="group"
+      aria-label="Dati di fatturazione"
+    >
+      <div class="ms-invoice-request__field ms-invoice-request__field--full">
+        <label for="ms-invoice-ragione-{{ invoice_uid }}">
+          Ragione sociale <span class="ms-invoice-request__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="ms-invoice-ragione-{{ invoice_uid }}"
+          name="attributes[Ragione Sociale]"
+          form="{{ invoice_form }}"
+          class="ms-invoice-request__input"
+          data-rule="required"
+          autocomplete="organization"
+          aria-required="true"
+          aria-describedby="ms-invoice-ragione-error-{{ invoice_uid }}"
+          value="{{ cart.attributes['Ragione Sociale'] | escape }}"
+        >
+        <p id="ms-invoice-ragione-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
+      </div>
+
+      <div class="ms-invoice-request__field">
+        <label for="ms-invoice-cf-{{ invoice_uid }}">
+          Codice Fiscale <span class="ms-invoice-request__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="ms-invoice-cf-{{ invoice_uid }}"
+          name="attributes[Codice Fiscale]"
+          form="{{ invoice_form }}"
+          class="ms-invoice-request__input"
+          data-rule="codice_fiscale"
+          autocomplete="off"
+          aria-required="true"
+          aria-describedby="ms-invoice-cf-error-{{ invoice_uid }}"
+          maxlength="16"
+          value="{{ cart.attributes['Codice Fiscale'] | escape }}"
+        >
+        <p id="ms-invoice-cf-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
+      </div>
+
+      <div class="ms-invoice-request__field">
+        <label for="ms-invoice-piva-{{ invoice_uid }}">
+          Partita IVA <span class="ms-invoice-request__required" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="ms-invoice-piva-{{ invoice_uid }}"
+          name="attributes[Partita IVA]"
+          form="{{ invoice_form }}"
+          class="ms-invoice-request__input"
+          data-rule="partita_iva"
+          autocomplete="off"
+          aria-required="true"
+          aria-describedby="ms-invoice-piva-error-{{ invoice_uid }}"
+          maxlength="11"
+          inputmode="numeric"
+          value="{{ cart.attributes['Partita IVA'] | escape }}"
+        >
+        <p id="ms-invoice-piva-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
+      </div>
+
+      {%- if is_italy -%}
+        <p class="ms-invoice-request__sdi-pec-note">
+          Compila il Codice SDI oppure la PEC (almeno uno dei due è obbligatorio)
+        </p>
+
+        <div class="ms-invoice-request__field" data-italy-only>
+          <label for="ms-invoice-sdi-{{ invoice_uid }}">
+            Codice SDI <span class="ms-invoice-request__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="text"
+            id="ms-invoice-sdi-{{ invoice_uid }}"
+            name="attributes[Codice SDI]"
+            form="{{ invoice_form }}"
+            class="ms-invoice-request__input"
+            data-rule="codice_sdi"
+            autocomplete="off"
+            maxlength="7"
+            aria-describedby="ms-invoice-sdi-error-{{ invoice_uid }}"
+            value="{{ cart.attributes['Codice SDI'] | escape }}"
+          >
+          <p id="ms-invoice-sdi-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
+        </div>
+
+        <div class="ms-invoice-request__field" data-italy-only>
+          <label for="ms-invoice-pec-{{ invoice_uid }}">
+            PEC <span class="ms-invoice-request__required" aria-hidden="true">*</span>
+          </label>
+          <input
+            type="email"
+            id="ms-invoice-pec-{{ invoice_uid }}"
+            name="attributes[PEC]"
+            form="{{ invoice_form }}"
+            class="ms-invoice-request__input"
+            data-rule="pec"
+            autocomplete="email"
+            aria-describedby="ms-invoice-pec-error-{{ invoice_uid }}"
+            value="{{ cart.attributes['PEC'] | escape }}"
+          >
+          <p id="ms-invoice-pec-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
+        </div>
+      {%- endif -%}
+    </div>
+  </ms-invoice-request>
+
+  <script>
+    (function () {
+      if (customElements.get('ms-invoice-request')) return;
+
+      var RE_CF = /^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/i;
+      var RE_CF_TEMP = /^\d{11}$/;
+      var RE_PIVA = /^\d{11}$/;
+      var RE_SDI = /^[A-Z0-9]{7}$/i;
+      var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+      function validatePartitaIVA(val) {
+        if (!RE_PIVA.test(val)) return false;
+        var digits = val.split('').map(Number);
+        var sumOdd = 0;
+        var sumEven = 0;
+        for (var i = 0; i < 10; i++) {
+          if (i % 2 === 0) {
+            sumOdd += digits[i];
+          } else {
+            var d = digits[i] * 2;
+            sumEven += d > 9 ? d - 9 : d;
+          }
+        }
+        return (10 - ((sumOdd + sumEven) % 10)) % 10 === digits[10];
+      }
+
+      class MsInvoiceRequest extends HTMLElement {
+        connectedCallback() {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', this.init.bind(this), { once: true });
+          } else {
+            this.init();
+          }
+        }
+
+        init() {
+          this.checkbox = this.querySelector('.ms-invoice-request__checkbox');
+          this.hiddenFlag = this.querySelector('.ms-invoice-request__hidden-flag');
+          this.fieldsContainer = this.querySelector('.ms-invoice-request__fields');
+          this.checkoutBtn = document.getElementById(this.dataset.checkoutId);
+          this.isItaly = this.dataset.country === 'IT';
+          this._saveTimer = null;
+
+          this.errors = {
+            required: this.dataset.errorRagioneSociale || 'Campo obbligatorio',
+            codice_fiscale: this.dataset.errorCodiceFiscale || 'Codice fiscale non valido',
+            partita_iva: this.dataset.errorPartitaIva || 'Partita IVA non valida',
+            codice_sdi: this.dataset.errorCodiceSdi || 'Codice SDI non valido',
+            pec: this.dataset.errorPec || 'PEC non valida',
+            sdi_or_pec: this.dataset.errorSdiOrPec || 'Inserisci Codice SDI o PEC'
+          };
+
+          this.fields = Array.from(this.querySelectorAll('.ms-invoice-request__input'));
+
+          if (!this.checkbox || !this.checkoutBtn) return;
+
+          this.checkbox.addEventListener('change', this.onToggle.bind(this));
+
+          for (var f of this.fields) {
+            f.addEventListener('input', this.onFieldInput.bind(this, f));
+            f.addEventListener('blur', this.onFieldBlur.bind(this, f));
+          }
+
+          var form = this.checkoutBtn.form || document.getElementById(this.checkoutBtn.getAttribute('form'));
+          if (form) {
+            form.addEventListener('submit', this.onFormSubmit.bind(this));
+          }
+
+          this.syncCheckout();
+        }
+
+        onToggle() {
+          var checked = this.checkbox.checked;
+          this.fieldsContainer.classList.toggle('ms-invoice-request__fields--visible', checked);
+          this.checkbox.setAttribute('aria-expanded', String(checked));
+          this.hiddenFlag.value = checked ? 'Sì' : 'No';
+
+          if (!checked) {
+            this.clearAllErrors();
+            for (var f of this.fields) f.value = '';
+          }
+
+          this.syncCheckout();
+          this.saveCartAttributes();
+        }
+
+        onFieldInput(field) {
+          this.clearFieldError(field);
+          this.syncCheckout();
+        }
+
+        onFieldBlur(field) {
+          if (this.checkbox.checked && field.value.trim()) {
+            this.validateField(field);
+          }
+          this.syncCheckout();
+          if (this.checkbox.checked) this.debouncedSave();
+        }
+
+        onFormSubmit(e) {
+          if (!this.checkbox.checked) {
+            for (var f of this.fields) f.value = '';
+            this.hiddenFlag.value = 'No';
+            return;
+          }
+
+          this.hiddenFlag.value = 'Sì';
+
+          if (!this.validateAll()) {
+            e.preventDefault();
+            var firstErr = this.querySelector('.ms-invoice-request__input--error');
+            if (firstErr) firstErr.focus();
+          }
+        }
+
+        validateField(field) {
+          var val = field.value.trim();
+          var rule = field.dataset.rule;
+
+          if (rule === 'required') {
+            if (!val) return this.showFieldError(field, this.errors.required);
+            return this.clearFieldError(field);
+          }
+
+          if (rule === 'codice_fiscale') {
+            if (!val) return this.showFieldError(field, this.errors.codice_fiscale);
+            if (!RE_CF.test(val) && !RE_CF_TEMP.test(val)) return this.showFieldError(field, this.errors.codice_fiscale);
+            return this.clearFieldError(field);
+          }
+
+          if (rule === 'partita_iva') {
+            if (!val) return this.showFieldError(field, this.errors.partita_iva);
+            if (!validatePartitaIVA(val)) return this.showFieldError(field, this.errors.partita_iva);
+            return this.clearFieldError(field);
+          }
+
+          if (rule === 'codice_sdi') {
+            if (val && !RE_SDI.test(val)) return this.showFieldError(field, this.errors.codice_sdi);
+            return this.clearFieldError(field);
+          }
+
+          if (rule === 'pec') {
+            if (val && !RE_EMAIL.test(val)) return this.showFieldError(field, this.errors.pec);
+            return this.clearFieldError(field);
+          }
+
+          return true;
+        }
+
+        validateAll() {
+          var valid = true;
+          var sdiField = null;
+          var pecField = null;
+
+          for (var f of this.fields) {
+            var rule = f.dataset.rule;
+            if (rule === 'codice_sdi') { sdiField = f; continue; }
+            if (rule === 'pec') { pecField = f; continue; }
+            if (this.validateField(f) === false) valid = false;
+          }
+
+          if (this.isItaly && sdiField && pecField) {
+            var sdiVal = sdiField.value.trim();
+            var pecVal = pecField.value.trim();
+
+            if (!sdiVal && !pecVal) {
+              this.showFieldError(sdiField, this.errors.sdi_or_pec);
+              this.showFieldError(pecField, this.errors.sdi_or_pec);
+              valid = false;
+            } else {
+              if (sdiVal && !RE_SDI.test(sdiVal)) {
+                this.showFieldError(sdiField, this.errors.codice_sdi);
+                valid = false;
+              } else {
+                this.clearFieldError(sdiField);
+              }
+
+              if (pecVal && !RE_EMAIL.test(pecVal)) {
+                this.showFieldError(pecField, this.errors.pec);
+                valid = false;
+              } else {
+                this.clearFieldError(pecField);
+              }
+            }
+          }
+
+          return valid;
+        }
+
+        isFormValid() {
+          if (!this.checkbox.checked) return true;
+
+          for (var f of this.fields) {
+            var val = f.value.trim();
+            var rule = f.dataset.rule;
+
+            if (rule === 'required' && !val) return false;
+            if (rule === 'codice_fiscale' && (!val || (!RE_CF.test(val) && !RE_CF_TEMP.test(val)))) return false;
+            if (rule === 'partita_iva' && (!val || !validatePartitaIVA(val))) return false;
+            if (rule === 'codice_sdi' && val && !RE_SDI.test(val)) return false;
+            if (rule === 'pec' && val && !RE_EMAIL.test(val)) return false;
+          }
+
+          if (this.isItaly) {
+            var sdiInput = this.querySelector('[data-rule="codice_sdi"]');
+            var pecInput = this.querySelector('[data-rule="pec"]');
+            if (sdiInput && pecInput && !sdiInput.value.trim() && !pecInput.value.trim()) return false;
+          }
+
+          return true;
+        }
+
+        syncCheckout() {
+          if (!this.checkoutBtn) return;
+
+          var isInvalid = !this.isFormValid();
+
+          if (isInvalid) {
+            this.checkoutBtn.setAttribute('data-ms-invoice-invalid', '');
+          } else {
+            this.checkoutBtn.removeAttribute('data-ms-invoice-invalid');
+          }
+
+          this.checkoutBtn.dispatchEvent(new CustomEvent('ms:gate-changed'));
+
+          if (!document.querySelector('ms-cart-terms')) {
+            var otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled');
+            this.checkoutBtn.disabled = isInvalid || otherDisabled;
+
+            var ctasContainer = this.checkoutBtn.closest('.cart__ctas');
+            if (ctasContainer) {
+              var dynCheckout = ctasContainer.nextElementSibling;
+              if (dynCheckout && dynCheckout.classList.contains('cart__dynamic-checkout-buttons')) {
+                dynCheckout.hidden = isInvalid || otherDisabled;
+              }
+            }
+          }
+        }
+
+        showFieldError(field, message) {
+          field.classList.add('ms-invoice-request__input--error');
+          field.setAttribute('aria-invalid', 'true');
+          var errEl = field.parentElement.querySelector('.ms-invoice-request__field-error');
+          if (errEl) {
+            errEl.textContent = message;
+            errEl.hidden = false;
+            field.setAttribute('aria-describedby', errEl.id || '');
+          }
+          return false;
+        }
+
+        clearFieldError(field) {
+          field.classList.remove('ms-invoice-request__input--error');
+          field.removeAttribute('aria-invalid');
+          var errEl = field.parentElement.querySelector('.ms-invoice-request__field-error');
+          if (errEl) {
+            errEl.textContent = '';
+            errEl.hidden = true;
+          }
+          return true;
+        }
+
+        clearAllErrors() {
+          for (var f of this.fields) this.clearFieldError(f);
+        }
+
+        debouncedSave() {
+          clearTimeout(this._saveTimer);
+          this._saveTimer = setTimeout(this.saveCartAttributes.bind(this), 600);
+        }
+
+        saveCartAttributes() {
+          var attrs = {};
+          attrs['Richiesta Fattura'] = this.checkbox.checked ? 'Sì' : 'No';
+
+          if (this.checkbox.checked) {
+            for (var f of this.fields) {
+              var attrName = f.name.replace('attributes[', '').replace(']', '');
+              attrs[attrName] = f.value.trim();
+            }
+          } else {
+            for (var f of this.fields) {
+              var attrName = f.name.replace('attributes[', '').replace(']', '');
+              attrs[attrName] = '';
+            }
+          }
+
+          fetch('/cart/update.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ attributes: attrs })
+          }).catch(function () {});
+        }
+      }
+
+      customElements.define('ms-invoice-request', MsInvoiceRequest);
+    })();
+  </script>
+{%- endif -%}

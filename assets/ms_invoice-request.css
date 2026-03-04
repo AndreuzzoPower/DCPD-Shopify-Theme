@@ -1,0 +1,132 @@
+.ms-invoice-request {
+  margin-bottom: 1.5rem;
+}
+
+.ms-invoice-request__trigger {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.ms-invoice-request__checkbox {
+  flex-shrink: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-top: 0.1rem;
+  accent-color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.ms-invoice-request__checkbox:focus-visible {
+  outline: 0.2rem solid rgb(var(--color-foreground));
+  outline-offset: 0.2rem;
+}
+
+.ms-invoice-request__label {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+}
+
+.ms-invoice-request__fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+  margin-top: 0;
+}
+
+.ms-invoice-request__fields--visible {
+  max-height: 80rem;
+  opacity: 1;
+  margin-top: 1.4rem;
+  padding: 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: 0.6rem;
+  background-color: rgba(var(--color-foreground), 0.02);
+}
+
+@media screen and (min-width: 750px) {
+  .ms-invoice-request__fields--visible {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ms-invoice-request__field--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.ms-invoice-request__field label {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: rgb(var(--color-foreground));
+}
+
+.ms-invoice-request__required {
+  color: #cc1f1f;
+  margin-left: 0.2rem;
+}
+
+.ms-invoice-request__input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: 0.4rem;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ms-invoice-request__input::placeholder {
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+.ms-invoice-request__input:focus {
+  outline: none;
+  border-color: rgb(var(--color-foreground));
+  box-shadow: 0 0 0 0.1rem rgb(var(--color-foreground));
+}
+
+.ms-invoice-request__input--error {
+  border-color: #cc1f1f;
+}
+
+.ms-invoice-request__input--error:focus {
+  border-color: #cc1f1f;
+  box-shadow: 0 0 0 0.1rem #cc1f1f;
+}
+
+.ms-invoice-request__field-error {
+  margin-top: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: #cc1f1f;
+}
+
+.ms-invoice-request__sdi-pec-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.6);
+  font-style: italic;
+}
+
+.ms-invoice-request__input[data-rule="codice_sdi"] {
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-invoice-request__fields {
+    transition: none;
+  }
+}

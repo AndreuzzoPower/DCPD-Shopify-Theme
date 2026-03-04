@@ -1775,6 +1775,70 @@
       },
       {
         "type": "header",
+        "content": "Richiesta fattura"
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_invoice_enabled",
+        "label": "Attiva richiesta fattura",
+        "default": false,
+        "info": "Se attivo, mostra un checkbox nel carrello per richiedere la fattura. Quando selezionato, vengono mostrati i campi per i dati di fatturazione che verranno salvati nell'ordine."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_invoice_default_checked",
+        "label": "Checkbox pre-selezionato",
+        "default": false,
+        "info": "Se attivo, il checkbox richiesta fattura e' gia' selezionato di default."
+      },
+      {
+        "type": "inline_richtext",
+        "id": "ms_invoice_label",
+        "label": "Testo del checkbox fattura",
+        "default": "Desidero ricevere la fattura"
+      },
+      {
+        "type": "header",
+        "content": "Messaggi di errore fattura"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_ragione_sociale",
+        "label": "Errore Ragione Sociale",
+        "default": "Inserisci la ragione sociale"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_codice_fiscale",
+        "label": "Errore Codice Fiscale",
+        "default": "Inserisci un codice fiscale valido (16 caratteri alfanumerici)"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_partita_iva",
+        "label": "Errore Partita IVA",
+        "default": "Inserisci una partita IVA valida (11 cifre)"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_codice_sdi",
+        "label": "Errore Codice SDI",
+        "default": "Inserisci un codice SDI valido (7 caratteri alfanumerici)"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_pec",
+        "label": "Errore PEC",
+        "default": "Inserisci un indirizzo PEC valido"
+      },
+      {
+        "type": "text",
+        "id": "ms_invoice_error_sdi_or_pec",
+        "label": "Errore SDI o PEC mancanti",
+        "default": "Inserisci il Codice SDI oppure un indirizzo PEC"
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.cart.settings.cart_drawer.header"
       },
       {

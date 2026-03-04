@@ -61,6 +61,14 @@
           endfor
         endif
       -%}
+      {%- liquid
+        assign ms_invoice_checked = settings.ms_invoice_default_checked
+        if cart.attributes['Richiesta Fattura'] == 'Sì'
+          assign ms_invoice_checked = true
+        elsif cart.attributes['Richiesta Fattura'] == 'No'
+          assign ms_invoice_checked = false
+        endif
+      -%}
       <div class="cart__blocks">
         {% for block in section.blocks %}
           {%- case block.type -%}
@@ -154,6 +162,7 @@
               </div>
             {%- else -%}
               {%- render 'ms_cart-terms', checkout_id: 'checkout' -%}
+              {%- render 'ms_invoice-request', checkout_id: 'checkout', form_id: 'cart' -%}
 
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
@@ -168,6 +177,10 @@
                   {% if settings.ms_terms_enabled %}
                     disabled
                   {% endif %}
+                  {% if settings.ms_invoice_enabled and ms_invoice_checked %}
+                    disabled
+                    data-ms-invoice-invalid
+                  {% endif %}
                   form="cart"
                 >
                   {{ 'sections.cart.checkout' | t }}
@@ -177,6 +190,7 @@
               {%- if additional_checkout_buttons -%}
                 <div class="cart__dynamic-checkout-buttons additional-checkout-buttons"
                   {%- if settings.ms_terms_enabled %} hidden{% endif -%}
+                  {%- if settings.ms_invoice_enabled and ms_invoice_checked %} hidden{% endif -%}
                 >
                   {{ content_for_additional_checkout_buttons }}
                 </div>

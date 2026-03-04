@@ -58,8 +58,6 @@
 
           if (!this.checkbox || !this.checkoutBtn) return;
 
-          this.otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled');
-
           var ctasContainer = this.checkoutBtn.closest('.cart__ctas');
           if (ctasContainer) {
             var next = ctasContainer.nextElementSibling;
@@ -68,6 +66,7 @@
 
           this.syncState();
           this.checkbox.addEventListener('change', this.syncState.bind(this));
+          this.checkoutBtn.addEventListener('ms:gate-changed', this.syncState.bind(this));
 
           var form = this.checkoutBtn.form || document.getElementById(this.checkoutBtn.getAttribute('form'));
           if (form) {
@@ -82,10 +81,12 @@
 
         syncState() {
           var accepted = this.checkbox.checked;
-          this.checkoutBtn.disabled = !accepted || this.otherDisabled;
+          var otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled') ||
+                              this.checkoutBtn.hasAttribute('data-ms-invoice-invalid');
+          this.checkoutBtn.disabled = !accepted || otherDisabled;
 
           if (this.dynamicCheckout) {
-            this.dynamicCheckout.hidden = !accepted || this.otherDisabled;
+            this.dynamicCheckout.hidden = !accepted || otherDisabled;
           }
 
           if (accepted) this.hideError();
