@@ -234,7 +234,7 @@
 
       <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="padding-top:{{ cp_top }}px;padding-bottom:{{ cp_bottom }}px;padding-left:{{ cp_left }}px;padding-right:{{ cp_right }}px;">
         {%- if content_layout == 'contained' -%}<div class="page-width">{%- endif -%}
-        <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="padding:0;max-width:none;min-width:0;">
+        <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="{% unless section.settings.show_text_box %}padding:0;{% endunless %}max-width:none;min-width:0;">
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when 'heading' -%}
