@@ -11,6 +11,28 @@
   "sections": {
     "ms_video_fWDKzx": {
       "type": "ms_video",
+      "blocks": {
+        "heading_fBqXfY": {
+          "type": "heading",
+          "settings": {
+            "heading": "DCPD",
+            "heading_size": "hxl",
+            "title_tag": "div",
+            "title_custom_class": ""
+          }
+        },
+        "text_kWacTA": {
+          "type": "text",
+          "settings": {
+            "text": "Trasformiamo <strong>BUGS</strong> in <strong>FEATURES</strong>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_fBqXfY",
+        "text_kWacTA"
+      ],
       "name": "MS Video",
       "settings": {
         "section_width": "full_width",
@@ -24,8 +46,8 @@
         "overlay_opacity": 0,
         "video_fit": "cover",
         "video_position": "bottom",
-        "desktop_content_position": "middle-center",
-        "desktop_content_alignment": "center",
+        "desktop_content_position": "top-left",
+        "desktop_content_alignment": "left",
         "show_text_box": false,
         "mobile_content_alignment": "center",
         "show_text_below": false,
