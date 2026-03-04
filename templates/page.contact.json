@@ -124,7 +124,7 @@
         "field_font_size": 14,
         "field_label_size": 14,
         "field_gap_h": 16,
-        "field_gap_v": 0,
+        "field_gap_v": 16,
         "use_shopify_form": false,
         "shopify_form_id": "",
         "shopify_form_embed": "",
