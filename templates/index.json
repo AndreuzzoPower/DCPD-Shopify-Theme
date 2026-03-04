@@ -51,7 +51,7 @@
         "show_text_box": false,
         "mobile_content_alignment": "center",
         "show_text_below": false,
-        "show_controls": false,
+        "show_controls": true,
         "controls_position": "bottom-right",
         "controls_theme": "dark",
         "icon_mute": "icon-volume-mute.svg",
