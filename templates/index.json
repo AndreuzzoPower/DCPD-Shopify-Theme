@@ -45,7 +45,7 @@
         "video_height": "natural",
         "overlay_opacity": 0,
         "video_position": "bottom",
-        "content_width": "page_width",
+        "content_width": "full_width",
         "desktop_content_position": "top-left",
         "desktop_content_alignment": "left",
         "show_text_box": false,
