@@ -48,7 +48,7 @@
         "content_layout": "full",
         "content_padding_top": 0,
         "content_padding_bottom": 0,
-        "content_padding_left": 50,
+        "content_padding_left": 0,
         "content_padding_right": 0,
         "desktop_content_position": "top-left",
         "desktop_content_alignment": "left",
