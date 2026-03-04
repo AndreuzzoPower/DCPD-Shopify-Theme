@@ -56,17 +56,6 @@
   transform: translateX(-50%);
 }
 
-/* Content area layout & padding (overrides Dawn's default 5rem padding) */
-ms-video-bg .banner__content {
-  padding-top: var(--ms-content-pt, 0px) !important;
-  padding-bottom: var(--ms-content-pb, 0px) !important;
-  padding-left: var(--ms-content-pl, 0px) !important;
-  padding-right: var(--ms-content-pr, 0px) !important;
-  max-width: var(--ms-content-max-w, 100%);
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* ---- Natural height: aspect-ratio on container, video fills it ---- */
 
 ms-video-bg.ms-video-banner--natural {

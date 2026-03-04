@@ -158,7 +158,6 @@
     <ms-video-bg
       id="Banner-{{ section.id }}"
       class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}{% if section.settings.video_height == 'natural' %} ms-video-banner--natural{% else %} banner--{{ section.settings.video_height }}{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-      style="--ms-content-pt:{{ cp_top }}px;--ms-content-pb:{{ cp_bottom }}px;--ms-content-pl:{{ cp_left }}px;--ms-content-pr:{{ cp_right }}px;--ms-content-max-w:{% if content_layout == 'contained' %}var(--page-width){% else %}100%{% endif %};"
       data-playing
       data-muted
     >
@@ -233,7 +232,15 @@
         </div>
       {%- endif -%}
 
-      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {%- liquid
+        assign content_inline_style = 'padding-top:' | append: cp_top | append: 'px;padding-bottom:' | append: cp_bottom | append: 'px;padding-left:' | append: cp_left | append: 'px;padding-right:' | append: cp_right | append: 'px;'
+        if content_layout == 'contained'
+          assign content_inline_style = content_inline_style | append: 'max-width:var(--page-width);margin-left:auto;margin-right:auto;'
+        else
+          assign content_inline_style = content_inline_style | append: 'max-width:100%;'
+        endif
+      -%}
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="{{ content_inline_style }}">
         <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
           {%- for block in section.blocks -%}
             {%- case block.type -%}
