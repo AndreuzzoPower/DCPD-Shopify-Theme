@@ -68,8 +68,12 @@ body.ms-catalog-mode .product-form__quantity { display: none !important; }
 .price__iva {
   display: block;
   width: 100%;
-  margin-top: 0.2rem;
+  margin-top: 0 !important;
   opacity: 0.7;
+}
+.cart-item__totals .price__iva,
+.totals + .price__iva {
+  text-align: right;
 }
 .price__iva-compare {
   margin-right: 0.5rem;
