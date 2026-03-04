@@ -44,7 +44,6 @@
         "description": "Video a riguardo AI Powered Digital Acceleration",
         "video_height": "viewport",
         "overlay_opacity": 0,
-        "video_fit": "cover",
         "video_position": "bottom",
         "desktop_content_position": "top-left",
         "desktop_content_alignment": "left",
@@ -56,6 +55,50 @@
         "controls_theme": "dark",
         "icon_mute": "icon-volume-mute.svg",
         "icon_unmute": "icon-volume.svg"
+      }
+    },
+    "ms_rich_text_XjDUaG": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "section_padding_imWJgC": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 50,
+            "section_padding_bottom_xs": 50
+          }
+        },
+        "heading_D8QrqE": {
+          "type": "heading",
+          "settings": {
+            "heading": "Il nuovo DCPD Theme",
+            "heading_size": "h1",
+            "title_tag": "div",
+            "title_custom_class": ""
+          }
+        },
+        "text_WM7xP6": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Qui di seguito, divise per categorie le funzionalità, sempre in divenire, del nuovo tema DCPD.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_imWJgC",
+        "heading_D8QrqE",
+        "text_WM7xP6"
+      ],
+      "name": "MS Rich text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
       }
     },
     "collection_list_cwXwB8": {
@@ -298,80 +341,6 @@
         "image_zoom": "lightbox",
         "hide_variants": false,
         "enable_video_looping": false
-      }
-    },
-    "ms_rich_text_XjDUaG": {
-      "type": "ms_rich-text",
-      "blocks": {
-        "section_padding_imWJgC": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 100,
-            "section_padding_bottom": 100,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 80,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 60
-          }
-        },
-        "caption_4NQg83": {
-          "type": "caption",
-          "settings": {
-            "caption": "Aggiungi una tagline",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "small"
-          }
-        },
-        "heading_D8QrqE": {
-          "type": "heading",
-          "settings": {
-            "heading": "Parla del tuo brand",
-            "heading_size": "h1",
-            "title_tag": "div",
-            "title_custom_class": ""
-          }
-        },
-        "text_WM7xP6": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Condividi informazioni sul tuo brand con i clienti. Descrivi un prodotto, condividi gli annunci o dai il benvenuto ai clienti nel tuo negozio.</p>"
-          }
-        },
-        "button_UceQ6J": {
-          "type": "button",
-          "settings": {
-            "button_label": "Etichetta pulsante",
-            "button_link": "",
-            "button_style_secondary": false,
-            "button_type": "button",
-            "button_size": "default",
-            "button_icon": "",
-            "button_icon_position": "before",
-            "button_label_2": "asasas",
-            "button_link_2": "",
-            "button_style_secondary_2": true,
-            "button_type_2": "button",
-            "button_size_2": "extra_jumbo",
-            "button_icon_2": "",
-            "button_icon_position_2": "before"
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_imWJgC",
-        "caption_4NQg83",
-        "heading_D8QrqE",
-        "text_WM7xP6",
-        "button_UceQ6J"
-      ],
-      "disabled": true,
-      "name": "MS Rich text",
-      "settings": {
-        "section_width": "full_width",
-        "mobile_full_width": false,
-        "color_scheme": "",
-        "desktop_content_position": "center",
-        "content_alignment": "center"
       }
     },
     "ms_image_banner_hgtaYa": {
@@ -1640,9 +1609,9 @@
   },
   "order": [
     "ms_video_fWDKzx",
+    "ms_rich_text_XjDUaG",
     "collection_list_cwXwB8",
     "featured_product_WBJUd7",
-    "ms_rich_text_XjDUaG",
     "ms_image_banner_hgtaYa",
     "ms_featured_collection_gLNCjA",
     "ms_image_with_text_7nGk7K",
