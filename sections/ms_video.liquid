@@ -136,10 +136,24 @@
   {%- comment -%} ======================== BACKGROUND MODE ======================== {%- endcomment -%}
 
   {%- liquid
-    assign content_width_class = sw_class
-    if sw == 'full_width'
-      assign content_width_class = 'page-width'
+    assign cw = section.settings.content_width | default: 'page_width'
+    if cw == 'default' or cw == 'contained'
+      assign cw = 'page_width'
+    elsif cw == 'full'
+      assign cw = 'full_width'
+    elsif cw == 'fluid'
+      assign cw = 'page_fluid'
     endif
+    case cw
+      when 'narrow'
+        assign content_width_class = 'page-width page-width--narrow'
+      when 'page_width'
+        assign content_width_class = 'page-width'
+      when 'page_fluid'
+        assign content_width_class = 'page-width page-width--fluid'
+      when 'full_width'
+        assign content_width_class = ''
+    endcase
   -%}
 
   {%- style -%}
@@ -151,11 +165,11 @@
   <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
     <ms-video-bg
       id="Banner-{{ section.id }}"
-      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.video_height }}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}{% if section.settings.video_height == 'natural' %} ms-video-banner--natural{% else %} banner--{{ section.settings.video_height }}{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
       data-playing
       data-muted
     >
-      <div class="banner__media media ms-video-banner__media{% if section.settings.video_fit == 'contain' %} ms-video-banner__media--contain{% endif %} ms-video-banner__media--pos-{{ section.settings.video_position | default: 'center' }}">
+      <div class="banner__media media ms-video-banner__media ms-video-banner__media--pos-{{ section.settings.video_position | default: 'center' }}">
         {%- if has_shopify_video -%}
           {{
             section.settings.video
@@ -607,12 +621,14 @@
       "id": "video_height",
       "label": "Altezza banner",
       "options": [
+        { "label": "Naturale (proporzioni video)", "value": "natural" },
         { "label": "Piccola", "value": "small" },
         { "label": "Media", "value": "medium" },
         { "label": "Grande", "value": "large" },
-        { "label": "Altezza viewport (100vh)", "value": "viewport" }
+        { "label": "Altezza viewport", "value": "viewport" }
       ],
-      "default": "medium"
+      "default": "medium",
+      "info": "\"Naturale\" adatta l'altezza alle proporzioni originali del video. Le altre opzioni fissano l'altezza e tagliano il video se necessario."
     },
     {
       "type": "range",
@@ -626,17 +642,6 @@
     },
     {
       "type": "select",
-      "id": "video_fit",
-      "label": "Adattamento video",
-      "options": [
-        { "label": "Riempi (taglia se necessario)", "value": "cover" },
-        { "label": "Mostra intero (mantieni proporzioni)", "value": "contain" }
-      ],
-      "default": "cover",
-      "info": "\"Riempi\" copre tutta l'area tagliando il video se necessario. \"Mostra intero\" visualizza il video completo con le sue proporzioni originali."
-    },
-    {
-      "type": "select",
       "id": "video_position",
       "label": "Posizione video nel contenitore",
       "options": [
@@ -645,7 +650,20 @@
         { "label": "In basso", "value": "bottom" }
       ],
       "default": "center",
-      "info": "Determina quale parte del video e visibile quando viene tagliato (modalita Riempi), o dove si posiziona (modalita Mostra intero)."
+      "info": "Determina quale parte del video e visibile quando viene tagliato. Non si applica con altezza \"Naturale\"."
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Larghezza contenuto",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width",
+      "info": "Larghezza dell'area in cui si posiziona il contenuto sovrapposto (titolo, testo, pulsanti). Indipendente dalla larghezza del blocco video."
     },
     {
       "type": "select",
