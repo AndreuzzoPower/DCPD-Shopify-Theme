@@ -1319,14 +1319,14 @@
     },
     "ms_video_fWDKzx": {
       "type": "ms_video",
-      "disabled": true,
       "name": "MS Video",
       "settings": {
         "section_width": "full_width",
         "color_scheme": "",
-        "enable_video_looping": false,
-        "video_url": "https://www.youtube.com/watch?v=rpARi1JkU0s&list=RDrpARi1JkU0s&start_radio=1",
-        "description": ""
+        "enable_video_looping": true,
+        "video": "shopify://files/videos/TheHybridIntelligence.mp4",
+        "video_url": "",
+        "description": "Video a riguardo AI Powered Digital Acceleration"
       }
     },
     "ms_page_wmtXtT": {
