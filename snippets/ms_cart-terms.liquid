@@ -44,6 +44,14 @@
 
       class MsCartTerms extends HTMLElement {
         connectedCallback() {
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', this.init.bind(this), { once: true });
+          } else {
+            this.init();
+          }
+        }
+
+        init() {
           this.checkbox = this.querySelector('.ms-cart-terms__checkbox');
           this.errorEl = this.querySelector('.ms-cart-terms__error');
           this.checkoutBtn = document.getElementById(this.dataset.checkoutId);
