@@ -11,15 +11,31 @@
   "sections": {
     "ms_rive_animation_D9K7Lw": {
       "type": "ms_rive-animation",
+      "blocks": {
+        "section_padding_qrBj3x": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_qrBj3x"
+      ],
       "name": "MS Rive Animation",
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
         "color_scheme": "",
-        "max_width": 0,
+        "max_width": 1600,
         "horizontal_align": "center",
         "aspect_ratio": "16-9",
-        "custom_height": 400,
+        "custom_height": 100,
         "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/404.riv?v=1772615983",
         "state_machine": "",
         "autoplay": true,
