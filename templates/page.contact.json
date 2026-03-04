@@ -99,12 +99,36 @@
         "button_align": "left"
       }
     },
-    "ms_dati_strutturati_yDcAMH": {
-      "type": "ms_dati-strutturati",
-      "name": "MS Dati strutturati",
+    "ms_rich_text_4wUY6q": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "heading_p8hYUa": {
+          "type": "heading",
+          "settings": {
+            "heading": "Vieni a trovarci",
+            "heading_size": "h1",
+            "title_tag": "h2",
+            "title_custom_class": ""
+          }
+        },
+        "text_zGkMeP": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Se preferisci un incontro di persona contattaci allo <a href=\"tel:+39 049 89 39 811\">+39 049 89 39 811</a> e prenota il tuo appuntamento per venire a conoscerci di persona direttamente presso i nostri uffici di<strong> Via Cavour 32/d a Vigonza (PD)</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_p8hYUa",
+        "text_zGkMeP"
+      ],
+      "name": "MS Rich Text",
       "settings": {
-        "dsjson": "{{ page.metafields.custom.dati_strutturati.value }}",
-        "dsjsonta": ""
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
       }
     },
     "ms_custom_html_eQg6xx": {
@@ -113,11 +137,11 @@
         "section_padding_eh3Rib": {
           "type": "section_padding",
           "settings": {
-            "section_padding_top": 80,
+            "section_padding_top": 30,
             "section_padding_bottom": 0,
-            "section_padding_top_md": 50,
+            "section_padding_top_md": 30,
             "section_padding_bottom_md": 0,
-            "section_padding_top_xs": 0,
+            "section_padding_top_xs": 30,
             "section_padding_bottom_xs": 0
           }
         },
@@ -139,12 +163,21 @@
         "mobile_full_width": false,
         "color_scheme": ""
       }
+    },
+    "ms_dati_strutturati_yDcAMH": {
+      "type": "ms_dati-strutturati",
+      "name": "MS Dati strutturati",
+      "settings": {
+        "dsjson": "{{ page.metafields.custom.dati_strutturati.value }}",
+        "dsjsonta": ""
+      }
     }
   },
   "order": [
     "main",
     "form",
-    "ms_dati_strutturati_yDcAMH",
-    "ms_custom_html_eQg6xx"
+    "ms_rich_text_4wUY6q",
+    "ms_custom_html_eQg6xx",
+    "ms_dati_strutturati_yDcAMH"
   ]
 }
