@@ -18,24 +18,6 @@
     },
     "form": {
       "type": "ms_contact-form",
-      "settings": {
-        "section_width": "narrow",
-        "color_scheme": "scheme-1",
-        "show_privacy": true,
-        "privacy_text": "<p>Ho letto e accetto la <a href='/policies/privacy-policy'>Privacy Policy</a></p>",
-        "required_privacy": true,
-        "show_newsletter": false,
-        "newsletter_text": "<p>Acconsento all'invio di comunicazioni commerciali e newsletter</p>",
-        "show_profiling": false,
-        "profiling_text": "<p>Acconsento al trattamento dei miei dati personali per finalità di profilazione</p>",
-        "button_label": "Invia messaggio",
-        "button_size": "default",
-        "button_style_secondary": false,
-        "button_type": "button",
-        "button_icon": "",
-        "button_icon_position": "after",
-        "button_align": "left"
-      },
       "blocks": {
         "campo-nome": {
           "type": "field_text",
@@ -85,7 +67,37 @@
         "campo-email",
         "campo-telefono",
         "campo-messaggio"
-      ]
+      ],
+      "settings": {
+        "section_width": "narrow",
+        "color_scheme": "scheme-1",
+        "field_border_color": "",
+        "field_border_width": 1,
+        "field_border_radius": 0,
+        "field_bg_color": "",
+        "field_focus_color": "",
+        "field_font_size": 14,
+        "field_label_size": 14,
+        "field_gap_h": 16,
+        "field_gap_v": 0,
+        "use_shopify_form": false,
+        "shopify_form_id": "",
+        "shopify_form_embed": "",
+        "show_privacy": true,
+        "privacy_text": "<p>Ho letto e accetto la <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>",
+        "required_privacy": true,
+        "show_newsletter": false,
+        "newsletter_text": "<p>Acconsento all'invio di comunicazioni commerciali e newsletter</p>",
+        "show_profiling": false,
+        "profiling_text": "<p>Acconsento al trattamento dei miei dati personali per finalità di profilazione</p>",
+        "button_label": "Invia messaggio",
+        "button_size": "default",
+        "button_style_secondary": false,
+        "button_type": "button",
+        "button_icon": "",
+        "button_icon_position": "after",
+        "button_align": "left"
+      }
     },
     "ms_dati_strutturati_yDcAMH": {
       "type": "ms_dati-strutturati",
@@ -94,11 +106,45 @@
         "dsjson": "{{ page.metafields.custom.dati_strutturati.value }}",
         "dsjsonta": ""
       }
+    },
+    "ms_custom_html_eQg6xx": {
+      "type": "ms_custom-html",
+      "blocks": {
+        "section_padding_eh3Rib": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        },
+        "section_content_iQEyCN": {
+          "type": "section_content",
+          "settings": {
+            "custom_content": "",
+            "custom_content_html": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d11198.959266298203!2d11.9847233!3d45.43474595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x477ed00294a3b8e5%3A0xa63ca07963fad4c0!2sMaking%20Science%20Italia%2C%20Via%20C.%20Cavour%2C%2032%2C%2035010%20Vigonza%20PD!3m2!1d45.4431298!2d11.981984899999999!5e0!3m2!1sen!2sit!4v1772617385054!5m2!1sen!2sit\" width=\"100%\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_eh3Rib",
+        "section_content_iQEyCN"
+      ],
+      "name": "MS Custom HTML/LIQUID",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": ""
+      }
     }
   },
   "order": [
     "main",
     "form",
-    "ms_dati_strutturati_yDcAMH"
+    "ms_dati_strutturati_yDcAMH",
+    "ms_custom_html_eQg6xx"
   ]
 }
