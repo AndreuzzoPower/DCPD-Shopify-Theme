@@ -42,7 +42,7 @@
         "video": "shopify://files/videos/TheHybridIntelligence.mp4",
         "video_url": "",
         "description": "Video a riguardo AI Powered Digital Acceleration",
-        "video_height": "natural",
+        "video_height": "small",
         "overlay_opacity": 0,
         "video_position": "bottom",
         "content_width": "page_width",
