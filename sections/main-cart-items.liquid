@@ -143,7 +143,7 @@
                             assign unit_iva_fmt = unit_iva | money
                           endif
                         -%}
-                        <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', unit_iva_fmt }}</div>
+                        <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', unit_iva_fmt }}</div>
                       {%- endif -%}
 
                       {%- if item.product.has_only_default_variant == false
@@ -251,7 +251,7 @@
                               assign line_iva_fmt = line_iva | money
                             endif
                           -%}
-                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', line_iva_fmt }}</div>
+                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', line_iva_fmt }}</div>
                         {%- endif -%}
                       </div>
                     </td>
@@ -500,7 +500,7 @@
                               assign line_iva_fmt = line_iva | money
                             endif
                           -%}
-                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', line_iva_fmt }}</div>
+                          <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', line_iva_fmt }}</div>
                         {%- endif -%}
                       </div>
                     </td>

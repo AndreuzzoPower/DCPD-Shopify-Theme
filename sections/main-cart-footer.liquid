@@ -109,7 +109,7 @@
                       assign cart_iva_formatted = cart_iva_total | money
                     endif
                   -%}
-                  <div class="price__iva caption">{{ settings.ms_iva_label | replace: '{amount}', cart_iva_formatted }}</div>
+                  <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', cart_iva_formatted }}</div>
                 {%- endif -%}
 
                 <small class="tax-note caption-large rte">

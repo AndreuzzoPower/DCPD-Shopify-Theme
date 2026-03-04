@@ -1874,8 +1874,8 @@
         "type": "text",
         "id": "ms_iva_label",
         "label": "Formato etichetta IVA",
-        "default": "+ IVA: {amount}",
-        "info": "Usa {amount} come segnaposto per l'importo calcolato."
+        "default": "+ IVA: -amount-",
+        "info": "Usa -amount- come segnaposto per l'importo calcolato."
       }
     ]
   }
