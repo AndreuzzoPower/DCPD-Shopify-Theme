@@ -124,91 +124,10 @@
         "column_ab8Vch": {
           "type": "column",
           "settings": {
-            "title": "Colonna2",
+            "title": "DATI STRUTTURATI",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_hwdGEP": {
-          "type": "column",
-          "settings": {
-            "title": "Colonna3",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_yyDkVb": {
-          "type": "column",
-          "settings": {
-            "title": "Colonna4",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_kWqdp9": {
-          "type": "column",
-          "settings": {
-            "image": "shopify://shop_images/download.jpg",
-            "title": "Colonna5",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "vai",
-            "link": "#",
-            "link_button_style_secondary": true,
-            "link_button_type": "button",
-            "link_button_size": "medium",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_n9ftcr": {
-          "type": "column",
-          "settings": {
-            "title": "Colonna6",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_LaLBEH": {
-          "type": "column",
-          "settings": {
-            "title": "Colonna7",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "text": "<p>Dove disponibili sono stati inseriti in maniera dinamica, nel modo più completo i dati strutturati. E' stato predisposto un Widget dedicato da poter inserire nei vari template direttamente da Live Editor collegabile dinamicamente a Prodotti, Pagine, Articoli Blog e Collections in modo da renderli il più possibile personalizzabili.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -221,12 +140,7 @@
       },
       "block_order": [
         "column_zjLaeT",
-        "column_ab8Vch",
-        "column_hwdGEP",
-        "column_yyDkVb",
-        "column_kWqdp9",
-        "column_n9ftcr",
-        "column_LaLBEH"
+        "column_ab8Vch"
       ],
       "name": "MS Multicolonna",
       "settings": {
