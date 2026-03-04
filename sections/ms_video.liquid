@@ -136,24 +136,11 @@
   {%- comment -%} ======================== BACKGROUND MODE ======================== {%- endcomment -%}
 
   {%- liquid
-    assign cw = section.settings.content_width | default: 'page_width'
-    if cw == 'default' or cw == 'contained'
-      assign cw = 'page_width'
-    elsif cw == 'full'
-      assign cw = 'full_width'
-    elsif cw == 'fluid'
-      assign cw = 'page_fluid'
-    endif
-    case cw
-      when 'narrow'
-        assign content_width_class = 'page-width page-width--narrow'
-      when 'page_width'
-        assign content_width_class = 'page-width'
-      when 'page_fluid'
-        assign content_width_class = 'page-width page-width--fluid'
-      when 'full_width'
-        assign content_width_class = ''
-    endcase
+    assign content_layout = section.settings.content_layout | default: 'full'
+    assign cp_top    = section.settings.content_padding_top    | default: 0
+    assign cp_bottom = section.settings.content_padding_bottom | default: 0
+    assign cp_left   = section.settings.content_padding_left   | default: 0
+    assign cp_right  = section.settings.content_padding_right  | default: 0
   -%}
 
   {%- style -%}
@@ -165,30 +152,19 @@
         aspect-ratio: {{ section.settings.video.aspect_ratio | default: 1.7778 }};
       }
     {%- endif -%}
-    {%- case cw -%}
-      {%- when 'narrow' -%}
-        #Banner-{{ section.id }} .banner__content {
-          max-width: var(--page-width-narrow, 75rem);
-          margin-left: auto;
-          margin-right: auto;
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
-        }
-      {%- when 'page_width' -%}
-        #Banner-{{ section.id }} .banner__content {
-          max-width: var(--page-width);
-          margin-left: auto;
-          margin-right: auto;
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
-        }
-      {%- when 'page_fluid' -%}
-        #Banner-{{ section.id }} .banner__content {
-          max-width: none;
-          padding-left: 5rem;
-          padding-right: 5rem;
-        }
-    {%- endcase -%}
+    #Banner-{{ section.id }} .banner__content {
+      {%- if content_layout == 'contained' -%}
+        max-width: var(--page-width);
+        margin-left: auto;
+        margin-right: auto;
+      {%- else -%}
+        max-width: 100%;
+      {%- endif -%}
+      padding-top: {{ cp_top }}px;
+      padding-bottom: {{ cp_bottom }}px;
+      padding-left: {{ cp_left }}px;
+      padding-right: {{ cp_right }}px;
+    }
   {%- endstyle -%}
 
   <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
@@ -682,17 +658,59 @@
       "info": "Determina quale parte del video e visibile quando viene tagliato. Non si applica con altezza \"Naturale\"."
     },
     {
+      "type": "header",
+      "content": "Contenitore contenuto"
+    },
+    {
       "type": "select",
-      "id": "content_width",
+      "id": "content_layout",
       "label": "Larghezza contenuto",
       "options": [
-        { "label": "Stretta (narrow)", "value": "narrow" },
-        { "label": "Larghezza pagina", "value": "page_width" },
-        { "label": "Larghezza fluida", "value": "page_fluid" },
-        { "label": "Piena larghezza", "value": "full_width" }
+        { "label": "Segue il banner (piena larghezza)", "value": "full" },
+        { "label": "In container (larghezza pagina)", "value": "contained" }
       ],
-      "default": "page_width",
-      "info": "Larghezza dell'area in cui si posiziona il contenuto sovrapposto (titolo, testo, pulsanti). Indipendente dalla larghezza del blocco video."
+      "default": "full",
+      "info": "\"In container\" limita l'area del contenuto alla larghezza pagina centrata."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top",
+      "label": "Padding superiore",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "label": "Padding inferiore",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_left",
+      "label": "Padding sinistro",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_right",
+      "label": "Padding destro",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "select",
