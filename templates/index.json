@@ -15,10 +15,22 @@
       "settings": {
         "section_width": "full_width",
         "color_scheme": "scheme-fb99357c-7b99-4827-bcc9-c062e65946ed",
+        "video_mode": "background",
         "enable_video_looping": true,
         "video": "shopify://files/videos/TheHybridIntelligence.mp4",
         "video_url": "",
-        "description": "Video a riguardo AI Powered Digital Acceleration"
+        "description": "Video a riguardo AI Powered Digital Acceleration",
+        "video_height": "medium",
+        "overlay_opacity": 0,
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true,
+        "show_controls": true,
+        "controls_position": "bottom-right",
+        "icon_mute": "icon-volume-mute.svg",
+        "icon_unmute": "icon-volume.svg"
       }
     },
     "collection_list_cwXwB8": {
