@@ -374,7 +374,7 @@
       "settings": {
         "section_width": "full_width",
         "mobile_full_width": false,
-        "color_scheme": "",
+        "color_scheme": "scheme-1",
         "image_height": "medium",
         "image_behavior": "none",
         "image_overlay_opacity": 0,
