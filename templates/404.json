@@ -54,10 +54,132 @@
         "button_icon": "",
         "button_icon_position": "before"
       }
+    },
+    "ms_rich_text_mEjBEM": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "section_padding_pi8chX": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 30,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 30
+          }
+        },
+        "heading_tUHGpp": {
+          "type": "heading",
+          "settings": {
+            "heading": "Pagina non trovata",
+            "heading_size": "h1",
+            "title_tag": "h1",
+            "title_custom_class": ""
+          }
+        },
+        "text_WabLJ7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Purtroppo la pagina che cercavi non è più disponibile nel nostro sito.<br/>naviga tra le categorie dello shop ...</p>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_pi8chX",
+        "heading_tUHGpp",
+        "text_WabLJ7"
+      ],
+      "name": "MS Rich Text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
+      }
+    },
+    "ms_render_menu_DfzMgk": {
+      "type": "ms_render_menu",
+      "name": "MS Render Menu",
+      "settings": {
+        "menu": "shop_categorie",
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "alignment": "center",
+        "style": "pills",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "ms_rich_text_t3RkKg": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "section_padding_EHeXWf": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 30,
+            "section_padding_bottom": 30,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 30
+          }
+        },
+        "text_BWD8E8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>... oppure approfondisci i tuoi argomenti preferiti nel nostro blog ...</p>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_EHeXWf",
+        "text_BWD8E8"
+      ],
+      "name": "MS Rich Text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
+      }
+    },
+    "ms_render_menu_qbGiFW": {
+      "type": "ms_render_menu",
+      "blocks": {
+        "section_padding_dXWH8U": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_dXWH8U"
+      ],
+      "name": "MS Render Menu",
+      "settings": {
+        "menu": "menu-categorie-blog",
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "alignment": "center",
+        "style": "pills",
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
     "ms_rive_animation_D9K7Lw",
-    "main"
+    "main",
+    "ms_rich_text_mEjBEM",
+    "ms_render_menu_DfzMgk",
+    "ms_rich_text_t3RkKg",
+    "ms_render_menu_qbGiFW"
   ]
 }
