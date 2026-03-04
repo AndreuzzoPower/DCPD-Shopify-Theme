@@ -9,53 +9,6 @@
  */
 {
   "sections": {
-    "ms_rive_animation_D9K7Lw": {
-      "type": "ms_rive-animation",
-      "blocks": {
-        "section_margin_Bbp9Cq": {
-          "type": "section_margin",
-          "settings": {
-            "section_margin_top": 0,
-            "section_margin_bottom": 0,
-            "section_margin_top_md": 0,
-            "section_margin_bottom_md": 0,
-            "section_margin_top_xs": 0,
-            "section_margin_bottom_xs": 0
-          }
-        },
-        "section_padding_qrBj3x": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 35,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "section_margin_Bbp9Cq",
-        "section_padding_qrBj3x"
-      ],
-      "name": "MS Rive Animation",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "color_scheme": "",
-        "max_width": 1600,
-        "horizontal_align": "center",
-        "aspect_ratio": "16-9",
-        "custom_height": 100,
-        "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/404.riv?v=1772615983",
-        "state_machine": "",
-        "autoplay": true,
-        "loop": true,
-        "custom_js": "",
-        "aria_label": "Contenuto animato 404"
-      }
-    },
     "main": {
       "type": "main-404",
       "disabled": true,
@@ -184,14 +137,61 @@
         "style": "pills",
         "color_scheme": "scheme-1"
       }
+    },
+    "ms_rive_animation_D9K7Lw": {
+      "type": "ms_rive-animation",
+      "blocks": {
+        "section_margin_Bbp9Cq": {
+          "type": "section_margin",
+          "settings": {
+            "section_margin_top": 0,
+            "section_margin_bottom": 0,
+            "section_margin_top_md": 0,
+            "section_margin_bottom_md": 0,
+            "section_margin_top_xs": 0,
+            "section_margin_bottom_xs": 0
+          }
+        },
+        "section_padding_qrBj3x": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_margin_Bbp9Cq",
+        "section_padding_qrBj3x"
+      ],
+      "name": "MS Rive Animation",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "max_width": 1600,
+        "horizontal_align": "center",
+        "aspect_ratio": "16-9",
+        "custom_height": 100,
+        "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/404.riv?v=1772615983",
+        "state_machine": "",
+        "autoplay": true,
+        "loop": true,
+        "custom_js": "",
+        "aria_label": "Contenuto animato 404"
+      }
     }
   },
   "order": [
-    "ms_rive_animation_D9K7Lw",
     "main",
     "ms_rich_text_mEjBEM",
     "ms_render_menu_DfzMgk",
     "ms_rich_text_t3RkKg",
-    "ms_render_menu_qbGiFW"
+    "ms_render_menu_qbGiFW",
+    "ms_rive_animation_D9K7Lw"
   ]
 }
