@@ -26,11 +26,11 @@
         "section_padding_pi8chX": {
           "type": "section_padding",
           "settings": {
-            "section_padding_top": 0,
+            "section_padding_top": 50,
             "section_padding_bottom": 30,
-            "section_padding_top_md": 0,
+            "section_padding_top_md": 30,
             "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 0,
+            "section_padding_top_xs": 30,
             "section_padding_bottom_xs": 30
           }
         },
@@ -112,22 +112,6 @@
     },
     "ms_render_menu_qbGiFW": {
       "type": "ms_render_menu",
-      "blocks": {
-        "section_padding_dXWH8U": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 50,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_dXWH8U"
-      ],
       "name": "MS Render Menu",
       "settings": {
         "menu": "menu-categorie-blog",
