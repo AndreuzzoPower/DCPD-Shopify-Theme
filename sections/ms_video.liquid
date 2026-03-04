@@ -160,6 +160,11 @@
     #Banner-{{ section.id }}::after {
       opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
     }
+    {%- if section.settings.video_height == 'natural' -%}
+      #Banner-{{ section.id }} .ms-video-banner__media {
+        aspect-ratio: {{ section.settings.video.aspect_ratio | default: 1.7778 }};
+      }
+    {%- endif -%}
   {%- endstyle -%}
 
   <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
