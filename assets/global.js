@@ -239,28 +239,37 @@ class QuantityInput extends HTMLElement {
   }
 
   onInputChange(event) {
+    const msMin = parseInt(this.input.dataset.min) || 0;
+    const value = parseInt(this.input.value);
+    if (msMin > 1 && value > 0 && value < msMin) {
+      this.input.value = msMin;
+    }
     this.validateQtyRules();
   }
 
   onButtonClick(event) {
     event.preventDefault();
     const previousValue = this.input.value;
+    const msMin = parseInt(this.input.dataset.min) || 0;
 
     if (event.target.name === 'plus') {
-      if (parseInt(this.input.dataset.min) > parseInt(this.input.step) && this.input.value == 0) {
-        this.input.value = this.input.dataset.min;
+      if (msMin > 1 && parseInt(this.input.value) < msMin) {
+        this.input.value = msMin;
       } else {
         this.input.stepUp();
       }
     } else {
-      this.input.stepDown();
+      if (msMin > 1 && parseInt(this.input.value) <= msMin) {
+        this.input.value = parseInt(this.input.min);
+      } else {
+        this.input.stepDown();
+        if (msMin > 1 && parseInt(this.input.value) > 0 && parseInt(this.input.value) < msMin) {
+          this.input.value = msMin;
+        }
+      }
     }
 
     if (previousValue !== this.input.value) this.input.dispatchEvent(this.changeEvent);
-
-    if (this.input.dataset.min === previousValue && event.target.name === 'minus') {
-      this.input.value = parseInt(this.input.min);
-    }
   }
 
   validateQtyRules() {
