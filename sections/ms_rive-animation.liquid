@@ -62,7 +62,7 @@
         data-autoplay="{{ section.settings.autoplay }}"
         data-loop="{{ section.settings.loop }}"
       >
-        <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}">
+        <div class="rive-animation__container {{ aspect_ratio_class }}">
           <canvas
             id="rive-canvas-{{ section.id }}"
             class="rive-animation__canvas"
@@ -78,7 +78,7 @@
         {%- endif -%}
       </rive-animation>
     {%- else -%}
-      <div class="rive-animation__container {{ aspect_ratio_class }} global-media-settings{% if sw == 'full_width' %} global-media-settings--full-width{% endif %}">
+      <div class="rive-animation__container {{ aspect_ratio_class }}">
         <div class="rive-animation__placeholder" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 200px; background: rgba(var(--color-foreground), 0.04); border-radius: var(--media-radius);">
           <p style="color: rgba(var(--color-foreground), 0.5); text-align: center; padding: 2rem;">
             Inserisci un URL di file Rive (.riv) per visualizzare l'animazione
