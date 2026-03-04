@@ -124,8 +124,7 @@
           autocomplete="off"
           aria-required="true"
           aria-describedby="ms-invoice-piva-error-{{ invoice_uid }}"
-          maxlength="11"
-          inputmode="numeric"
+          maxlength="20"
           value="{{ cart.attributes['Partita IVA'] | escape }}"
         >
         <p id="ms-invoice-piva-error-{{ invoice_uid }}" class="ms-invoice-request__field-error" role="alert" aria-live="assertive" hidden></p>
@@ -182,24 +181,34 @@
 
       var RE_CF = /^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/i;
       var RE_CF_TEMP = /^\d{11}$/;
-      var RE_PIVA = /^\d{11}$/;
       var RE_SDI = /^[A-Z0-9]{7}$/i;
       var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-      function validatePartitaIVA(val) {
-        if (!RE_PIVA.test(val)) return false;
-        var digits = val.split('').map(Number);
+      var RE_EU_VAT = /^(ATU\d{8}|BE0?\d{9}|BG\d{9,10}|CY\d{8}[A-Z]|CZ\d{8,10}|DE\d{9}|DK\d{8}|EE\d{9}|(EL|GR)\d{9}|ES[A-Z0-9]\d{7}[A-Z0-9]|FI\d{8}|FR[A-HJ-NP-Z0-9]{2}\d{9}|HR\d{11}|HU\d{8}|IE\d{7}[A-W][A-I0-9]?|IT\d{11}|LT(\d{9}|\d{12})|LU\d{8}|LV\d{11}|MT\d{8}|NL\d{9}B\d{2}|PL\d{10}|PT\d{9}|RO\d{2,10}|SE\d{10}01|SI\d{8}|SK\d{10}|XI\d{9}|GB\d{9}(\d{3})?)$/;
+
+      function checkItalianPIVA(digits11) {
+        var d = digits11.split('').map(Number);
         var sumOdd = 0;
         var sumEven = 0;
         for (var i = 0; i < 10; i++) {
           if (i % 2 === 0) {
-            sumOdd += digits[i];
+            sumOdd += d[i];
           } else {
-            var d = digits[i] * 2;
-            sumEven += d > 9 ? d - 9 : d;
+            var x = d[i] * 2;
+            sumEven += x > 9 ? x - 9 : x;
           }
         }
-        return (10 - ((sumOdd + sumEven) % 10)) % 10 === digits[10];
+        return (10 - ((sumOdd + sumEven) % 10)) % 10 === d[10];
+      }
+
+      function validatePartitaIVA(raw) {
+        var val = raw.toUpperCase().replace(/[\s.\-]/g, '');
+        if (!val) return false;
+        if (/^\d{11}$/.test(val)) return checkItalianPIVA(val);
+        if (/^IT\d{11}$/.test(val)) return checkItalianPIVA(val.substring(2));
+        if (RE_EU_VAT.test(val)) return true;
+        if (/^[A-Z]{2}[A-Z0-9]{2,18}$/.test(val)) return true;
+        return false;
       }
 
       class MsInvoiceRequest extends HTMLElement {

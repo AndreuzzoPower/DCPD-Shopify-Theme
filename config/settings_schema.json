@@ -1817,7 +1817,7 @@
         "type": "text",
         "id": "ms_invoice_error_partita_iva",
         "label": "Errore Partita IVA",
-        "default": "Inserisci una partita IVA valida (11 cifre)"
+        "default": "Inserisci una partita IVA valida"
       },
       {
         "type": "text",
