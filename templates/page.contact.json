@@ -102,6 +102,17 @@
     "ms_rich_text_4wUY6q": {
       "type": "ms_rich-text",
       "blocks": {
+        "section_padding_wJUrEY": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 0,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 50,
+            "section_padding_bottom_xs": 0
+          }
+        },
         "heading_p8hYUa": {
           "type": "heading",
           "settings": {
@@ -119,6 +130,7 @@
         }
       },
       "block_order": [
+        "section_padding_wJUrEY",
         "heading_p8hYUa",
         "text_zGkMeP"
       ],
