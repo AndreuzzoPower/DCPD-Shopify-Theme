@@ -22,6 +22,8 @@
         "description": "Video a riguardo AI Powered Digital Acceleration",
         "video_height": "viewport",
         "overlay_opacity": 0,
+        "video_fit": "contain",
+        "video_position": "center",
         "desktop_content_position": "middle-center",
         "desktop_content_alignment": "center",
         "show_text_box": false,
@@ -29,6 +31,7 @@
         "show_text_below": false,
         "show_controls": false,
         "controls_position": "bottom-right",
+        "controls_theme": "dark",
         "icon_mute": "icon-volume-mute.svg",
         "icon_unmute": "icon-volume.svg"
       }
