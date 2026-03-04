@@ -64,13 +64,24 @@
     "form": {
       "type": "ms_contact-form",
       "blocks": {
-        "campo-nome": {
+        "field_text_VdLV6N": {
           "type": "field_text",
           "settings": {
             "field_name": "Nome",
             "label": "Nome",
             "label_mode": "label",
-            "required": false,
+            "required": true,
+            "cols": "6",
+            "autocomplete": "none"
+          }
+        },
+        "campo-nome": {
+          "type": "field_text",
+          "settings": {
+            "field_name": "Cognome",
+            "label": "Cognome",
+            "label_mode": "label",
+            "required": true,
             "cols": "6",
             "autocomplete": "name"
           }
@@ -108,6 +119,7 @@
         }
       },
       "block_order": [
+        "field_text_VdLV6N",
         "campo-nome",
         "campo-email",
         "campo-telefono",
