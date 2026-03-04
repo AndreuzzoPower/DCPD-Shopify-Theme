@@ -260,7 +260,7 @@ class QuantityInput extends HTMLElement {
       }
     } else {
       if (msMin > 1 && parseInt(this.input.value) <= msMin) {
-        this.input.value = parseInt(this.input.min);
+        this.input.value = msMin;
       } else {
         this.input.stepDown();
         if (msMin > 1 && parseInt(this.input.value) > 0 && parseInt(this.input.value) < msMin) {
