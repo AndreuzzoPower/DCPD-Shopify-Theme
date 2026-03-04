@@ -15,6 +15,9 @@
   .drawer {
     visibility: hidden;
   }
+  .drawer__footer .cart__ctas {
+    margin-top: 3rem;
+  }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
@@ -160,6 +163,27 @@
                             </div>
                           {%- endif -%}
 
+                          {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+                            {%- liquid
+                              assign drawer_unit_rate = settings.ms_iva_rate | plus: 0
+                              if item.product.metafields.custom.aliquota_iva.value
+                                assign drawer_unit_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                              endif
+                              assign drawer_unit_divisor = 100.0 | plus: drawer_unit_rate
+                              if settings.ms_iva_prices_included
+                                assign drawer_unit_iva = item.final_price | times: drawer_unit_rate | divided_by: drawer_unit_divisor | round
+                              else
+                                assign drawer_unit_iva = item.final_price | times: drawer_unit_rate | divided_by: 100.0 | round
+                              endif
+                              if settings.currency_code_enabled
+                                assign drawer_unit_iva_fmt = drawer_unit_iva | money_with_currency
+                              else
+                                assign drawer_unit_iva_fmt = drawer_unit_iva | money
+                              endif
+                            -%}
+                            <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', drawer_unit_iva_fmt }}</div>
+                          {%- endif -%}
+
                           {%- if item.product.has_only_default_variant == false
                             or item.properties.size != 0
                             or item.selling_plan_allocation != null
@@ -240,6 +264,27 @@
                               <span class="price price--end">
                                 {{ item.original_line_price | money }}
                               </span>
+                            {%- endif -%}
+
+                            {%- if settings.ms_show_iva and localization.country.iso_code == 'IT' -%}
+                              {%- liquid
+                                assign drawer_line_rate = settings.ms_iva_rate | plus: 0
+                                if item.product.metafields.custom.aliquota_iva.value
+                                  assign drawer_line_rate = item.product.metafields.custom.aliquota_iva.value | plus: 0
+                                endif
+                                assign drawer_line_divisor = 100.0 | plus: drawer_line_rate
+                                if settings.ms_iva_prices_included
+                                  assign drawer_line_iva = item.final_line_price | times: drawer_line_rate | divided_by: drawer_line_divisor | round
+                                else
+                                  assign drawer_line_iva = item.final_line_price | times: drawer_line_rate | divided_by: 100.0 | round
+                                endif
+                                if settings.currency_code_enabled
+                                  assign drawer_line_iva_fmt = drawer_line_iva | money_with_currency
+                                else
+                                  assign drawer_line_iva_fmt = drawer_line_iva | money
+                                endif
+                              -%}
+                              <div class="price__iva caption">{{ settings.ms_iva_label | replace: '-amount-', drawer_line_iva_fmt }}</div>
                             {%- endif -%}
 
                             {%- if item.variant.available and item.unit_price_measurement -%}
