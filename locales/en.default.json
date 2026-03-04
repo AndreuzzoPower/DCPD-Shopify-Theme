@@ -331,7 +331,8 @@
       "login": {
         "title": "Have an account?",
         "paragraph_html": "<a href=\"{{ link }}\" class=\"link underlined-link\">Log in</a> to check out faster."
-      }
+      },
+      "terms_error": "You must accept the terms and conditions to proceed to checkout"
     },
     "footer": {
       "payment": "Payment methods"

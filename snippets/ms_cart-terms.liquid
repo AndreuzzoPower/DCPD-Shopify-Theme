@@ -1,0 +1,101 @@
+{%- comment -%}
+  Renders a terms and conditions acceptance checkbox that blocks checkout.
+
+  Accepts:
+  - checkout_id: {String} The ID of the checkout button to control.
+
+  Usage:
+  {%- render 'ms_cart-terms', checkout_id: 'checkout' -%}
+  {%- render 'ms_cart-terms', checkout_id: 'CartDrawer-Checkout' -%}
+{%- endcomment -%}
+
+{%- if settings.ms_terms_enabled -%}
+  {{ 'ms_cart-terms.css' | asset_url | stylesheet_tag }}
+
+  {%- assign terms_uid = checkout_id | default: 'checkout' -%}
+
+  <ms-cart-terms class="ms-cart-terms" data-checkout-id="{{ terms_uid }}">
+    <div class="ms-cart-terms__field">
+      <input
+        type="checkbox"
+        id="ms-terms-{{ terms_uid }}"
+        class="ms-cart-terms__checkbox"
+        aria-describedby="ms-terms-error-{{ terms_uid }}"
+        aria-required="true"
+      >
+      <label for="ms-terms-{{ terms_uid }}" class="ms-cart-terms__label">
+        {{ settings.ms_terms_label }}
+      </label>
+    </div>
+    <p
+      id="ms-terms-error-{{ terms_uid }}"
+      class="ms-cart-terms__error"
+      role="alert"
+      aria-live="assertive"
+      hidden
+    >
+      {{ 'sections.cart.terms_error' | t }}
+    </p>
+  </ms-cart-terms>
+
+  <script>
+    (function () {
+      if (customElements.get('ms-cart-terms')) return;
+
+      class MsCartTerms extends HTMLElement {
+        connectedCallback() {
+          this.checkbox = this.querySelector('.ms-cart-terms__checkbox');
+          this.errorEl = this.querySelector('.ms-cart-terms__error');
+          this.checkoutBtn = document.getElementById(this.dataset.checkoutId);
+
+          if (!this.checkbox || !this.checkoutBtn) return;
+
+          this.otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled');
+
+          var ctasContainer = this.checkoutBtn.closest('.cart__ctas');
+          if (ctasContainer) {
+            var next = ctasContainer.nextElementSibling;
+            this.dynamicCheckout = next && next.classList.contains('cart__dynamic-checkout-buttons') ? next : null;
+          }
+
+          this.syncState();
+          this.checkbox.addEventListener('change', this.syncState.bind(this));
+
+          var form = this.checkoutBtn.form || document.getElementById(this.checkoutBtn.getAttribute('form'));
+          if (form) {
+            form.addEventListener('submit', function (e) {
+              if (!this.checkbox.checked) {
+                e.preventDefault();
+                this.showError();
+              }
+            }.bind(this));
+          }
+        }
+
+        syncState() {
+          var accepted = this.checkbox.checked;
+          this.checkoutBtn.disabled = !accepted || this.otherDisabled;
+
+          if (this.dynamicCheckout) {
+            this.dynamicCheckout.hidden = !accepted || this.otherDisabled;
+          }
+
+          if (accepted) this.hideError();
+        }
+
+        showError() {
+          this.errorEl.hidden = false;
+          this.checkbox.setAttribute('aria-invalid', 'true');
+          this.checkbox.focus();
+        }
+
+        hideError() {
+          this.errorEl.hidden = true;
+          this.checkbox.removeAttribute('aria-invalid');
+        }
+      }
+
+      customElements.define('ms-cart-terms', MsCartTerms);
+    })();
+  </script>
+{%- endif -%}

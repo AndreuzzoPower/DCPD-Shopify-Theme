@@ -596,6 +596,8 @@
             endfor
           endif
         -%}
+        {%- render 'ms_cart-terms', checkout_id: 'CartDrawer-Checkout' -%}
+
         <div class="cart__ctas" {{ block.shopify_attributes }}>
           <button
             type="submit"
@@ -604,6 +606,10 @@
             name="checkout"
             form="CartDrawer-Form"
             {% if cart == empty or ms_min_order_violation %}
+              disabled
+              data-ms-other-disabled
+            {% endif %}
+            {% if settings.ms_terms_enabled %}
               disabled
             {% endif %}
           >

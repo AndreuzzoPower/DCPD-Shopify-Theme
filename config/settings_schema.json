@@ -1758,6 +1758,23 @@
       },
       {
         "type": "header",
+        "content": "Termini e condizioni"
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_terms_enabled",
+        "label": "Richiedi accettazione termini e condizioni",
+        "default": false,
+        "info": "Se attivo, mostra un checkbox obbligatorio nel carrello prima del pulsante di checkout. L'utente deve accettare per poter procedere."
+      },
+      {
+        "type": "inline_richtext",
+        "id": "ms_terms_label",
+        "label": "Testo del checkbox",
+        "default": "Accetto i <a href=\"/pages/termini-e-condizioni\">termini e condizioni</a> di vendita"
+      },
+      {
+        "type": "header",
         "content": "t:settings_schema.cart.settings.cart_drawer.header"
       },
       {

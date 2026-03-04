@@ -324,7 +324,8 @@
       "duties_included_taxes_at_checkout_shipping_at_checkout_with_policy_html": "Dazi inclusi. Imposte, sconti e <a href=\"{{ link }}\">spedizione</a> calcolati al check-out.",
       "duties_included_taxes_at_checkout_shipping_at_checkout_without_policy": "Dazi inclusi. Imposte, sconti e spedizione calcolati al check-out.",
       "taxes_at_checkout_shipping_at_checkout_with_policy_html": "Imposte, sconti e <a href=\"{{ link }}\">spedizione</a> calcolati al check-out.",
-      "taxes_at_checkout_shipping_at_checkout_without_policy": "Imposte, sconti e spedizione calcolati al check-out."
+      "taxes_at_checkout_shipping_at_checkout_without_policy": "Imposte, sconti e spedizione calcolati al check-out.",
+      "terms_error": "Devi accettare i termini e le condizioni per procedere al checkout"
     },
     "footer": {
       "payment": "Metodi di pagamento"

@@ -153,6 +153,8 @@
                 </small>
               </div>
             {%- else -%}
+              {%- render 'ms_cart-terms', checkout_id: 'checkout' -%}
+
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
@@ -160,6 +162,10 @@
                   class="cart__checkout-button button"
                   name="checkout"
                   {% if cart == empty or ms_min_order_violation %}
+                    disabled
+                    data-ms-other-disabled
+                  {% endif %}
+                  {% if settings.ms_terms_enabled %}
                     disabled
                   {% endif %}
                   form="cart"
@@ -169,7 +175,9 @@
               </div>
 
               {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
+                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons"
+                  {%- if settings.ms_terms_enabled %} hidden{% endif -%}
+                >
                   {{ content_for_additional_checkout_buttons }}
                 </div>
               {%- endif -%}
