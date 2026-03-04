@@ -135,7 +135,7 @@
       ],
       "name": "MS Custom HTML/LIQUID",
       "settings": {
-        "section_width": "page_fluid",
+        "section_width": "full_width",
         "mobile_full_width": false,
         "color_scheme": ""
       }
