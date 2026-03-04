@@ -152,25 +152,13 @@
         aspect-ratio: {{ section.settings.video.aspect_ratio | default: 1.7778 }};
       }
     {%- endif -%}
-    #Banner-{{ section.id }} .banner__content {
-      {%- if content_layout == 'contained' -%}
-        max-width: var(--page-width);
-        margin-left: auto;
-        margin-right: auto;
-      {%- else -%}
-        max-width: 100%;
-      {%- endif -%}
-      padding-top: {{ cp_top }}px;
-      padding-bottom: {{ cp_bottom }}px;
-      padding-left: {{ cp_left }}px;
-      padding-right: {{ cp_right }}px;
-    }
   {%- endstyle -%}
 
   <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
     <ms-video-bg
       id="Banner-{{ section.id }}"
       class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}{% if section.settings.video_height == 'natural' %} ms-video-banner--natural{% else %} banner--{{ section.settings.video_height }}{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      style="--ms-content-pt:{{ cp_top }}px;--ms-content-pb:{{ cp_bottom }}px;--ms-content-pl:{{ cp_left }}px;--ms-content-pr:{{ cp_right }}px;--ms-content-max-w:{% if content_layout == 'contained' %}var(--page-width){% else %}100%{% endif %};"
       data-playing
       data-muted
     >
