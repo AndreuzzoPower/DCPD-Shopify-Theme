@@ -44,7 +44,7 @@
         "description": "Video a riguardo AI Powered Digital Acceleration",
         "video_height": "natural",
         "overlay_opacity": 0,
-        "video_position": "bottom",
+        "video_position": "center",
         "content_width": "full_width",
         "desktop_content_position": "top-left",
         "desktop_content_alignment": "left",
