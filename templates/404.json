@@ -9,8 +9,28 @@
  */
 {
   "sections": {
+    "ms_rive_animation_D9K7Lw": {
+      "type": "ms_rive-animation",
+      "name": "MS Rive Animation",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "max_width": 0,
+        "horizontal_align": "center",
+        "aspect_ratio": "16-9",
+        "custom_height": 400,
+        "rive_url": "https://cdn.shopify.com/s/files/1/0861/1106/0296/files/404.riv?v=1772615983",
+        "state_machine": "",
+        "autoplay": true,
+        "loop": true,
+        "custom_js": "",
+        "aria_label": "Contenuto animato"
+      }
+    },
     "main": {
       "type": "main-404",
+      "disabled": true,
       "settings": {
         "button_size": "default",
         "button_style_secondary": false,
@@ -21,6 +41,7 @@
     }
   },
   "order": [
+    "ms_rive_animation_D9K7Lw",
     "main"
   ]
 }
