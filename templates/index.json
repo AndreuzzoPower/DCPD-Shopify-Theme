@@ -9,41 +9,6 @@
  */
 {
   "sections": {
-    "ms_divider_K8eL66": {
-      "type": "ms_divider",
-      "blocks": {
-        "section_background_CAhQiw": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "section_background_CAhQiw"
-      ],
-      "name": "MS Divisore",
-      "settings": {
-        "section_width": "full_width",
-        "mobile_full_width": false,
-        "color_scheme": "scheme-5",
-        "divider_type": "waves",
-        "fill_mode": "gradient",
-        "divider_color": "#121212",
-        "gradient_color_1": "#0aeaed",
-        "gradient_color_2": "#fa0dfd",
-        "gradient_color_3": "#0aeaed",
-        "gradient_angle": 0,
-        "gradient_css": "linear-gradient(136deg, rgba(10, 234, 237, 1) 11%, rgba(250, 13, 253, 1) 82%)",
-        "fill_image": "shopify://shop_images/download.jpg",
-        "divider_height": 80,
-        "divider_height_mobile": 50,
-        "flip_horizontal": false,
-        "flip_vertical": true,
-        "line_weight": 1,
-        "line_style": "solid"
-      }
-    },
     "collection_list_cwXwB8": {
       "type": "ms_collection-list",
       "blocks": {
@@ -1613,6 +1578,7 @@
     },
     "ms_divider_NGpeWm": {
       "type": "ms_divider",
+      "disabled": true,
       "name": "MS Divisore",
       "settings": {
         "section_width": "full_width",
@@ -1636,7 +1602,6 @@
     }
   },
   "order": [
-    "ms_divider_K8eL66",
     "collection_list_cwXwB8",
     "featured_product_WBJUd7",
     "ms_rich_text_XjDUaG",
