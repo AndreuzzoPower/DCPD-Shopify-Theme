@@ -70,12 +70,12 @@
         "color_scheme": "scheme-1",
         "mask_shape": "waves",
         "flip_horizontal": false,
-        "flip_vertical": false,
-        "mask_color": "#000000",
-        "mask_height": 300,
+        "flip_vertical": true,
+        "mask_color": "#ffffff",
+        "mask_height": 90,
         "mask_height_mobile": 60,
         "mask_position": "above",
-        "overlap": 155,
+        "overlap": 90,
         "overlap_mobile": 60,
         "z_index": 7
       }
