@@ -1,0 +1,33 @@
+.ms-mega-extra__wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 0 4rem;
+  width: 100%;
+}
+
+.ms-mega-extra__menu-area {
+  grid-column: span var(--ms-mega-extra-menu-cols, 8);
+}
+
+.ms-mega-extra__content-area {
+  grid-column: span var(--ms-mega-extra-content-cols, 4);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--ms-blocks-gap, 1.5rem);
+  align-items: start;
+  align-content: start;
+}
+
+.ms-mega-extra__content-area .ms-block {
+  min-width: 0;
+}
+
+.ms-mega-extra__content-area .ms-block img,
+.ms-mega-extra__content-area .ms-block video {
+  max-width: 100%;
+  height: auto;
+}
+
+.ms-mega-extra__menu-area .mega-menu__list {
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+}

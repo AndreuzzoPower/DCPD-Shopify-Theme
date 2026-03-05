@@ -1,0 +1,150 @@
+{%- comment -%}
+  MS Mega Menu Extra
+  ═══════════════════════════════════════════════════════════════
+  Aggiunge contenuti extra (theme blocks) a una voce specifica
+  del mega menu dell'header. Ogni istanza di questa sezione
+  gestisce una singola voce di menu, identificata tramite handle.
+  Il contenuto viene riposizionato via JS nel pannello mega menu
+  corrispondente.
+  CSS dedicato: assets/ms_mega-menu-extra.css
+{%- endcomment -%}
+
+{{ 'ms_mega-menu-extra.css' | asset_url | stylesheet_tag }}
+{{ 'ms_blocks.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.menu_handle != blank -%}
+  <div
+    class="ms-mega-menu-extra"
+    style="display:none"
+    data-ms-mega-extra-target="{{ section.settings.menu_handle | handleize }}"
+    data-ms-mega-extra-menu-cols="{{ section.settings.menu_columns }}"
+    data-ms-mega-extra-content-cols="{{ section.settings.content_columns }}"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="ms-blocks-grid">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      function initMegaMenuExtra() {
+        var containers = document.querySelectorAll('.ms-mega-menu-extra[data-ms-mega-extra-target]');
+
+        for (var i = 0; i < containers.length; i++) {
+          var container = containers[i];
+          if (container.dataset.msProcessed) continue;
+
+          var handle = container.dataset.msMegaExtraTarget;
+          var menuCols = parseInt(container.dataset.msMegaExtraMenuCols, 10) || 8;
+          var contentCols = parseInt(container.dataset.msMegaExtraContentCols, 10) || 4;
+
+          var megaMenu = document.querySelector('details.mega-menu[data-menu-handle="' + handle + '"]');
+          if (!megaMenu) continue;
+
+          var megaContent = megaMenu.querySelector('.mega-menu__content');
+          var megaList = megaContent ? megaContent.querySelector('.mega-menu__list') : null;
+          if (!megaContent || !megaList) continue;
+
+          if (megaContent.querySelector('.ms-mega-extra__wrapper')) continue;
+
+          var wrapper = document.createElement('div');
+          wrapper.className = 'ms-mega-extra__wrapper page-width';
+          wrapper.style.setProperty('--ms-mega-extra-menu-cols', menuCols);
+          wrapper.style.setProperty('--ms-mega-extra-content-cols', contentCols);
+
+          var menuArea = document.createElement('div');
+          menuArea.className = 'ms-mega-extra__menu-area';
+
+          megaList.classList.remove('page-width');
+          menuArea.appendChild(megaList);
+
+          var contentArea = document.createElement('div');
+          contentArea.className = 'ms-mega-extra__content-area';
+
+          var blocksGrid = container.querySelector('.ms-blocks-grid');
+          if (blocksGrid) {
+            while (blocksGrid.firstChild) {
+              contentArea.appendChild(blocksGrid.firstChild);
+            }
+          }
+
+          wrapper.appendChild(menuArea);
+          wrapper.appendChild(contentArea);
+          megaContent.insertBefore(wrapper, megaContent.firstChild);
+
+          container.dataset.msProcessed = 'true';
+          container.remove();
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMegaMenuExtra);
+      } else {
+        initMegaMenuExtra();
+      }
+
+      if (Shopify && Shopify.designMode) {
+        document.addEventListener('shopify:section:load', function() {
+          setTimeout(initMegaMenuExtra, 100);
+        });
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MS Mega Menu Extra",
+  "tag": "div",
+  "class": "ms-mega-menu-extra-section",
+  "blocks": [
+    { "type": "@theme" },
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Voce Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_handle",
+      "label": "Handle voce di menu",
+      "info": "Inserire l'handle della voce di menu a cui aggiungere i contenuti extra. L'handle e' la versione normalizzata del titolo: tutto minuscolo, trattini al posto degli spazi, senza caratteri speciali (es. \"chi-siamo\", \"prodotti\"). Corrisponde al data-menu-handle presente nel mega menu."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "menu_columns",
+      "min": 1,
+      "max": 11,
+      "step": 1,
+      "unit": "col",
+      "label": "Colonne menu",
+      "default": 8,
+      "info": "Numero di colonne (su base 12) dedicate ai link del menu."
+    },
+    {
+      "type": "range",
+      "id": "content_columns",
+      "min": 1,
+      "max": 11,
+      "step": 1,
+      "unit": "col",
+      "label": "Colonne contenuti extra",
+      "default": 4,
+      "info": "Numero di colonne (su base 12) dedicate ai blocchi extra. La somma con le colonne menu dovrebbe essere 12."
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Mega Menu Extra",
+      "category": "Navigazione"
+    }
+  ]
+}
+{% endschema %}
