@@ -355,6 +355,22 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "column_RTHpCB": {
+          "type": "column",
+          "settings": {
+            "title": "IVA ESPOSTA",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Il sistema, sempre da settaggi generali, permette la visualizzazione dell'iva esposta in ogni parte dove si preveda il prezzo. L'iva sarà impostabile come default nei settings ed eventualmente sovrascivibile a livello di ogni singolo prodotto tramite metafield.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
         }
       },
       "block_order": [
@@ -362,7 +378,8 @@
         "column_cjkdfj",
         "column_jB8mQQ",
         "column_FdXgw7",
-        "column_7DWF47"
+        "column_7DWF47",
+        "column_RTHpCB"
       ],
       "name": "MS Multicolonna",
       "settings": {
