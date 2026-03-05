@@ -35,6 +35,9 @@
     assign css_classes = css_classes | append: ' ms-mask--flip-y'
   endif
   assign css_classes = css_classes | append: ' ms-mask--' | append: mask_position
+  if section.settings.hide_on_mobile
+    assign css_classes = css_classes | append: ' ms-mask--hide-mobile'
+  endif
   if request.design_mode
     assign css_classes = css_classes | append: ' ms-mask--editor'
   endif
@@ -250,6 +253,13 @@
       "step": 1,
       "default": 2,
       "info": "Valore piu alto = la maschera sta sopra a piu elementi. Aumentare se la maschera finisce dietro alla sezione adiacente."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Nascondi su mobile",
+      "default": false,
+      "info": "Se attivo, la maschera non viene mostrata su schermi sotto i 750px."
     }
   ],
   "blocks": [

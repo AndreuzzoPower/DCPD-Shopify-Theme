@@ -60,4 +60,8 @@
   .ms-mask--below {
     margin-bottom: calc(-1 * var(--ms-mask-overlap-mobile, var(--ms-mask-overlap, 60px)));
   }
+
+  .ms-mask--hide-mobile {
+    display: none;
+  }
 }
