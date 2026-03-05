@@ -236,7 +236,7 @@
         "section_width": "full_width",
         "mobile_full_width": false,
         "color_scheme": "scheme-1",
-        "divider_type": "waves",
+        "divider_type": "waves_multi",
         "fill_mode": "solid",
         "divider_color": "#919191",
         "gradient_color_1": "#ffffff",
@@ -466,6 +466,29 @@
         "columns_mobile": "1",
         "swipe_on_mobile": true
       }
+    },
+    "ms_divider_qN8RVX": {
+      "type": "ms_divider",
+      "name": "MS Divisore",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "scheme-1",
+        "divider_type": "waves_multi",
+        "fill_mode": "solid",
+        "divider_color": "#919191",
+        "gradient_color_1": "#ffffff",
+        "gradient_color_2": "#000000",
+        "gradient_color_3": "",
+        "gradient_angle": 0,
+        "gradient_css": "",
+        "divider_height": 80,
+        "divider_height_mobile": 50,
+        "flip_horizontal": false,
+        "flip_vertical": true,
+        "line_weight": 1,
+        "line_style": "solid"
+      }
     }
   },
   "order": [
@@ -474,6 +497,7 @@
     "ms_multicolumn_dNmEq4",
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
-    "ms_multicolumn_Bh7pk7"
+    "ms_multicolumn_Bh7pk7",
+    "ms_divider_qN8RVX"
   ]
 }
