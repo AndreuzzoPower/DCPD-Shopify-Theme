@@ -139,7 +139,7 @@
       "name": "MS Mega Menu Extra",
       "settings": {
         "menu_handle": "pagine",
-        "menu_columns": 12,
+        "menu_columns": 6,
         "content_columns": 12
       }
     }
