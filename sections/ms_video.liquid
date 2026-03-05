@@ -141,6 +141,10 @@
     assign cp_bottom = section.settings.content_padding_bottom | default: 0
     assign cp_left   = section.settings.content_padding_left   | default: 0
     assign cp_right  = section.settings.content_padding_right  | default: 0
+    assign cp_top_m    = section.settings.content_padding_top_mobile
+    assign cp_bottom_m = section.settings.content_padding_bottom_mobile
+    assign cp_left_m   = section.settings.content_padding_left_mobile
+    assign cp_right_m  = section.settings.content_padding_right_mobile
   -%}
 
   {%- style -%}
@@ -152,12 +156,26 @@
         aspect-ratio: {{ section.settings.video.aspect_ratio | default: 1.7778 }};
       }
     {%- endif -%}
+    #Banner-{{ section.id }} .banner__content {
+      --ms-cp-top: {{ cp_top }}px;
+      --ms-cp-bottom: {{ cp_bottom }}px;
+      --ms-cp-left: {{ cp_left }}px;
+      --ms-cp-right: {{ cp_right }}px;
+    }
+    @media screen and (max-width: 749px) {
+      #Banner-{{ section.id }} .banner__content {
+        --ms-cp-top: {{ cp_top_m }}px;
+        --ms-cp-bottom: {{ cp_bottom_m }}px;
+        --ms-cp-left: {{ cp_left_m }}px;
+        --ms-cp-right: {{ cp_right_m }}px;
+      }
+    }
   {%- endstyle -%}
 
   <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
     <ms-video-bg
       id="Banner-{{ section.id }}"
-      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}{% if section.settings.video_height == 'natural' %} ms-video-banner--natural{% else %} banner--{{ section.settings.video_height }}{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }}{% if section.settings.video_height == 'natural' %} ms-video-banner--natural{% else %} banner--{{ section.settings.video_height }}{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{% endif %}{% if section.settings.hide_content_mobile %} ms-video--hide-content-mobile{% endif %}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
       data-playing
       data-muted
     >
@@ -232,7 +250,7 @@
         </div>
       {%- endif -%}
 
-      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="padding-top:{{ cp_top }}px;padding-bottom:{{ cp_bottom }}px;padding-left:{{ cp_left }}px;padding-right:{{ cp_right }}px;">
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="padding-top:var(--ms-cp-top);padding-bottom:var(--ms-cp-bottom);padding-left:var(--ms-cp-left);padding-right:var(--ms-cp-right);">
         {%- if content_layout == 'contained' -%}<div class="page-width" style="width:100%;">{%- endif -%}
         <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="{% unless section.settings.show_text_box %}padding:0;{% endunless %}max-width:none;min-width:0;">
           {%- for block in section.blocks -%}
@@ -295,6 +313,36 @@
         {%- if content_layout == 'contained' -%}</div>{%- endif -%}
       </div>
     </ms-video-bg>
+
+    {%- liquid
+      assign desktop_scheme = section.settings.color_scheme
+      assign mobile_scheme  = section.settings.mobile_color_scheme | default: desktop_scheme
+    -%}
+    {%- if mobile_scheme != desktop_scheme -%}
+      <script>
+        (function(){
+          var id = {{ section.id | json }};
+          var dClass = 'color-' + {{ desktop_scheme | json }};
+          var mClass = 'color-' + {{ mobile_scheme | json }};
+          var mql = window.matchMedia('(max-width: 749px)');
+          function apply(e){
+            var box = document.getElementById('Banner-' + id);
+            if(!box) return;
+            box = box.querySelector('.banner__box');
+            if(!box) return;
+            if(e.matches){
+              box.classList.remove(dClass);
+              box.classList.add(mClass);
+            } else {
+              box.classList.remove(mClass);
+              box.classList.add(dClass);
+            }
+          }
+          apply(mql);
+          mql.addEventListener('change', apply);
+        })();
+      </script>
+    {%- endif -%}
   </div>
 
 {%- else -%}
@@ -779,6 +827,10 @@
       "info": "Se disattivato, il contenuto appare su sfondo trasparente."
     },
     {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
       "type": "select",
       "id": "mobile_content_alignment",
       "label": "Allineamento testo mobile",
@@ -793,7 +845,62 @@
       "type": "checkbox",
       "id": "show_text_below",
       "label": "Mostra testo sotto il video su mobile",
-      "default": true
+      "default": true,
+      "info": "Se attivo, il contenuto viene posizionato sotto al video su schermi < 750px."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_content_mobile",
+      "label": "Nascondi contenuto su mobile",
+      "default": false,
+      "info": "Se attivo, l'intero box caption (titolo, testo, pulsanti) viene nascosto su schermi < 750px."
+    },
+    {
+      "type": "color_scheme",
+      "id": "mobile_color_scheme",
+      "label": "Schema colore mobile",
+      "default": "scheme-1",
+      "info": "Se diverso dallo schema colore principale, viene applicato al box contenuto solo su mobile."
+    },
+    {
+      "type": "range",
+      "id": "content_padding_top_mobile",
+      "label": "Padding superiore mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom_mobile",
+      "label": "Padding inferiore mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_left_mobile",
+      "label": "Padding sinistro mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_right_mobile",
+      "label": "Padding destro mobile",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",

@@ -252,4 +252,28 @@ ms-video-bg:not([data-muted]) .ms-video-controls__icon--muted {
     width: 1.6rem;
     height: 1.6rem;
   }
+
+  /* Fix banner--mobile-bottom: override absolute positioning so flexbox order works */
+  ms-video-bg.banner--mobile-bottom .banner__content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  ms-video-bg.ms-video-banner--natural.banner--mobile-bottom {
+    height: auto;
+    min-height: 0;
+  }
+
+  ms-video-bg.ms-video-banner--natural.banner--mobile-bottom .banner__media {
+    position: relative;
+    height: auto;
+  }
+
+  /* Hide content on mobile */
+  ms-video-bg.ms-video--hide-content-mobile .banner__content {
+    display: none;
+  }
 }
