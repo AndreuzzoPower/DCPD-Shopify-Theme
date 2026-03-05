@@ -53,7 +53,7 @@
         "desktop_content_position": "top-left",
         "desktop_content_alignment": "left",
         "show_text_box": false,
-        "mobile_content_alignment": "center",
+        "mobile_content_alignment": "left",
         "show_text_below": false,
         "show_controls": true,
         "controls_position": "bottom-right",
@@ -226,7 +226,7 @@
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
         "columns_mobile": "1",
-        "swipe_on_mobile": false
+        "swipe_on_mobile": true
       }
     },
     "ms_rich_text_fMywcR": {
@@ -276,6 +276,22 @@
     "ms_multicolumn_Bh7pk7": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_BzfMtC": {
+          "type": "column",
+          "settings": {
+            "title": "EXPERT ADVICE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "column_PMRyFm": {
           "type": "column",
           "settings": {
@@ -374,6 +390,7 @@
         }
       },
       "block_order": [
+        "column_BzfMtC",
         "column_PMRyFm",
         "column_cjkdfj",
         "column_jB8mQQ",
@@ -410,7 +427,7 @@
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
         "columns_mobile": "1",
-        "swipe_on_mobile": false
+        "swipe_on_mobile": true
       }
     },
     "ms_divider_NGpeWm": {
