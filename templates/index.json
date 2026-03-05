@@ -71,7 +71,7 @@
         "color_scheme": "scheme-1",
         "divider_type": "clouds",
         "fill_mode": "solid",
-        "divider_color": "#242833",
+        "divider_color": "#000000",
         "gradient_color_1": "#ffffff",
         "gradient_color_2": "#000000",
         "gradient_color_3": "",
@@ -132,6 +132,17 @@
     "ms_multicolumn_dNmEq4": {
       "type": "ms_multicolumn",
       "blocks": {
+        "section_padding_NcpX8U": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        },
         "column_qRBaXb": {
           "type": "column",
           "settings": {
@@ -214,6 +225,7 @@
         }
       },
       "block_order": [
+        "section_padding_NcpX8U",
         "column_qRBaXb",
         "column_zjLaeT",
         "column_ab8Vch",
