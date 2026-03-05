@@ -12,17 +12,24 @@
   assign ms_sd_desc = product.description | strip_html | strip | truncate: 5000
   assign ms_sd_url = request.origin | append: product.url
   assign ms_sd_first_variant = product.selected_or_first_available_variant
+  assign ms_sd_price_valid = 'now' | date: '%Y' | plus: 1 | append: '-12-31'
 -%}
 <script type="application/ld+json">
 {
-  "@context": "http://schema.org/",
+  "@context": "https://schema.org",
   "@type": "Product",
+  "@id": {{ ms_sd_url | append: '#product' | json }},
   "name": {{ product.title | json }},
   "url": {{ ms_sd_url | json }},
   {%- if product.images.size > 0 -%}
   "image": [
     {%- for ms_sd_img in product.images -%}
-      {{ ms_sd_img | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}
+    {
+      "@type": "ImageObject",
+      "url": {{ ms_sd_img | image_url: width: 1200 | prepend: 'https:' | json }},
+      "width": {{ ms_sd_img.width | default: 1200 }},
+      "height": {{ ms_sd_img.height | default: 1200 }}
+    }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ],
   {%- endif -%}
@@ -45,9 +52,10 @@
     {%- for ms_sd_variant in product.variants -%}
     {
       "@type": "Offer",
-      "availability": "{% if ms_sd_variant.available %}http://schema.org/InStock{% else %}http://schema.org/OutOfStock{% endif %}",
+      "availability": "{% if ms_sd_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
       "price": {{ ms_sd_variant.price | divided_by: 100.0 }},
       "priceCurrency": {{ cart.currency.iso_code | json }},
+      "priceValidUntil": "{{ ms_sd_price_valid }}",
       "url": {{ ms_sd_url | append: '?variant=' | append: ms_sd_variant.id | json }}
       {%- if ms_sd_variant.sku != blank -%}
       ,"sku": {{ ms_sd_variant.sku | json }}
@@ -55,5 +63,13 @@
     }{% unless forloop.last %},{% endunless %}
     {%- endfor -%}
   ]
+  {%- if product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count != blank -%}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ product.metafields.reviews.rating.value.rating }},
+    "reviewCount": {{ product.metafields.reviews.rating_count }},
+    "bestRating": {{ product.metafields.reviews.rating.value.scale_max | default: 5 }}
+  }
+  {%- endif -%}
 }
 </script>

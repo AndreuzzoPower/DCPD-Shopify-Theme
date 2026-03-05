@@ -424,6 +424,14 @@
                 "name": "{{ blog.title }}",
                 "item": "{{ u | append: blog.url }}"
               }
+              {%- if current_tags -%}
+              ,{
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{{ current_tags | join: ' + ' }}",
+                "item": "{{ u }}{{ blog.url }}/tagged/{{ current_tags | join: '+' }}"
+              }
+              {%- endif -%}
             {% endcapture %}
 
           {%- comment -%}
@@ -457,12 +465,15 @@
           {%- endcomment -%}
           {%- else -%}
             {% assign current_pt = page_title %}
+            {% assign current_pt_url = request.path %}
             {%- if template contains 'search' -%}
               {% assign current_pt = 'Search' %}
+              {% assign current_pt_url = routes.search_url %}
             {%- elsif template contains 'customers' -%}
               {% assign current_pt = 'Profile' %}
             {%- elsif template contains 'cart' -%}
               {% assign current_pt = 'Cart' %}
+              {% assign current_pt_url = routes.cart_url %}
             {%- endif -%}
             <li class="ms-breadcrumb__item ms-breadcrumb__item--current" aria-current="page">{{ current_pt }}</li>
             {% capture ms_schema %}
@@ -471,7 +482,7 @@
                 "@type": "ListItem",
                 "position": 2,
                 "name": "{{ current_pt }}",
-                "item": "{{ u | append: page.url }}"
+                "item": "{{ u | append: current_pt_url }}"
               }
             {% endcapture %}
         {%- endcase -%}

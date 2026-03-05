@@ -218,6 +218,14 @@
         display: none !important;
       }
     {% endif %}
+    @media (prefers-reduced-motion: reduce) {
+      .ms-ea__item,
+      .ms-ea__filter-item,
+      .ms-ea__filters-toggle::after,
+      .ms-ea__filter-list {
+        transition: none !important;
+      }
+    }
   </style>
 
   <div class="ms-ea page-width">
@@ -242,10 +250,10 @@
             id="ea-filter-list-{{ section.id }}"
             data-collapsed="true"
           >
-            <li class="ms-ea__filter-item is-active" data-filter="*">Tutti</li>
+            <li class="ms-ea__filter-item is-active" role="button" tabindex="0" data-filter="*">Tutti</li>
             {%- for filter in ea_filters -%}
               {%- unless filter == '' -%}
-                <li class="ms-ea__filter-item" data-filter=".filter_{{ filter | handleize }}">{{ filter | capitalize }}</li>
+                <li class="ms-ea__filter-item" role="button" tabindex="0" data-filter=".filter_{{ filter | handleize }}">{{ filter | capitalize }}</li>
               {%- endunless -%}
             {%- endfor -%}
           </ul>
@@ -316,6 +324,11 @@
               "@type": "Person",
               "name": {{ ms_post.author | default: shop.name | json }}
             }
+            ,"publisher": {
+              "@type": "Organization",
+              "name": {{ shop.name | json }},
+              "url": "{{ shop.url }}"
+            }
             {%- if ms_post.excerpt != blank -%}
               ,"description": {{ ms_post.excerpt | strip_html | truncate: 5000 | json }}
             {%- endif -%}
@@ -343,10 +356,8 @@
 
         /* ── Filtri ── */
         filterBtns.forEach(function(btn) {
-          btn.addEventListener('click', function() {
+          function activateFilter() {
             var filterValue = btn.getAttribute('data-filter');
-
-            /* Mostra/nascondi item in base al filtro */
             allItems.forEach(function(item) {
               if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
                 item.classList.remove('ms-ea__item--hidden');
@@ -354,10 +365,12 @@
                 item.classList.add('ms-ea__item--hidden');
               }
             });
-
-            /* Aggiorna classe attiva */
             filterBtns.forEach(function(b) { b.classList.remove('is-active'); });
             btn.classList.add('is-active');
+          }
+          btn.addEventListener('click', activateFilter);
+          btn.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateFilter(); }
           });
         });
       }

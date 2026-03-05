@@ -192,6 +192,44 @@
 
 {%- render 'ms_section-style' -%}
 
+{%- liquid
+  assign sd_faq_items = ''
+  for block in section.blocks
+    if block.type == 'collapsible_row'
+      assign sd_q = block.settings.heading | default: block.settings.page.title | escape
+      assign sd_a = block.settings.row_content | default: block.settings.page.content | strip_html | strip | truncate: 5000
+      if sd_q != blank and sd_a != blank
+        unless sd_faq_items == ''
+          assign sd_faq_items = sd_faq_items | append: '|||'
+        endunless
+        assign sd_faq_items = sd_faq_items | append: sd_q | append: '^^^' | append: sd_a
+      endif
+    endif
+  endfor
+  assign sd_faq_arr = sd_faq_items | split: '|||'
+-%}
+{%- if sd_faq_arr.size > 0 -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for sd_faq in sd_faq_arr -%}
+        {%- assign sd_parts = sd_faq | split: '^^^' -%}
+        {
+          "@type": "Question",
+          "name": {{ sd_parts[0] | json }},
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": {{ sd_parts[1] | json }}
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "MS Collapsible Content",

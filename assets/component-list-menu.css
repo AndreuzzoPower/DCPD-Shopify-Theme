@@ -9,8 +9,13 @@
   border: 1px solid rgba(var(--color-foreground), 0.2);
 }
 
-.list-menu--disclosure:focus {
+.list-menu--disclosure:focus:not(:focus-visible) {
   outline: none;
+}
+
+.list-menu--disclosure:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.3rem;
 }
 
 .list-menu__item--active {

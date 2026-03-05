@@ -124,22 +124,22 @@
   {%- endcase -%}
 {%- endcapture -%}
 
-<div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
+<div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" role="separator" aria-hidden="false">
   <div class="{{ sw_class }}">
   {%- if divider_type == 'line' -%}
     {%- if fill_mode == 'gradient' -%}
       {%- if uses_css_gradient -%}
-        <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: {{ gradient_css_value }};"></div>
+        <div class="ms-divider__line" aria-hidden="true" style="height: {{ section.settings.line_weight }}px; background: {{ gradient_css_value }};"></div>
       {%- else -%}
-        <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
+        <div class="ms-divider__line" aria-hidden="true" style="height: {{ section.settings.line_weight }}px; background: linear-gradient({{ section.settings.gradient_angle | default: 0 }}deg, {{ section.settings.gradient_color_1 | default: '#ffffff' }}{% if section.settings.gradient_color_3 != blank %}, {{ section.settings.gradient_color_3 }}{% endif %}, {{ section.settings.gradient_color_2 | default: '#000000' }});"></div>
       {%- endif -%}
     {%- elsif fill_mode == 'image' and section.settings.fill_image != blank -%}
-      <div class="ms-divider__line" style="height: {{ section.settings.line_weight }}px; background: url('{{ section.settings.fill_image | image_url: width: 1920 }}') center/cover no-repeat;"></div>
+      <div class="ms-divider__line" aria-hidden="true" style="height: {{ section.settings.line_weight }}px; background: url('{{ section.settings.fill_image | image_url: width: 1920 }}') center/cover no-repeat;"></div>
     {%- else -%}
       <hr class="ms-divider__line" style="border-top: {{ section.settings.line_weight }}px {{ section.settings.line_style }} {{ divider_color }};">
     {%- endif -%}
   {%- else -%}
-    <div class="ms-divider__svg">
+    <div class="ms-divider__svg" aria-hidden="true">
       <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         {{ svg_defs }}
         {{ divider_shape | replace: '_FILL_', fill_ref_attr }}

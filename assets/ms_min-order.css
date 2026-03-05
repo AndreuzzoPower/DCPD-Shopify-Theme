@@ -89,3 +89,9 @@
 .ms-min-order-toast--hidden {
   opacity: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-min-order-toast {
+    transition: none !important;
+  }
+}

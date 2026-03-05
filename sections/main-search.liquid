@@ -328,6 +328,31 @@
   {{ 'mask-arch.svg' | inline_asset_content }}
 {%- endif -%}
 
+{%- if search.performed and search.results_count > 0 -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SearchResultsPage",
+    "name": {{ 'general.search.search' | t | json }},
+    "url": "{{ request.origin }}{{ routes.search_url }}?q={{ search.terms | url_encode }}",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": {{ search.results_count }},
+      "itemListElement": [
+        {%- for item in search.results limit: 20 -%}
+        {
+          "@type": "ListItem",
+          "position": {{ forloop.index }},
+          "name": {{ item.title | json }},
+          "url": "{{ request.origin }}{{ item.url }}"
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.main-search.name",

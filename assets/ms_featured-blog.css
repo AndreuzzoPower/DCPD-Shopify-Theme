@@ -156,3 +156,10 @@
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-featured-blog__tag,
+  .ms-featured-blog__image-wrapper img {
+    transition: none !important;
+  }
+}

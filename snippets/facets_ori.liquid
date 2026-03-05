@@ -277,6 +277,7 @@
                             class="button-show-more link underlined-link"
                             id="Show-More-{{ forloop.index }}-{{ section.id }}"
                             type="button"
+                            aria-expanded="false"
                           >
                             <span class="label-show-more label-text"
                               ><span aria-hidden="true">+ </span>{{ 'products.facets.show_more' | t -}}
@@ -450,9 +451,9 @@
             {%- endif -%}
           </span>
         </span>
-        <span tabindex="0" class="mobile-facets__close">
+        <button type="button" class="mobile-facets__close" aria-label="{{ 'accessibility.close' | t }}">
           {%- render 'ms_icon', icon: settings.ms_icon_close -%}
-        </span>
+        </button>
       </summary>
       <facet-filters-form>
         <form id="FacetFiltersFormMobile" class="mobile-facets">

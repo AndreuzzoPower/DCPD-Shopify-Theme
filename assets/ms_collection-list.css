@@ -187,3 +187,10 @@
   width: 1em;
   height: 1em;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-cl--link-button .card__heading,
+  .ms-cl--link-button .card__heading .icon-wrap {
+    transition: none !important;
+  }
+}

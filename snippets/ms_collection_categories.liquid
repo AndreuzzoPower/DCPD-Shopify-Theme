@@ -156,7 +156,7 @@
                           <a href="{{ link.url }}" class="facets__item-link {% if is_active %}active{% endif %}">
                             {{ link.title }}
                           </a>
-                          <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
+                          <button type="button" class="facets__item-toggle" aria-label="{{ 'accessibility.expand' | t }} {{ link.title }}" aria-expanded="false">
                             {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- else -%}
@@ -184,7 +184,7 @@
                                     <a href="{{ child_link.url }}" class="facets__item-child-link {% if is_child_active %}active{% endif %}">
                                       {{ child_link.title }}
                                     </a>
-                                    <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
+                                    <button type="button" class="facets__item-child-toggle" aria-label="{{ 'accessibility.expand' | t }} {{ child_link.title }}" aria-expanded="false">
                                       {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- else -%}
@@ -258,7 +258,7 @@
                           <a href="{{ link.url }}" class="facets__item-link {% if is_active %}active{% endif %}">
                             {{ link.title }}
                           </a>
-                          <button type="button" class="facets__item-toggle" aria-label="Toggle {{ link.title }}">
+                          <button type="button" class="facets__item-toggle" aria-label="{{ 'accessibility.expand' | t }} {{ link.title }}" aria-expanded="false">
                             {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                           </button>
                         {%- else -%}
@@ -286,7 +286,7 @@
                                     <a href="{{ child_link.url }}" class="facets__item-child-link {% if is_child_active %}active{% endif %}">
                                       {{ child_link.title }}
                                     </a>
-                                    <button type="button" class="facets__item-child-toggle" aria-label="Toggle {{ child_link.title }}">
+                                    <button type="button" class="facets__item-child-toggle" aria-label="{{ 'accessibility.expand' | t }} {{ child_link.title }}" aria-expanded="false">
                                       {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
                                     </button>
                                   {%- else -%}
@@ -956,6 +956,8 @@
                 e.preventDefault();
                 e.stopPropagation();
                 wrapper.classList.toggle('is-expanded');
+                var expanded = wrapper.classList.contains('is-expanded');
+                newToggleBtn.setAttribute('aria-expanded', expanded);
               });
             }
             
@@ -986,6 +988,8 @@
                 e.preventDefault();
                 e.stopPropagation();
                 wrapper.classList.toggle('is-expanded');
+                var expanded = wrapper.classList.contains('is-expanded');
+                newToggleBtn.setAttribute('aria-expanded', expanded);
               });
             }
             

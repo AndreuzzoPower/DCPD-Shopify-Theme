@@ -95,14 +95,14 @@
                 {%- if b_mobile_accordion and block.type != 'image' -%}
                   <div class="ms-footer-accordion{% if b_mobile_open %} ms-footer-accordion--open{% endif %}">
                     {%- if block.settings.heading != blank -%}
-                      <div class="ms-footer-accordion__trigger" role="button" tabindex="0" aria-expanded="{{ b_mobile_open }}">
+                      <div class="ms-footer-accordion__trigger" role="button" tabindex="0" aria-expanded="{{ b_mobile_open }}" aria-controls="footer-accordion-{{ block.id }}">
                         <{{ b_heading_tag }} class="footer-block__heading inline-richtext {{ b_heading_size }}">
                           {{- block.settings.heading -}}
                         </{{ b_heading_tag }}>
-                        <svg class="ms-footer-accordion__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <svg class="ms-footer-accordion__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                       </div>
                     {%- endif -%}
-                    <div class="ms-footer-accordion__content">
+                    <div class="ms-footer-accordion__content" id="footer-accordion-{{ block.id }}">
                 {%- else -%}
                   {%- if block.settings.heading != blank -%}
                     <{{ b_heading_tag }} class="footer-block__heading inline-richtext {{ b_heading_size }}">

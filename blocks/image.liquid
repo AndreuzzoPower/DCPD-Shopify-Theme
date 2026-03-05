@@ -28,7 +28,7 @@
       | image_tag: loading: 'lazy', widths: '165, 360, 535, 750, 1070, 1500', sizes: '100vw', alt: img_alt
     }}
   {%- else -%}
-    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+    <span aria-hidden="true">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</span>
   {%- endif -%}
 </div>
 

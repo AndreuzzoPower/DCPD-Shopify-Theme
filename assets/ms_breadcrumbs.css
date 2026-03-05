@@ -144,3 +144,9 @@
     font-size: 1.3rem;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-breadcrumb__item a {
+    transition: none !important;
+  }
+}

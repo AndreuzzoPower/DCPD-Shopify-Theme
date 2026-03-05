@@ -49,6 +49,29 @@
     {% render 'pagination', paginate: paginate %}
   {%- endpaginate -%}
 </div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ 'sections.collection_list.title' | t | default: shop.name | json }},
+  "url": "{{ request.origin }}{{ routes.collections_url }}",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {%- for collection in collections limit: 30 -%}
+      {
+        "@type": "ListItem",
+        "position": {{ forloop.index }},
+        "name": {{ collection.title | json }},
+        "url": "{{ request.origin }}{{ collection.url }}"
+      }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+}
+</script>
+
 {% schema %}
 {
   "name": "t:sections.main-list-collections.name",

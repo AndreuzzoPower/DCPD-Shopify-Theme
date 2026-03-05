@@ -165,7 +165,7 @@
               "
             >
               {%- if block.settings.title != blank -%}
-                <div class="article-toc__header" role="button" tabindex="0" aria-expanded="{{ block.settings.start_collapsed | default: false | json | replace: 'true', 'false' | replace: 'false', 'true' }}">
+                <div class="article-toc__header" role="button" tabindex="0" aria-expanded="{{ block.settings.start_collapsed | default: false | json | replace: 'true', 'false' | replace: 'false', 'true' }}" aria-controls="ArticleToc-{{ block.id }}">
                   <div class="article-toc__title">{{ block.settings.title | escape }}</div>
                   {%- if block.settings.collapsible -%}
                     <span class="article-toc__toggle-icon" aria-hidden="true">
@@ -176,7 +176,7 @@
                   {%- endif -%}
                 </div>
               {%- endif -%}
-              <nav class="article-toc__list-container" aria-label="Indice dell'articolo"></nav>
+              <nav id="ArticleToc-{{ block.id }}" class="article-toc__list-container" aria-label="Indice dell'articolo"></nav>
             </div>
           </div>
           <script>
@@ -639,12 +639,14 @@
     {%- if shop.brand.logo -%}
     ,"logo": {
       "@type": "ImageObject",
-      "url": "{{ shop.brand.logo | image_url: width: 600 }}"
+      "url": "{{ shop.brand.logo | image_url: width: 600 }}",
+      "width": {{ shop.brand.logo.width | default: 600 }},
+      "height": {{ shop.brand.logo.height | default: 60 }}
     }
     {%- endif -%}
   },
   {%- if article.excerpt_or_content != blank -%}
-  "description": {{ article.excerpt_or_content | strip_html | truncate: 5000 | json }},
+  "description": {{ article.excerpt_or_content | strip_html | strip | truncate: 5000 | json }},
   {%- endif -%}
   {%- assign sd_words = article.content | strip_html | split: ' ' | size -%}
   "wordCount": {{ sd_words }},

@@ -18,6 +18,11 @@ if (!customElements.get('show-more-button')) {
         const parentWrap = parentDisplay.querySelector('.parent-wrap');
         this.querySelectorAll('.label-text').forEach((element) => element.classList.toggle('hidden'));
         parentDisplay.querySelectorAll('.show-more-item').forEach((item) => item.classList.toggle('hidden'));
+        const btn = this.querySelector('button');
+        if (btn) {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+        }
         if (!this.querySelector('.label-show-less')) {
           this.classList.add('hidden');
         }

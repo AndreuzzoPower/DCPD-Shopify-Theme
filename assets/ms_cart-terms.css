@@ -56,3 +56,9 @@
   outline: 0.2rem solid #cc1f1f;
   outline-offset: 0.2rem;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-cart-terms__label {
+    transition: none !important;
+  }
+}

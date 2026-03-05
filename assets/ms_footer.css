@@ -129,3 +129,10 @@
 .ms-footer-block a:hover {
   color: rgb(var(--color-foreground));
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-footer-accordion__icon,
+  .ms-footer-block a {
+    transition: none !important;
+  }
+}

@@ -78,7 +78,7 @@
     {%- endif -%}
     {%- form 'customer_login', novalidate: 'novalidate' -%}
       {%- if form.errors -%}
-        <div class="form__message" tabindex="-1" autofocus>
+        <div class="form__message" id="CustomerLogin-error" tabindex="-1" autofocus>
           <span class="visually-hidden">{{ 'accessibility.error' | t }} </span>
           {%- render 'ms_icon', icon: settings.ms_icon_error -%}
           {{ 'templates.contact.form.error_heading' | t }}
@@ -108,6 +108,7 @@
           autocapitalize="off"
           {% if form.errors contains 'form' %}
             aria-invalid="true"
+            aria-describedby="CustomerLogin-error"
           {% endif %}
           placeholder="{{ 'customer.login_page.email' | t }}"
         >
@@ -126,6 +127,7 @@
             autocomplete="current-password"
             {% if form.errors contains 'form' %}
               aria-invalid="true"
+              aria-describedby="CustomerLogin-error"
             {% endif %}
             placeholder="{{ 'customer.login_page.password' | t }}"
           >

@@ -60,6 +60,8 @@ class CartItems extends HTMLElement {
     if (!toast) {
       toast = document.createElement('div');
       toast.className = 'ms-min-order-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
       document.body.appendChild(toast);
     }
     toast.textContent = message;
@@ -260,11 +262,14 @@ class CartItems extends HTMLElement {
 
     const cartStatus =
       document.getElementById('cart-live-region-text') || document.getElementById('CartDrawer-LiveRegionText');
-    cartStatus.setAttribute('aria-hidden', false);
+    if (cartStatus) {
+      cartStatus.textContent = message || '';
+      cartStatus.setAttribute('aria-hidden', false);
 
-    setTimeout(() => {
-      cartStatus.setAttribute('aria-hidden', true);
-    }, 1000);
+      setTimeout(() => {
+        cartStatus.setAttribute('aria-hidden', true);
+      }, 1000);
+    }
   }
 
   getSectionInnerHTML(html, selector) {

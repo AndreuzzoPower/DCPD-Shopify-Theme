@@ -515,6 +515,48 @@
 })();
 </script>
 
+{%- liquid
+  assign sd_video_name = section.settings.description | strip_html | strip | truncate: 5000
+  assign sd_video_thumb = section.settings.cover_image | default: section.settings.video.preview_image
+  assign sd_video_has_url = false
+  if section.settings.video_url != null
+    assign sd_video_has_url = true
+  endif
+-%}
+{%- if sd_video_name != blank and sd_video_has_url -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": {{ sd_video_name | json }},
+    "description": {{ sd_video_name | json }},
+    {%- if sd_video_thumb -%}
+    "thumbnailUrl": "{{ sd_video_thumb | image_url: width: 1200 }}",
+    {%- endif -%}
+    {%- if section.settings.video_url.type == 'youtube' -%}
+    "embedUrl": "https://www.youtube.com/embed/{{ section.settings.video_url.id }}",
+    {%- elsif section.settings.video_url.type == 'vimeo' -%}
+    "embedUrl": "https://player.vimeo.com/video/{{ section.settings.video_url.id }}",
+    {%- endif -%}
+    "uploadDate": "{{ 'now' | date: '%Y-%m-%dT%H:%M:%S%z' }}"
+  }
+  </script>
+{%- elsif sd_video_name != blank and section.settings.video != null -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": {{ sd_video_name | json }},
+    "description": {{ sd_video_name | json }},
+    {%- if sd_video_thumb -%}
+    "thumbnailUrl": "{{ sd_video_thumb | image_url: width: 1200 }}",
+    {%- endif -%}
+    "contentUrl": "{{ section.settings.video.sources[0].url }}",
+    "uploadDate": "{{ 'now' | date: '%Y-%m-%dT%H:%M:%S%z' }}"
+  }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "MS Video",

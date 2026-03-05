@@ -33,7 +33,7 @@
       </button>
       <div id="AddAddress">
         <div class="h2" id="AddressNewHeading">{{ 'customer.addresses.add_new' | t }}</div>
-        {%- form 'customer_address', customer.new_address, aria-labelledBy: 'AddressNewHeading' -%}
+        {%- form 'customer_address', customer.new_address, aria-labelledby: 'AddressNewHeading' -%}
           <div class="field">
             <input
               type="text"

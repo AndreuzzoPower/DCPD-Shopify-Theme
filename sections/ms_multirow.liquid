@@ -141,7 +141,6 @@
                       href="{{ block.settings.button_link }}"
                     {% endif %}
                     class="{%- render 'ms_button_classes', type: section.settings.button_type, secondary: section.settings.button_style_secondary, size: section.settings.button_size -%}"
-                    tabindex="0"
                   >
                     {%- render 'ms_button_icon', icon: section.settings.button_icon, position: section.settings.button_icon_position, slot: 'before' -%}
                     {{ block.settings.button_label | escape }}

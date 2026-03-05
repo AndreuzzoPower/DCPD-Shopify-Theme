@@ -27,11 +27,12 @@ class DetailsModal extends HTMLElement {
   open(event) {
     this.onBodyClickEvent = this.onBodyClickEvent || this.onBodyClick.bind(this);
     event.target.closest('details').setAttribute('open', true);
+    this.summaryToggle.setAttribute('aria-expanded', 'true');
     document.body.addEventListener('click', this.onBodyClickEvent);
     document.body.classList.add('overflow-hidden');
 
     trapFocus(
-      this.detailsContainer.querySelector('[tabindex="-1"]'),
+      this.detailsContainer,
       this.detailsContainer.querySelector('input:not([type="hidden"])')
     );
   }
@@ -39,6 +40,7 @@ class DetailsModal extends HTMLElement {
   close(focusToggle = true) {
     removeTrapFocus(focusToggle ? this.summaryToggle : null);
     this.detailsContainer.removeAttribute('open');
+    this.summaryToggle.setAttribute('aria-expanded', 'false');
     document.body.removeEventListener('click', this.onBodyClickEvent);
     document.body.classList.remove('overflow-hidden');
   }

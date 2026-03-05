@@ -195,3 +195,10 @@ slideshow-component[data-ms-embla="true"] .slideshow.slider--everywhere .slidesh
   flex: 0 0 100%;
   min-width: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .slideshow__controls__item,
+  .slider-button {
+    transition: none !important;
+  }
+}

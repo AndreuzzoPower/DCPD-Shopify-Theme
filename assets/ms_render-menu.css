@@ -95,6 +95,7 @@
 }
 
 .ms-render-menu--pills .ms-render-menu__link:hover,
+.ms-render-menu--pills .ms-render-menu__link:focus-visible,
 .ms-render-menu--pills .ms-render-menu__link--active {
   background-color: rgb(var(--color-foreground));
   color: rgb(var(--color-background));
@@ -111,6 +112,7 @@
 }
 
 .ms-render-menu--buttons .ms-render-menu__link:hover,
+.ms-render-menu--buttons .ms-render-menu__link:focus-visible,
 .ms-render-menu--buttons .ms-render-menu__link--active {
   background-color: rgb(var(--color-foreground));
   color: rgb(var(--color-background));
@@ -128,6 +130,7 @@
 }
 
 .ms-render-menu--underline .ms-render-menu__link:hover,
+.ms-render-menu--underline .ms-render-menu__link:focus-visible,
 .ms-render-menu--underline .ms-render-menu__link--active {
   border-bottom-color: rgb(var(--color-foreground));
 }
@@ -142,6 +145,7 @@
 }
 
 .ms-render-menu--plain .ms-render-menu__link:hover,
+.ms-render-menu--plain .ms-render-menu__link:focus-visible,
 .ms-render-menu--plain .ms-render-menu__link--active {
   opacity: 1;
   text-decoration: underline;
@@ -156,4 +160,10 @@
 .ms-render-menu--buttons .ms-render-menu__link--active:focus-visible {
   outline-color: rgb(var(--color-background));
   outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-render-menu__link {
+    transition: none !important;
+  }
 }

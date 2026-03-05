@@ -90,7 +90,11 @@
   color: rgba(var(--color-foreground), 0.4);
 }
 
-.ms-invoice-request__input:focus {
+.ms-invoice-request__input:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.ms-invoice-request__input:focus-visible {
   outline: none;
   border-color: rgb(var(--color-foreground));
   box-shadow: 0 0 0 0.1rem rgb(var(--color-foreground));
@@ -100,7 +104,7 @@
   border-color: #cc1f1f;
 }
 
-.ms-invoice-request__input--error:focus {
+.ms-invoice-request__input--error:focus-visible {
   border-color: #cc1f1f;
   box-shadow: 0 0 0 0.1rem #cc1f1f;
 }
@@ -126,7 +130,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ms-invoice-request__fields {
+  .ms-invoice-request__fields,
+  .ms-invoice-request__input {
     transition: none;
   }
 }

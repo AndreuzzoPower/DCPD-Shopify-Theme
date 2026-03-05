@@ -196,7 +196,7 @@
   box-shadow: none;
 }
 
-.collage-card .deferred-media__poster:focus {
+.collage-card .deferred-media__poster:focus:not(:focus-visible) {
   outline: none;
   box-shadow: none;
 }

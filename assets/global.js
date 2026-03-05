@@ -520,7 +520,7 @@ class MenuDrawer extends HTMLElement {
   onFocusOut() {
     setTimeout(() => {
       if (this.mainDetailsToggle.hasAttribute('open') && !this.mainDetailsToggle.contains(document.activeElement))
-        this.closeMenuDrawer();
+        this.closeMenuDrawer(document.activeElement, this.mainDetailsToggle.querySelector('summary'));
     });
   }
 
@@ -647,7 +647,7 @@ class ModalDialog extends HTMLElement {
     document.body.classList.remove('overflow-hidden');
     document.body.dispatchEvent(new CustomEvent('modalClosed'));
     this.removeAttribute('open');
-    removeTrapFocus(this.openedBy);
+    removeTrapFocus(this.openedBy || null);
     window.pauseAllMedia();
   }
 }

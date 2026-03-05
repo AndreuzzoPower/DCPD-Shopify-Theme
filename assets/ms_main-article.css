@@ -341,3 +341,14 @@
   outline: 2px solid rgb(var(--color-foreground));
   outline-offset: 2px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .article-toc__link,
+  .article-toc__header,
+  .article-toc__header-icon,
+  .article-template__tag,
+  .article-template__share-button,
+  .article-template__back-button {
+    transition: none !important;
+  }
+}
