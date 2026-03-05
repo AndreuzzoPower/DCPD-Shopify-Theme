@@ -62,6 +62,29 @@
         "icon_unmute": "icon-volume.svg"
       }
     },
+    "ms_divider_tqnhyj": {
+      "type": "ms_divider",
+      "name": "MS Divisore",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "scheme-1",
+        "divider_type": "clouds",
+        "fill_mode": "solid",
+        "divider_color": "#242833",
+        "gradient_color_1": "#ffffff",
+        "gradient_color_2": "#000000",
+        "gradient_color_3": "",
+        "gradient_angle": 0,
+        "gradient_css": "",
+        "divider_height": 80,
+        "divider_height_mobile": 50,
+        "flip_horizontal": false,
+        "flip_vertical": true,
+        "line_weight": 1,
+        "line_style": "solid"
+      }
+    },
     "ms_rich_text_XjDUaG": {
       "type": "ms_rich-text",
       "blocks": {
@@ -493,6 +516,7 @@
   },
   "order": [
     "ms_video_fWDKzx",
+    "ms_divider_tqnhyj",
     "ms_rich_text_XjDUaG",
     "ms_multicolumn_dNmEq4",
     "ms_divider_NGpeWm",
