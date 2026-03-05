@@ -9,26 +9,6 @@
  */
 {
   "sections": {
-    "ms_breadcrumbs_WAq6DH": {
-      "type": "ms_breadcrumbs",
-      "name": "MS Breadcrumbs",
-      "settings": {
-        "section_width": "default",
-        "color_scheme": "scheme-d606fe35-c995-478b-baf2-88e30e35c2ff",
-        "alignment": "left",
-        "home_lbl": "Home",
-        "home_icon": "icon-house-solid-full.svg",
-        "home_icon_color": "",
-        "separator": "/",
-        "separator_icon": "",
-        "separator_icon_color": "",
-        "wrapperclass": "",
-        "menu_handle": "",
-        "show_all_collections": false,
-        "collections_banned": "",
-        "show_cat_handle": false
-      }
-    },
     "main": {
       "type": "main-article",
       "blocks": {
@@ -138,10 +118,11 @@
           "type": "back_to_blog",
           "settings": {
             "section_width": "narrow",
-            "display_style": "pill",
-            "show_icon": true,
-            "custom_icon": "",
             "button_size": "jumbo",
+            "button_style_secondary": false,
+            "button_type": "link",
+            "button_icon": "",
+            "button_icon_position": "before",
             "alignment": "center",
             "border_position": "both",
             "border_width": 1,
@@ -182,35 +163,35 @@
       "type": "ms_products-from-metafield",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
+        "slider_width": "page_fluid",
+        "color_scheme": "",
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
-        "title_width": "narrow",
-        "slider_width": "page_fluid",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
         "columns_desktop": 4,
         "enable_desktop_slider": true,
         "enable_desktop_slider_autoplay": true,
         "desktop_slider_autoplay_velocita": 3,
-        "title": "Prodotti in questo articolo",
-        "heading_size": "h1",
-        "description": "Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione Breve descrizione",
-        "show_description": true,
-        "description_style": "body",
-        "color_scheme": "",
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
         "show_vendor": false,
         "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": true
+        "show_min_order": true,
+        "quick_add": "none"
       }
     }
   },
   "order": [
-    "ms_breadcrumbs_WAq6DH",
     "main",
     "ms_products_from_metafield_erpPzR"
   ]
