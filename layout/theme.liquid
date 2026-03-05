@@ -637,20 +637,26 @@
     {% render 'ms_iubenda' %}
 
     <style>
-      a[href="#"],
-      a[href=""] {
+      a.nolink,
+      a.nolink:hover,
+      a.nolink:focus,
+      a.nolink:active {
         cursor: default !important;
+        text-decoration: none !important;
+        color: inherit !important;
+        pointer-events: none !important;
       }
     </style>
     <script>
-      document.addEventListener('click', function(e) {
-        const link = e.target.closest('a');
-        if (!link) return;
-        const href = link.getAttribute('href');
-        if (href === '#' || href === '') {
-          e.preventDefault();
+      (function() {
+        function markNoLinks() {
+          document.querySelectorAll('a[href="#"], a[href=""]').forEach(function(el) {
+            el.classList.add('nolink');
+          });
         }
-      });
+        markNoLinks();
+        new MutationObserver(markNoLinks).observe(document.body, { childList: true, subtree: true });
+      })();
     </script>
   </body>
 </html>
