@@ -650,8 +650,11 @@
     <script>
       (function() {
         function markNoLinks() {
-          document.querySelectorAll('a[href="#"], a[href=""]').forEach(function(el) {
-            el.classList.add('nolink');
+          document.querySelectorAll('a[href]').forEach(function(el) {
+            var href = el.getAttribute('href');
+            if (href === '' || href === '#' || href.endsWith('#')) {
+              el.classList.add('nolink');
+            }
           });
         }
         markNoLinks();
