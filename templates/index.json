@@ -255,7 +255,7 @@
         "text_Je6hJc": {
           "type": "text",
           "settings": {
-            "text": "<p>Qui di seguito, divise per categorie le funzionalità, sempre in divenire, del nuovo tema DCPD.<br/><br/>Qui verrano illustrate le funzionalità globali del tema mentre per visualizzare i singoli elementi o i template utilizzare il menu.</p>"
+            "text": "<p>Ecco le funzionalità globali dell'ecommerce</p>"
           }
         }
       },
@@ -271,6 +271,129 @@
         "color_scheme": "",
         "desktop_content_position": "center",
         "content_alignment": "center"
+      }
+    },
+    "ms_multicolumn_Bh7pk7": {
+      "type": "ms_multicolumn",
+      "blocks": {
+        "column_PMRyFm": {
+          "type": "column",
+          "settings": {
+            "title": "CATALOGO",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità di impostare la modalità catalogo quindi nasconde quantità, bottoni di acquisto, icona carrello e inibisce la pagina carrello.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_cjkdfj": {
+          "type": "column",
+          "settings": {
+            "title": "ACCESSIBLITA'",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Tutto il tema è sviluppato nativamente per rispettare gli standard di accessibilità WCAG 2.1 AA</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_jB8mQQ": {
+          "type": "column",
+          "settings": {
+            "title": "DATI STRUTTURATI",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Dove disponibili sono stati inseriti in maniera dinamica, nel modo più completo i dati strutturati. E' stato predisposto un Widget dedicato da poter inserire nei vari template direttamente da Live Editor collegabile dinamicamente a Prodotti, Pagine, Articoli Blog e Collections in modo da renderli il più possibile personalizzabili.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_FdXgw7": {
+          "type": "column",
+          "settings": {
+            "title": "ICONE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>In ogni punto del tema dove sono presenti le icone vengono gestite di default tramite SVG e sono in ogni luogo sostituibili con altri SVG presenti nel tema o da classe css della libreria font configurata da Settings. Attualmente sono disponibili Font Awesome, Bootstrap Icons, Lineicons, Remix Icon ... implementabili alla necessità.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_7DWF47": {
+          "type": "column",
+          "settings": {
+            "title": "GESTIONE COLORI",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>I colori sono gestiti dallo schema colori implementabile direttamente da settings</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        }
+      },
+      "block_order": [
+        "column_PMRyFm",
+        "column_cjkdfj",
+        "column_jB8mQQ",
+        "column_FdXgw7",
+        "column_7DWF47"
+      ],
+      "name": "MS Multicolonna",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "column_alignment": "left",
+        "background_style": "primary",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "button_style_secondary": false,
+        "button_type": "pill",
+        "button_size": "default",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "enable_autoplay": true,
+        "autoplay_speed": 5,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "overlay_sides",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "dots",
+        "carousel_scroll_mode": "single",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": false
       }
     },
     "ms_divider_NGpeWm": {
@@ -303,6 +426,7 @@
     "ms_rich_text_XjDUaG",
     "ms_multicolumn_dNmEq4",
     "ms_rich_text_fMywcR",
+    "ms_multicolumn_Bh7pk7",
     "ms_divider_NGpeWm"
   ]
 }
