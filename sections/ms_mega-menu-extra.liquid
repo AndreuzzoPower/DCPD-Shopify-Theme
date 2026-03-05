@@ -19,6 +19,7 @@
     data-ms-mega-extra-target="{{ section.settings.menu_handle | handleize }}"
     data-ms-mega-extra-menu-cols="{{ section.settings.menu_columns }}"
     data-ms-mega-extra-content-cols="{{ section.settings.content_columns }}"
+    data-ms-mega-extra-show-mobile="{{ section.settings.show_on_mobile }}"
     data-section-id="{{ section.id }}"
   >
     <div class="ms-blocks-grid">
@@ -38,6 +39,7 @@
           var handle = container.dataset.msMegaExtraTarget;
           var menuCols = parseInt(container.dataset.msMegaExtraMenuCols, 10) || 8;
           var contentCols = parseInt(container.dataset.msMegaExtraContentCols, 10) || 4;
+          var showMobile = container.dataset.msMegaExtraShowMobile === 'true';
 
           var megaMenu = document.querySelector('details.mega-menu[data-menu-handle="' + handle + '"]');
           if (!megaMenu) continue;
@@ -61,6 +63,7 @@
 
           var contentArea = document.createElement('div');
           contentArea.className = 'ms-mega-extra__content-area';
+          if (!showMobile) contentArea.classList.add('ms-mega-extra__content-area--hide-mobile');
 
           var blocksGrid = container.querySelector('.ms-blocks-grid');
           if (blocksGrid) {
@@ -116,6 +119,13 @@
     {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Mostra contenuti extra su mobile",
+      "default": false,
+      "info": "Se disattivato, i blocchi extra vengono nascosti su schermi < 990px. Il menu resta sempre visibile."
     },
     {
       "type": "range",
