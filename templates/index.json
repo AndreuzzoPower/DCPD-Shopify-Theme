@@ -155,7 +155,7 @@
         "background_style": "primary",
         "image_width": "full",
         "image_ratio": "adapt",
-        "button_label": "Etichetta pulsante",
+        "button_label": "",
         "button_link": "",
         "button_style_secondary": false,
         "button_type": "pill",
