@@ -644,7 +644,6 @@
         cursor: default !important;
         text-decoration: none !important;
         color: inherit !important;
-        pointer-events: none !important;
       }
     </style>
     <script>
@@ -660,6 +659,11 @@
         }
         markNoLinks();
         new MutationObserver(markNoLinks).observe(document.body, { childList: true, subtree: true });
+
+        document.addEventListener('click', function(e) {
+          var link = e.target.closest('a.nolink');
+          if (link) e.preventDefault();
+        });
       })();
     </script>
   </body>
