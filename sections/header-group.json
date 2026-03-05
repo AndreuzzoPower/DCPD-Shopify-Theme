@@ -102,19 +102,19 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
-        "color_scheme": "",
-        "alignment": "center",
+        "color_scheme": "scheme-4",
+        "alignment": "left",
         "home_lbl": "Home",
-        "home_icon": "",
+        "home_icon": "icon-house-solid-full.svg",
         "home_icon_color": "",
         "separator": "/",
         "separator_icon": "",
         "separator_icon_color": "",
         "wrapperclass": "",
-        "menu_handle": "",
-        "show_all_collections": false,
-        "collections_banned": "",
-        "show_cat_handle": false
+        "menu_handle": "shop_categorie",
+        "show_all_collections": true,
+        "collections_banned": "frontpage,homepage",
+        "show_cat_handle": true
       }
     }
   },

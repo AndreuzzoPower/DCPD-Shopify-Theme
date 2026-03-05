@@ -9,27 +9,6 @@
  */
 {
   "sections": {
-    "ms_breadcrumbs_4xKfNa": {
-      "type": "ms_breadcrumbs",
-      "name": "MS Breadcrumbs",
-      "settings": {
-        "section_width": "default",
-        "mobile_full_width": false,
-        "color_scheme": "scheme-4",
-        "alignment": "left",
-        "home_lbl": "Home",
-        "home_icon": "icon-house-solid-full.svg",
-        "home_icon_color": "",
-        "separator": "/",
-        "separator_icon": "",
-        "separator_icon_color": "",
-        "wrapperclass": "",
-        "menu_handle": "shop_categorie",
-        "show_all_collections": true,
-        "collections_banned": "",
-        "show_cat_handle": false
-      }
-    },
     "main": {
       "type": "main-product",
       "blocks": {
@@ -316,7 +295,6 @@
     }
   },
   "order": [
-    "ms_breadcrumbs_4xKfNa",
     "main",
     "ms_divider_EdkBw8",
     "ms_products_from_metafield_JRyQgy",
