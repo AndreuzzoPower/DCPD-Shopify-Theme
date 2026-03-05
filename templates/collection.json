@@ -17,9 +17,9 @@
           "settings": {
             "section_padding_top": 50,
             "section_padding_bottom": 50,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 0,
-            "section_padding_top_xs": 0,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 30,
             "section_padding_bottom_xs": 0
           }
         }
