@@ -109,6 +109,22 @@
     "ms_multicolumn_dNmEq4": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_qRBaXb": {
+          "type": "column",
+          "settings": {
+            "title": "SEO",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>In ogni modulo è possibile impostare in modo chirurgico il tag heading, inoltre si potrà decidere di impostare il noindex su ogni prodotto, collection, pagina ed articolo blog</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "column_zjLaeT": {
           "type": "column",
           "settings": {
@@ -175,6 +191,7 @@
         }
       },
       "block_order": [
+        "column_qRBaXb",
         "column_zjLaeT",
         "column_ab8Vch",
         "column_UmYKgJ",
