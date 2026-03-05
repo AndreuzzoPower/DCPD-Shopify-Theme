@@ -55,6 +55,12 @@
         "show_text_box": false,
         "mobile_content_alignment": "left",
         "show_text_below": true,
+        "hide_content_mobile": false,
+        "mobile_color_scheme": "scheme-1",
+        "content_padding_top_mobile": 0,
+        "content_padding_bottom_mobile": 0,
+        "content_padding_left_mobile": 0,
+        "content_padding_right_mobile": 0,
         "show_controls": true,
         "controls_position": "top-right",
         "controls_theme": "dark",
@@ -77,7 +83,8 @@
         "mask_position": "above",
         "overlap": 90,
         "overlap_mobile": 30,
-        "z_index": 2
+        "z_index": 2,
+        "hide_on_mobile": true
       }
     },
     "ms_divider_tqnhyj": {
