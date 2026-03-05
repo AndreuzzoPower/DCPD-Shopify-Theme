@@ -54,7 +54,7 @@
         "desktop_content_alignment": "left",
         "show_text_box": false,
         "mobile_content_alignment": "left",
-        "show_text_below": false,
+        "show_text_below": true,
         "show_controls": true,
         "controls_position": "top-right",
         "controls_theme": "dark",
