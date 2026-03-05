@@ -1,0 +1,57 @@
+.ms-mask {
+  position: relative;
+  z-index: var(--ms-mask-z-index, 2);
+  width: 100%;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.ms-mask--editor {
+  pointer-events: auto;
+}
+
+.ms-mask--above {
+  margin-top: calc(-1 * var(--ms-mask-overlap, 100px));
+}
+
+.ms-mask--below {
+  margin-bottom: calc(-1 * var(--ms-mask-overlap, 100px));
+}
+
+.ms-mask__svg {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ms-mask__svg svg {
+  display: block;
+  width: 100%;
+  height: var(--ms-mask-height, 100px);
+}
+
+.ms-mask--flip-x .ms-mask__svg svg {
+  transform: scaleX(-1);
+}
+
+.ms-mask--flip-y .ms-mask__svg svg {
+  transform: scaleY(-1);
+}
+
+.ms-mask--flip-x.ms-mask--flip-y .ms-mask__svg svg {
+  transform: scale(-1, -1);
+}
+
+@media (max-width: 749px) {
+  .ms-mask__svg svg {
+    height: var(--ms-mask-height-mobile, var(--ms-mask-height, 60px));
+  }
+
+  .ms-mask--above {
+    margin-top: calc(-1 * var(--ms-mask-overlap-mobile, var(--ms-mask-overlap, 60px)));
+  }
+
+  .ms-mask--below {
+    margin-bottom: calc(-1 * var(--ms-mask-overlap-mobile, var(--ms-mask-overlap, 60px)));
+  }
+}

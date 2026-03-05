@@ -1,0 +1,375 @@
+{{ 'ms_mask.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign mask_shape = section.settings.mask_shape | default: 'waves'
+  assign mask_color = section.settings.mask_color | default: '#000000'
+  assign mask_height = section.settings.mask_height | default: 100
+  assign mask_height_mobile = section.settings.mask_height_mobile | default: 60
+  assign overlap = section.settings.overlap | default: 100
+  assign overlap_mobile = section.settings.overlap_mobile | default: 60
+  assign mask_position = section.settings.mask_position | default: 'above'
+  assign flip_x = section.settings.flip_horizontal
+  assign flip_y = section.settings.flip_vertical
+  assign z_index = section.settings.z_index | default: 2
+
+  assign sw = section.settings.section_width | default: 'full_width'
+  if sw == 'default'
+    assign sw = 'page_width'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign css_classes = 'ms-mask'
+  if flip_x
+    assign css_classes = css_classes | append: ' ms-mask--flip-x'
+  endif
+  if flip_y
+    assign css_classes = css_classes | append: ' ms-mask--flip-y'
+  endif
+  assign css_classes = css_classes | append: ' ms-mask--' | append: mask_position
+  if request.design_mode
+    assign css_classes = css_classes | append: ' ms-mask--editor'
+  endif
+-%}
+
+{%- style -%}
+  #section-{{ section.id }} {
+    --ms-mask-height: {{ mask_height }}px;
+    --ms-mask-height-mobile: {{ mask_height_mobile }}px;
+    --ms-mask-overlap: {{ overlap }}px;
+    --ms-mask-overlap-mobile: {{ overlap_mobile }}px;
+    --ms-mask-z-index: {{ z_index }};
+  }
+{%- endstyle -%}
+
+{%- render 'ms_mobile-padding' -%}
+
+{%- comment -%} Cattura la forma SVG per la maschera — stesse forme di ms_divider {%- endcomment -%}
+{%- capture mask_shape_content -%}
+  {%- case mask_shape -%}
+    {%- when 'tilt' -%}
+      <polygon fill="black" points="1200 0 1200 120 0 120"/>
+    {%- when 'triangle' -%}
+      <polygon fill="black" points="600 0 1200 120 0 120"/>
+    {%- when 'arrow' -%}
+      <path fill="black" d="M649.97 0L550.03 0 0 120 600 75 1200 120z"/>
+    {%- when 'split' -%}
+      <polygon fill="black" points="0 0 600 120 1200 0 1200 120 0 120"/>
+    {%- when 'waves' -%}
+      <path fill="black" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C57.1,118.92,130.23,103.37,193,87.11,241.07,75.15,286.54,66,321.39,56.44Z"/>
+    {%- when 'waves_multi' -%}
+      <path fill="black" opacity=".25" d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V120H0Z"/>
+      <path fill="black" opacity=".5" d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V120H0Z"/>
+      <path fill="black" d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V120H0Z"/>
+    {%- when 'curve' -%}
+      <path fill="black" d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"/>
+    {%- when 'curve_asymmetric' -%}
+      <path fill="black" d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V120H0Z"/>
+    {%- when 'zigzag' -%}
+      <path fill="black" d="M0,0 L60,120 L120,0 L180,120 L240,0 L300,120 L360,0 L420,120 L480,0 L540,120 L600,0 L660,120 L720,0 L780,120 L840,0 L900,120 L960,0 L1020,120 L1080,0 L1140,120 L1200,0 V120 H0 Z"/>
+    {%- when 'mountains' -%}
+      <path fill="black" d="M1200,0H0V120l214.67-72,223.33,48L602.34,12l183.32,72,198-36.67Z"/>
+    {%- when 'clouds' -%}
+      <path fill="black" d="M0,0V120H1200V0s-79.51,68.49-181,68.49c-68.4,0-112.65-26.09-161-44.49-53.67-20.39-112.53-24-169,0-52.09,22.13-95.54,44.49-164,44.49C456.31,68.49,400,40,345.65,23.51,285.39,5.1,234.34,0,185,12.49,127.52,27.1,82.43,68.49,0,68.49Z"/>
+    {%- when 'drops' -%}
+      <path fill="black" d="M0,120V73.07c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82S222.73,44.45,261,48.16c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62v.29c7.64-14.64,26.45-26.15,52-28.62,38.3-3.71,63.65,17.82,96,17.82s74.73-17.82,113-14.11c25.59,2.47,44.4,14,52,28.62V120Z"/>
+    {%- when 'book' -%}
+      <path fill="black" d="M0,0S350,100,600,100,1200,0,1200,0V120H0Z"/>
+    {%- when 'fan' -%}
+      <path fill="black" d="M0,0V120l100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10,100-10,100,10V0Z"/>
+  {%- endcase -%}
+{%- endcapture -%}
+
+<div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
+  <div class="{{ sw_class }}">
+    <div class="ms-mask__svg">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <mask id="ms-mask-cutout-{{ section.id }}">
+            <rect x="0" y="0" width="1200" height="120" fill="white"/>
+            {{ mask_shape_content }}
+          </mask>
+        </defs>
+        <rect x="0" y="0" width="1200" height="120" fill="{{ mask_color }}" mask="url(#ms-mask-cutout-{{ section.id }})"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Maschera",
+  "tag": "section",
+  "class": "ms-mask-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza sezione",
+      "options": [
+        { "value": "narrow", "label": "Stretta (narrow)" },
+        { "value": "page_width", "label": "Larghezza pagina" },
+        { "value": "page_fluid", "label": "Larghezza fluida" },
+        { "value": "full_width", "label": "Piena larghezza" }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Forma"
+    },
+    {
+      "type": "select",
+      "id": "mask_shape",
+      "label": "Forma della maschera",
+      "options": [
+        { "value": "tilt", "label": "Inclinato" },
+        { "value": "triangle", "label": "Triangolo" },
+        { "value": "arrow", "label": "Freccia" },
+        { "value": "split", "label": "Split (V rovesciata)" },
+        { "value": "waves", "label": "Onda" },
+        { "value": "waves_multi", "label": "Onde multiple" },
+        { "value": "curve", "label": "Curva" },
+        { "value": "curve_asymmetric", "label": "Curva asimmetrica" },
+        { "value": "zigzag", "label": "Zigzag" },
+        { "value": "mountains", "label": "Montagne" },
+        { "value": "clouds", "label": "Nuvole" },
+        { "value": "drops", "label": "Gocce" },
+        { "value": "book", "label": "Libro" },
+        { "value": "fan", "label": "Ventaglio" }
+      ],
+      "default": "waves",
+      "info": "La forma selezionata diventa un ritaglio trasparente. Tutto il resto viene riempito con il colore maschera."
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_horizontal",
+      "label": "Specchia orizzontalmente",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_vertical",
+      "label": "Specchia verticalmente",
+      "default": false,
+      "info": "Inverte la direzione della forma (es. ritaglio in alto invece che in basso)."
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
+      "type": "color",
+      "id": "mask_color",
+      "label": "Colore maschera",
+      "default": "#000000",
+      "info": "Colore che riempie l'area intorno al ritaglio trasparente. Tipicamente il colore di sfondo della sezione adiacente."
+    },
+    {
+      "type": "range",
+      "id": "mask_height",
+      "label": "Altezza desktop",
+      "min": 10,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mask_height_mobile",
+      "label": "Altezza mobile",
+      "min": 10,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Posizionamento"
+    },
+    {
+      "type": "select",
+      "id": "mask_position",
+      "label": "Sovrapposizione",
+      "options": [
+        { "value": "above", "label": "Sopra la sezione precedente" },
+        { "value": "below", "label": "Sotto la sezione successiva" }
+      ],
+      "default": "above",
+      "info": "Direzione in cui la maschera si sovrappone alla sezione adiacente."
+    },
+    {
+      "type": "range",
+      "id": "overlap",
+      "label": "Sovrapposizione desktop",
+      "min": 0,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 100,
+      "info": "Pixel di sovrapposizione sulla sezione adiacente. Impostare uguale all'altezza per una sovrapposizione completa."
+    },
+    {
+      "type": "range",
+      "id": "overlap_mobile",
+      "label": "Sovrapposizione mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 60,
+      "info": "Pixel di sovrapposizione su mobile. Impostare uguale all'altezza mobile per una sovrapposizione completa."
+    },
+    {
+      "type": "range",
+      "id": "z_index",
+      "label": "Livello di sovrapposizione (z-index)",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "info": "Valore piu alto = la maschera sta sopra a piu elementi. Aumentare se la maschera finisce dietro alla sezione adiacente."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Maschera",
+      "category": "Contenuti"
+    }
+  ]
+}
+{% endschema %}
