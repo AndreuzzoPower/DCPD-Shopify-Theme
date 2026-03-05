@@ -1,7 +1,7 @@
 .ms-mega-extra__wrapper {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 0 4rem;
+  gap: 2rem 4rem;
   width: 100%;
 }
 
