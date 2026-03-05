@@ -73,11 +73,11 @@
         "flip_vertical": true,
         "mask_color": "#ffffff",
         "mask_height": 90,
-        "mask_height_mobile": 60,
+        "mask_height_mobile": 30,
         "mask_position": "above",
         "overlap": 90,
-        "overlap_mobile": 60,
-        "z_index": 7
+        "overlap_mobile": 30,
+        "z_index": 2
       }
     },
     "ms_divider_tqnhyj": {
