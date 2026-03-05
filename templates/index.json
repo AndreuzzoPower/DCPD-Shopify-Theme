@@ -276,22 +276,6 @@
     "ms_multicolumn_Bh7pk7": {
       "type": "ms_multicolumn",
       "blocks": {
-        "column_BzfMtC": {
-          "type": "column",
-          "settings": {
-            "title": "EXPERT ADVICE",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Associa un testo a un'immagine per dare importanza al prodotto, alla collezione o all'articolo del blog di tua scelta. Aggiungi dettagli sulla disponibilità, sullo stile o fornisci una recensione.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
         "column_PMRyFm": {
           "type": "column",
           "settings": {
@@ -387,16 +371,32 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "column_BzfMtC": {
+          "type": "column",
+          "settings": {
+            "title": "EXPERT ADVICE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità di associare degli articoli del blog ad una collection, se presenti crea una navigazione a tab</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
         }
       },
       "block_order": [
-        "column_BzfMtC",
         "column_PMRyFm",
         "column_cjkdfj",
         "column_jB8mQQ",
         "column_FdXgw7",
         "column_7DWF47",
-        "column_RTHpCB"
+        "column_RTHpCB",
+        "column_BzfMtC"
       ],
       "name": "MS Multicolonna",
       "settings": {
