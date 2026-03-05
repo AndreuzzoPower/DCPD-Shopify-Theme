@@ -31,6 +31,7 @@
       "settings": {
         "menu": "menu-categorie-blog",
         "section_width": "page_width",
+        "mobile_full_width": false,
         "alignment": "center",
         "style": "pills",
         "color_scheme": ""
@@ -43,7 +44,7 @@
         "title_alignment": "left",
         "description": "{{ blog.metafields.custom.descrizione | metafield_tag }}",
         "show_tag_cloud": true,
-        "layout": "grid",
+        "layout": "collage",
         "columns_desktop": "2",
         "columns_mobile": "1",
         "articles_per_page": 6,
@@ -54,6 +55,9 @@
         "show_author": true,
         "show_reading": true,
         "show_icons": true,
+        "custom_icon_date": "",
+        "custom_icon_reading": "",
+        "custom_icon_author": "",
         "show_excerpt": true,
         "show_blog_name": false,
         "show_tags": true,
