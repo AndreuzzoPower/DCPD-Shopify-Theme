@@ -140,11 +140,28 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "column_UmYKgJ": {
+          "type": "column",
+          "settings": {
+            "title": "ICONE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>In ogni punto del tema dove sono presenti le icone vengono gestite di default tramite SVG e sono in ogni luogo sostituibili con altri SVG presenti nel tema o da classe css della libreria font configurata da Settings. Attualmente sono disponibili Font Awesome, Bootstrap Icons, Lineicons, Remix Icon ... implementabili alla necessità.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
         }
       },
       "block_order": [
         "column_zjLaeT",
-        "column_ab8Vch"
+        "column_ab8Vch",
+        "column_UmYKgJ"
       ],
       "name": "MS Multicolonna",
       "settings": {
