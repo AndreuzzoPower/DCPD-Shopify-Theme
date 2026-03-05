@@ -76,6 +76,22 @@
           wrapper.appendChild(contentArea);
           megaContent.insertBefore(wrapper, megaContent.firstChild);
 
+          if (showMobile) {
+            var drawerDetails = document.querySelector('header-drawer details[data-menu-handle="' + handle + '"]');
+            if (drawerDetails) {
+              var innerSubmenu = drawerDetails.querySelector('.menu-drawer__inner-submenu');
+              if (innerSubmenu && !innerSubmenu.querySelector('.ms-mega-extra__drawer-content')) {
+                var drawerContent = document.createElement('div');
+                drawerContent.className = 'ms-mega-extra__drawer-content';
+                var clonedNodes = contentArea.cloneNode(true);
+                while (clonedNodes.firstChild) {
+                  drawerContent.appendChild(clonedNodes.firstChild);
+                }
+                innerSubmenu.appendChild(drawerContent);
+              }
+            }
+          }
+
           container.dataset.msProcessed = 'true';
           container.remove();
         }
