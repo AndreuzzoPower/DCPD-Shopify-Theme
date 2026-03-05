@@ -124,7 +124,7 @@
           "type": "image",
           "name": "Immagine",
           "settings": {
-            "desktop_layout": 12,
+            "desktop_layout": 6,
             "tablet_layout": 12,
             "mobile_layout": 12,
             "vertical_align": "start",
