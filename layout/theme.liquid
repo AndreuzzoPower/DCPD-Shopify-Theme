@@ -472,10 +472,6 @@
         }
       }
 
-      a[href="#"],
-      a[href=""] {
-        cursor: default !important;
-      }
     {% endstyle %}
 
     <!-- Bootstrap -->
@@ -640,6 +636,12 @@
 
     {% render 'ms_iubenda' %}
 
+    <style>
+      a[href="#"],
+      a[href=""] {
+        cursor: default !important;
+      }
+    </style>
     <script>
       document.addEventListener('click', function(e) {
         const link = e.target.closest('a');
