@@ -466,6 +466,10 @@ class MenuDrawer extends HTMLElement {
     const isOpen = detailsElement.hasAttribute('open');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+    this._isInteracting = true;
+    clearTimeout(this._interactingTimer);
+    this._interactingTimer = setTimeout(() => { this._isInteracting = false; }, 500);
+
     function addTrapFocus() {
       trapFocus(summaryElement.nextElementSibling, detailsElement.querySelector('button'));
       summaryElement.nextElementSibling.removeEventListener('transitionend', addTrapFocus);
@@ -519,6 +523,7 @@ class MenuDrawer extends HTMLElement {
 
   onFocusOut() {
     setTimeout(() => {
+      if (this._isInteracting) return;
       if (this.mainDetailsToggle.hasAttribute('open') && !this.mainDetailsToggle.contains(document.activeElement))
         this.closeMenuDrawer(document.activeElement, this.mainDetailsToggle.querySelector('summary'));
     });
@@ -1017,7 +1022,8 @@ class SliderComponent extends HTMLElement {
     this.slider.insertBefore(prependFrag, this.slider.firstChild);
 
     for (let i = 0; i < clonesCount; i++) {
-      this.slider.appendChild(makeClone(realItems[i], i, 'append'));
+      const realIndex = i % realCount;
+      this.slider.appendChild(makeClone(realItems[realIndex], realIndex, 'append'));
     }
 
     this._circularClonesCount = clonesCount;
