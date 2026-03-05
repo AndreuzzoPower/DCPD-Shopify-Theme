@@ -311,10 +311,10 @@
         "column_jB8mQQ": {
           "type": "column",
           "settings": {
-            "title": "DATI STRUTTURATI",
+            "title": "DATI FATTURAZIONE",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Dove disponibili sono stati inseriti in maniera dinamica, nel modo più completo i dati strutturati. E' stato predisposto un Widget dedicato da poter inserire nei vari template direttamente da Live Editor collegabile dinamicamente a Prodotti, Pagine, Articoli Blog e Collections in modo da renderli il più possibile personalizzabili.</p>",
+            "text": "<p>Il sistema prevede l'opzione di poter attivare la richiesta dei dati di fatturazione che verrano salvati nell'ordine senza i quali non si potrà procedere al checkout.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -327,10 +327,10 @@
         "column_FdXgw7": {
           "type": "column",
           "settings": {
-            "title": "ICONE",
+            "title": "ACCETTAZIONE CONDIZIONI DIVENDITA",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>In ogni punto del tema dove sono presenti le icone vengono gestite di default tramite SVG e sono in ogni luogo sostituibili con altri SVG presenti nel tema o da classe css della libreria font configurata da Settings. Attualmente sono disponibili Font Awesome, Bootstrap Icons, Lineicons, Remix Icon ... implementabili alla necessità.</p>",
+            "text": "<p>Nel carrello ci sarà la possibilità di richiedere l'accettazione delle condizioi di vendita senza le quali non si potrà procedere al checkout.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -343,10 +343,10 @@
         "column_7DWF47": {
           "type": "column",
           "settings": {
-            "title": "GESTIONE COLORI",
+            "title": "CARRELLO",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>I colori sono gestiti dallo schema colori implementabile direttamente da settings</p>",
+            "text": "<p>Si potrà visualizzare il carrello in 3 modi:</p><ol><li>Drawer laterale</li><li>Pagina</li><li>Popup all'aggiunta</li></ol>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
