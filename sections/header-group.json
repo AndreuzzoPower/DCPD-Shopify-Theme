@@ -116,11 +116,21 @@
         "collections_banned": "frontpage,homepage,all,home,bestseller",
         "show_cat_handle": false
       }
+    },
+    "ms_mega_menu_extra_Pkzfhq": {
+      "type": "ms_mega-menu-extra",
+      "name": "MS Mega Menu Extra",
+      "settings": {
+        "menu_handle": "pagine",
+        "menu_columns": 8,
+        "content_columns": 4
+      }
     }
   },
   "order": [
     "ms_announcement-bar",
     "header",
-    "ms_breadcrumbs_rybjWz"
+    "ms_breadcrumbs_rybjWz",
+    "ms_mega_menu_extra_Pkzfhq"
   ]
 }
