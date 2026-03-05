@@ -23,9 +23,9 @@
         "section_padding_fqF7rk": {
           "type": "section_padding",
           "settings": {
-            "section_padding_top": 0,
+            "section_padding_top": 50,
             "section_padding_bottom": 50,
-            "section_padding_top_md": 0,
+            "section_padding_top_md": 50,
             "section_padding_bottom_md": 50,
             "section_padding_top_xs": 0,
             "section_padding_bottom_xs": 50
