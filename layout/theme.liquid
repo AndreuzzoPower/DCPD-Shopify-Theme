@@ -651,6 +651,7 @@
       (function() {
         function markNoLinks() {
           document.querySelectorAll('a[href]').forEach(function(el) {
+            if (el.closest('.disclosure')) return;
             var href = el.getAttribute('href');
             if (href === '' || href === '#' || href.endsWith('#')) {
               el.classList.add('nolink');
