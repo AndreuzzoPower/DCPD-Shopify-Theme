@@ -1,3 +1,8 @@
+.ms-mask-section,
+.ms-mask {
+  background: transparent !important;
+}
+
 .ms-mask {
   position: relative;
   z-index: var(--ms-mask-z-index, 2);
