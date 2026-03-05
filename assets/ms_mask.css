@@ -2,6 +2,7 @@
   position: relative;
   z-index: var(--ms-mask-z-index, 2);
   width: 100%;
+  overflow: hidden;
   line-height: 0;
   pointer-events: none;
 }

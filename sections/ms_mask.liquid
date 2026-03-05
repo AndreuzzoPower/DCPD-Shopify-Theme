@@ -52,7 +52,6 @@
 
 {%- render 'ms_mobile-padding' -%}
 
-{%- comment -%} Cattura la forma SVG per la maschera — stesse forme di ms_divider {%- endcomment -%}
 {%- capture mask_shape_content -%}
   {%- case mask_shape -%}
     {%- when 'tilt' -%}
@@ -90,7 +89,7 @@
 
 <div class="{{ css_classes }} color-{{ section.settings.color_scheme }}" id="section-{{ section.id }}" aria-hidden="true">
   <div class="{{ sw_class }}">
-    <div class="ms-mask__svg">
+    <div class="ms-mask__svg" aria-hidden="true">
       <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <mask id="ms-mask-cutout-{{ section.id }}">
@@ -229,7 +228,7 @@
       "step": 5,
       "unit": "px",
       "default": 100,
-      "info": "Pixel di sovrapposizione sulla sezione adiacente. Impostare uguale all'altezza per una sovrapposizione completa."
+      "info": "Pixel di sovrapposizione sulla sezione adiacente. Impostare uguale all'altezza per sovrapposizione completa."
     },
     {
       "type": "range",
@@ -240,7 +239,7 @@
       "step": 5,
       "unit": "px",
       "default": 60,
-      "info": "Pixel di sovrapposizione su mobile. Impostare uguale all'altezza mobile per una sovrapposizione completa."
+      "info": "Pixel di sovrapposizione su mobile. Impostare uguale all'altezza mobile per sovrapposizione completa."
     },
     {
       "type": "range",
