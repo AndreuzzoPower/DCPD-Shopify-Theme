@@ -156,12 +156,29 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "column_FihGPM": {
+          "type": "column",
+          "settings": {
+            "title": "GESTIONE COLORI",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>I colori sono gestiti dallo schema colori implementabile direttamente da settings</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
         }
       },
       "block_order": [
         "column_zjLaeT",
         "column_ab8Vch",
-        "column_UmYKgJ"
+        "column_UmYKgJ",
+        "column_FihGPM"
       ],
       "name": "MS Multicolonna",
       "settings": {
