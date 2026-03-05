@@ -471,6 +471,11 @@
           font-size: 1.6rem;
         }
       }
+
+      a[href="#"],
+      a[href=""] {
+        cursor: default;
+      }
     {% endstyle %}
 
     <!-- Bootstrap -->
@@ -634,5 +639,16 @@
     {%- endif -%}
 
     {% render 'ms_iubenda' %}
+
+    <script>
+      document.addEventListener('click', function(e) {
+        const link = e.target.closest('a');
+        if (!link) return;
+        const href = link.getAttribute('href');
+        if (href === '#' || href === '') {
+          e.preventDefault();
+        }
+      });
+    </script>
   </body>
 </html>
