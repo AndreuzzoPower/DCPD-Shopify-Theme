@@ -62,8 +62,27 @@
         "icon_unmute": "icon-volume.svg"
       }
     },
+    "ms_mask_4w6JU3": {
+      "type": "ms_mask",
+      "name": "MS Maschera",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "scheme-1",
+        "mask_shape": "waves",
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "mask_color": "#000000",
+        "mask_height": 300,
+        "mask_height_mobile": 60,
+        "mask_position": "above",
+        "overlap": 155,
+        "overlap_mobile": 60,
+        "z_index": 7
+      }
+    },
     "ms_divider_tqnhyj": {
       "type": "ms_divider",
+      "disabled": true,
       "name": "MS Divisore",
       "settings": {
         "section_width": "full_width",
@@ -528,6 +547,7 @@
   },
   "order": [
     "ms_video_fWDKzx",
+    "ms_mask_4w6JU3",
     "ms_divider_tqnhyj",
     "ms_rich_text_XjDUaG",
     "ms_multicolumn_dNmEq4",
