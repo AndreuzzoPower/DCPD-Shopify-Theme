@@ -22,6 +22,15 @@
     margin-left: -0.5rem;
   }
 
+  .header__icon--menu > span {
+    display: grid;
+    place-items: center;
+  }
+
+  .header__icon--menu > span > .svg-wrapper {
+    grid-area: 1 / 1;
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
