@@ -300,7 +300,8 @@
               {%- when 'heading' -%}
                 {%- liquid
                   assign title_tag = block.settings.title_tag | default: 'div'
-                  assign title_classes = 'banner__heading inline-richtext ' | append: block.settings.heading_size
+                  assign heading_size = block.settings.heading_size | default: 'h1'
+                  assign title_classes = 'banner__heading inline-richtext ' | append: heading_size
                   if block.settings.title_custom_class != blank
                     assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
                   endif

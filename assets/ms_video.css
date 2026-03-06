@@ -145,6 +145,11 @@ ms-video-bg.ms-video-banner--natural .banner__content {
   }
 }
 
+/* Heading: normalize margin so tag change doesn't affect spacing */
+ms-video-bg .banner__heading {
+  margin: 0;
+}
+
 /* Design mode placeholder */
 .ms-video-banner__placeholder {
   display: flex;
