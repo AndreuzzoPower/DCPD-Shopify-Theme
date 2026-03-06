@@ -82,50 +82,51 @@ ms-video-bg.ms-video-banner--natural .banner__content {
 }
 
 /* ---- Mobile content position overrides ---- */
+/* Uses !important to override Dawn's base .banner__content { align-items: center; justify-content: center } */
 @media screen and (max-width: 749px) {
   .banner__content.banner__content--mobile-top-left {
-    align-items: flex-start;
-    justify-content: flex-start;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
   }
 
   .banner__content.banner__content--mobile-top-center {
-    align-items: flex-start;
-    justify-content: center;
+    align-items: flex-start !important;
+    justify-content: center !important;
   }
 
   .banner__content.banner__content--mobile-top-right {
-    align-items: flex-start;
-    justify-content: flex-end;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
   }
 
   .banner__content.banner__content--mobile-middle-left {
-    align-items: center;
-    justify-content: flex-start;
+    align-items: center !important;
+    justify-content: flex-start !important;
   }
 
   .banner__content.banner__content--mobile-middle-center {
-    align-items: center;
-    justify-content: center;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .banner__content.banner__content--mobile-middle-right {
-    align-items: center;
-    justify-content: flex-end;
+    align-items: center !important;
+    justify-content: flex-end !important;
   }
 
   .banner__content.banner__content--mobile-bottom-left {
-    align-items: flex-end;
-    justify-content: flex-start;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
   }
 
   .banner__content.banner__content--mobile-bottom-center {
-    align-items: flex-end;
-    justify-content: center;
+    align-items: flex-end !important;
+    justify-content: center !important;
   }
 
   .banner__content.banner__content--mobile-bottom-right {
-    align-items: flex-end;
-    justify-content: flex-end;
+    align-items: flex-end !important;
+    justify-content: flex-end !important;
   }
 }
 
