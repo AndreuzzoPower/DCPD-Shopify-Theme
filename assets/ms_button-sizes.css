@@ -31,8 +31,8 @@
 .button.button--size-medium {
   font-size: var(--btn-medium-fs, 1.5rem);
   letter-spacing: var(--btn-medium-ls, 0.1rem);
-  padding: var(--btn-medium-pv, 0rem) var(--btn-medium-ph, 3rem);
-  min-height: calc(4.5rem + var(--buttons-border-width, 0px) * 2);
+  padding: var(--btn-medium-pv, 1rem) var(--btn-medium-ph, 3rem);
+  min-height: calc(var(--btn-medium-fs, 1.5rem) + var(--btn-medium-pv, 1rem) * 2 + var(--buttons-border-width, 0px) * 2);
   min-width: calc(12rem + var(--buttons-border-width, 0px) * 2);
 }
 
