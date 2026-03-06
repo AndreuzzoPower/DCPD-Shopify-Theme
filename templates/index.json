@@ -751,23 +751,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "divider_VC6wT3": {
-          "type": "divider",
-          "name": "Divisore",
-          "settings": {
-            "desktop_layout": 12,
-            "tablet_layout": 12,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "space_top": 80,
-            "space_bottom": 80,
-            "show_rule": true,
-            "rule_style": "dotted",
-            "rule_color": "#e0e0e0",
-            "rule_thickness": 3
-          },
-          "blocks": {}
-        },
         "cta_kGT9Yr": {
           "type": "cta",
           "name": "CTA (Pulsante)",
@@ -778,10 +761,10 @@
             "vertical_align": "center",
             "color_scheme": "",
             "button_label": "Scopri di più",
-            "button_link": "",
+            "button_link": "shopify://pages/blog",
             "button_link_target": "_self",
             "button_size": "default",
-            "button_style_secondary": true,
+            "button_style_secondary": false,
             "button_type": "pill",
             "button_icon": "",
             "button_icon_position": "before",
@@ -818,7 +801,6 @@
         }
       },
       "block_order": [
-        "divider_VC6wT3",
         "cta_kGT9Yr",
         "featured_article_tDHT9h"
       ],
