@@ -1,0 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "ms_render_menu_jGq4WF": {
+      "type": "ms_render_menu",
+      "blocks": {
+        "section_padding_dwFCnz": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 0,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 0
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_dwFCnz"
+      ],
+      "name": "MS Render Menu",
+      "settings": {
+        "menu": "menu-categorie-blog",
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "alignment": "center",
+        "style": "pills",
+        "color_scheme": ""
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "show_title": true,
+        "title_alignment": "left",
+        "description": "{{ blog.metafields.custom.descrizione | metafield_tag }}",
+        "show_tag_cloud": true,
+        "layout": "collage",
+        "columns_desktop": "2",
+        "columns_mobile": "1",
+        "articles_per_page": 6,
+        "enable_infinite_scroll": true,
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": true,
+        "show_reading": true,
+        "show_icons": true,
+        "custom_icon_date": "",
+        "custom_icon_reading": "",
+        "custom_icon_author": "",
+        "show_excerpt": true,
+        "show_blog_name": false,
+        "show_tags": true,
+        "tags_style": "pill",
+        "card_info_vertical": false,
+        "card_info_padding_top": 16,
+        "card_info_padding_right": 16,
+        "card_info_padding_bottom": 16,
+        "card_info_padding_left": 16,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "ms_render_menu_jGq4WF",
+    "main"
+  ]
+}
