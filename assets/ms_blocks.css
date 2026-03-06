@@ -137,9 +137,9 @@
   gap: 0.75rem 1.25rem;
 }
 
-.ms-block-menu__sub-list {
+.ms-block-menu .ms-block-menu__sub-list {
   margin-top: 0.35rem;
-  padding-left: 1rem;
+  padding-left: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
