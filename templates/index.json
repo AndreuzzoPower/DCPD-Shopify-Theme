@@ -54,6 +54,7 @@
         "desktop_content_alignment": "left",
         "show_text_box": false,
         "mobile_content_alignment": "left",
+        "mobile_content_position": "top-left",
         "show_text_below": false,
         "hide_content_mobile": false,
         "mobile_color_scheme": "scheme-45900663-4210-4644-83ef-9f6d380a54a5",
