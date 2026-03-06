@@ -147,6 +147,31 @@
     assign cp_right_m  = section.settings.content_padding_right_mobile  | times: 1
   -%}
 
+  {%- liquid
+    assign mobile_scheme_id = section.settings.mobile_color_scheme
+    assign desktop_scheme_id = section.settings.color_scheme
+    assign ms_scheme = nil
+    if mobile_scheme_id != desktop_scheme_id
+      for scheme in settings.color_schemes
+        if scheme.id == mobile_scheme_id
+          assign ms_scheme = scheme
+          break
+        endif
+      endfor
+      if ms_scheme
+        assign ms_bg = ms_scheme.settings.background
+        assign ms_bg_brightness = ms_bg | color_brightness
+        if ms_bg_brightness <= 26
+          assign ms_bg_contrast = ms_bg | color_lighten: 50
+        elsif ms_bg_brightness <= 65
+          assign ms_bg_contrast = ms_bg | color_lighten: 5
+        else
+          assign ms_bg_contrast = ms_bg | color_darken: 25
+        endif
+      endif
+    endif
+  -%}
+
   {%- style -%}
     #Banner-{{ section.id }}::after {
       opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
@@ -169,6 +194,26 @@
         padding-left: {{ cp_left_m }}px;
         padding-right: {{ cp_right_m }}px;
       }
+      {%- if ms_scheme -%}
+        #Banner-{{ section.id }} .banner__box {
+          --color-background: {{ ms_scheme.settings.background.red }},{{ ms_scheme.settings.background.green }},{{ ms_scheme.settings.background.blue }};
+          {%- if ms_scheme.settings.background_gradient != empty -%}
+            --gradient-background: {{ ms_scheme.settings.background_gradient }};
+          {%- else -%}
+            --gradient-background: {{ ms_scheme.settings.background }};
+          {%- endif -%}
+          --color-foreground: {{ ms_scheme.settings.text.red }},{{ ms_scheme.settings.text.green }},{{ ms_scheme.settings.text.blue }};
+          --color-background-contrast: {{ ms_bg_contrast.red }},{{ ms_bg_contrast.green }},{{ ms_bg_contrast.blue }};
+          --color-shadow: {{ ms_scheme.settings.shadow.red }},{{ ms_scheme.settings.shadow.green }},{{ ms_scheme.settings.shadow.blue }};
+          --color-button: {{ ms_scheme.settings.button.red }},{{ ms_scheme.settings.button.green }},{{ ms_scheme.settings.button.blue }};
+          --color-button-text: {{ ms_scheme.settings.button_label.red }},{{ ms_scheme.settings.button_label.green }},{{ ms_scheme.settings.button_label.blue }};
+          --color-secondary-button: {{ ms_scheme.settings.background.red }},{{ ms_scheme.settings.background.green }},{{ ms_scheme.settings.background.blue }};
+          --color-secondary-button-text: {{ ms_scheme.settings.secondary_button_label.red }},{{ ms_scheme.settings.secondary_button_label.green }},{{ ms_scheme.settings.secondary_button_label.blue }};
+          --color-link: {{ ms_scheme.settings.secondary_button_label.red }},{{ ms_scheme.settings.secondary_button_label.green }},{{ ms_scheme.settings.secondary_button_label.blue }};
+          --payment-terms-background-color: rgb({{ ms_scheme.settings.background.rgb }});
+          background: rgb(var(--color-background));
+        }
+      {%- endif -%}
     }
   {%- endstyle -%}
 
@@ -314,35 +359,6 @@
       </div>
     </ms-video-bg>
 
-    {%- liquid
-      assign desktop_scheme = section.settings.color_scheme
-      assign mobile_scheme  = section.settings.mobile_color_scheme | default: desktop_scheme
-    -%}
-    {%- if mobile_scheme != desktop_scheme -%}
-      <script>
-        (function(){
-          var id = {{ section.id | json }};
-          var dClass = 'color-' + {{ desktop_scheme | json }};
-          var mClass = 'color-' + {{ mobile_scheme | json }};
-          var mql = window.matchMedia('(max-width: 749px)');
-          function apply(e){
-            var box = document.getElementById('Banner-' + id);
-            if(!box) return;
-            box = box.querySelector('.banner__box');
-            if(!box) return;
-            if(e.matches){
-              box.classList.remove(dClass);
-              box.classList.add(mClass);
-            } else {
-              box.classList.remove(mClass);
-              box.classList.add(dClass);
-            }
-          }
-          apply(mql);
-          mql.addEventListener('change', apply);
-        })();
-      </script>
-    {%- endif -%}
   </div>
 
 {%- else -%}
