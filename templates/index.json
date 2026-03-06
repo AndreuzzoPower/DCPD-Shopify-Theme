@@ -726,11 +726,11 @@
             "mobile_layout": 12,
             "vertical_align": "start",
             "menu": "main-menu",
-            "show_sub_links": false,
+            "show_sub_links": true,
             "color_scheme": "",
             "menu_layout": "vertical",
             "link_style": "button",
-            "alignment": "right"
+            "alignment": "left"
           },
           "blocks": {}
         },
