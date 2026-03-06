@@ -725,7 +725,7 @@
             "tablet_layout": 4,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "menu": "menu-categorie-blog",
+            "menu": "main-menu",
             "show_sub_links": false,
             "color_scheme": "",
             "menu_layout": "vertical",
