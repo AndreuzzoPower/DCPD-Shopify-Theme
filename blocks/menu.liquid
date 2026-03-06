@@ -52,6 +52,10 @@
     justify-content: {{ flex_align }};
   }
 
+  #ms-block-{{ block.id }} .ms-block-menu__sub-item {
+    margin-left: 1.25rem;
+  }
+
   {%- if block.settings.equal_width and is_button_style -%}
     #ms-block-{{ block.id }} .ms-block-menu__list.ms-block-menu__list--horizontal > .ms-block-menu__item {
       flex: 1 1 0;
