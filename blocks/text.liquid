@@ -1,6 +1,7 @@
 {%- liquid
   assign title_tag = block.settings.title_tag | default: 'h2'
-  assign title_classes = block.settings.title_size | default: 'h1'
+  assign title_size = block.settings.title_size | default: 'h1'
+  assign title_classes = 'ms-block-text__title ' | append: title_size
   if block.settings.title_custom_class != blank
     assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
   endif
@@ -23,6 +24,10 @@
   }
   #ms-block-{{ block.id }} {
     text-align: {{ block.settings.alignment }};
+  }
+  #ms-block-{{ block.id }} .ms-block-text__title {
+    margin: 0 0 1rem 0;
+    color: rgb(var(--color-foreground));
   }
 </style>
 
