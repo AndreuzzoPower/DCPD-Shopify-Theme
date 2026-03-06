@@ -5,6 +5,12 @@
     assign is_horizontal = true
   endif
 
+  assign link_style = block.settings.link_style | default: 'link'
+  assign is_button_style = false
+  if link_style == 'button' or link_style == 'pill'
+    assign is_button_style = true
+  endif
+
   case block.settings.alignment
     when 'center'
       assign flex_align = 'center'
@@ -13,6 +19,14 @@
     else
       assign flex_align = 'flex-start'
   endcase
+
+  assign btn_size_class = ''
+  if is_button_style
+    capture btn_size_class
+      render 'ms_button_size', size: block.settings.button_size
+    endcapture
+    assign btn_size_class = btn_size_class | strip
+  endif
 -%}
 
 <style>
@@ -29,13 +43,31 @@
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
   }
+
   #ms-block-{{ block.id }} .ms-block-menu__list {
     align-items: {{ flex_align }};
+  }
+  #ms-block-{{ block.id }} .ms-block-menu__list.ms-block-menu__list--horizontal {
+    align-items: center;
     justify-content: {{ flex_align }};
   }
+
+  {%- if block.settings.equal_width and is_button_style -%}
+    #ms-block-{{ block.id }} .ms-block-menu__list.ms-block-menu__list--horizontal > .ms-block-menu__item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    #ms-block-{{ block.id }} .ms-block-menu__list:not(.ms-block-menu__list--horizontal) {
+      align-items: stretch;
+    }
+    #ms-block-{{ block.id }} .ms-block-menu__link.button {
+      width: 100%;
+      justify-content: center;
+    }
+  {%- endif -%}
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block ms-block-menu color-{{ block.settings.color_scheme }} gradient text-{{ block.settings.alignment }}">
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-menu color-{{ block.settings.color_scheme }} gradient">
   {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
     <nav aria-label="{{ nav_menu.title | default: 'Menu' | escape }}">
       <ul
@@ -53,11 +85,17 @@
               assign has_children = true
             endif
             assign link_classes = ''
-            case block.settings.link_style
+            case link_style
               when 'button'
                 assign link_classes = 'button'
+                if btn_size_class != blank
+                  assign link_classes = link_classes | append: ' ' | append: btn_size_class
+                endif
               when 'pill'
                 assign link_classes = 'button button--pill'
+                if btn_size_class != blank
+                  assign link_classes = link_classes | append: ' ' | append: btn_size_class
+                endif
               when 'text'
                 assign link_classes = 'ms-block-menu__link--plain'
               else
@@ -83,11 +121,17 @@
                       assign child_is_current = true
                     endif
                     assign child_link_classes = ''
-                    case block.settings.link_style
+                    case link_style
                       when 'button'
                         assign child_link_classes = 'button button--outline'
+                        if btn_size_class != blank
+                          assign child_link_classes = child_link_classes | append: ' ' | append: btn_size_class
+                        endif
                       when 'pill'
                         assign child_link_classes = 'button button--pill button--outline'
+                        if btn_size_class != blank
+                          assign child_link_classes = child_link_classes | append: ' ' | append: btn_size_class
+                        endif
                       when 'text'
                         assign child_link_classes = 'ms-block-menu__link--plain'
                       else
@@ -221,9 +265,31 @@
       "default": "link"
     },
     {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsanti",
+      "info": "Si applica solo agli stili Pulsante e Pill. \"Predefinita\" usa il valore globale da Impostazioni tema.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "equal_width",
+      "label": "Pulsanti stessa larghezza",
+      "default": false,
+      "info": "Se attivo, tutti i pulsanti/pill hanno la stessa larghezza. Non si applica a link e testo semplice."
+    },
+    {
       "type": "text_alignment",
       "id": "alignment",
-      "label": "Allineamento testo",
+      "label": "Allineamento",
       "default": "left"
     }
   ],
