@@ -221,7 +221,8 @@
             button_style_secondary: section.settings.button_style_secondary,
             button_size: section.settings.button_size,
             button_icon: section.settings.button_icon,
-            button_icon_position: section.settings.button_icon_position
+            button_icon_position: section.settings.button_icon_position,
+            button_align: section.settings.button_align
           -%}
         </div>
       {%- endfor -%}
@@ -570,6 +571,17 @@
         { "value": "after", "label": "Dopo il testo" }
       ],
       "default": "after"
+    },
+    {
+      "type": "select",
+      "id": "button_align",
+      "label": "Allineamento pulsante",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ],
+      "default": "left"
     },
     {
       "type": "header",

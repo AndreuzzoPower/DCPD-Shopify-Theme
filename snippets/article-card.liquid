@@ -29,6 +29,7 @@
   - button_size: {String} Button size. Default: 'default'.
   - button_icon: {String} Button icon (SVG file or icon class).
   - button_icon_position: {String} Icon position: 'before' or 'after'. Default: 'after'.
+  - button_align: {String} Button alignment: 'left', 'center', 'right'. Default: 'left'.
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 
   Usage:
@@ -48,6 +49,15 @@
     assign _btn_label = button_label | default: 'Leggi articolo'
     assign _btn_type = button_type | default: 'link'
     assign _btn_icon_pos = button_icon_position | default: 'after'
+    assign _btn_align = button_align | default: 'left'
+    case _btn_align
+      when 'center'
+        assign _btn_justify = 'center'
+      when 'right'
+        assign _btn_justify = 'flex-end'
+      else
+        assign _btn_justify = 'flex-start'
+    endcase
   -%}
   <div class="article-card-wrapper card-wrapper underline-links-hover">
     {%- if show_blog_name and blog_name != blank -%}
@@ -151,7 +161,7 @@
               </div>
             {%- endif -%}
             {%- if show_button -%}
-              <div class="article-card__button" style="position:relative;z-index:2;">
+              <div class="article-card__button" style="position:relative;z-index:2;display:flex;justify-content:{{ _btn_justify }};">
                 <a href="{{ article.url }}" class="article-card__cta article-card__cta--{{ _btn_type }}{% if _btn_type == 'button' %} button{% if button_style_secondary %} button--secondary{% endif %}{% if button_size != blank and button_size != 'default' %} button--size-{{ button_size }}{% endif %}{% endif %}">
                   {%- if button_icon != blank and _btn_icon_pos == 'before' -%}
                     <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>
@@ -245,7 +255,7 @@
             </div>
           {%- endif -%}
           {%- if show_button -%}
-            <div class="article-card__button" style="position:relative;z-index:2;">
+            <div class="article-card__button" style="position:relative;z-index:2;display:flex;justify-content:{{ _btn_justify }};">
               <a href="{{ article.url }}" class="article-card__cta article-card__cta--{{ _btn_type }}{% if _btn_type == 'button' %} button{% if button_style_secondary %} button--secondary{% endif %}{% if button_size != blank and button_size != 'default' %} button--size-{{ button_size }}{% endif %}{% endif %}">
                 {%- if button_icon != blank and _btn_icon_pos == 'before' -%}
                   <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>

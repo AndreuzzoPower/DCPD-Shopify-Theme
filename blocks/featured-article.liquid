@@ -83,6 +83,7 @@
       button_size: block.settings.button_size,
       button_icon: block.settings.button_icon,
       button_icon_position: block.settings.button_icon_position,
+      button_align: block.settings.button_align,
       lazy_load: true
     -%}
   {%- else -%}
@@ -329,6 +330,17 @@
         { "value": "after", "label": "Dopo il testo" }
       ],
       "default": "after"
+    },
+    {
+      "type": "select",
+      "id": "button_align",
+      "label": "Allineamento pulsante",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
+      ],
+      "default": "left"
     },
     {
       "type": "header",
