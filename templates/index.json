@@ -717,25 +717,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "menu_8taUyE": {
-          "type": "menu",
-          "name": "Menu",
-          "settings": {
-            "desktop_layout": 3,
-            "tablet_layout": 4,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "menu": "main-menu",
-            "show_sub_links": true,
-            "color_scheme": "",
-            "menu_layout": "vertical",
-            "link_style": "link",
-            "button_size": "default",
-            "equal_width": true,
-            "alignment": "left"
-          },
-          "blocks": {}
-        },
         "image_HfrqWV": {
           "type": "image",
           "name": "Immagine",
@@ -817,7 +798,6 @@
         }
       },
       "block_order": [
-        "menu_8taUyE",
         "image_HfrqWV",
         "divider_VC6wT3",
         "cta_kGT9Yr",
