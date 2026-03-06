@@ -734,7 +734,7 @@
         "step": 1,
         "unit": "px",
         "label": "Padding verticale",
-        "default": 0
+        "default": 10
       },
       {
         "type": "range",
