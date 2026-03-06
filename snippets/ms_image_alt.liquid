@@ -1,0 +1,28 @@
+{%- comment -%}
+  Snippet: ms_image_alt
+  Genera il testo ALT per un'immagine seguendo la catena di fallback:
+    1. custom_alt  — testo ALT inserito manualmente dal live editor
+    2. image.alt   — ALT dell'immagine caricata in Shopify
+    3. fallback_title — titolo del contesto (es. titolo sezione, prodotto, ecc.)
+    4. Nome file normalizzato — rimuove estensione/trattini, prima lettera maiuscola
+
+  Parametri:
+    - image          (image object, obbligatorio): l'oggetto immagine Shopify
+    - custom_alt     (string, opzionale): testo ALT personalizzato dal setting
+    - fallback_title (string, opzionale): titolo del contesto padre
+{%- endcomment -%}
+
+{%- liquid
+  assign alt_result = ''
+
+  if custom_alt != blank
+    assign alt_result = custom_alt
+  elsif image.alt != blank
+    assign alt_result = image.alt
+  elsif fallback_title != blank
+    assign alt_result = fallback_title | strip_html | strip
+  elsif image.src != blank
+    assign alt_result = image.src | split: '/' | last | split: '?' | first | split: '.' | first | replace: '-', ' ' | replace: '_', ' ' | capitalize
+  endif
+-%}
+{{- alt_result | escape -}}

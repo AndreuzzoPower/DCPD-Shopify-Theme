@@ -54,6 +54,21 @@
 
 {%- render 'ms_mobile-padding' -%}
 
+{%- liquid
+  assign mwt_heading = ''
+  for block in section.blocks
+    if block.type == 'heading' and block.settings.heading != blank
+      assign mwt_heading = block.settings.heading | strip_html | strip
+      break
+    endif
+  endfor
+-%}
+
+{%- capture img_alt -%}
+  {%- render 'ms_image_alt', image: section.settings.image, custom_alt: section.settings.image_alt, fallback_title: mwt_heading -%}
+{%- endcapture -%}
+{%- assign img_alt = img_alt | strip -%}
+
 <style>
   #ImageWithText--{{ section.id }}.image-with-text__content {
     padding: {{ content_pt_mob }}px {{ content_pr_mob }}px {{ content_pb_mob }}px {{ content_pl_mob }}px !important;
@@ -213,7 +228,7 @@
                 {{
                   section.settings.image
                   | image_url: width: 1500
-                  | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                  | image_tag: alt: img_alt, sizes: sizes, widths: widths, fetchpriority: fetch_priority
                 }}
               {%- else -%}
                 {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -382,6 +397,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "Immagine"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Testo alternativo (ALT)",
+      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
     },
     {
       "type": "select",

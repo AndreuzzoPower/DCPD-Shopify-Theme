@@ -1,11 +1,13 @@
 {%- liquid
-  if block.settings.block_image != blank
-    assign img_alt = block.settings.block_image.alt | default: ''
-  endif
   assign has_link = false
   if block.settings.image_link != blank
     assign has_link = true
   endif
+
+  capture img_alt
+    render 'ms_image_alt', image: block.settings.block_image, custom_alt: block.settings.image_alt
+  endcapture
+  assign img_alt = img_alt | strip
 -%}
 
 <style>
@@ -108,6 +110,12 @@
       "type": "image_picker",
       "id": "block_image",
       "label": "Immagine"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Testo alternativo (ALT)",
+      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
     },
     {
       "type": "header",

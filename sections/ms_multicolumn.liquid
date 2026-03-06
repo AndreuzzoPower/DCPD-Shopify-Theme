@@ -188,6 +188,10 @@
                         (min-width: 750px) calc((100vw - {{ grid_space_tablet }}) * {{ image_width }} / {{ number_of_columns_mobile }}),
                         calc((100vw - {{ grid_space_mobile }}) * {{ image_width }} / {{ number_of_columns_mobile }})
                       {%- endcapture -%}
+                      {%- capture img_alt -%}
+                        {%- render 'ms_image_alt', image: block.settings.image, custom_alt: block.settings.image_alt, fallback_title: block.settings.title -%}
+                      {%- endcapture -%}
+                      {%- assign img_alt = img_alt | strip -%}
                       {{
                         block.settings.image
                         | image_url: width: 3200
@@ -195,7 +199,7 @@
                           widths: '50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3200',
                           sizes: sizes,
                           class: 'multicolumn-card__image',
-                          alt: block.settings.image.alt | escape
+                          alt: img_alt
                       }}
                     </div>
                   </div>
@@ -592,6 +596,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.multicolumn.blocks.column.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Testo alternativo (ALT)",
+          "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
         },
         {
           "type": "inline_richtext",

@@ -237,6 +237,11 @@
           tabindex="-1"
           data-ms-overlay-light="{{ block.settings.overlay_controls_light | default: false }}"
         >
+          {%- capture slide_img_alt -%}
+            {%- render 'ms_image_alt', image: block.settings.image, custom_alt: block.settings.image_alt, fallback_title: block.settings.heading -%}
+          {%- endcapture -%}
+          {%- assign slide_img_alt = slide_img_alt | strip -%}
+
           <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}">
             {%- if block.settings.image -%}
               {%- liquid
@@ -260,13 +265,13 @@
                 {{
                   block.settings.image
                   | image_url: width: 3840
-                  | image_tag: height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
+                  | image_tag: alt: slide_img_alt, height: height, sizes: sizes, widths: widths, fetchpriority: fetch_priority
                 }}
               {%- else -%}
                 {{
                   block.settings.image
                   | image_url: width: 3840
-                  | image_tag: loading: 'lazy', height: height, sizes: sizes, widths: widths
+                  | image_tag: alt: slide_img_alt, loading: 'lazy', height: height, sizes: sizes, widths: widths
                 }}
               {%- endif -%}
               {%- if block.settings.image_mobile -%}
@@ -278,7 +283,7 @@
                   {{
                     block.settings.image_mobile
                     | image_url: width: 750
-                    | image_tag: loading: 'lazy', height: mobile_height, sizes: '100vw', widths: '375, 550, 750'
+                    | image_tag: alt: slide_img_alt, loading: 'lazy', height: mobile_height, sizes: '100vw', widths: '375, 550, 750'
                   }}
                 </span>
               {%- endif -%}
@@ -743,6 +748,12 @@
           "id": "image_mobile",
           "label": "Immagine mobile",
           "info": "Se impostata, sostituisce l'immagine desktop su schermi piccoli (< 750px)."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Testo alternativo (ALT)",
+          "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
         },
         {
           "type": "range",
