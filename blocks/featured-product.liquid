@@ -1,6 +1,25 @@
 {%- liquid
   assign featured_product = block.settings.product
+  assign fp_quick_add = block.settings.quick_add | default: 'none'
 -%}
+
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+{%- unless fp_quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+
+{%- if fp_quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if fp_quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 <style>
   #shopify-block-{{ block.id }},
@@ -26,10 +45,10 @@
     show_vendor: block.settings.show_vendor,
     show_rating: block.settings.show_rating,
     show_min_order: block.settings.show_min_order,
-    quick_add: block.settings.quick_add,
+    quick_add: fp_quick_add,
     extend_height: false,
     lazy_load: true,
-    section_id: block.id
+    section_id: section.id
   -%}
 </div>
 
