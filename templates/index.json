@@ -727,12 +727,12 @@
             "vertical_align": "start",
             "product": "multi-variante-test",
             "image_ratio": "adapt",
-            "image_shape": "default",
             "show_secondary_image": true,
             "color_scheme": "",
             "show_vendor": true,
             "show_rating": true,
-            "quick_add": "true"
+            "show_min_order": true,
+            "quick_add": "bulk"
           },
           "blocks": {}
         },
