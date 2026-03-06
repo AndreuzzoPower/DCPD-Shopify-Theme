@@ -135,7 +135,7 @@
             "show_vendor": false,
             "show_rating": false,
             "show_min_order": true,
-            "quick_add": "none"
+            "quick_add": "standard"
           },
           "blocks": {}
         },
