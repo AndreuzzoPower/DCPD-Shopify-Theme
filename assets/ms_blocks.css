@@ -22,6 +22,16 @@
 
 .ms-block > a {
   display: block;
+  border: none;
+  outline-offset: 2px;
+}
+
+.ms-block > a:focus {
+  outline: none;
+}
+
+.ms-block > a:focus-visible {
+  outline: 2px solid currentColor;
 }
 
 .ms-block > a img {
