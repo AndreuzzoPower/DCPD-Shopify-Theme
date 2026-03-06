@@ -744,8 +744,15 @@
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "center",
+            "title": "",
+            "title_tag": "h2",
+            "title_size": "h2",
+            "title_custom_class": "",
+            "subtitle": "ggg",
+            "subtitle_tag": "h2",
+            "subtitle_custom_class": "",
             "text": "<p>Testo</p>",
-            "alignment": "left"
+            "alignment": "center"
           },
           "blocks": {}
         },
@@ -764,7 +771,7 @@
             "color_scheme": "",
             "show_vendor": true,
             "show_rating": true,
-            "quick_add": true
+            "quick_add": "true"
           },
           "blocks": {}
         },
@@ -836,6 +843,7 @@
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "center",
+            "color_scheme": "",
             "button_label": "Scopri di più",
             "button_link": "",
             "button_link_target": "_self",
@@ -856,18 +864,22 @@
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "blog": "eventi",
-            "article": "",
-            "image_ratio": "adapt",
-            "show_image": true,
             "color_scheme": "",
+            "blog": "eventi",
+            "article": "notizie/prova-15",
+            "show_image": true,
+            "image_height": "medium",
             "show_date": true,
             "show_author": true,
             "show_reading": true,
             "show_excerpt": true,
             "show_blog_name": true,
             "show_tags": true,
-            "tags_style": "pill"
+            "tags_style": "pill",
+            "show_icons": false,
+            "custom_icon_date": "",
+            "custom_icon_reading": "",
+            "custom_icon_author": ""
           },
           "blocks": {}
         }
