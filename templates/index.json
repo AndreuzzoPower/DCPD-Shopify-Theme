@@ -717,25 +717,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "featured_product_Wk3ByB": {
-          "type": "featured-product",
-          "name": "Prodotto In Evidenza",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "product": "multi-variante-test",
-            "image_ratio": "adapt",
-            "show_secondary_image": true,
-            "color_scheme": "",
-            "show_vendor": true,
-            "show_rating": true,
-            "show_min_order": true,
-            "quick_add": "standard"
-          },
-          "blocks": {}
-        },
         "menu_8taUyE": {
           "type": "menu",
           "name": "Menu",
@@ -846,7 +827,6 @@
         }
       },
       "block_order": [
-        "featured_product_Wk3ByB",
         "menu_8taUyE",
         "image_HfrqWV",
         "html_LTNktn",
