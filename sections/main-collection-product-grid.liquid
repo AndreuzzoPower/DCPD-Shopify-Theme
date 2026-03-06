@@ -773,6 +773,69 @@
     },
     {
       "type": "header",
+      "content": "EA — Pulsante articolo"
+    },
+    {
+      "type": "checkbox",
+      "id": "ea_show_button",
+      "label": "Mostra pulsante",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "ea_button_label",
+      "label": "Testo pulsante",
+      "default": "Leggi articolo"
+    },
+    {
+      "type": "select",
+      "id": "ea_button_type",
+      "label": "Tipo pulsante",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill" },
+        { "value": "link", "label": "Link" }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "checkbox",
+      "id": "ea_button_style_secondary",
+      "label": "Stile secondario (outline)",
+      "default": false,
+      "info": "Solo per tipo 'Pulsante'."
+    },
+    {
+      "type": "select",
+      "id": "ea_button_size",
+      "label": "Dimensione pulsante",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Piccolo" },
+        { "value": "medium", "label": "Medio" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "default",
+      "info": "Solo per tipo 'Pulsante'."
+    },
+    {
+      "type": "text",
+      "id": "ea_button_icon",
+      "label": "Icona pulsante",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone."
+    },
+    {
+      "type": "select",
+      "id": "ea_button_icon_position",
+      "label": "Posizione icona",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ],
+      "default": "after"
+    },
+    {
+      "type": "header",
       "content": "EA — Stile card"
     },
     {

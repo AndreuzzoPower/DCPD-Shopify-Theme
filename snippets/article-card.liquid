@@ -21,6 +21,14 @@
   - blog_url: {String} The blog URL for the pill link.
   - show_tags: {Boolean} Show article tags below info.
   - tags_style: {String} Tags display style: 'pill' or 'link'.
+  - info_layout: {String} Info layout: 'horizontal' (default) or 'vertical'.
+  - show_button: {Boolean} Show a CTA button at the bottom of the card.
+  - button_label: {String} Button text. Default: 'Leggi articolo'.
+  - button_type: {String} Button type: 'button', 'pill', 'link'. Default: 'link'.
+  - button_style_secondary: {Boolean} Outline style for button.
+  - button_size: {String} Button size. Default: 'default'.
+  - button_icon: {String} Button icon (SVG file or icon class).
+  - button_icon_position: {String} Icon position: 'before' or 'after'. Default: 'after'.
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 
   Usage:
@@ -33,6 +41,13 @@
     if media_aspect_ratio != null
       assign ratio = media_aspect_ratio
     endif
+    assign _info_vertical_class = ''
+    if info_layout == 'vertical'
+      assign _info_vertical_class = ' article-card__info--vertical'
+    endif
+    assign _btn_label = button_label | default: 'Leggi articolo'
+    assign _btn_type = button_type | default: 'link'
+    assign _btn_icon_pos = button_icon_position | default: 'after'
   -%}
   <div class="article-card-wrapper card-wrapper underline-links-hover">
     {%- if show_blog_name and blog_name != blank -%}
@@ -96,7 +111,7 @@
                 {{ article.title | truncate: 50 | escape }}
               </a>
             </h3>
-            <div class="article-card__info caption-with-letter-spacing h5">
+            <div class="article-card__info caption-with-letter-spacing h5{{ _info_vertical_class }}">
               {%- if show_date -%}
                 <span class="circle-divider">{{ article.published_at | time_tag: format: 'date' }}</span>
               {%- endif -%}
@@ -135,6 +150,19 @@
                 {%- endif -%}
               </div>
             {%- endif -%}
+            {%- if show_button -%}
+              <div class="article-card__button" style="position:relative;z-index:2;">
+                <a href="{{ article.url }}" class="article-card__cta article-card__cta--{{ _btn_type }}{% if _btn_type == 'button' %} button{% if button_style_secondary %} button--secondary{% endif %}{% if button_size != blank and button_size != 'default' %} button--size-{{ button_size }}{% endif %}{% endif %}">
+                  {%- if button_icon != blank and _btn_icon_pos == 'before' -%}
+                    <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>
+                  {%- endif -%}
+                  <span>{{ _btn_label | escape }}</span>
+                  {%- if button_icon != blank and _btn_icon_pos == 'after' -%}
+                    <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>
+                  {%- endif -%}
+                </a>
+              </div>
+            {%- endif -%}
           </div>
           {%- if show_badge -%}
             <div class="card__badge {{ settings.badge_position }}">
@@ -150,7 +178,7 @@
               {{ article.title | truncate: 50 | escape }}
             </a>
           </h3>
-          <div class="article-card__info caption-with-letter-spacing h5">
+          <div class="article-card__info caption-with-letter-spacing h5{{ _info_vertical_class }}">
             {%- if show_date -%}
               <span class="circle-divider">
                 {% if show_icons %}
@@ -214,6 +242,19 @@
               {%- if article.comments_count > 0 and blog.comments_enabled? -%}
                 <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
               {%- endif -%}
+            </div>
+          {%- endif -%}
+          {%- if show_button -%}
+            <div class="article-card__button" style="position:relative;z-index:2;">
+              <a href="{{ article.url }}" class="article-card__cta article-card__cta--{{ _btn_type }}{% if _btn_type == 'button' %} button{% if button_style_secondary %} button--secondary{% endif %}{% if button_size != blank and button_size != 'default' %} button--size-{{ button_size }}{% endif %}{% endif %}">
+                {%- if button_icon != blank and _btn_icon_pos == 'before' -%}
+                  <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>
+                {%- endif -%}
+                <span>{{ _btn_label | escape }}</span>
+                {%- if button_icon != blank and _btn_icon_pos == 'after' -%}
+                  <span class="article-card__cta-icon">{%- render 'ms_icon', icon: button_icon -%}</span>
+                {%- endif -%}
+              </a>
             </div>
           {%- endif -%}
         </div>

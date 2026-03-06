@@ -136,7 +136,7 @@
   }
 
   /* Info verticale */
-  {%- if section.settings.card_info_vertical -%}
+  {%- if section.settings.info_layout == 'vertical' -%}
     #section-{{ section.id }} .article-card__info {
       display: flex !important;
       flex-direction: column;
@@ -243,7 +243,14 @@
                 blog_name: section.settings.blog.title,
                 blog_url: section.settings.blog.url,
                 show_tags: section.settings.show_tags,
-                tags_style: section.settings.tags_style
+                tags_style: section.settings.tags_style,
+                show_button: section.settings.show_button,
+                button_label: section.settings.button_label,
+                button_type: section.settings.button_type,
+                button_style_secondary: section.settings.button_style_secondary,
+                button_size: section.settings.button_size,
+                button_icon: section.settings.button_icon,
+                button_icon_position: section.settings.button_icon_position
               -%}
             </li>
           {%- endfor -%}
@@ -285,7 +292,14 @@
                 blog_name: _article_blog.title,
                 blog_url: _article_blog.url,
                 show_tags: section.settings.show_tags,
-                tags_style: section.settings.tags_style
+                tags_style: section.settings.tags_style,
+                show_button: section.settings.show_button,
+                button_label: section.settings.button_label,
+                button_type: section.settings.button_type,
+                button_style_secondary: section.settings.button_style_secondary,
+                button_size: section.settings.button_size,
+                button_icon: section.settings.button_icon,
+                button_icon_position: section.settings.button_icon_position
               -%}
             </li>
           {%- endfor -%}
@@ -598,6 +612,69 @@
     },
     {
       "type": "header",
+      "content": "Pulsante articolo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Mostra pulsante",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Testo pulsante",
+      "default": "Leggi articolo"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Tipo pulsante",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill" },
+        { "value": "link", "label": "Link" }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "label": "Stile secondario (outline)",
+      "default": false,
+      "info": "Solo per tipo 'Pulsante'."
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Piccolo" },
+        { "value": "medium", "label": "Medio" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "default",
+      "info": "Solo per tipo 'Pulsante'."
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ],
+      "default": "after"
+    },
+    {
+      "type": "header",
       "content": "Icone"
     },
     {
@@ -629,11 +706,15 @@
       "content": "Stile card"
     },
     {
-      "type": "checkbox",
-      "id": "card_info_vertical",
-      "default": false,
-      "label": "Info in verticale",
-      "info": "Mostra data, tempo di lettura e autore in colonna anziché in riga."
+      "type": "select",
+      "id": "info_layout",
+      "label": "Layout info",
+      "options": [
+        { "value": "horizontal", "label": "Orizzontale" },
+        { "value": "vertical", "label": "Verticale" }
+      ],
+      "default": "horizontal",
+      "info": "Mostra data, tempo di lettura e autore in riga o in colonna."
     },
     {
       "type": "header",

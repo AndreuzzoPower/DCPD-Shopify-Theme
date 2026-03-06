@@ -216,6 +216,67 @@
   color: rgb(var(--color-background));
 }
 
+/* Info vertical layout */
+.article-card__info--vertical {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.article-card__info--vertical .circle-divider::after {
+  display: none;
+}
+
+/* Article CTA button */
+.article-card__button {
+  margin-top: 1.2rem;
+}
+
+.article-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.article-card__cta--link {
+  color: rgba(var(--color-foreground), 0.75);
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+.article-card__cta--link:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.article-card__cta--pill {
+  padding: 0.5rem 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: 2rem;
+  color: rgb(var(--color-foreground));
+  background-color: transparent;
+}
+
+.article-card__cta--pill:hover {
+  background-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-foreground));
+}
+
+.article-card__cta-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.article-card__cta-icon .svg-wrapper {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
 /* check for flexbox gap in older Safari versions */
 @supports not (inset: 10px) {
   .articles-wrapper.grid {
