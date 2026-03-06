@@ -745,7 +745,7 @@
             "mobile_layout": 12,
             "vertical_align": "center",
             "title": "Titolo",
-            "title_tag": "h6",
+            "title_tag": "h1",
             "title_size": "h1",
             "title_custom_class": "",
             "subtitle": "ggg",
