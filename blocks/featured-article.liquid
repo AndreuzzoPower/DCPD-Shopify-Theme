@@ -1,7 +1,7 @@
 {%- comment -%}
   Logica selezione articolo (priorità):
-  A. Articolo specifico selezionato → mostra quell'articolo
-  B. Blog selezionato → mostra l'articolo più recente del blog
+  B. Articolo specifico selezionato → mostra quell'articolo
+  A. Blog selezionato → mostra l'articolo più recente del blog
   C. Nessuno → mostra l'articolo più recente tra tutti i blog
 {%- endcomment -%}
 
@@ -49,12 +49,17 @@
     {%- render 'article-card',
       blog: target_blog,
       article: target_article,
-      media_aspect_ratio: block.settings.image_ratio,
+      media_height: block.settings.image_height,
+      media_aspect_ratio: target_article.image.aspect_ratio,
       show_image: block.settings.show_image,
       show_date: block.settings.show_date,
       show_author: block.settings.show_author,
-      show_excerpt: block.settings.show_excerpt,
       show_reading: block.settings.show_reading,
+      show_icons: block.settings.show_icons,
+      custom_icon_date: block.settings.custom_icon_date,
+      custom_icon_reading: block.settings.custom_icon_reading,
+      custom_icon_author: block.settings.custom_icon_author,
+      show_excerpt: block.settings.show_excerpt,
       show_blog_name: block.settings.show_blog_name,
       blog_name: target_blog.title,
       blog_url: target_blog.url,
@@ -64,7 +69,7 @@
     -%}
   {%- else -%}
     <div class="ms-block-featured-article__empty" aria-label="Nessun articolo disponibile">
-      <span class="visually-hidden">Nessun articolo disponibile</span>
+      <span class="visually-hidden">Nessun articolo disponibile.</span>
       <span aria-hidden="true">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</span>
     </div>
   {%- endif -%}
@@ -124,6 +129,12 @@
       "default": "start"
     },
     {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    },
+    {
       "type": "header",
       "content": "Contenuto"
     },
@@ -145,18 +156,7 @@
     },
     {
       "type": "header",
-      "content": "Media"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Proporzioni immagine",
-      "options": [
-        { "label": "Adatta", "value": "adapt" },
-        { "label": "Ritratto (4:5)", "value": "portrait" },
-        { "label": "Quadrato (1:1)", "value": "square" }
-      ],
-      "default": "adapt"
+      "content": "Immagine"
     },
     {
       "type": "checkbox",
@@ -165,14 +165,20 @@
       "default": true
     },
     {
-      "type": "header",
-      "content": "Stile"
+      "type": "select",
+      "id": "image_height",
+      "label": "Altezza immagine",
+      "options": [
+        { "value": "adapt", "label": "Adatta (proporzioni originali)" },
+        { "value": "small", "label": "Piccola" },
+        { "value": "medium", "label": "Media" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "medium"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Schema colore",
-      "default": "scheme-1"
+      "type": "header",
+      "content": "Info articolo"
     },
     {
       "type": "checkbox",
@@ -202,7 +208,12 @@
       "type": "checkbox",
       "id": "show_blog_name",
       "label": "Mostra nome blog",
-      "default": false
+      "default": false,
+      "info": "Visualizza il nome del blog come etichetta (pill) sull'immagine, in alto a sinistra, con link al blog."
+    },
+    {
+      "type": "header",
+      "content": "Tag"
     },
     {
       "type": "checkbox",
@@ -215,10 +226,39 @@
       "id": "tags_style",
       "label": "Stile tag",
       "options": [
-        { "label": "Pill", "value": "pill" },
-        { "label": "Link", "value": "link" }
+        { "value": "pill", "label": "Pill" },
+        { "value": "link", "label": "Link" }
       ],
-      "default": "pill"
+      "default": "pill",
+      "info": "Scegli come visualizzare i tag: come etichette arrotondate (pill) o link semplici."
+    },
+    {
+      "type": "header",
+      "content": "Icone"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icons",
+      "label": "Mostra icone",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_date",
+      "label": "Icona data personalizzata",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_reading",
+      "label": "Icona lettura personalizzata",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
+    },
+    {
+      "type": "text",
+      "id": "custom_icon_author",
+      "label": "Icona autore personalizzata",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-star). Se compilato, sovrascrive l'icona predefinita."
     }
   ],
   "presets": [
