@@ -360,7 +360,7 @@
             "title": "NO INDEX",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Si potrà decidere di impostare il noindex su ogni prodotto, collection, pagina ed articolo blog.</p>",
+            "text": "<p>Si potrà decidere di impostare il noindex su ogni prodotto, collection, pagina ed articolo blog.</p><p>Inoltre sono stati impostati preventivamente come no index i vari filtri nelle collection.<br/><br/>Inoltre sai settings si potranno impostare quelle pagine/collections utilizzate per scopi interni e che non si vorranno ne indicizzare ne visualizzare impostando in automatico un redirect in JS alla home e un settaggio noindex. Di default saranno prese le collection di sistema: 'list-collections','frontpage', 'all'</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
