@@ -19,6 +19,8 @@
   {%- if block.settings.show_rule -%}
   #ms-block-{{ block.id }} .ms-block-divider__rule {
     border: none;
+    background: none;
+    height: auto;
     border-top-style: {{ block.settings.rule_style }};
     border-top-width: {{ block.settings.rule_thickness }}px;
     border-top-color: {{ block.settings.rule_color }};
