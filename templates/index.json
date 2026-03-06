@@ -16,8 +16,8 @@
           "type": "heading",
           "settings": {
             "heading": "DCPD",
-            "heading_size": "hxl",
-            "title_tag": "div",
+            "heading_size": "hxxl",
+            "title_tag": "h3",
             "title_custom_class": ""
           }
         },
@@ -745,13 +745,9 @@
             "mobile_layout": 12,
             "vertical_align": "center",
             "title": "Titolo",
-            "title_tag": "h1",
+            "title_tag": "h6",
             "title_size": "h1",
             "title_custom_class": "",
-            "subtitle": "ggg",
-            "subtitle_tag": "h2",
-            "subtitle_size": "h3",
-            "subtitle_custom_class": "",
             "text": "<p>Testo</p>",
             "alignment": "center"
           },
