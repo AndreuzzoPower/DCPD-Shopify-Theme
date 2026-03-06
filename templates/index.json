@@ -173,10 +173,10 @@
         "column_qRBaXb": {
           "type": "column",
           "settings": {
-            "title": "SEO",
+            "title": "LAYOUT / BOOTSTRAP",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>In ogni modulo è possibile impostare in modo chirurgico il tag heading, inoltre si potrà decidere di impostare il noindex su ogni prodotto, collection, pagina ed articolo blog</p>",
+            "text": "<p>Il tema è gestito con lo standard a 12 colonne con una grid proprietaria di <strong>Shopify</strong>. E' stato introdotta anche la possibilità di utilizzare <strong>Bootstrap </strong>in modo isolato per farlo basterà usare il wrapper con la classe \"<strong>bootstrap-scope</strong>\" per avere funzionalità bootstrap al suo interno.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -192,7 +192,7 @@
             "title": "ACCESSIBLITA'",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Tutto il tema è sviluppato nativamente per rispettare gli standard di accessibilità WCAG 2.1 AA</p>",
+            "text": "<p>Tutto il tema è sviluppato nativamente per rispettare gli standard di accessibilità <strong>WCAG 2.1 AA</strong></p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
