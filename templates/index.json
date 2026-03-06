@@ -338,6 +338,22 @@
     "ms_multicolumn_GBjYmt": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_bFbqBk": {
+          "type": "column",
+          "settings": {
+            "title": "META TITLE / META DESCRIPTION",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Implementata la possibilità di utilizzare dei marcatori nei meta title e meta description   <strong>###MESE###, ###ANNO###, ###MESEANNO###</strong> per sostituirli dinamicamente con il mese / anno correnti.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "column_WfFei9": {
           "type": "column",
           "settings": {
@@ -399,6 +415,7 @@
         }
       },
       "block_order": [
+        "column_bFbqBk",
         "column_WfFei9",
         "column_fd7Rt9",
         "column_fcP9Vk",
