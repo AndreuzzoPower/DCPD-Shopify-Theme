@@ -732,7 +732,7 @@
             "show_vendor": true,
             "show_rating": true,
             "show_min_order": true,
-            "quick_add": "bulk"
+            "quick_add": "standard"
           },
           "blocks": {}
         },
