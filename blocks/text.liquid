@@ -1,3 +1,17 @@
+{%- liquid
+  assign title_tag = block.settings.title_tag | default: 'h2'
+  assign title_classes = block.settings.title_size | default: 'h2'
+  if block.settings.title_custom_class != blank
+    assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
+  endif
+
+  assign subtitle_tag = block.settings.subtitle_tag | default: 'p'
+  assign subtitle_classes = 'subtitle'
+  if block.settings.subtitle_custom_class != blank
+    assign subtitle_classes = subtitle_classes | append: ' ' | append: block.settings.subtitle_custom_class
+  endif
+-%}
+
 <style>
   #shopify-block-{{ block.id }},
   #ms-block-{{ block.id }} {
@@ -14,8 +28,18 @@
   }
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block text-{{ block.settings.alignment }}">
-  {{ block.settings.text }}
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-text text-{{ block.settings.alignment }}">
+  {%- if block.settings.title != blank -%}
+    <{{ title_tag }} class="{{ title_classes }}">{{ block.settings.title }}</{{ title_tag }}>
+  {%- endif -%}
+
+  {%- if block.settings.subtitle != blank -%}
+    <{{ subtitle_tag }} class="{{ subtitle_classes }}">{{ block.settings.subtitle }}</{{ subtitle_tag }}>
+  {%- endif -%}
+
+  {%- if block.settings.text != blank -%}
+    <div class="rte">{{ block.settings.text }}</div>
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -73,13 +97,93 @@
     },
     {
       "type": "header",
-      "content": "Contenuto"
+      "content": "Titolo"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Titolo"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag HTML titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "Dimensione visiva titolo",
+      "info": "Classe CSS che determina la dimensione del testo, indipendente dal tag HTML.",
+      "options": [
+        { "label": "Extra extra large (h0)", "value": "h0" },
+        { "label": "Extra large (h1)", "value": "h1" },
+        { "label": "Grande (h2)", "value": "h2" },
+        { "label": "Medio-grande (h3)", "value": "h3" },
+        { "label": "Medio (h4)", "value": "h4" },
+        { "label": "Piccolo (h5)", "value": "h5" },
+        { "label": "Extra piccolo (h6)", "value": "h6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
+      "type": "header",
+      "content": "Sottotitolo"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Sottotitolo"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_tag",
+      "label": "Tag HTML sottotitolo",
+      "options": [
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "p"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_custom_class",
+      "label": "Classe CSS personalizzata sottotitolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
+      "type": "header",
+      "content": "Testo"
     },
     {
       "type": "richtext",
       "id": "text",
-      "label": "Testo",
-      "default": "<p>Inserisci il tuo contenuto qui.</p>"
+      "label": "Testo"
+    },
+    {
+      "type": "header",
+      "content": "Stile"
     },
     {
       "type": "text_alignment",
