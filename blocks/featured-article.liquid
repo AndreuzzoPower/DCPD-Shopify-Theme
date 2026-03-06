@@ -16,7 +16,8 @@
 
   if block.settings.article != blank
     assign target_article = block.settings.article
-    assign target_blog = target_article.blog
+    assign _blog_handle = target_article.url | split: '/blogs/' | last | split: '/' | first
+    assign target_blog = blogs[_blog_handle]
   elsif block.settings.blog != blank
     assign target_blog = block.settings.blog
     assign target_article = target_blog.articles.first
