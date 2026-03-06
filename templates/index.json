@@ -717,42 +717,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "video_QhRWEp": {
-          "type": "video",
-          "name": "Video",
-          "settings": {
-            "desktop_layout": 6,
-            "tablet_layout": 8,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "video_title": "Video",
-            "video_url": "https://www.youtube.com/watch?v=0w80F8FffQ4&list=RD0w80F8FffQ4&start_radio=1",
-            "video_mp4_url": "",
-            "aspect_ratio": "16-9",
-            "autoplay": false,
-            "loop": false,
-            "show_controls": true,
-            "muted": false
-          },
-          "blocks": {}
-        },
-        "text_TeqQxd": {
-          "type": "text",
-          "name": "Testo",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "center",
-            "title": "Titolo",
-            "title_tag": "h6",
-            "title_size": "h1",
-            "title_custom_class": "",
-            "text": "<p>Testo</p>",
-            "alignment": "center"
-          },
-          "blocks": {}
-        },
         "featured_product_Wk3ByB": {
           "type": "featured-product",
           "name": "Prodotto In Evidenza",
@@ -882,8 +846,6 @@
         }
       },
       "block_order": [
-        "video_QhRWEp",
-        "text_TeqQxd",
         "featured_product_Wk3ByB",
         "menu_8taUyE",
         "image_HfrqWV",
