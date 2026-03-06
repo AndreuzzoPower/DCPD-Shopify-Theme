@@ -150,6 +150,10 @@
   display: inline-block;
 }
 
+.ms-block-menu__link.button {
+  display: inline-flex;
+}
+
 .ms-block-menu__link--plain {
   color: inherit;
   text-decoration: none;
