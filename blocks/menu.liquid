@@ -1,0 +1,221 @@
+{%- liquid
+  assign nav_menu = linklists[block.settings.menu]
+  assign is_horizontal = false
+  if block.settings.menu_layout == 'horizontal'
+    assign is_horizontal = true
+  endif
+-%}
+
+<style>
+  #shopify-block-{{ block.id }},
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+</style>
+
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-menu color-{{ block.settings.color_scheme }} gradient text-{{ block.settings.alignment }}">
+  {%- if nav_menu != blank and nav_menu.links.size > 0 -%}
+    <nav aria-label="{{ nav_menu.title | default: 'Menu' | escape }}">
+      <ul
+        class="ms-block-menu__list list-unstyled{% if is_horizontal %} ms-block-menu__list--horizontal{% endif %}"
+        role="list"
+      >
+        {%- for link in nav_menu.links -%}
+          {%- liquid
+            assign is_current = false
+            if link.url == request.path or link.active
+              assign is_current = true
+            endif
+            assign has_children = false
+            if block.settings.show_sub_links and link.links.size > 0
+              assign has_children = true
+            endif
+            assign link_classes = ''
+            case block.settings.link_style
+              when 'button'
+                assign link_classes = 'button'
+              when 'pill'
+                assign link_classes = 'button button--pill'
+              when 'text'
+                assign link_classes = ''
+              else
+                assign link_classes = 'link underlined-link'
+            endcase
+          -%}
+          <li class="ms-block-menu__item{% if has_children %} ms-block-menu__item--has-children{% endif %}">
+            <a
+              href="{{ link.url }}"
+              class="ms-block-menu__link{% if link_classes != '' %} {{ link_classes }}{% endif %}"
+              {%- if is_current %} aria-current="page"{%- endif %}
+              {%- if link.url == blank or link.url == '#' %} aria-disabled="true"{%- endif %}
+            >
+              {{ link.title | escape }}
+            </a>
+
+            {%- if has_children -%}
+              <ul class="ms-block-menu__sub-list list-unstyled" role="list">
+                {%- for child_link in link.links -%}
+                  {%- liquid
+                    assign child_is_current = false
+                    if child_link.url == request.path or child_link.active
+                      assign child_is_current = true
+                    endif
+                    assign child_link_classes = ''
+                    case block.settings.link_style
+                      when 'button'
+                        assign child_link_classes = 'button button--outline'
+                      when 'pill'
+                        assign child_link_classes = 'button button--pill button--outline'
+                      when 'text'
+                        assign child_link_classes = ''
+                      else
+                        assign child_link_classes = 'link underlined-link'
+                    endcase
+                  -%}
+                  <li class="ms-block-menu__sub-item">
+                    <a
+                      href="{{ child_link.url }}"
+                      class="ms-block-menu__link ms-block-menu__link--child{% if child_link_classes != '' %} {{ child_link_classes }}{% endif %}"
+                      {%- if child_is_current %} aria-current="page"{%- endif %}
+                    >
+                      {{ child_link.title | escape }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- else -%}
+    <p class="ms-block-menu__empty">
+      <span class="visually-hidden">Nessun menu selezionato o menu vuoto.</span>
+      <span aria-hidden="true">— Seleziona un menu —</span>
+    </p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Colonne desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 3,
+      "info": "Schermi maggiori di 990px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Colonne tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info": "Schermi tra 750px e 990px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Colonne mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info": "Schermi sotto i 750px"
+    },
+    {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu",
+      "info": "Seleziona il menu da visualizzare."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sub_links",
+      "label": "Mostra sottomenu (secondo livello)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "menu_layout",
+      "label": "Disposizione voci",
+      "options": [
+        { "label": "Verticale", "value": "vertical" },
+        { "label": "Orizzontale", "value": "horizontal" }
+      ],
+      "default": "vertical"
+    },
+    {
+      "type": "select",
+      "id": "link_style",
+      "label": "Stile link",
+      "options": [
+        { "label": "Link sottolineato", "value": "link" },
+        { "label": "Testo semplice", "value": "text" },
+        { "label": "Pulsante", "value": "button" },
+        { "label": "Pill (arrotondato)", "value": "pill" }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Allineamento testo",
+      "default": "left"
+    }
+  ],
+  "presets": [
+    { "name": "Menu" }
+  ]
+}
+{% endschema %}

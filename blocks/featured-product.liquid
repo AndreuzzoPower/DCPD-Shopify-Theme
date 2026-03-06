@@ -1,0 +1,170 @@
+{%- liquid
+  assign featured_product = block.settings.product
+  assign show_quick_add = false
+  if block.settings.quick_add
+    assign show_quick_add = true
+  endif
+-%}
+
+<style>
+  #shopify-block-{{ block.id }},
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+</style>
+
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-featured-product color-{{ block.settings.color_scheme }} gradient">
+  {%- render 'card-product',
+    card_product: featured_product,
+    media_aspect_ratio: block.settings.image_ratio,
+    image_shape: block.settings.image_shape,
+    show_secondary_image: block.settings.show_secondary_image,
+    show_vendor: block.settings.show_vendor,
+    show_rating: block.settings.show_rating,
+    quick_add: show_quick_add,
+    extend_height: false,
+    lazy_load: true,
+    section_id: block.id
+  -%}
+</div>
+
+{% schema %}
+{
+  "name": "Prodotto In Evidenza",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Colonne desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info": "Schermi maggiori di 990px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Colonne tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 6,
+      "info": "Schermi tra 750px e 990px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Colonne mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info": "Schermi sotto i 750px"
+    },
+    {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Prodotto"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Proporzioni immagine",
+      "options": [
+        { "label": "Adatta", "value": "adapt" },
+        { "label": "Ritratto (4:5)", "value": "portrait" },
+        { "label": "Quadrato (1:1)", "value": "square" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Forma immagine",
+      "options": [
+        { "label": "Nessuna", "value": "default" },
+        { "label": "Arco", "value": "arch" },
+        { "label": "Blob", "value": "blob" },
+        { "label": "Diamante", "value": "diamond" },
+        { "label": "Tondo", "value": "round" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Seconda immagine al passaggio del mouse",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Mostra fornitore",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Mostra valutazione",
+      "default": false,
+      "info": "Per visualizzare la valutazione installa un'app recensioni compatibile con Dawn."
+    },
+    {
+      "type": "checkbox",
+      "id": "quick_add",
+      "label": "Pulsante aggiunta rapida",
+      "default": false
+    }
+  ],
+  "presets": [
+    { "name": "Prodotto In Evidenza" }
+  ]
+}
+{% endschema %}

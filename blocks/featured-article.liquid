@@ -1,0 +1,228 @@
+{%- comment -%}
+  Logica selezione articolo (priorità):
+  A. Articolo specifico selezionato → mostra quell'articolo
+  B. Blog selezionato → mostra l'articolo più recente del blog
+  C. Nessuno → mostra l'articolo più recente tra tutti i blog
+{%- endcomment -%}
+
+{%- liquid
+  assign target_article = nil
+  assign target_blog = nil
+
+  if block.settings.article != blank
+    assign target_article = block.settings.article
+    assign target_blog = target_article.blog
+  elsif block.settings.blog != blank
+    assign target_blog = block.settings.blog
+    assign target_article = target_blog.articles.first
+  else
+    for b in blogs
+      assign candidate = b.articles.first
+      if candidate != nil
+        if target_article == nil or candidate.published_at > target_article.published_at
+          assign target_article = candidate
+          assign target_blog = b
+        endif
+      endif
+    endfor
+  endif
+-%}
+
+<style>
+  #shopify-block-{{ block.id }},
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+</style>
+
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-featured-article color-{{ block.settings.color_scheme }} gradient">
+  {%- if target_article != nil -%}
+    {%- render 'article-card',
+      blog: target_blog,
+      article: target_article,
+      media_aspect_ratio: block.settings.image_ratio,
+      show_image: block.settings.show_image,
+      show_date: block.settings.show_date,
+      show_author: block.settings.show_author,
+      show_excerpt: block.settings.show_excerpt,
+      show_reading: block.settings.show_reading,
+      show_blog_name: block.settings.show_blog_name,
+      blog_name: target_blog.title,
+      blog_url: target_blog.url,
+      show_tags: block.settings.show_tags,
+      tags_style: block.settings.tags_style,
+      lazy_load: true
+    -%}
+  {%- else -%}
+    <div class="ms-block-featured-article__empty" aria-label="Nessun articolo disponibile">
+      <span class="visually-hidden">Nessun articolo disponibile</span>
+      <span aria-hidden="true">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</span>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Articolo In Evidenza",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Colonne desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info": "Schermi maggiori di 990px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Colonne tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 6,
+      "info": "Schermi tra 750px e 990px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Colonne mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info": "Schermi sotto i 750px"
+    },
+    {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "paragraph",
+      "content": "Priorità: 1) Articolo specifico, 2) Ultimo articolo del blog selezionato, 3) Ultimo articolo in assoluto tra tutti i blog."
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Mostra l'articolo più recente del blog selezionato. Ignorato se è selezionato un articolo specifico."
+    },
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Articolo specifico",
+      "info": "Se selezionato, ha la priorità sul blog."
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Proporzioni immagine",
+      "options": [
+        { "label": "Adatta", "value": "adapt" },
+        { "label": "Ritratto (4:5)", "value": "portrait" },
+        { "label": "Quadrato (1:1)", "value": "square" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Mostra immagine",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Stile"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Mostra data",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Mostra autore",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reading",
+      "label": "Mostra tempo di lettura",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Mostra estratto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog_name",
+      "label": "Mostra nome blog",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Mostra tag",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "tags_style",
+      "label": "Stile tag",
+      "options": [
+        { "label": "Pill", "value": "pill" },
+        { "label": "Link", "value": "link" }
+      ],
+      "default": "pill"
+    }
+  ],
+  "presets": [
+    { "name": "Articolo In Evidenza" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,288 @@
+{%- liquid
+  assign video_type = 'none'
+  if block.settings.video_shopify != blank
+    assign video_type = 'shopify'
+  elsif block.settings.video_url != blank
+    if block.settings.video_url.type == 'youtube'
+      assign video_type = 'youtube'
+    elsif block.settings.video_url.type == 'vimeo'
+      assign video_type = 'vimeo'
+    endif
+  elsif block.settings.video_mp4_url != blank
+    assign video_type = 'mp4'
+  endif
+
+  assign is_muted = block.settings.muted
+  if block.settings.autoplay
+    assign is_muted = true
+  endif
+
+  case block.settings.aspect_ratio
+    when '4-3'
+      assign aspect_padding = '75%'
+      assign aspect_css = '4/3'
+    when '1-1'
+      assign aspect_padding = '100%'
+      assign aspect_css = '1/1'
+    when '9-16'
+      assign aspect_padding = '177.78%'
+      assign aspect_css = '9/16'
+    else
+      assign aspect_padding = '56.25%'
+      assign aspect_css = '16/9'
+  endcase
+
+  assign video_title = block.settings.video_title | default: 'Video'
+-%}
+
+{%- comment -%} Costruisci URL embed YouTube {%- endcomment -%}
+{%- if video_type == 'youtube' -%}
+  {%- assign yt_id = block.settings.video_url.id -%}
+  {%- assign yt_params = '?rel=0&modestbranding=1' -%}
+  {%- if block.settings.autoplay -%}
+    {%- assign yt_params = yt_params | append: '&autoplay=1&mute=1' -%}
+  {%- endif -%}
+  {%- if block.settings.loop -%}
+    {%- assign yt_params = yt_params | append: '&loop=1&playlist=' | append: yt_id -%}
+  {%- endif -%}
+  {%- unless block.settings.show_controls -%}
+    {%- assign yt_params = yt_params | append: '&controls=0' -%}
+  {%- endunless -%}
+  {%- assign embed_src = 'https://www.youtube-nocookie.com/embed/' | append: yt_id | append: yt_params -%}
+{%- endif -%}
+
+{%- comment -%} Costruisci URL embed Vimeo {%- endcomment -%}
+{%- if video_type == 'vimeo' -%}
+  {%- assign vimeo_id = block.settings.video_url.id -%}
+  {%- assign vimeo_params = '?dnt=1' -%}
+  {%- if block.settings.autoplay -%}
+    {%- assign vimeo_params = vimeo_params | append: '&autoplay=1&muted=1' -%}
+  {%- endif -%}
+  {%- if block.settings.loop -%}
+    {%- assign vimeo_params = vimeo_params | append: '&loop=1' -%}
+  {%- endif -%}
+  {%- unless block.settings.show_controls -%}
+    {%- assign vimeo_params = vimeo_params | append: '&controls=0' -%}
+  {%- endunless -%}
+  {%- assign embed_src = 'https://player.vimeo.com/video/' | append: vimeo_id | append: vimeo_params -%}
+{%- endif -%}
+
+<style>
+  #shopify-block-{{ block.id }},
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+  #ms-block-{{ block.id }} .ms-block-video__ratio {
+    padding-bottom: {{ aspect_padding }};
+    aspect-ratio: {{ aspect_css }};
+  }
+</style>
+
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-video">
+  {%- if video_type == 'none' -%}
+    <div class="ms-block-video__ratio ms-block-video__placeholder" aria-hidden="true">
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+  {%- elsif video_type == 'shopify' -%}
+    <div class="ms-block-video__ratio ms-block-video__ratio--native">
+      {%- assign poster_url = '' -%}
+      {%- if block.settings.video_cover_image != blank -%}
+        {%- assign poster_url = block.settings.video_cover_image | image_url: width: 1920 -%}
+      {%- endif -%}
+      {{
+        block.settings.video_shopify
+        | video_tag:
+          autoplay: block.settings.autoplay,
+          loop: block.settings.loop,
+          muted: is_muted,
+          controls: block.settings.show_controls,
+          poster: poster_url,
+          loading: 'lazy',
+          class: 'ms-block-video__player',
+          aria-label: video_title
+      }}
+    </div>
+  {%- elsif video_type == 'youtube' or video_type == 'vimeo' -%}
+    <div class="ms-block-video__ratio">
+      <iframe
+        src="{{ embed_src }}"
+        title="{{ video_title | escape }}"
+        class="ms-block-video__iframe"
+        loading="lazy"
+        allow="accelerometer;{%- if block.settings.autoplay %} autoplay;{%- endif %} clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        frameborder="0"
+      ></iframe>
+    </div>
+  {%- elsif video_type == 'mp4' -%}
+    <div class="ms-block-video__ratio ms-block-video__ratio--native">
+      {%- assign poster_url = '' -%}
+      {%- if block.settings.video_cover_image != blank -%}
+        {%- assign poster_url = block.settings.video_cover_image | image_url: width: 1920 -%}
+      {%- endif -%}
+      <video
+        class="ms-block-video__player"
+        src="{{ block.settings.video_mp4_url }}"
+        {%- if poster_url != blank %} poster="{{ poster_url }}"{%- endif %}
+        {%- if block.settings.autoplay %} autoplay{%- endif %}
+        {%- if block.settings.loop %} loop{%- endif %}
+        {%- if is_muted %} muted{%- endif %}
+        {%- if block.settings.show_controls %} controls{%- endif %}
+        playsinline
+        preload="metadata"
+        aria-label="{{ video_title | escape }}"
+      ></video>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Colonne desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 6,
+      "info": "Schermi maggiori di 990px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Colonne tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 8,
+      "info": "Schermi tra 750px e 990px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Colonne mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info": "Schermi sotto i 750px"
+    },
+    {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "text",
+      "id": "video_title",
+      "label": "Titolo accessibile del video",
+      "info": "Descrizione breve del contenuto video, usata da screen reader e iframe title.",
+      "default": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video_shopify",
+      "label": "Video Shopify",
+      "info": "Video caricato direttamente su Shopify. Ha la priorità sugli altri campi."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "URL YouTube / Vimeo",
+      "accept": ["youtube", "vimeo"],
+      "info": "Usato se non è selezionato un video Shopify."
+    },
+    {
+      "type": "text",
+      "id": "video_mp4_url",
+      "label": "URL MP4 diretto",
+      "info": "URL di un file MP4 esterno. Usato come ultima opzione se gli altri campi sono vuoti."
+    },
+    {
+      "type": "image_picker",
+      "id": "video_cover_image",
+      "label": "Immagine copertina (poster)",
+      "info": "Mostrata prima che il video venga riprodotto. Disponibile per video Shopify e MP4."
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Proporzioni",
+      "options": [
+        { "label": "16:9 (widescreen)", "value": "16-9" },
+        { "label": "4:3 (classico)", "value": "4-3" },
+        { "label": "1:1 (quadrato)", "value": "1-1" },
+        { "label": "9:16 (verticale)", "value": "9-16" }
+      ],
+      "default": "16-9"
+    },
+    {
+      "type": "header",
+      "content": "Riproduzione"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": false,
+      "info": "Se attivo, il video parte automaticamente. L'audio viene disattivato automaticamente (requisito browser)."
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Mostra controlli",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "muted",
+      "label": "Audio disattivato",
+      "default": false,
+      "info": "Disattiva l'audio in riproduzione. Attivato automaticamente se l'autoplay è abilitato."
+    }
+  ],
+  "presets": [
+    { "name": "Video" }
+  ]
+}
+{% endschema %}

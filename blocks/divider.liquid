@@ -1,13 +1,3 @@
-{%- liquid
-  if block.settings.block_image != blank
-    assign img_alt = block.settings.block_image.alt | default: ''
-  endif
-  assign has_link = false
-  if block.settings.image_link != blank
-    assign has_link = true
-  endif
--%}
-
 <style>
   #shopify-block-{{ block.id }},
   #ms-block-{{ block.id }} {
@@ -22,34 +12,30 @@
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
   }
+  #ms-block-{{ block.id }} {
+    padding-top: {{ block.settings.space_top }}px;
+    padding-bottom: {{ block.settings.space_bottom }}px;
+  }
+  {%- if block.settings.show_rule -%}
+  #ms-block-{{ block.id }} .ms-block-divider__rule {
+    border: none;
+    border-top-style: {{ block.settings.rule_style }};
+    border-top-width: {{ block.settings.rule_thickness }}px;
+    border-top-color: {{ block.settings.rule_color }};
+    margin: 0;
+  }
+  {%- endif -%}
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block">
-  {%- if has_link -%}
-    <a
-      href="{{ block.settings.image_link }}"
-      target="{{ block.settings.image_link_target }}"
-      {%- if block.settings.image_link_target == '_blank' %} rel="noopener noreferrer"{%- endif %}
-      aria-label="{{ img_alt | default: 'Apri link' | escape }}"
-    >
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-divider">
+  {%- if block.settings.show_rule -%}
+    <hr class="ms-block-divider__rule" aria-hidden="true">
   {%- endif -%}
-
-  {%- if block.settings.block_image != blank -%}
-    {{
-      block.settings.block_image
-      | image_url: width: block.settings.block_image.width
-      | image_tag: loading: 'lazy', widths: '165, 360, 535, 750, 1070, 1500', sizes: '100vw', alt: img_alt
-    }}
-  {%- else -%}
-    <span aria-hidden="true">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</span>
-  {%- endif -%}
-
-  {%- if has_link -%}</a>{%- endif -%}
 </div>
 
 {% schema %}
 {
-  "name": "Immagine",
+  "name": "Divisore",
   "settings": [
     {
       "type": "header",
@@ -63,7 +49,7 @@
       "max": 12,
       "step": 1,
       "unit": "col",
-      "default": 6,
+      "default": 12,
       "info": "Schermi maggiori di 990px"
     },
     {
@@ -74,7 +60,7 @@
       "max": 12,
       "step": 1,
       "unit": "col",
-      "default": 6,
+      "default": 12,
       "info": "Schermi tra 750px e 990px"
     },
     {
@@ -102,36 +88,68 @@
     },
     {
       "type": "header",
-      "content": "Contenuto"
+      "content": "Spaziatura"
     },
     {
-      "type": "image_picker",
-      "id": "block_image",
-      "label": "Immagine"
+      "type": "range",
+      "id": "space_top",
+      "label": "Spazio sopra",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "space_bottom",
+      "label": "Spazio sotto",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "header",
-      "content": "Link"
+      "content": "Linea"
     },
     {
-      "type": "url",
-      "id": "image_link",
-      "label": "Link immagine",
-      "info": "Lascia vuoto per nessun link."
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Mostra linea orizzontale",
+      "default": true
     },
     {
       "type": "select",
-      "id": "image_link_target",
-      "label": "Apri link in",
+      "id": "rule_style",
+      "label": "Stile linea",
       "options": [
-        { "label": "Stessa finestra", "value": "_self" },
-        { "label": "Nuova scheda", "value": "_blank" }
+        { "label": "Solida", "value": "solid" },
+        { "label": "Tratteggiata", "value": "dashed" },
+        { "label": "Punteggiata", "value": "dotted" }
       ],
-      "default": "_self"
+      "default": "solid"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Colore linea",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "range",
+      "id": "rule_thickness",
+      "label": "Spessore linea",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 1
     }
   ],
   "presets": [
-    { "name": "Immagine" }
+    { "name": "Divisore" }
   ]
 }
 {% endschema %}

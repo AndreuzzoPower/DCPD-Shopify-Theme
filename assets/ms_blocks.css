@@ -15,3 +15,145 @@
   max-width: 100%;
   height: auto;
 }
+
+/* ==========================================
+   Block: Image
+   ========================================== */
+
+.ms-block > a {
+  display: block;
+}
+
+.ms-block > a img {
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.ms-block > a:hover img,
+.ms-block > a:focus-visible img {
+  opacity: 0.85;
+}
+
+/* ==========================================
+   Block: Video
+   ========================================== */
+
+.ms-block-video__ratio {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.ms-block-video__ratio--native {
+  display: block;
+}
+
+.ms-block-video__iframe,
+.ms-block-video__player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.ms-block-video__ratio--native .ms-block-video__player {
+  position: relative;
+  height: auto;
+  display: block;
+}
+
+.ms-block-video__placeholder {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ms-block-video__placeholder .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* ==========================================
+   Block: Featured Product
+   ========================================== */
+
+.ms-block-featured-product .card-wrapper {
+  height: 100%;
+}
+
+/* ==========================================
+   Block: Featured Article
+   ========================================== */
+
+.ms-block-featured-article .article-card-wrapper {
+  height: 100%;
+}
+
+.ms-block-featured-article__empty {
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.ms-block-featured-article__empty .placeholder-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================
+   Block: Menu
+   ========================================== */
+
+.ms-block-menu .list-unstyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ms-block-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ms-block-menu__list--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.ms-block-menu__sub-list {
+  margin-top: 0.35rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.ms-block-menu__link {
+  display: inline-block;
+}
+
+.ms-block-menu__link--child {
+  font-size: 0.9em;
+}
+
+.ms-block-menu__empty {
+  color: rgba(var(--color-foreground), 0.5);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ==========================================
+   Block: CTA
+   ========================================== */
+
+.ms-block-cta {
+  display: block;
+}

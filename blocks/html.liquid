@@ -1,13 +1,3 @@
-{%- liquid
-  if block.settings.block_image != blank
-    assign img_alt = block.settings.block_image.alt | default: ''
-  endif
-  assign has_link = false
-  if block.settings.image_link != blank
-    assign has_link = true
-  endif
--%}
-
 <style>
   #shopify-block-{{ block.id }},
   #ms-block-{{ block.id }} {
@@ -24,32 +14,13 @@
   }
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block">
-  {%- if has_link -%}
-    <a
-      href="{{ block.settings.image_link }}"
-      target="{{ block.settings.image_link_target }}"
-      {%- if block.settings.image_link_target == '_blank' %} rel="noopener noreferrer"{%- endif %}
-      aria-label="{{ img_alt | default: 'Apri link' | escape }}"
-    >
-  {%- endif -%}
-
-  {%- if block.settings.block_image != blank -%}
-    {{
-      block.settings.block_image
-      | image_url: width: block.settings.block_image.width
-      | image_tag: loading: 'lazy', widths: '165, 360, 535, 750, 1070, 1500', sizes: '100vw', alt: img_alt
-    }}
-  {%- else -%}
-    <span aria-hidden="true">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</span>
-  {%- endif -%}
-
-  {%- if has_link -%}</a>{%- endif -%}
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-html">
+  {{ block.settings.custom_liquid }}
 </div>
 
 {% schema %}
 {
-  "name": "Immagine",
+  "name": "HTML / Liquid",
   "settings": [
     {
       "type": "header",
@@ -74,7 +45,7 @@
       "max": 12,
       "step": 1,
       "unit": "col",
-      "default": 6,
+      "default": 8,
       "info": "Schermi tra 750px e 990px"
     },
     {
@@ -105,33 +76,14 @@
       "content": "Contenuto"
     },
     {
-      "type": "image_picker",
-      "id": "block_image",
-      "label": "Immagine"
-    },
-    {
-      "type": "header",
-      "content": "Link"
-    },
-    {
-      "type": "url",
-      "id": "image_link",
-      "label": "Link immagine",
-      "info": "Lascia vuoto per nessun link."
-    },
-    {
-      "type": "select",
-      "id": "image_link_target",
-      "label": "Apri link in",
-      "options": [
-        { "label": "Stessa finestra", "value": "_self" },
-        { "label": "Nuova scheda", "value": "_blank" }
-      ],
-      "default": "_self"
+      "type": "liquid",
+      "id": "custom_liquid",
+      "label": "Contenuto HTML / Liquid",
+      "info": "Inserisci HTML o codice Liquid personalizzato. Il contenuto viene renderizzato direttamente."
     }
   ],
   "presets": [
-    { "name": "Immagine" }
+    { "name": "HTML / Liquid" }
   ]
 }
 {% endschema %}

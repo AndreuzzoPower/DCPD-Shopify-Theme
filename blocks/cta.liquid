@@ -1,0 +1,184 @@
+{%- liquid
+  assign btn_target = block.settings.button_link_target | default: '_self'
+  assign btn_label = block.settings.button_label | default: 'Scopri di più'
+-%}
+
+<style>
+  #shopify-block-{{ block.id }},
+  #ms-block-{{ block.id }} {
+    grid-column: span {{ block.settings.mobile_layout }};
+    align-self: {{ block.settings.vertical_align }};
+  }
+  @media (min-width: 750px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.tablet_layout }}; }
+  }
+  @media (min-width: 990px) {
+    #shopify-block-{{ block.id }},
+    #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+</style>
+
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-cta text-{{ block.settings.alignment }}">
+  {%- if btn_label != blank -%}
+    <a
+      href="{{ block.settings.button_link | default: '#' }}"
+      class="{%- render 'ms_button_classes', type: block.settings.button_type, secondary: block.settings.button_style_secondary, size: block.settings.button_size -%}"
+      target="{{ btn_target }}"
+      {%- if btn_target == '_blank' %} rel="noopener noreferrer"{%- endif %}
+      {%- if block.settings.button_link == blank %} aria-disabled="true"{%- endif %}
+    >
+      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'before' -%}
+      <span>{{ btn_label | escape }}</span>
+      {%- render 'ms_button_icon', icon: block.settings.button_icon, position: block.settings.button_icon_position, slot: 'after' -%}
+    </a>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "CTA (Pulsante)",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "desktop_layout",
+      "label": "Colonne desktop",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 4,
+      "info": "Schermi maggiori di 990px"
+    },
+    {
+      "id": "tablet_layout",
+      "label": "Colonne tablet",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 6,
+      "info": "Schermi tra 750px e 990px"
+    },
+    {
+      "id": "mobile_layout",
+      "label": "Colonne mobile",
+      "type": "range",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "unit": "col",
+      "default": 12,
+      "info": "Schermi sotto i 750px"
+    },
+    {
+      "id": "vertical_align",
+      "label": "Allineamento verticale",
+      "type": "select",
+      "options": [
+        { "label": "In alto", "value": "start" },
+        { "label": "Centro", "value": "center" },
+        { "label": "In basso", "value": "end" },
+        { "label": "Esteso", "value": "stretch" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Testo pulsante",
+      "default": "Scopri di più"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link pulsante"
+    },
+    {
+      "type": "select",
+      "id": "button_link_target",
+      "label": "Apri link in",
+      "options": [
+        { "label": "Stessa finestra", "value": "_self" },
+        { "label": "Nuova scheda", "value": "_blank" }
+      ],
+      "default": "_self"
+    },
+    {
+      "type": "header",
+      "content": "Stile pulsante"
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema → Pulsanti.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "label": "Stile contorno",
+      "default": false,
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Icona pulsante",
+      "info": "Nome file SVG (es. icon-arrow.svg) o classe libreria (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Allineamento"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Allineamento pulsante",
+      "default": "left"
+    }
+  ],
+  "presets": [
+    { "name": "CTA (Pulsante)" }
+  ]
+}
+{% endschema %}
