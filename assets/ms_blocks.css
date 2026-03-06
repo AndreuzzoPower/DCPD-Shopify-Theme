@@ -139,11 +139,14 @@
 
 .ms-block-menu__sub-list {
   margin-top: 0.35rem;
-  padding-left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   align-items: inherit;
+}
+
+.ms-block-menu .ms-block-menu__sub-list > .ms-block-menu__sub-item {
+  margin-left: 1.25rem;
 }
 
 .ms-block-menu__link {
