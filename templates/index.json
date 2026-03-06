@@ -789,11 +789,12 @@
           "type": "image",
           "name": "Immagine",
           "settings": {
-            "desktop_layout": 6,
+            "desktop_layout": 4,
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "image_link": "",
+            "block_image": "shopify://shop_images/autumn-walk-hand-in-hand.jpg",
+            "image_link": "shopify://products/multi-variante-test-copia-copia-copia-copia-copia-copia",
             "image_link_target": "_self"
           },
           "blocks": {}
