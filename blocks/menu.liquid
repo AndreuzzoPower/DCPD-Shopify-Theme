@@ -4,6 +4,15 @@
   if block.settings.menu_layout == 'horizontal'
     assign is_horizontal = true
   endif
+
+  case block.settings.alignment
+    when 'center'
+      assign flex_align = 'center'
+    when 'right'
+      assign flex_align = 'flex-end'
+    else
+      assign flex_align = 'flex-start'
+  endcase
 -%}
 
 <style>
@@ -19,6 +28,10 @@
   @media (min-width: 990px) {
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
+  }
+  #ms-block-{{ block.id }} .ms-block-menu__list {
+    align-items: {{ flex_align }};
+    justify-content: {{ flex_align }};
   }
 </style>
 
@@ -46,7 +59,7 @@
               when 'pill'
                 assign link_classes = 'button button--pill'
               when 'text'
-                assign link_classes = ''
+                assign link_classes = 'ms-block-menu__link--plain'
               else
                 assign link_classes = 'link underlined-link'
             endcase
@@ -76,7 +89,7 @@
                       when 'pill'
                         assign child_link_classes = 'button button--pill button--outline'
                       when 'text'
-                        assign child_link_classes = ''
+                        assign child_link_classes = 'ms-block-menu__link--plain'
                       else
                         assign child_link_classes = 'link underlined-link'
                     endcase
