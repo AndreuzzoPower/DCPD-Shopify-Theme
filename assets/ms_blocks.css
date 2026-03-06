@@ -176,5 +176,6 @@
    ========================================== */
 
 .ms-block-cta {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
 }

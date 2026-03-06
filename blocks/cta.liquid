@@ -1,6 +1,26 @@
 {%- liquid
   assign btn_target = block.settings.button_link_target | default: '_self'
   assign btn_label = block.settings.button_label | default: 'Scopri di più'
+
+  case block.settings.alignment
+    when 'center'
+      assign flex_justify = 'center'
+    when 'right'
+      assign flex_justify = 'flex-end'
+    else
+      assign flex_justify = 'flex-start'
+  endcase
+
+  case block.settings.vertical_align
+    when 'center'
+      assign flex_align_items = 'center'
+    when 'end'
+      assign flex_align_items = 'flex-end'
+    when 'stretch'
+      assign flex_align_items = 'stretch'
+    else
+      assign flex_align_items = 'flex-start'
+  endcase
 -%}
 
 <style>
@@ -17,9 +37,14 @@
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
   }
+  #ms-block-{{ block.id }} {
+    display: flex;
+    justify-content: {{ flex_justify }};
+    align-items: {{ flex_align_items }};
+  }
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block ms-block-cta text-{{ block.settings.alignment }}">
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-cta color-{{ block.settings.color_scheme }} gradient">
   {%- if btn_label != blank -%}
     <a
       href="{{ block.settings.button_link | default: '#' }}"
@@ -87,6 +112,12 @@
         { "label": "Esteso", "value": "stretch" }
       ],
       "default": "start"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Schema colore",
+      "default": "scheme-1"
     },
     {
       "type": "header",
