@@ -165,10 +165,6 @@
                       {%- endif -%}
                     </div>
                   {%- when 'image' -%}
-                    {%- capture footer_img_alt -%}
-                      {%- render 'ms_image_alt', image: block.settings.image, custom_alt: block.settings.image_alt -%}
-                    {%- endcapture -%}
-                    {%- assign footer_img_alt = footer_img_alt | strip -%}
                     <div class="footer-block__details-content footer-block-image {{ block.settings.alignment }}">
                       {%- if block.settings.image != blank -%}
                         {%- assign image_size_2x = block.settings.image_width | times: 2 | at_most: 5760 -%}
@@ -179,7 +175,7 @@
                           <img
                             srcset="{{ block.settings.image | image_url: width: block.settings.image_width }}, {{ block.settings.image | image_url: width: image_size_2x }} 2x"
                             src="{{ block.settings.image | image_url: width: 760 }}"
-                            alt="{{ footer_img_alt | escape }}"
+                            alt="{{ block.settings.image.alt | escape }}"
                             loading="lazy"
                             width="{{ block.settings.image.width }}"
                             height="{{ block.settings.image.height }}"
@@ -879,12 +875,6 @@
           "type": "image_picker",
           "id": "image",
           "label": "Immagine"
-        },
-        {
-          "type": "text",
-          "id": "image_alt",
-          "label": "Testo alternativo (ALT)",
-          "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
         },
         {
           "type": "range",

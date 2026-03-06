@@ -33,10 +33,6 @@
   {%- if section.settings.show_background_image -%}
     <div class="banner__media{% if section.settings.image != blank %} media{% endif %}">
       {%- if section.settings.image != blank -%}
-        {%- capture img_alt -%}
-          {%- render 'ms_image_alt', image: section.settings.image, custom_alt: section.settings.image_alt -%}
-        {%- endcapture -%}
-        {%- assign img_alt = img_alt | strip -%}
         <img
           srcset="
             {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
@@ -52,7 +48,7 @@
           sizes="100vw"
           src="{{ section.settings.image | image_url: width: 1500 }}"
           loading="lazy"
-          alt="{{ img_alt }}"
+          alt="{{ section.settings.image.alt | escape }}"
           width="{{ section.settings.image.width }}"
           height="{{ section.settings.image.width | divided_by: section.settings.image.aspect_ratio }}"
         >
@@ -163,12 +159,6 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:sections.email-signup-banner.settings.image.label"
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Testo alternativo (ALT)",
-      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
     },
     {
       "type": "range",
