@@ -173,6 +173,7 @@
         "column_qRBaXb": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "LAYOUT / BOOTSTRAP",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -189,6 +190,7 @@
         "column_zjLaeT": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "ACCESSIBLITA'",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -205,6 +207,7 @@
         "column_ab8Vch": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "CONTENUTI TEMPORIZZATI",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -221,6 +224,7 @@
         "column_UmYKgJ": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "ICONE",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -237,6 +241,7 @@
         "column_FihGPM": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "GESTIONE COLORI",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -338,9 +343,27 @@
     "ms_multicolumn_GBjYmt": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_GBrR79": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "ALT TEXT",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>E' stata creata una regola che se non compilato direttamente da live editor, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "column_bFbqBk": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "META TITLE / META DESCRIPTION",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -357,6 +380,7 @@
         "column_WfFei9": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "NO INDEX",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -373,6 +397,7 @@
         "column_fd7Rt9": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "HEADINGS",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -389,6 +414,7 @@
         "column_fcP9Vk": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "DATI STRUTTURATI",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -415,6 +441,7 @@
         }
       },
       "block_order": [
+        "column_GBrR79",
         "column_bFbqBk",
         "column_WfFei9",
         "column_fd7Rt9",
@@ -539,6 +566,7 @@
         "column_PMRyFm": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "CATALOGO",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -555,6 +583,7 @@
         "column_cjkdfj": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "MINIMO D'ORDINE",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -571,6 +600,7 @@
         "column_jB8mQQ": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "DATI FATTURAZIONE",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -587,6 +617,7 @@
         "column_FdXgw7": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "ACCETTAZIONE CONDIZIONI DIVENDITA",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -603,6 +634,7 @@
         "column_7DWF47": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "CARRELLO",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -619,6 +651,7 @@
         "column_RTHpCB": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "IVA ESPOSTA",
             "title_tag": "h3",
             "title_custom_class": "",
@@ -635,6 +668,7 @@
         "column_BzfMtC": {
           "type": "column",
           "settings": {
+            "image_alt": "",
             "title": "EXPERT ADVICE",
             "title_tag": "h3",
             "title_custom_class": "",
