@@ -141,10 +141,10 @@
     assign cp_bottom = section.settings.content_padding_bottom | default: 0
     assign cp_left   = section.settings.content_padding_left   | default: 0
     assign cp_right  = section.settings.content_padding_right  | default: 0
-    assign cp_top_m    = section.settings.content_padding_top_mobile
-    assign cp_bottom_m = section.settings.content_padding_bottom_mobile
-    assign cp_left_m   = section.settings.content_padding_left_mobile
-    assign cp_right_m  = section.settings.content_padding_right_mobile
+    assign cp_top_m    = section.settings.content_padding_top_mobile    | times: 1
+    assign cp_bottom_m = section.settings.content_padding_bottom_mobile | times: 1
+    assign cp_left_m   = section.settings.content_padding_left_mobile   | times: 1
+    assign cp_right_m  = section.settings.content_padding_right_mobile  | times: 1
   -%}
 
   {%- style -%}
@@ -157,17 +157,17 @@
       }
     {%- endif -%}
     #Banner-{{ section.id }} .banner__content {
-      --ms-cp-top: {{ cp_top }}px;
-      --ms-cp-bottom: {{ cp_bottom }}px;
-      --ms-cp-left: {{ cp_left }}px;
-      --ms-cp-right: {{ cp_right }}px;
+      padding-top: {{ cp_top }}px;
+      padding-bottom: {{ cp_bottom }}px;
+      padding-left: {{ cp_left }}px;
+      padding-right: {{ cp_right }}px;
     }
     @media screen and (max-width: 749px) {
       #Banner-{{ section.id }} .banner__content {
-        --ms-cp-top: {{ cp_top_m }}px;
-        --ms-cp-bottom: {{ cp_bottom_m }}px;
-        --ms-cp-left: {{ cp_left_m }}px;
-        --ms-cp-right: {{ cp_right_m }}px;
+        padding-top: {{ cp_top_m }}px;
+        padding-bottom: {{ cp_bottom_m }}px;
+        padding-left: {{ cp_left_m }}px;
+        padding-right: {{ cp_right_m }}px;
       }
     }
   {%- endstyle -%}
@@ -250,7 +250,7 @@
         </div>
       {%- endif -%}
 
-      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="padding-top:var(--ms-cp-top);padding-bottom:var(--ms-cp-bottom);padding-left:var(--ms-cp-left);padding-right:var(--ms-cp-right);">
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {%- if content_layout == 'contained' -%}<div class="page-width" style="width:100%;">{%- endif -%}
         <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="{% unless section.settings.show_text_box %}padding:0;{% endunless %}max-width:none;min-width:0;">
           {%- for block in section.blocks -%}
