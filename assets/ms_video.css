@@ -76,6 +76,59 @@ ms-video-bg.ms-video-banner--natural .banner__content {
   height: 100%;
 }
 
+/* Ensure content is above video (z-index 1) but below controls (z-index 3) */
+.banner .banner__content {
+  z-index: 2;
+}
+
+/* ---- Mobile content position overrides ---- */
+@media screen and (max-width: 749px) {
+  .banner__content.banner__content--mobile-top-left {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .banner__content.banner__content--mobile-top-center {
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .banner__content.banner__content--mobile-top-right {
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .banner__content.banner__content--mobile-middle-left {
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .banner__content.banner__content--mobile-middle-center {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .banner__content.banner__content--mobile-middle-right {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .banner__content.banner__content--mobile-bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+
+  .banner__content.banner__content--mobile-bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .banner__content.banner__content--mobile-bottom-right {
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+}
+
 /* Viewport height: subtracts header so the banner fits exactly */
 .banner--viewport:not(.banner--adapt) {
   min-height: calc(100vh - var(--header-height, 0px));
@@ -244,13 +297,13 @@ ms-video-bg:not([data-muted]) .ms-video-controls__icon--muted {
   }
 
   .ms-video-controls__btn {
-    width: 4.4rem;
-    height: 4.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   .ms-video-controls__btn svg {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 
   /* Fix banner--mobile-bottom: override absolute positioning so flexbox order works */

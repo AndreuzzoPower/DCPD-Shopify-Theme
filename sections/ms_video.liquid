@@ -148,26 +148,23 @@
   -%}
 
   {%- liquid
-    assign mobile_scheme_id = section.settings.mobile_color_scheme
-    assign desktop_scheme_id = section.settings.color_scheme
+    assign mobile_scheme_id = section.settings.mobile_color_scheme | strip
+    assign desktop_scheme_id = section.settings.color_scheme | strip
     assign ms_scheme = nil
-    if mobile_scheme_id != desktop_scheme_id
-      for scheme in settings.color_schemes
-        if scheme.id == mobile_scheme_id
-          assign ms_scheme = scheme
-          break
-        endif
-      endfor
-      if ms_scheme
-        assign ms_bg = ms_scheme.settings.background
-        assign ms_bg_brightness = ms_bg | color_brightness
-        if ms_bg_brightness <= 26
-          assign ms_bg_contrast = ms_bg | color_lighten: 50
-        elsif ms_bg_brightness <= 65
-          assign ms_bg_contrast = ms_bg | color_lighten: 5
-        else
-          assign ms_bg_contrast = ms_bg | color_darken: 25
-        endif
+    for scheme in settings.color_schemes
+      if scheme.id == mobile_scheme_id
+        assign ms_scheme = scheme
+      endif
+    endfor
+    if ms_scheme
+      assign ms_bg = ms_scheme.settings.background
+      assign ms_bg_brightness = ms_bg | color_brightness
+      if ms_bg_brightness <= 26
+        assign ms_bg_contrast = ms_bg | color_lighten: 50
+      elsif ms_bg_brightness <= 65
+        assign ms_bg_contrast = ms_bg | color_lighten: 5
+      else
+        assign ms_bg_contrast = ms_bg | color_darken: 25
       endif
     endif
   -%}
@@ -194,7 +191,7 @@
         padding-left: {{ cp_left_m }}px;
         padding-right: {{ cp_right_m }}px;
       }
-      {%- if ms_scheme -%}
+      {%- if ms_scheme and mobile_scheme_id != desktop_scheme_id -%}
         #Banner-{{ section.id }} .banner__box {
           --color-background: {{ ms_scheme.settings.background.red }},{{ ms_scheme.settings.background.green }},{{ ms_scheme.settings.background.blue }};
           {%- if ms_scheme.settings.background_gradient != empty -%}
@@ -295,7 +292,7 @@
         </div>
       {%- endif -%}
 
-      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if section.settings.mobile_content_position != blank %} banner__content--mobile-{{ section.settings.mobile_content_position }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {%- if content_layout == 'contained' -%}<div class="page-width" style="width:100%;">{%- endif -%}
         <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="{% unless section.settings.show_text_box %}padding:0;{% endunless %}max-width:none;min-width:0;">
           {%- for block in section.blocks -%}
@@ -856,6 +853,25 @@
         { "label": "Destra", "value": "right" }
       ],
       "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_position",
+      "label": "Posizione contenuto mobile",
+      "options": [
+        { "label": "Eredita da desktop", "value": "" },
+        { "label": "Alto sinistra", "value": "top-left" },
+        { "label": "Alto centro", "value": "top-center" },
+        { "label": "Alto destra", "value": "top-right" },
+        { "label": "Centro sinistra", "value": "middle-left" },
+        { "label": "Centro", "value": "middle-center" },
+        { "label": "Centro destra", "value": "middle-right" },
+        { "label": "Basso sinistra", "value": "bottom-left" },
+        { "label": "Basso centro", "value": "bottom-center" },
+        { "label": "Basso destra", "value": "bottom-right" }
+      ],
+      "default": "",
+      "info": "Sovrascrive la posizione desktop solo su schermi < 750px."
     },
     {
       "type": "checkbox",
