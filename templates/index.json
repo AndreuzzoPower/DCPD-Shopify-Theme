@@ -747,57 +747,6 @@
         "line_weight": 1,
         "line_style": "solid"
       }
-    },
-    "ms_blocks_section_w8NwpY": {
-      "type": "ms_blocks-section",
-      "blocks": {
-        "featured_article_tDHT9h": {
-          "type": "featured-article",
-          "name": "Articolo In Evidenza",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "color_scheme": "",
-            "blog": "",
-            "article": "notizie/alla-scoperta-del-mondo-frauenschuh",
-            "blogs_menu": "menu-categorie-blog",
-            "show_image": true,
-            "image_height": "medium",
-            "info_layout": "vertical",
-            "show_date": true,
-            "show_author": true,
-            "show_reading": true,
-            "show_excerpt": true,
-            "show_blog_name": true,
-            "show_tags": true,
-            "tags_style": "pill",
-            "show_button": true,
-            "button_label": "Leggi articolo",
-            "button_type": "link",
-            "button_style_secondary": false,
-            "button_size": "default",
-            "button_icon": "icon-arrow.svg",
-            "button_icon_position": "before",
-            "button_align": "right",
-            "show_icons": true,
-            "custom_icon_date": "",
-            "custom_icon_reading": "",
-            "custom_icon_author": ""
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "featured_article_tDHT9h"
-      ],
-      "name": "MS Blocchi Liberi",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "color_scheme": ""
-      }
     }
   },
   "order": [
@@ -811,7 +760,6 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX",
-    "ms_blocks_section_w8NwpY"
+    "ms_divider_qN8RVX"
   ]
 }
