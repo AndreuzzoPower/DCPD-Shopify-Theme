@@ -292,7 +292,7 @@
         </div>
       {%- endif -%}
 
-      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if section.settings.mobile_content_position != blank %} banner__content--mobile-{{ section.settings.mobile_content_position }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      <div class="banner__content banner__content--{{ section.settings.desktop_content_position }}{% if section.settings.mobile_content_position != 'inherit' and section.settings.mobile_content_position != blank %} banner__content--mobile-{{ section.settings.mobile_content_position }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {%- if content_layout == 'contained' -%}<div class="page-width" style="width:100%;">{%- endif -%}
         <div class="banner__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient" style="{% unless section.settings.show_text_box %}padding:0;{% endunless %}max-width:none;min-width:0;">
           {%- for block in section.blocks -%}
@@ -859,7 +859,7 @@
       "id": "mobile_content_position",
       "label": "Posizione contenuto mobile",
       "options": [
-        { "label": "Eredita da desktop", "value": "" },
+        { "label": "Eredita da desktop", "value": "inherit" },
         { "label": "Alto sinistra", "value": "top-left" },
         { "label": "Alto centro", "value": "top-center" },
         { "label": "Alto destra", "value": "top-right" },
@@ -870,7 +870,7 @@
         { "label": "Basso centro", "value": "bottom-center" },
         { "label": "Basso destra", "value": "bottom-right" }
       ],
-      "default": "",
+      "default": "inherit",
       "info": "Sovrascrive la posizione desktop solo su schermi < 750px."
     },
     {
