@@ -102,23 +102,23 @@
     {
       "type": "select",
       "id": "image_ratio",
-      "label": "Proporzioni immagine",
+      "label": "Proporzioni delle immagini",
       "options": [
-        { "label": "Adatta", "value": "adapt" },
-        { "label": "Ritratto (4:5)", "value": "portrait" },
-        { "label": "Quadrato (1:1)", "value": "square" }
+        { "label": "Adatta all'immagine", "value": "adapt" },
+        { "label": "Ritratto", "value": "portrait" },
+        { "label": "Quadrate", "value": "square" }
       ],
       "default": "adapt"
     },
     {
       "type": "checkbox",
       "id": "show_secondary_image",
-      "label": "Seconda immagine al passaggio del mouse",
+      "label": "Mostra la seconda immagine al passaggio del mouse",
       "default": false
     },
     {
       "type": "header",
-      "content": "Stile"
+      "content": "Scheda prodotto"
     },
     {
       "type": "color_scheme",
@@ -129,15 +129,15 @@
     {
       "type": "checkbox",
       "id": "show_vendor",
-      "label": "Mostra fornitore",
+      "label": "Venditore",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "show_rating",
-      "label": "Mostra valutazione",
+      "label": "Valutazione del prodotto",
       "default": false,
-      "info": "Per visualizzare la valutazione installa un'app recensioni compatibile con Dawn."
+      "info": "Per le valutazioni dei prodotti e necessaria un'app."
     },
     {
       "type": "checkbox",
@@ -150,12 +150,12 @@
       "type": "select",
       "id": "quick_add",
       "label": "Aggiunta rapida",
+      "default": "none",
       "options": [
         { "value": "none", "label": "Nessuna" },
         { "value": "standard", "label": "Standard" },
-        { "value": "bulk", "label": "Quantità (bulk)" }
-      ],
-      "default": "none"
+        { "value": "bulk", "label": "Blocco" }
+      ]
     }
   ],
   "presets": [
