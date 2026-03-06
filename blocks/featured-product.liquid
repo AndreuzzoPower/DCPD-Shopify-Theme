@@ -1,9 +1,5 @@
 {%- liquid
   assign featured_product = block.settings.product
-  assign show_quick_add = false
-  if block.settings.quick_add
-    assign show_quick_add = true
-  endif
 -%}
 
 <style>
@@ -30,7 +26,7 @@
     show_secondary_image: block.settings.show_secondary_image,
     show_vendor: block.settings.show_vendor,
     show_rating: block.settings.show_rating,
-    quick_add: show_quick_add,
+    quick_add: block.settings.quick_add,
     extend_height: false,
     lazy_load: true,
     section_id: block.id
@@ -157,10 +153,15 @@
       "info": "Per visualizzare la valutazione installa un'app recensioni compatibile con Dawn."
     },
     {
-      "type": "checkbox",
+      "type": "select",
       "id": "quick_add",
-      "label": "Pulsante aggiunta rapida",
-      "default": false
+      "label": "Aggiunta rapida",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "standard", "label": "Standard" },
+        { "value": "bulk", "label": "Quantità (bulk)" }
+      ],
+      "default": "none"
     }
   ],
   "presets": [
