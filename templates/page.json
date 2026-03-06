@@ -149,7 +149,7 @@
         "show_view_all": true,
         "button_size": "default",
         "button_style_secondary": false,
-        "button_type": "button",
+        "button_type": "pill",
         "button_icon": "",
         "button_icon_position": "before",
         "color_scheme": ""
