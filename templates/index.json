@@ -757,14 +757,14 @@
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "product": "",
+            "product": "multi-variante-test",
             "image_ratio": "adapt",
             "image_shape": "default",
-            "show_secondary_image": false,
+            "show_secondary_image": true,
             "color_scheme": "",
-            "show_vendor": false,
-            "show_rating": false,
-            "quick_add": false
+            "show_vendor": true,
+            "show_rating": true,
+            "quick_add": true
           },
           "blocks": {}
         },
@@ -819,9 +819,9 @@
             "tablet_layout": 12,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "space_top": 20,
-            "space_bottom": 20,
-            "show_rule": true,
+            "space_top": 80,
+            "space_bottom": 80,
+            "show_rule": false,
             "rule_style": "solid",
             "rule_color": "#e0e0e0",
             "rule_thickness": 1
@@ -835,16 +835,16 @@
             "desktop_layout": 4,
             "tablet_layout": 6,
             "mobile_layout": 12,
-            "vertical_align": "start",
+            "vertical_align": "center",
             "button_label": "Scopri di più",
             "button_link": "",
             "button_link_target": "_self",
             "button_size": "default",
-            "button_style_secondary": false,
-            "button_type": "button",
+            "button_style_secondary": true,
+            "button_type": "pill",
             "button_icon": "",
             "button_icon_position": "before",
-            "alignment": "left"
+            "alignment": "center"
           },
           "blocks": {}
         },
