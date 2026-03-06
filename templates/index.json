@@ -726,6 +726,7 @@
             "mobile_layout": 12,
             "vertical_align": "center",
             "block_image": "shopify://shop_images/autumn-walk-hand-in-hand.jpg",
+            "image_alt": "Pippo",
             "image_link": "shopify://products/multi-variante-test-copia-copia-copia-copia-copia-copia",
             "image_link_target": "_self"
           },
