@@ -5,8 +5,8 @@
     assign title_classes = title_classes | append: ' ' | append: block.settings.title_custom_class
   endif
 
-  assign subtitle_tag = block.settings.subtitle_tag | default: 'p'
-  assign subtitle_classes = 'subtitle'
+  assign subtitle_tag = block.settings.subtitle_tag | default: 'h3'
+  assign subtitle_classes = block.settings.subtitle_size | default: 'h3'
   if block.settings.subtitle_custom_class != blank
     assign subtitle_classes = subtitle_classes | append: ' ' | append: block.settings.subtitle_custom_class
   endif
@@ -144,18 +144,19 @@
     },
     {
       "type": "header",
-      "content": "Sottotitolo"
+      "content": "Titolo 2"
     },
     {
       "type": "inline_richtext",
       "id": "subtitle",
-      "label": "Sottotitolo"
+      "label": "Titolo"
     },
     {
       "type": "select",
       "id": "subtitle_tag",
-      "label": "Tag HTML sottotitolo",
+      "label": "Tag HTML",
       "options": [
+        { "label": "H1", "value": "h1" },
         { "label": "H2", "value": "h2" },
         { "label": "H3", "value": "h3" },
         { "label": "H4", "value": "h4" },
@@ -164,12 +165,28 @@
         { "label": "Paragrafo", "value": "p" },
         { "label": "Div", "value": "div" }
       ],
-      "default": "p"
+      "default": "h3"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_size",
+      "label": "Dimensione visiva",
+      "info": "Classe CSS che determina la dimensione del testo, indipendente dal tag HTML.",
+      "options": [
+        { "label": "Extra extra large (h0)", "value": "h0" },
+        { "label": "Extra large (h1)", "value": "h1" },
+        { "label": "Grande (h2)", "value": "h2" },
+        { "label": "Medio-grande (h3)", "value": "h3" },
+        { "label": "Medio (h4)", "value": "h4" },
+        { "label": "Piccolo (h5)", "value": "h5" },
+        { "label": "Extra piccolo (h6)", "value": "h6" }
+      ],
+      "default": "h3"
     },
     {
       "type": "text",
       "id": "subtitle_custom_class",
-      "label": "Classe CSS personalizzata sottotitolo",
+      "label": "Classe CSS personalizzata",
       "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
