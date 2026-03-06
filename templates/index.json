@@ -751,21 +751,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "image_HfrqWV": {
-          "type": "image",
-          "name": "Immagine",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "center",
-            "block_image": "shopify://shop_images/autumn-walk-hand-in-hand.jpg",
-            "image_alt": "Pippo",
-            "image_link": "shopify://products/multi-variante-test-copia-copia-copia-copia-copia-copia",
-            "image_link_target": "_self"
-          },
-          "blocks": {}
-        },
         "divider_VC6wT3": {
           "type": "divider",
           "name": "Divisore",
@@ -776,10 +761,10 @@
             "vertical_align": "start",
             "space_top": 80,
             "space_bottom": 80,
-            "show_rule": false,
-            "rule_style": "solid",
+            "show_rule": true,
+            "rule_style": "dotted",
             "rule_color": "#e0e0e0",
-            "rule_thickness": 1
+            "rule_thickness": 3
           },
           "blocks": {}
         },
@@ -833,7 +818,6 @@
         }
       },
       "block_order": [
-        "image_HfrqWV",
         "divider_VC6wT3",
         "cta_kGT9Yr",
         "featured_article_tDHT9h"
