@@ -780,8 +780,8 @@
             "show_sub_links": false,
             "color_scheme": "",
             "menu_layout": "vertical",
-            "link_style": "pill",
-            "alignment": "center"
+            "link_style": "button",
+            "alignment": "right"
           },
           "blocks": {}
         },
@@ -807,7 +807,7 @@
             "tablet_layout": 8,
             "mobile_layout": 12,
             "vertical_align": "start",
-            "custom_liquid": ""
+            "custom_liquid": "433454543<br>\n<b>ssss</b><br>\n{{shop.name}}"
           },
           "blocks": {}
         },
