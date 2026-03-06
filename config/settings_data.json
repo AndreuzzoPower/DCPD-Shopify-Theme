@@ -72,6 +72,7 @@
     "ms_icon_snapchat": "icon-snapchat.svg",
     "ms_icon_tumblr": "icon-tumblr.svg",
     "ms_icon_vimeo": "icon-vimeo.svg",
+    "ms_btn_medium_padding_v": 15,
     "buttons_border_thickness": 1,
     "buttons_border_opacity": 100,
     "buttons_radius": 0,

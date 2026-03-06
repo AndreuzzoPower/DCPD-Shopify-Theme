@@ -763,7 +763,7 @@
             "button_label": "Scopri di più",
             "button_link": "shopify://pages/blog",
             "button_link_target": "_self",
-            "button_size": "default",
+            "button_size": "medium",
             "button_style_secondary": false,
             "button_type": "button",
             "button_icon": "",
