@@ -91,7 +91,10 @@
                           {% if section.settings.mobile_layout == 'collage' %}calc((100vw - 30px) / 2 - {{ grid_space_mobile }}){% else %}calc(100vw - 30px){% endif %}
                         {%- endcapture -%}
                       {%- endif -%}
-                      {%- assign img_alt = block.settings.image.alt | default: '' | escape -%}
+                      {%- capture img_alt -%}
+                        {%- render 'ms_image_alt', image: block.settings.image, custom_alt: block.settings.image_alt, fallback_title: block.settings.image_overlay_text -%}
+                      {%- endcapture -%}
+                      {%- assign img_alt = img_alt | strip -%}
                       {{
                         block.settings.image
                         | image_url: width: 3200
@@ -345,6 +348,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.collage.blocks.image.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Testo alternativo (ALT)",
+          "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
         },
         {
           "type": "header",

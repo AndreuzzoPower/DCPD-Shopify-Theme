@@ -94,22 +94,15 @@
                     (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
                   {%- endcapture -%}
 
-                  {%- assign alt_text = block.settings.image.alt | strip -%}
-                  {%- if alt_text == blank -%}
-                    {%- assign alt_text = block.settings.image
-                      | split: '/'
-                      | last
-                      | split: '?'
-                      | first
-                      | split: '.'
-                      | first
-                    -%}
-                  {%- endif -%}
+                  {%- capture img_alt -%}
+                    {%- render 'ms_image_alt', image: block.settings.image, custom_alt: block.settings.image_alt, fallback_title: block.settings.heading -%}
+                  {%- endcapture -%}
+                  {%- assign img_alt = img_alt | strip -%}
 
                   {{
                     block.settings.image
                     | image_url: width: 1500
-                    | image_tag: sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500', alt: alt_text
+                    | image_tag: sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500', alt: img_alt
                   }}
                 {%- else -%}
                   {{ 'detailed-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -424,6 +417,12 @@
           "type": "image_picker",
           "id": "image",
           "label": "Immagine"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Testo alternativo (ALT)",
+          "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
         },
         {
           "type": "liquid",

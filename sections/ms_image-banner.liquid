@@ -130,6 +130,26 @@
 
 {%- render 'ms_mobile-padding' -%}
 
+{%- liquid
+  assign banner_heading = ''
+  for block in section.blocks
+    if block.type == 'heading' and block.settings.heading != blank
+      assign banner_heading = block.settings.heading | strip_html | strip
+      break
+    endif
+  endfor
+-%}
+
+{%- capture img_alt -%}
+  {%- render 'ms_image_alt', image: section.settings.image, custom_alt: section.settings.image_alt, fallback_title: banner_heading -%}
+{%- endcapture -%}
+{%- assign img_alt = img_alt | strip -%}
+
+{%- capture img_2_alt -%}
+  {%- render 'ms_image_alt', image: section.settings.image_2, custom_alt: section.settings.image_2_alt, fallback_title: banner_heading -%}
+{%- endcapture -%}
+{%- assign img_2_alt = img_2_alt | strip -%}
+
 <div
   id="Banner-{{ section.id }}"
   class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
@@ -153,6 +173,7 @@
         section.settings.image
         | image_url: width: 3840
         | image_tag:
+          alt: img_alt,
           width: section.settings.image.width,
           height: image_height,
           class: image_class,
@@ -185,6 +206,7 @@
         section.settings.image_2
         | image_url: width: 3840
         | image_tag:
+          alt: img_2_alt,
           width: section.settings.image_2.width,
           height: image_height_2,
           class: image_class_2,
@@ -304,9 +326,21 @@
       "label": "t:sections.image-banner.settings.image.label"
     },
     {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Testo alternativo (ALT)",
+      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
+    },
+    {
       "type": "image_picker",
       "id": "image_2",
       "label": "t:sections.image-banner.settings.image_2.label"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Testo alternativo seconda immagine (ALT)",
+      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
     },
     {
       "type": "select",

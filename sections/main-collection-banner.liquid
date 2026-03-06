@@ -524,6 +524,11 @@
 >
   <div class="collection-hero__inner{% if container_type == 'contained' %} page-width{% if raw_sw == 'narrow' %} page-width--narrow{% endif %}{% endif %} {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
 
+    {%- capture collection_img_alt -%}
+      {%- render 'ms_image_alt', image: section.settings.custom_image, custom_alt: section.settings.custom_image_alt, fallback_title: collection.title -%}
+    {%- endcapture -%}
+    {%- assign collection_img_alt = collection_img_alt | strip -%}
+
     {%- comment -%} ── Immagine ── {%- endcomment -%}
     {%- if has_image -%}
       <div class="collection-hero__image-container media gradient" aria-hidden="true">
@@ -542,7 +547,7 @@
           "
           src="{{ banner_image | image_url: width: 750 }}"
           sizes="{% if layout == 'overlay' or layout == 'stacked' or layout == 'stacked_reversed' or container_type == 'full' %}100vw{% else %}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc(50vw - 130px), calc(50vw - 55px){% endif %}"
-          alt="{{ banner_image.alt | default: collection.title | escape }}"
+          alt="{{ collection_img_alt | escape }}"
           width="{{ banner_image.width }}"
           height="{{ banner_image.height }}"
         >
@@ -825,6 +830,12 @@
       "id": "custom_image",
       "label": "Immagine personalizzata",
       "info": "Se inserita, verrà mostrata al posto dell'immagine predefinita della collection."
+    },
+    {
+      "type": "text",
+      "id": "custom_image_alt",
+      "label": "Testo alternativo (ALT)",
+      "info": "Se vuoto, viene usato l'ALT dell'immagine caricata su Shopify. Se anche quello è vuoto, viene generato dal nome del file."
     },
     {
       "type": "color_scheme",
