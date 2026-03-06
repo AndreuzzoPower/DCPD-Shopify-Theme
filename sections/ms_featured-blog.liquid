@@ -244,14 +244,14 @@
                 blog_url: section.settings.blog.url,
                 show_tags: section.settings.show_tags,
                 tags_style: section.settings.tags_style,
-                show_button: section.settings.show_button,
-                button_label: section.settings.button_label,
-                button_type: section.settings.button_type,
-                button_style_secondary: section.settings.button_style_secondary,
-                button_size: section.settings.button_size,
-                button_icon: section.settings.button_icon,
-                button_icon_position: section.settings.button_icon_position,
-                button_align: section.settings.button_align
+                show_button: section.settings.card_show_button,
+                button_label: section.settings.card_button_label,
+                button_type: section.settings.card_button_type,
+                button_style_secondary: section.settings.card_button_style_secondary,
+                button_size: section.settings.card_button_size,
+                button_icon: section.settings.card_button_icon,
+                button_icon_position: section.settings.card_button_icon_position,
+                button_align: section.settings.card_button_align
               -%}
             </li>
           {%- endfor -%}
@@ -294,14 +294,14 @@
                 blog_url: _article_blog.url,
                 show_tags: section.settings.show_tags,
                 tags_style: section.settings.tags_style,
-                show_button: section.settings.show_button,
-                button_label: section.settings.button_label,
-                button_type: section.settings.button_type,
-                button_style_secondary: section.settings.button_style_secondary,
-                button_size: section.settings.button_size,
-                button_icon: section.settings.button_icon,
-                button_icon_position: section.settings.button_icon_position,
-                button_align: section.settings.button_align
+                show_button: section.settings.card_show_button,
+                button_label: section.settings.card_button_label,
+                button_type: section.settings.card_button_type,
+                button_style_secondary: section.settings.card_button_style_secondary,
+                button_size: section.settings.card_button_size,
+                button_icon: section.settings.card_button_icon,
+                button_icon_position: section.settings.card_button_icon_position,
+                button_align: section.settings.card_button_align
               -%}
             </li>
           {%- endfor -%}
@@ -618,19 +618,19 @@
     },
     {
       "type": "checkbox",
-      "id": "show_button",
+      "id": "card_show_button",
       "label": "Mostra pulsante",
       "default": true
     },
     {
       "type": "text",
-      "id": "button_label",
+      "id": "card_button_label",
       "label": "Testo pulsante",
       "default": "Leggi articolo"
     },
     {
       "type": "select",
-      "id": "button_type",
+      "id": "card_button_type",
       "label": "Tipo pulsante",
       "options": [
         { "value": "button", "label": "Pulsante" },
@@ -641,14 +641,14 @@
     },
     {
       "type": "checkbox",
-      "id": "button_style_secondary",
+      "id": "card_button_style_secondary",
       "label": "Stile secondario (outline)",
       "default": false,
       "info": "Solo per tipo 'Pulsante'."
     },
     {
       "type": "select",
-      "id": "button_size",
+      "id": "card_button_size",
       "label": "Dimensione pulsante",
       "options": [
         { "value": "default", "label": "Predefinita" },
@@ -661,14 +661,14 @@
     },
     {
       "type": "text",
-      "id": "button_icon",
+      "id": "card_button_icon",
       "label": "Icona pulsante",
       "default": "icon-arrow.svg",
       "info": "File .svg = asset del tema, altrimenti classe della libreria icone."
     },
     {
       "type": "select",
-      "id": "button_icon_position",
+      "id": "card_button_icon_position",
       "label": "Posizione icona",
       "options": [
         { "value": "before", "label": "Prima del testo" },
@@ -678,7 +678,7 @@
     },
     {
       "type": "select",
-      "id": "button_align",
+      "id": "card_button_align",
       "label": "Allineamento pulsante",
       "options": [
         { "value": "left", "label": "Sinistra" },
