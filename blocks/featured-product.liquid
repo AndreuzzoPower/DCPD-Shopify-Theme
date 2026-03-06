@@ -22,10 +22,10 @@
   {%- render 'card-product',
     card_product: featured_product,
     media_aspect_ratio: block.settings.image_ratio,
-    image_shape: block.settings.image_shape,
     show_secondary_image: block.settings.show_secondary_image,
     show_vendor: block.settings.show_vendor,
     show_rating: block.settings.show_rating,
+    show_min_order: block.settings.show_min_order,
     quick_add: block.settings.quick_add,
     extend_height: false,
     lazy_load: true,
@@ -111,19 +111,6 @@
       "default": "adapt"
     },
     {
-      "type": "select",
-      "id": "image_shape",
-      "label": "Forma immagine",
-      "options": [
-        { "label": "Nessuna", "value": "default" },
-        { "label": "Arco", "value": "arch" },
-        { "label": "Blob", "value": "blob" },
-        { "label": "Diamante", "value": "diamond" },
-        { "label": "Tondo", "value": "round" }
-      ],
-      "default": "default"
-    },
-    {
       "type": "checkbox",
       "id": "show_secondary_image",
       "label": "Seconda immagine al passaggio del mouse",
@@ -151,6 +138,13 @@
       "label": "Mostra valutazione",
       "default": false,
       "info": "Per visualizzare la valutazione installa un'app recensioni compatibile con Dawn."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_min_order",
+      "label": "Mostra quantita minima",
+      "default": true,
+      "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
     },
     {
       "type": "select",
