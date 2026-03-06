@@ -26,9 +26,12 @@
     #shopify-block-{{ block.id }},
     #ms-block-{{ block.id }} { grid-column: span {{ block.settings.desktop_layout }}; }
   }
+  #ms-block-{{ block.id }} {
+    text-align: {{ block.settings.alignment }};
+  }
 </style>
 
-<div id="ms-block-{{ block.id }}" class="ms-block ms-block-text text-{{ block.settings.alignment }}">
+<div id="ms-block-{{ block.id }}" class="ms-block ms-block-text">
   {%- if block.settings.title != blank -%}
     <{{ title_tag }} class="{{ title_classes }}">{{ block.settings.title }}</{{ title_tag }}>
   {%- endif -%}
