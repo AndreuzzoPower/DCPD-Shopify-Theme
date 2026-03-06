@@ -751,27 +751,6 @@
     "ms_blocks_section_w8NwpY": {
       "type": "ms_blocks-section",
       "blocks": {
-        "cta_kGT9Yr": {
-          "type": "cta",
-          "name": "CTA (Pulsante)",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "center",
-            "color_scheme": "",
-            "button_label": "Scopri di più",
-            "button_link": "shopify://pages/blog",
-            "button_link_target": "_self",
-            "button_size": "medium",
-            "button_style_secondary": false,
-            "button_type": "button",
-            "button_icon": "",
-            "button_icon_position": "before",
-            "alignment": "center"
-          },
-          "blocks": {}
-        },
         "featured_article_tDHT9h": {
           "type": "featured-article",
           "name": "Articolo In Evidenza",
@@ -801,7 +780,6 @@
         }
       },
       "block_order": [
-        "cta_kGT9Yr",
         "featured_article_tDHT9h"
       ],
       "name": "MS Blocchi Liberi",
