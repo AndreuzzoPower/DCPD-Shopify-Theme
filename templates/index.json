@@ -291,6 +291,151 @@
         "swipe_on_mobile": true
       }
     },
+    "ms_rich_text_ibw8dL": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "section_padding_Vhw89L": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 50,
+            "section_padding_bottom_xs": 50
+          }
+        },
+        "heading_xWJzjH": {
+          "type": "heading",
+          "settings": {
+            "heading": "SEO",
+            "heading_size": "h1",
+            "title_tag": "div",
+            "title_custom_class": ""
+          }
+        },
+        "text_A9pemw": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Ecco alcune feature SEO presenti nel tema di default</p>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_Vhw89L",
+        "heading_xWJzjH",
+        "text_A9pemw"
+      ],
+      "name": "MS Rich text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
+      }
+    },
+    "ms_multicolumn_GBjYmt": {
+      "type": "ms_multicolumn",
+      "blocks": {
+        "column_WfFei9": {
+          "type": "column",
+          "settings": {
+            "title": "NO INDEX",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Si potrà decidere di impostare il noindex su ogni prodotto, collection, pagina ed articolo blog.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_fd7Rt9": {
+          "type": "column",
+          "settings": {
+            "title": "HEADINGS",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>In ogni modulo è possibile impostare in modo chirurgico il tag heading.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_fcP9Vk": {
+          "type": "column",
+          "settings": {
+            "title": "DATI STRUTTURATI",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Dove disponibili sono stati inseriti in maniera dinamica, nel modo più completo i dati strutturati. E' stato predisposto un Widget dedicato da poter inserire nei vari template direttamente da Live Editor collegabile dinamicamente a Prodotti, Pagine, Articoli Blog e Collections in modo da renderli il più possibile personalizzabili.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "section_padding_Yib4fr": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        }
+      },
+      "block_order": [
+        "column_WfFei9",
+        "column_fd7Rt9",
+        "column_fcP9Vk",
+        "section_padding_Yib4fr"
+      ],
+      "name": "MS Multicolonna",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "column_alignment": "left",
+        "background_style": "primary",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "button_style_secondary": false,
+        "button_type": "pill",
+        "button_size": "default",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5,
+        "carousel_loop": "none",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "overlay_sides",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "dots",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true
+      }
+    },
     "ms_divider_NGpeWm": {
       "type": "ms_divider",
       "name": "MS Divisore",
@@ -559,6 +704,8 @@
     "ms_divider_tqnhyj",
     "ms_rich_text_XjDUaG",
     "ms_multicolumn_dNmEq4",
+    "ms_rich_text_ibw8dL",
+    "ms_multicolumn_GBjYmt",
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
