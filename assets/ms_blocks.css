@@ -20,7 +20,7 @@
    Block: Image
    ========================================== */
 
-.ms-block > a {
+.ms-block > a:not(.button) {
   display: block;
   border: none;
   outline-offset: 2px;
