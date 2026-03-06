@@ -713,6 +713,181 @@
         "line_weight": 1,
         "line_style": "solid"
       }
+    },
+    "ms_blocks_section_w8NwpY": {
+      "type": "ms_blocks-section",
+      "blocks": {
+        "video_QhRWEp": {
+          "type": "video",
+          "name": "Video",
+          "settings": {
+            "desktop_layout": 6,
+            "tablet_layout": 8,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "video_title": "Video",
+            "video_url": "https://www.youtube.com/watch?v=0w80F8FffQ4&list=RD0w80F8FffQ4&start_radio=1",
+            "video_mp4_url": "",
+            "aspect_ratio": "16-9",
+            "autoplay": false,
+            "loop": false,
+            "show_controls": true,
+            "muted": false
+          },
+          "blocks": {}
+        },
+        "text_TeqQxd": {
+          "type": "text",
+          "name": "Testo",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "text": "<p>Inserisci il tuo contenuto qui.</p>",
+            "alignment": "left"
+          },
+          "blocks": {}
+        },
+        "featured_product_Wk3ByB": {
+          "type": "featured-product",
+          "name": "Prodotto In Evidenza",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "product": "",
+            "image_ratio": "adapt",
+            "image_shape": "default",
+            "show_secondary_image": false,
+            "color_scheme": "",
+            "show_vendor": false,
+            "show_rating": false,
+            "quick_add": false
+          },
+          "blocks": {}
+        },
+        "menu_8taUyE": {
+          "type": "menu",
+          "name": "Menu",
+          "settings": {
+            "desktop_layout": 3,
+            "tablet_layout": 4,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "menu": "main-menu",
+            "show_sub_links": false,
+            "color_scheme": "",
+            "menu_layout": "vertical",
+            "link_style": "link",
+            "alignment": "left"
+          },
+          "blocks": {}
+        },
+        "image_HfrqWV": {
+          "type": "image",
+          "name": "Immagine",
+          "settings": {
+            "desktop_layout": 6,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "image_link": "",
+            "image_link_target": "_self"
+          },
+          "blocks": {}
+        },
+        "html_LTNktn": {
+          "type": "html",
+          "name": "HTML / Liquid",
+          "settings": {
+            "desktop_layout": 6,
+            "tablet_layout": 8,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "custom_liquid": ""
+          },
+          "blocks": {}
+        },
+        "divider_VC6wT3": {
+          "type": "divider",
+          "name": "Divisore",
+          "settings": {
+            "desktop_layout": 12,
+            "tablet_layout": 12,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "space_top": 20,
+            "space_bottom": 20,
+            "show_rule": true,
+            "rule_style": "solid",
+            "rule_color": "#e0e0e0",
+            "rule_thickness": 1
+          },
+          "blocks": {}
+        },
+        "cta_kGT9Yr": {
+          "type": "cta",
+          "name": "CTA (Pulsante)",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "button_label": "Scopri di più",
+            "button_link": "",
+            "button_link_target": "_self",
+            "button_size": "default",
+            "button_style_secondary": false,
+            "button_type": "button",
+            "button_icon": "",
+            "button_icon_position": "before",
+            "alignment": "left"
+          },
+          "blocks": {}
+        },
+        "featured_article_tDHT9h": {
+          "type": "featured-article",
+          "name": "Articolo In Evidenza",
+          "settings": {
+            "desktop_layout": 4,
+            "tablet_layout": 6,
+            "mobile_layout": 12,
+            "vertical_align": "start",
+            "blog": "",
+            "article": "",
+            "image_ratio": "adapt",
+            "show_image": true,
+            "color_scheme": "",
+            "show_date": true,
+            "show_author": false,
+            "show_reading": false,
+            "show_excerpt": true,
+            "show_blog_name": false,
+            "show_tags": false,
+            "tags_style": "pill"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_QhRWEp",
+        "text_TeqQxd",
+        "featured_product_Wk3ByB",
+        "menu_8taUyE",
+        "image_HfrqWV",
+        "html_LTNktn",
+        "divider_VC6wT3",
+        "cta_kGT9Yr",
+        "featured_article_tDHT9h"
+      ],
+      "name": "MS Blocchi Liberi",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": ""
+      }
     }
   },
   "order": [
@@ -726,6 +901,7 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX"
+    "ms_divider_qN8RVX",
+    "ms_blocks_section_w8NwpY"
   ]
 }
