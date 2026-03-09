@@ -193,6 +193,18 @@
     "ms_featured_blog_PbmgNz": {
       "type": "ms_featured-blog",
       "blocks": {
+        "heading_Fe4BDK": {
+          "type": "heading",
+          "settings": {
+            "title": "Articoli correlati",
+            "title_tag": "h3",
+            "heading_size": "h1",
+            "title_custom_class": "",
+            "description": "",
+            "description_style": "body",
+            "alignment": "center"
+          }
+        },
         "section_padding_z4rahT": {
           "type": "section_padding",
           "settings": {
@@ -206,6 +218,7 @@
         }
       },
       "block_order": [
+        "heading_Fe4BDK",
         "section_padding_z4rahT"
       ],
       "name": "MS Blog In Evidenza",
