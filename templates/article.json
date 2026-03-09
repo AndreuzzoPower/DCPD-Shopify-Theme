@@ -245,7 +245,7 @@
         "articles": "{{ article.metafields.custom.articolo_correlati.value }}",
         "blog": "",
         "blogs_menu": "",
-        "post_limit": 3,
+        "post_limit": 50,
         "columns_desktop": "3",
         "enable_desktop_slider": true,
         "enable_autoplay": false,
