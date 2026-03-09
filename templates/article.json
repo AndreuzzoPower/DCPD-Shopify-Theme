@@ -161,6 +161,23 @@
     },
     "ms_products_from_metafield_erpPzR": {
       "type": "ms_products-from-metafield",
+      "blocks": {
+        "heading_kJP6XK": {
+          "type": "heading",
+          "settings": {
+            "title": "Prodotti presenti in questo articolo",
+            "title_tag": "h2",
+            "heading_size": "h1",
+            "title_custom_class": "",
+            "description": "",
+            "description_style": "body",
+            "alignment": "center"
+          }
+        }
+      },
+      "block_order": [
+        "heading_kJP6XK"
+      ],
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "slider_width": "page_width",
