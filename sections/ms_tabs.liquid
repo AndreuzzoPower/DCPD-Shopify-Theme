@@ -35,24 +35,13 @@
   <div class="color-{{ section.settings.color_scheme }} gradient">
     <div class="{{ sw_class }} isolate">
 
-      {%- if section.settings.heading != blank -%}
-        {%- assign title_tag = section.settings.title_tag | default: 'h2' -%}
-        {%- assign title_classes = section.settings.heading_size | default: 'h1' -%}
-        {%- if section.settings.title_custom_class != blank -%}
-          {%- assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class -%}
-        {%- endif -%}
-        <{{ title_tag }} class="ms-tabs__heading {{ title_classes }}">
-          {{- section.settings.heading | escape -}}
-        </{{ title_tag }}>
-      {%- endif -%}
-
       {%- comment -%} Desktop / default tabs {%- endcomment -%}
       <div class="ms-tabs__desktop">
         {%- if tab_count > 0 -%}
           <div
             class="ms-tabs__tablist{% if tab_align == 'center' %} ms-tabs__tablist--center{% elsif tab_align == 'end' %} ms-tabs__tablist--end{% elsif tab_align == 'stretch' %} ms-tabs__tablist--stretch{% endif %}"
             role="tablist"
-            aria-label="{{ section.settings.heading | default: 'Tabs' | escape }}"
+            aria-label="Tabs"
             aria-orientation="horizontal"
           >
             {%- assign tab_idx = 0 -%}
@@ -241,50 +230,6 @@
       "id": "color_scheme",
       "label": "Combinazione colori sezione",
       "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Contenuto"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Titolo sezione"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Dimensione titolo",
-      "options": [
-        { "label": "Piccola", "value": "h2" },
-        { "label": "Media", "value": "h1" },
-        { "label": "Grande", "value": "h0" },
-        { "label": "Extra grande", "value": "hxl" },
-        { "label": "Extra extra grande", "value": "hxxl" }
-      ],
-      "default": "h1"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
       "type": "header",
