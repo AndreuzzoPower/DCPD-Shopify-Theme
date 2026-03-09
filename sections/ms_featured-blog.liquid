@@ -255,7 +255,7 @@
       >
         {%- if has_selected_articles -%}
           {%- comment -%} ── Articoli selezionati manualmente (article_list) ── {%- endcomment -%}
-          {%- for article in section.settings.articles limit: section.settings.post_limit -%}
+          {%- for article in section.settings.articles -%}
             {%- liquid
               assign _article_blog_handle = article.url | split: '/blogs/' | last | split: '/' | first
               assign _article_blog = blogs[_article_blog_handle]
