@@ -1221,7 +1221,7 @@ class SliderComponent extends HTMLElement {
     } else {
       const pageOffset = (this.pageStep || this._getPageStep()) * this.sliderItemOffset;
       this.currentPage = Math.min(
-        Math.floor(effectiveScrollLeft / pageOffset) + 1,
+        Math.round(effectiveScrollLeft / pageOffset) + 1,
         this.paginationPages
       );
     }
