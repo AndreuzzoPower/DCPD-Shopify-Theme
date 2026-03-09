@@ -62,8 +62,9 @@
   assign all_articles = '' | split: ''
   assign total_articles_count = 0
 
-  for block in section.blocks
-    if block.type == 'article' and block.settings.article != blank
+  for i in (1..12)
+    assign _key = 'article_' | append: i
+    if section.settings[_key] != blank
       assign selected_articles_count = selected_articles_count | plus: 1
     endif
   endfor
@@ -261,22 +262,22 @@
         aria-label="Blog in evidenza"
       >
         {%- if has_selected_articles -%}
-          {%- comment -%} ── Articoli selezionati manualmente ── {%- endcomment -%}
-          {%- assign article_index = 0 -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'article' and block.settings.article != blank -%}
-              {%- assign article_index = article_index | plus: 1 -%}
-              {%- assign article = block.settings.article -%}
+          {%- comment -%} ── Articoli selezionati manualmente (settings) ── {%- endcomment -%}
+          {%- assign _manual_index = 0 -%}
+          {%- for i in (1..12) -%}
+            {%- assign _key = 'article_' | append: i -%}
+            {%- assign article = section.settings[_key] -%}
+            {%- if article != blank -%}
+              {%- assign _manual_index = _manual_index | plus: 1 -%}
               {%- assign _article_blog_handle = article.url | split: '/blogs/' | last | split: '/' | first -%}
               {%- assign _article_blog = blogs[_article_blog_handle] -%}
               <li
-                id="Slide-{{ section.id }}-{{ article_index }}"
+                id="Slide-{{ section.id }}-{{ _manual_index }}"
                 class="blog__post grid__item article{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                 {% if settings.animations_reveal_on_scroll %}
                   data-cascade
-                  style="--animation-order: {{ article_index }};"
+                  style="--animation-order: {{ _manual_index }};"
                 {% endif %}
-                {{ block.shopify_attributes }}
               >
                 {%- render 'article-card',
                   blog: _article_blog,
@@ -483,16 +484,81 @@
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
     {
+      "type": "header",
+      "content": "Fonte articoli",
+      "info": "Priorità: 1) Articoli manuali, 2) Blog, 3) Menu blog. La prima fonte con contenuti verrà utilizzata."
+    },
+    {
+      "type": "article",
+      "id": "article_1",
+      "label": "Articolo 1"
+    },
+    {
+      "type": "article",
+      "id": "article_2",
+      "label": "Articolo 2"
+    },
+    {
+      "type": "article",
+      "id": "article_3",
+      "label": "Articolo 3"
+    },
+    {
+      "type": "article",
+      "id": "article_4",
+      "label": "Articolo 4"
+    },
+    {
+      "type": "article",
+      "id": "article_5",
+      "label": "Articolo 5"
+    },
+    {
+      "type": "article",
+      "id": "article_6",
+      "label": "Articolo 6"
+    },
+    {
+      "type": "article",
+      "id": "article_7",
+      "label": "Articolo 7"
+    },
+    {
+      "type": "article",
+      "id": "article_8",
+      "label": "Articolo 8"
+    },
+    {
+      "type": "article",
+      "id": "article_9",
+      "label": "Articolo 9"
+    },
+    {
+      "type": "article",
+      "id": "article_10",
+      "label": "Articolo 10"
+    },
+    {
+      "type": "article",
+      "id": "article_11",
+      "label": "Articolo 11"
+    },
+    {
+      "type": "article",
+      "id": "article_12",
+      "label": "Articolo 12"
+    },
+    {
       "type": "blog",
       "id": "blog",
       "label": "t:sections.featured-blog.settings.blog.label",
-      "info": "Seleziona un blog specifico. Se vuoto, verrà usato il 'Menu blog' sottostante."
+      "info": "Seleziona un blog specifico. Usato solo se nessun articolo manuale è selezionato sopra."
     },
     {
       "type": "link_list",
       "id": "blogs_menu",
       "label": "Menu blog (per tutti i blog)",
-      "info": "Se nessun blog è selezionato sopra, scegli un menu di navigazione contenente link ai blog. Verranno mostrati gli ultimi articoli da tutti i blog presenti nel menu, ordinati per data."
+      "info": "Usato solo se nessun articolo e nessun blog sono selezionati. Raccoglie gli ultimi articoli da tutti i blog nel menu, ordinati per data."
     },
     {
       "type": "range",
@@ -1010,17 +1076,6 @@
           "id": "alignment",
           "label": "Allineamento",
           "default": "center"
-        }
-      ]
-    },
-    {
-      "type": "article",
-      "name": "Articolo",
-      "settings": [
-        {
-          "type": "article",
-          "id": "article",
-          "label": "Articolo"
         }
       ]
     },
