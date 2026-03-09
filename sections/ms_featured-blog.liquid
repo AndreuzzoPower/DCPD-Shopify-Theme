@@ -56,22 +56,14 @@
     Si usa un link_list (menu) contenente link ai blog desiderati.
   endcomment
   assign has_selected_articles = false
-  assign selected_articles_count = 0
   assign has_selected_blog = false
   assign has_multi_blog = false
   assign all_articles = '' | split: ''
   assign total_articles_count = 0
 
-  for i in (1..12)
-    assign _key = 'article_' | append: i
-    if section.settings[_key] != blank
-      assign selected_articles_count = selected_articles_count | plus: 1
-    endif
-  endfor
-
-  if selected_articles_count > 0
+  if section.settings.articles.count > 0
     assign has_selected_articles = true
-    assign total_articles_count = selected_articles_count
+    assign total_articles_count = section.settings.articles.count
   elsif section.settings.blog != blank
     assign has_selected_blog = true
     assign total_articles_count = section.settings.blog.articles_count
@@ -94,7 +86,7 @@
   assign posts_displayed = total_articles_count
   assign posts_exceed_limit = false
   if has_selected_articles
-    assign posts_displayed = selected_articles_count
+    assign posts_displayed = section.settings.articles.count
   elsif section.settings.post_limit <= total_articles_count
     assign posts_exceed_limit = true
     assign posts_displayed = section.settings.post_limit
@@ -262,53 +254,49 @@
         aria-label="Blog in evidenza"
       >
         {%- if has_selected_articles -%}
-          {%- comment -%} ── Articoli selezionati manualmente (settings) ── {%- endcomment -%}
-          {%- assign _manual_index = 0 -%}
-          {%- for i in (1..12) -%}
-            {%- assign _key = 'article_' | append: i -%}
-            {%- assign article = section.settings[_key] -%}
-            {%- if article != blank -%}
-              {%- assign _manual_index = _manual_index | plus: 1 -%}
-              {%- assign _article_blog_handle = article.url | split: '/blogs/' | last | split: '/' | first -%}
-              {%- assign _article_blog = blogs[_article_blog_handle] -%}
-              <li
-                id="Slide-{{ section.id }}-{{ _manual_index }}"
-                class="blog__post grid__item article{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ _manual_index }};"
-                {% endif %}
-              >
-                {%- render 'article-card',
-                  blog: _article_blog,
-                  article: article,
-                  media_height: section.settings.image_height,
-                  media_aspect_ratio: article.image.aspect_ratio,
-                  show_image: section.settings.show_image,
-                  show_date: section.settings.show_date,
-                  show_author: section.settings.show_author,
-                  show_reading: section.settings.show_reading,
-                  show_icons: section.settings.show_icons,
-                  custom_icon_date: section.settings.custom_icon_date,
-                  custom_icon_reading: section.settings.custom_icon_reading,
-                  custom_icon_author: section.settings.custom_icon_author,
-                  show_excerpt: section.settings.show_excerpt,
-                  show_blog_name: section.settings.show_blog_name,
-                  blog_name: _article_blog.title,
-                  blog_url: _article_blog.url,
-                  show_tags: section.settings.show_tags,
-                  tags_style: section.settings.tags_style,
-                  show_button: section.settings.card_show_button,
-                  button_label: section.settings.card_button_label,
-                  button_type: section.settings.card_button_type,
-                  button_style_secondary: section.settings.card_button_style_secondary,
-                  button_size: section.settings.card_button_size,
-                  button_icon: section.settings.card_button_icon,
-                  button_icon_position: section.settings.card_button_icon_position,
-                  button_align: section.settings.card_button_align
-                -%}
-              </li>
-            {%- endif -%}
+          {%- comment -%} ── Articoli selezionati manualmente (article_list) ── {%- endcomment -%}
+          {%- for article in section.settings.articles limit: section.settings.post_limit -%}
+            {%- liquid
+              assign _article_blog_handle = article.url | split: '/blogs/' | last | split: '/' | first
+              assign _article_blog = blogs[_article_blog_handle]
+            -%}
+            <li
+              id="Slide-{{ section.id }}-{{ forloop.index }}"
+              class="blog__post grid__item article{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              {%- render 'article-card',
+                blog: _article_blog,
+                article: article,
+                media_height: section.settings.image_height,
+                media_aspect_ratio: article.image.aspect_ratio,
+                show_image: section.settings.show_image,
+                show_date: section.settings.show_date,
+                show_author: section.settings.show_author,
+                show_reading: section.settings.show_reading,
+                show_icons: section.settings.show_icons,
+                custom_icon_date: section.settings.custom_icon_date,
+                custom_icon_reading: section.settings.custom_icon_reading,
+                custom_icon_author: section.settings.custom_icon_author,
+                show_excerpt: section.settings.show_excerpt,
+                show_blog_name: section.settings.show_blog_name,
+                blog_name: _article_blog.title,
+                blog_url: _article_blog.url,
+                show_tags: section.settings.show_tags,
+                tags_style: section.settings.tags_style,
+                show_button: section.settings.card_show_button,
+                button_label: section.settings.card_button_label,
+                button_type: section.settings.card_button_type,
+                button_style_secondary: section.settings.card_button_style_secondary,
+                button_size: section.settings.card_button_size,
+                button_icon: section.settings.card_button_icon,
+                button_icon_position: section.settings.card_button_icon_position,
+                button_align: section.settings.card_button_align
+              -%}
+            </li>
           {%- endfor -%}
 
         {%- elsif has_selected_blog and section.settings.blog.articles_count > 0 -%}
@@ -489,64 +477,11 @@
       "info": "Priorità: 1) Articoli manuali, 2) Blog, 3) Menu blog. La prima fonte con contenuti verrà utilizzata."
     },
     {
-      "type": "article",
-      "id": "article_1",
-      "label": "Articolo 1"
-    },
-    {
-      "type": "article",
-      "id": "article_2",
-      "label": "Articolo 2"
-    },
-    {
-      "type": "article",
-      "id": "article_3",
-      "label": "Articolo 3"
-    },
-    {
-      "type": "article",
-      "id": "article_4",
-      "label": "Articolo 4"
-    },
-    {
-      "type": "article",
-      "id": "article_5",
-      "label": "Articolo 5"
-    },
-    {
-      "type": "article",
-      "id": "article_6",
-      "label": "Articolo 6"
-    },
-    {
-      "type": "article",
-      "id": "article_7",
-      "label": "Articolo 7"
-    },
-    {
-      "type": "article",
-      "id": "article_8",
-      "label": "Articolo 8"
-    },
-    {
-      "type": "article",
-      "id": "article_9",
-      "label": "Articolo 9"
-    },
-    {
-      "type": "article",
-      "id": "article_10",
-      "label": "Articolo 10"
-    },
-    {
-      "type": "article",
-      "id": "article_11",
-      "label": "Articolo 11"
-    },
-    {
-      "type": "article",
-      "id": "article_12",
-      "label": "Articolo 12"
+      "type": "article_list",
+      "id": "articles",
+      "label": "Articoli manuali",
+      "limit": 50,
+      "info": "Seleziona uno o più articoli. Se presenti, hanno priorità su Blog e Menu blog."
     },
     {
       "type": "blog",
