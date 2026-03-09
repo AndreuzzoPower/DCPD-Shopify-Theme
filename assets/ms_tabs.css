@@ -1,0 +1,281 @@
+/* ==========================================================================
+   MS Tabs Section
+   Mobile-first, scoped via #section-{{ section.id }}
+   ========================================================================== */
+
+/* ---------- Tab list ---------- */
+.ms-tabs__tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.ms-tabs__tablist--center {
+  justify-content: center;
+}
+
+.ms-tabs__tablist--end {
+  justify-content: flex-end;
+}
+
+.ms-tabs__tablist--stretch .ms-tabs__tab {
+  flex: 1;
+}
+
+/* ---------- Single tab button ---------- */
+.ms-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem 1.6rem;
+  border: none;
+  background: transparent;
+  color: rgba(var(--color-foreground), 0.65);
+  font-family: inherit;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.ms-tabs__tab:hover,
+.ms-tabs__tab:focus-visible {
+  color: rgb(var(--color-foreground));
+}
+
+.ms-tabs__tab:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: -2px;
+}
+
+.ms-tabs__tab[aria-selected="true"] {
+  color: rgb(var(--color-foreground));
+  font-weight: 600;
+}
+
+.ms-tabs__tab-icon {
+  display: inline-flex;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+}
+
+.ms-tabs__tab-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Style: underline (default) ---------- */
+.ms-tabs--underline .ms-tabs__tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.ms-tabs--underline .ms-tabs__tab[aria-selected="true"]::after {
+  background: rgb(var(--color-foreground));
+}
+
+/* ---------- Style: bordered ---------- */
+.ms-tabs--bordered .ms-tabs__tablist {
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.ms-tabs--bordered .ms-tabs__tab {
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: -1px;
+}
+
+.ms-tabs--bordered .ms-tabs__tab[aria-selected="true"] {
+  border-color: rgba(var(--color-foreground), 0.12);
+  background: rgb(var(--color-background));
+}
+
+/* ---------- Style: pill ---------- */
+.ms-tabs--pill .ms-tabs__tablist {
+  border-bottom: none;
+  gap: 0.6rem;
+  padding: 0.4rem;
+  background: rgba(var(--color-foreground), 0.04);
+  border-radius: 50px;
+  display: inline-flex;
+}
+
+.ms-tabs--pill .ms-tabs__tab {
+  border-radius: 50px;
+  padding: 0.8rem 1.6rem;
+}
+
+.ms-tabs--pill .ms-tabs__tab[aria-selected="true"] {
+  background: rgb(var(--color-background));
+  box-shadow: 0 1px 3px rgba(var(--color-foreground), 0.1);
+}
+
+/* ---------- Style: filled ---------- */
+.ms-tabs--filled .ms-tabs__tablist {
+  border-bottom: none;
+  gap: 0.4rem;
+}
+
+.ms-tabs--filled .ms-tabs__tab {
+  border-radius: 8px 8px 0 0;
+  padding: 1rem 2rem;
+}
+
+.ms-tabs--filled .ms-tabs__tab[aria-selected="true"] {
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+/* ---------- Style: boxed ---------- */
+.ms-tabs--boxed .ms-tabs__tablist {
+  border-bottom: none;
+  gap: 0.4rem;
+}
+
+.ms-tabs--boxed .ms-tabs__tab {
+  border: 1px solid rgba(var(--color-foreground), 0.12);
+  border-radius: 8px;
+  padding: 0.8rem 1.6rem;
+}
+
+.ms-tabs--boxed .ms-tabs__tab[aria-selected="true"] {
+  border-color: rgb(var(--color-foreground));
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+/* ---------- Tab panels ---------- */
+.ms-tabs__panels {
+  position: relative;
+}
+
+.ms-tabs__panel {
+  padding: 2rem 0;
+}
+
+.ms-tabs__panel[hidden] {
+  display: none;
+}
+
+.ms-tabs__panel-content {
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+.ms-tabs__panel-content img {
+  max-width: 100%;
+}
+
+/* ---------- Section heading ---------- */
+.ms-tabs__heading {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  word-break: break-word;
+}
+
+/* ---------- Mobile: accordion fallback ---------- */
+.ms-tabs__accordion {
+  display: none;
+}
+
+.ms-tabs__desktop {
+  display: block;
+}
+
+.ms-tabs--mobile-accordion .ms-tabs__desktop {
+  display: block;
+}
+
+.ms-tabs--mobile-accordion .ms-tabs__accordion {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  .ms-tabs--mobile-accordion .ms-tabs__desktop {
+    display: none;
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion {
+    display: block;
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion {
+    margin-top: 0;
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion:first-child {
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion summary {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0;
+    line-height: 1;
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion .summary__title {
+    display: flex;
+    flex: 1;
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion details[open] > summary .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion__content {
+    margin-bottom: 1.5rem;
+    word-break: break-word;
+    overflow-x: auto;
+    padding: 0 0.6rem;
+  }
+
+  .ms-tabs--mobile-accordion .ms-tabs__accordion .accordion__content img {
+    max-width: 100%;
+  }
+}
+
+/* ---------- Desktop enhancements ---------- */
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ms-tabs__tab,
+  .ms-tabs--underline .ms-tabs__tab::after {
+    transition: none;
+  }
+}
+
+/* ---------- Desktop enhancements ---------- */
+@media screen and (min-width: 750px) {
+  .ms-tabs__tab {
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+    padding: 1.2rem 2rem;
+  }
+
+  .ms-tabs__heading {
+    margin-bottom: 3rem;
+  }
+
+  .ms-tabs__panel {
+    padding: 2.5rem 0;
+  }
+}
