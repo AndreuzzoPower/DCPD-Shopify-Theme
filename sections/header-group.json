@@ -67,7 +67,7 @@
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
         "menu": "main-menu",
-        "menu_type_desktop": "mega",
+        "menu_type_desktop": "dropdown",
         "sticky_header_type": "reduce-logo-size",
         "show_line_separator": false,
         "color_scheme": "scheme-5",
@@ -129,6 +129,7 @@
             "mobile_layout": 12,
             "vertical_align": "start",
             "block_image": "shopify://shop_images/iphone-detects-qr-code.jpg",
+            "image_alt": "",
             "image_link": "",
             "image_link_target": "_self"
           },
