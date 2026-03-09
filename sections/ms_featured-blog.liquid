@@ -46,19 +46,32 @@
 
   comment
     ── Raccolta articoli ──
-    1. Blog selezionato → usa quello.
-    2. Nessun blog ma menu blog impostato → raccoglie gli articoli
+    Priorità:
+    1. Blocchi "Articolo" selezionati manualmente → usa quelli.
+    2. Blog selezionato → usa quello.
+    3. Nessun blog ma menu blog impostato → raccoglie gli articoli
        da tutti i blog presenti nel menu, ordinati per data DESC.
-    3. Nessuno dei due → messaggio "Nessun articolo".
+    4. Nessuna fonte → sezione nascosta.
     Nota: in Shopify Liquid, `blogs` NON è iterabile con for.
     Si usa un link_list (menu) contenente link ai blog desiderati.
   endcomment
+  assign has_selected_articles = false
+  assign selected_articles_count = 0
   assign has_selected_blog = false
   assign has_multi_blog = false
   assign all_articles = '' | split: ''
   assign total_articles_count = 0
 
-  if section.settings.blog != blank
+  for block in section.blocks
+    if block.type == 'article' and block.settings.article != blank
+      assign selected_articles_count = selected_articles_count | plus: 1
+    endif
+  endfor
+
+  if selected_articles_count > 0
+    assign has_selected_articles = true
+    assign total_articles_count = selected_articles_count
+  elsif section.settings.blog != blank
     assign has_selected_blog = true
     assign total_articles_count = section.settings.blog.articles_count
   elsif section.settings.blogs_menu != blank
@@ -79,7 +92,9 @@
 
   assign posts_displayed = total_articles_count
   assign posts_exceed_limit = false
-  if section.settings.post_limit <= total_articles_count
+  if has_selected_articles
+    assign posts_displayed = selected_articles_count
+  elsif section.settings.post_limit <= total_articles_count
     assign posts_exceed_limit = true
     assign posts_displayed = section.settings.post_limit
   endif
@@ -245,7 +260,57 @@
         role="list"
         aria-label="Blog in evidenza"
       >
-        {%- if has_selected_blog and section.settings.blog.articles_count > 0 -%}
+        {%- if has_selected_articles -%}
+          {%- comment -%} ── Articoli selezionati manualmente ── {%- endcomment -%}
+          {%- assign article_index = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'article' and block.settings.article != blank -%}
+              {%- assign article_index = article_index | plus: 1 -%}
+              {%- assign article = block.settings.article -%}
+              {%- assign _article_blog_handle = article.url | split: '/blogs/' | last | split: '/' | first -%}
+              {%- assign _article_blog = blogs[_article_blog_handle] -%}
+              <li
+                id="Slide-{{ section.id }}-{{ article_index }}"
+                class="blog__post grid__item article{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ article_index }};"
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {%- render 'article-card',
+                  blog: _article_blog,
+                  article: article,
+                  media_height: section.settings.image_height,
+                  media_aspect_ratio: article.image.aspect_ratio,
+                  show_image: section.settings.show_image,
+                  show_date: section.settings.show_date,
+                  show_author: section.settings.show_author,
+                  show_reading: section.settings.show_reading,
+                  show_icons: section.settings.show_icons,
+                  custom_icon_date: section.settings.custom_icon_date,
+                  custom_icon_reading: section.settings.custom_icon_reading,
+                  custom_icon_author: section.settings.custom_icon_author,
+                  show_excerpt: section.settings.show_excerpt,
+                  show_blog_name: section.settings.show_blog_name,
+                  blog_name: _article_blog.title,
+                  blog_url: _article_blog.url,
+                  show_tags: section.settings.show_tags,
+                  tags_style: section.settings.tags_style,
+                  show_button: section.settings.card_show_button,
+                  button_label: section.settings.card_button_label,
+                  button_type: section.settings.card_button_type,
+                  button_style_secondary: section.settings.card_button_style_secondary,
+                  button_size: section.settings.card_button_size,
+                  button_icon: section.settings.card_button_icon,
+                  button_icon_position: section.settings.card_button_icon_position,
+                  button_align: section.settings.card_button_align
+                -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+
+        {%- elsif has_selected_blog and section.settings.blog.articles_count > 0 -%}
           {%- comment -%} ── Blog specifico selezionato ── {%- endcomment -%}
           {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
             <li
@@ -381,7 +446,7 @@
 
 {%- elsif request.design_mode -%}
   <div class="page-width center" id="section-{{ section.id }}" style="padding: 50px; border: 1px dashed #ccc; margin: 20px auto;">
-    <p><strong>MS Blog In Evidenza:</strong> Nessun articolo disponibile. Seleziona un blog o configura il menu blog nell'editor.</p>
+    <p><strong>MS Blog In Evidenza:</strong> Nessun articolo disponibile. Aggiungi blocchi "Articolo", seleziona un blog o configura il menu blog nell'editor.</p>
   </div>
   {%- render 'ms_section-style' -%}
 {%- endif -%}
@@ -945,6 +1010,17 @@
           "id": "alignment",
           "label": "Allineamento",
           "default": "center"
+        }
+      ]
+    },
+    {
+      "type": "article",
+      "name": "Articolo",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Articolo"
         }
       ]
     },
