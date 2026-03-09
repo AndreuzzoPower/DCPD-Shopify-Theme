@@ -242,6 +242,7 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
+        "articles": "{{ article.metafields.custom.articolo_correlati.value }}",
         "blog": "",
         "blogs_menu": "",
         "post_limit": 3,
