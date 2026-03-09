@@ -747,54 +747,6 @@
         "line_weight": 1,
         "line_style": "solid"
       }
-    },
-    "ms_tabs_E7gmry": {
-      "type": "ms_tabs",
-      "blocks": {
-        "tab_html_nCW3YU": {
-          "type": "tab_html",
-          "settings": {
-            "heading": "Tab 1",
-            "tab_icon": "",
-            "content_html": "<p>Contenuto del primo tab.</p>",
-            "page": ""
-          }
-        },
-        "tab_html_BMV4Lq": {
-          "type": "tab_html",
-          "settings": {
-            "heading": "Tab 2",
-            "tab_icon": "",
-            "content_html": "<p>Contenuto del secondo tab.</p>",
-            "page": ""
-          }
-        },
-        "tab_html_fQw4Xr": {
-          "type": "tab_html",
-          "settings": {
-            "heading": "Tab 3",
-            "tab_icon": "",
-            "content_html": "<p>Contenuto del terzo tab.</p>",
-            "page": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_html_nCW3YU",
-        "tab_html_BMV4Lq",
-        "tab_html_fQw4Xr"
-      ],
-      "name": "MS Tabs",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "color_scheme": "",
-        "tab_style": "underline",
-        "tab_alignment": "start",
-        "mobile_behavior": "tabs",
-        "open_first_tab": true,
-        "accordion_heading_size": "h4"
-      }
     }
   },
   "order": [
@@ -808,7 +760,6 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX",
-    "ms_tabs_E7gmry"
+    "ms_divider_qN8RVX"
   ]
 }

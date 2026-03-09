@@ -189,10 +189,85 @@
         "show_min_order": true,
         "quick_add": "none"
       }
+    },
+    "ms_featured_blog_PbmgNz": {
+      "type": "ms_featured-blog",
+      "blocks": {
+        "section_padding_z4rahT": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 35,
+            "section_padding_bottom": 35,
+            "section_padding_top_md": 25,
+            "section_padding_bottom_md": 25,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_z4rahT"
+      ],
+      "name": "MS Blog In Evidenza",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "blog": "",
+        "blogs_menu": "",
+        "post_limit": 3,
+        "columns_desktop": "3",
+        "enable_desktop_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 3,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "show_image": true,
+        "image_height": "medium",
+        "show_date": true,
+        "show_author": false,
+        "show_reading": false,
+        "show_excerpt": true,
+        "show_blog_name": false,
+        "show_tags": false,
+        "tags_style": "pill",
+        "card_show_button": true,
+        "card_button_label": "Leggi articolo",
+        "card_button_type": "link",
+        "card_button_style_secondary": false,
+        "card_button_size": "default",
+        "card_button_icon": "icon-arrow.svg",
+        "card_button_icon_position": "before",
+        "card_button_align": "right",
+        "show_icons": false,
+        "custom_icon_date": "",
+        "custom_icon_reading": "",
+        "custom_icon_author": "",
+        "info_layout": "horizontal",
+        "card_info_padding_top": 0,
+        "card_info_padding_right": 0,
+        "card_info_padding_bottom": 0,
+        "card_info_padding_left": 0,
+        "show_view_all": true,
+        "button_size": "default",
+        "button_style_secondary": false,
+        "button_type": "button",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "color_scheme": ""
+      }
     }
   },
   "order": [
     "main",
-    "ms_products_from_metafield_erpPzR"
+    "ms_products_from_metafield_erpPzR",
+    "ms_featured_blog_PbmgNz"
   ]
 }
