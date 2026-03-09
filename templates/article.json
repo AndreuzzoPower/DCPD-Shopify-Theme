@@ -163,7 +163,7 @@
       "type": "ms_products-from-metafield",
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
-        "slider_width": "page_fluid",
+        "slider_width": "page_width",
         "color_scheme": "",
         "mf": "{{ article.metafields.custom.prodotti_correlati.value }}",
         "products_to_show": 25,
@@ -178,7 +178,7 @@
         "carousel_peek_size": "medium",
         "carousel_arrows_position": "below_center",
         "carousel_arrows_overlay_dark": false,
-        "carousel_pagination_style": "counter",
+        "carousel_pagination_style": "dots",
         "carousel_scroll_mode": "page",
         "carousel_show_arrows": true,
         "carousel_show_pagination": true,
