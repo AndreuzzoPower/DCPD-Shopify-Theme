@@ -293,11 +293,72 @@
         "button_icon_position": "before",
         "color_scheme": ""
       }
+    },
+    "ms_products_from_metafield_XQQJma": {
+      "type": "ms_products-from-metafield",
+      "blocks": {
+        "heading_kq79yD": {
+          "type": "heading",
+          "settings": {
+            "title": "Prodotti correlati",
+            "title_tag": "h2",
+            "heading_size": "h1",
+            "title_custom_class": "",
+            "description": "",
+            "description_style": "body",
+            "alignment": "center"
+          }
+        },
+        "section_padding_8hHmL9": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 100,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 80,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
+        }
+      },
+      "block_order": [
+        "heading_kq79yD",
+        "section_padding_8hHmL9"
+      ],
+      "name": "MS Prodotti Da Metafield",
+      "settings": {
+        "slider_width": "page_width",
+        "color_scheme": "",
+        "mf": [],
+        "products_to_show": 4,
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "enable_desktop_slider_autoplay": false,
+        "desktop_slider_autoplay_velocita": 3,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "show_min_order": true,
+        "quick_add": "none"
+      }
     }
   },
   "order": [
     "main",
     "ms_products_from_metafield_erpPzR",
-    "ms_featured_blog_PbmgNz"
+    "ms_featured_blog_PbmgNz",
+    "ms_products_from_metafield_XQQJma"
   ]
 }
