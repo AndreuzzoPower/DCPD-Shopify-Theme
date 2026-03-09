@@ -198,6 +198,36 @@
   id="section-{{ section.id }}"
 >
   {%- if sw_class != blank -%}<div class="{{ sw_class }}">{%- endif -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'heading' -%}
+      {%- liquid
+        assign h_tag = block.settings.title_tag | default: 'h2'
+        assign h_size = block.settings.heading_size | default: 'h1'
+        assign h_classes = 'title inline-richtext ' | append: h_size
+        if block.settings.title_custom_class != blank
+          assign h_classes = h_classes | append: ' ' | append: block.settings.title_custom_class
+        endif
+      -%}
+      {%- if block.settings.title != blank or block.settings.description != blank -%}
+        <div
+          class="title-wrapper title-wrapper--no-top-margin{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}"
+          style="text-align: {{ block.settings.alignment | default: 'center' }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.title != blank -%}
+            <{{ h_tag }} class="{{ h_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {{- block.settings.title -}}
+            </{{ h_tag }}>
+          {%- endif -%}
+          {%- if block.settings.description != blank -%}
+            <div class="{{ block.settings.description_style | default: 'body' }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {{- block.settings.description -}}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
   <div class="isolate{% if show_mobile_slider == false and show_desktop_slider == false %} page-width-tablet{% endif %}">
     <slider-component
       data-autoplay="{{ section.settings.enable_autoplay }}"
@@ -848,6 +878,76 @@
   ],
   "blocks": [
     {
+      "type": "heading",
+      "name": "Intestazione",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Blog in evidenza"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h2" },
+            { "label": "Media", "value": "h1" },
+            { "label": "Grande", "value": "h0" },
+            { "label": "Extra grande", "value": "hxl" },
+            { "label": "Extra extra grande", "value": "hxxl" }
+          ],
+          "default": "h1"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Descrizione"
+        },
+        {
+          "type": "select",
+          "id": "description_style",
+          "label": "Stile descrizione",
+          "options": [
+            { "value": "body", "label": "Corpo" },
+            { "value": "subtitle", "label": "Sottotitolo" },
+            { "value": "uppercase", "label": "Maiuscolo" }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "text_alignment",
+          "id": "alignment",
+          "label": "Allineamento",
+          "default": "center"
+        }
+      ]
+    },
+    {
       "type": "section_padding",
       "name": "Section Padding",
       "limit": 1,
@@ -1029,6 +1129,7 @@
       "name": "MS Blog In Evidenza",
       "category": "Contenuti",
       "blocks": [
+        { "type": "heading" },
         { "type": "section_padding" }
       ]
     }

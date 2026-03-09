@@ -123,25 +123,59 @@
     id="collection-{{ section.id }}"
     data-id="{{ section.id }}"
   >
-    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
-      {%- if section.settings.title != blank -%}
-        <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {{ section.settings.title }}
-        </div>
+    {%- assign _has_heading_block = false -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'heading' -%}
+        {%- assign _has_heading_block = true -%}
+        {%- liquid
+          assign h_tag = block.settings.title_tag | default: 'h2'
+          assign h_size = block.settings.heading_size | default: 'h1'
+          assign h_classes = 'title inline-richtext ' | append: h_size
+          if block.settings.title_custom_class != blank
+            assign h_classes = h_classes | append: ' ' | append: block.settings.title_custom_class
+          endif
+        -%}
+        {%- if block.settings.title != blank or block.settings.description != blank -%}
+          <div
+            class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}"
+            style="text-align: {{ block.settings.alignment | default: 'center' }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.title != blank -%}
+              <{{ h_tag }} class="{{ h_classes }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                {{- block.settings.title -}}
+              </{{ h_tag }}>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <div class="collection__description {{ block.settings.description_style | default: 'body' }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                {{- block.settings.description -}}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       {%- endif -%}
-      {%- if section.settings.description != blank
-        or section.settings.show_description
-        and section.settings.collection.description != empty
-      -%}
-        <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {%- if section.settings.show_description -%}
-            {{ section.settings.collection.description }}
-          {%- else -%}
-            {{ section.settings.description -}}
-          {%- endif %}
-        </div>
-      {%- endif -%}
-    </div>
+    {%- endfor -%}
+    {%- unless _has_heading_block -%}
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
+        {%- if section.settings.title != blank -%}
+          <div class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.title }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.description != blank
+          or section.settings.show_description
+          and section.settings.collection.description != empty
+        -%}
+          <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- if section.settings.show_description -%}
+              {{ section.settings.collection.description }}
+            {%- else -%}
+              {{ section.settings.description -}}
+            {%- endif %}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
 
     {%- if fc_sw_class != blank -%}<div class="{{ fc_sw_class }}">{%- endif -%}
     <slider-component
@@ -674,8 +708,78 @@
       ]
     }
   ],
-"blocks":[
-   {
+"blocks": [
+    {
+      "type": "heading",
+      "name": "Intestazione",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Titolo",
+          "default": "Collezione in evidenza"
+        },
+        {
+          "type": "select",
+          "id": "title_tag",
+          "label": "Tag titolo",
+          "options": [
+            { "label": "H1", "value": "h1" },
+            { "label": "H2", "value": "h2" },
+            { "label": "H3", "value": "h3" },
+            { "label": "H4", "value": "h4" },
+            { "label": "H5", "value": "h5" },
+            { "label": "H6", "value": "h6" },
+            { "label": "Paragrafo", "value": "p" },
+            { "label": "Div", "value": "div" }
+          ],
+          "default": "h2"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Dimensione titolo",
+          "options": [
+            { "label": "Piccola", "value": "h2" },
+            { "label": "Media", "value": "h1" },
+            { "label": "Grande", "value": "h0" },
+            { "label": "Extra grande", "value": "hxl" },
+            { "label": "Extra extra grande", "value": "hxxl" }
+          ],
+          "default": "h1"
+        },
+        {
+          "type": "text",
+          "id": "title_custom_class",
+          "label": "Classe CSS personalizzata titolo",
+          "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Descrizione"
+        },
+        {
+          "type": "select",
+          "id": "description_style",
+          "label": "Stile descrizione",
+          "options": [
+            { "value": "body", "label": "Corpo" },
+            { "value": "subtitle", "label": "Sottotitolo" },
+            { "value": "uppercase", "label": "Maiuscolo" }
+          ],
+          "default": "body"
+        },
+        {
+          "type": "text_alignment",
+          "id": "alignment",
+          "label": "Allineamento",
+          "default": "center"
+        }
+      ]
+    },
+    {
        "type": "section_padding",
        "name": "Section Padding",
 	   "limit": 1,
@@ -855,7 +959,10 @@
   "presets": [
     {
       "name": "t:sections.featured-collection.presets.name",
-      "category": "Prodotti & Collezioni"
+      "category": "Prodotti & Collezioni",
+      "blocks": [
+        { "type": "heading" }
+      ]
     }
   ]
 }
