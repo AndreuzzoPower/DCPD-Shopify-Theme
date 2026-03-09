@@ -193,6 +193,7 @@
 
 {%- render 'ms_mobile-padding' -%}
 
+{%- if total_articles_count > 0 -%}
 <div
   class="ms-featured-blog color-{{ section.settings.color_scheme }} gradient{% if is_full_width %} ms-fb--full-width{% endif %}"
   id="section-{{ section.id }}"
@@ -336,13 +337,6 @@
             </li>
           {%- endfor -%}
 
-        {%- else -%}
-          {%- comment -%} ── Nessun articolo disponibile ── {%- endcomment -%}
-          <li class="blog__post grid__item article{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}">
-            <div class="ms-fb__no-articles">
-              <p>{{ 'sections.featured_blog.no_articles' | t }}</p>
-            </div>
-          </li>
         {%- endif -%}
       </ul>
       {%- if show_mobile_slider or show_desktop_slider -%}
@@ -384,6 +378,13 @@
 </div>
 
 {%- render 'ms_section-style' -%}
+
+{%- elsif request.design_mode -%}
+  <div class="page-width center" id="section-{{ section.id }}" style="padding: 50px; border: 1px dashed #ccc; margin: 20px auto;">
+    <p><strong>MS Blog In Evidenza:</strong> Nessun articolo disponibile. Seleziona un blog o configura il menu blog nell'editor.</p>
+  </div>
+  {%- render 'ms_section-style' -%}
+{%- endif -%}
 
 {% schema %}
 {
