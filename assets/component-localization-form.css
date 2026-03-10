@@ -447,12 +447,7 @@
 }
 
 .language-selector .disclosure__list {
-  min-width: 200px;
-}
-
-.language-selector--compact .disclosure__list {
   min-width: auto;
-  width: max-content;
 }
 
 /* Flag images */
