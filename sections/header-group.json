@@ -38,7 +38,7 @@
           "type": "announcement",
           "settings": {
             "text": "Ti diamo il <b>benvenuto</b> nel nostro <a href=\"/\">negozio</a>",
-            "link": "",
+            "link": "shopify://blogs/notizie/prova-20",
             "schedule_enabled": false,
             "schedule_start": "",
             "schedule_end": ""
@@ -53,6 +53,7 @@
       "settings": {
         "auto_rotate": true,
         "change_slides_speed": 5,
+        "show_arrows": true,
         "color_scheme": "scheme-1",
         "show_line_separator": true,
         "show_social": false,
