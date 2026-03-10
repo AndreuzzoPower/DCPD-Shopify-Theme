@@ -236,7 +236,7 @@ if (!customElements.get('ms-store-locator')) {
         marker._storeTags = store.tags || [];
 
         const popupContent = this.#buildPopupHtml(store);
-        marker.bindPopup(popupContent, { maxWidth: 300, className: 'ms-sl__popup-wrapper' });
+        marker.bindPopup(popupContent, { maxWidth: 400, minWidth: 280, className: 'ms-sl__popup-wrapper' });
 
         marker.on('click', () => {
           this.#setActiveCard(store.id);

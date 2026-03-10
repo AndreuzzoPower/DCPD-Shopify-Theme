@@ -542,40 +542,46 @@
 
 .ms-sl__popup {
   font-family: inherit;
-  max-width: 280px;
+  min-width: 280px;
+  max-width: 380px;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .ms-sl__popup-image {
   width: 100%;
-  height: 120px;
+  height: 160px;
   object-fit: cover;
   border-radius: calc(var(--ms-sl-card-radius, 8px) / 2);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .ms-sl__popup-name {
   font-weight: 600;
-  font-size: 1rem;
-  margin: 0 0 0.25rem;
+  font-size: 1.125rem;
+  margin: 0 0 0.35rem;
 }
 
 .ms-sl__popup-company {
-  font-size: 0.875rem;
+  font-size: 1rem;
   opacity: 0.65;
   margin: 0 0 0.5rem;
 }
 
 .ms-sl__popup-address {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
   white-space: pre-line;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .ms-sl__popup-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 0.75rem;
+  font-size: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  margin-top: 0.25rem;
 }
 
 .ms-sl__popup-link {
@@ -586,7 +592,7 @@
 
 /* Google Maps InfoWindow overrides */
 .gm-style-iw .ms-sl__popup {
-  padding: 0.25rem;
+  padding: 0.5rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -927,7 +933,7 @@
 }
 
 .ms-sl__map-wrapper .leaflet-popup-content {
-  margin: 0.75rem;
+  margin: 1rem 1.25rem;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
