@@ -269,7 +269,7 @@
 
 /* Legend below map */
 .ms-sl__legend--below {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 /* --- Results Count --- */
