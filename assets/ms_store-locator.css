@@ -809,9 +809,17 @@
     flex: 1;
   }
 
-  /* Grid 2 columns */
+  /* Grid columns — rispetta impostazione utente da 750px */
   .ms-sl__list--grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ms-sl__list--grid.ms-sl__list--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ms-sl__list--grid.ms-sl__list--cols-4 {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   /* Card list style horizontal */
@@ -871,15 +879,6 @@
   /* Sidebar position: left (list first) */
   .ms-sl__content--sidebar-left {
     flex-direction: row-reverse;
-  }
-
-  /* Grid 3+ columns */
-  .ms-sl__list--grid.ms-sl__list--cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .ms-sl__list--grid.ms-sl__list--cols-4 {
-    grid-template-columns: repeat(4, 1fr);
   }
 
   /* Card list — larger image */
