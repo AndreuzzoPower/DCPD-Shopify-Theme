@@ -832,7 +832,7 @@
         "sidebar_position": "left",
         "list_style": "grid",
         "list_columns": 3,
-        "map_provider": "google_maps",
+        "map_provider": "openstreetmap",
         "google_maps_api_key": "AIzaSyDGFYSN27zLPGK0a8mKMsbUrI3l19EwctE",
         "map_height": 500,
         "map_zoom": 6,
