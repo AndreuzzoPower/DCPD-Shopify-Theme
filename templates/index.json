@@ -833,7 +833,7 @@
         "list_style": "grid",
         "list_columns": 3,
         "map_provider": "openstreetmap",
-        "google_maps_api_key": "AIzaSyDGFYSN27zLPGK0a8mKMsbUrI3l19EwctE",
+        "google_maps_api_key": "",
         "map_height": 500,
         "map_zoom": 6,
         "default_lat": "41.9028",
