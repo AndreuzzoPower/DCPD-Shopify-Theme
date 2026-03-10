@@ -694,7 +694,7 @@
   font-family: inherit;
   min-width: 280px;
   max-width: 380px;
-  font-size: 1rem;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -739,13 +739,7 @@
 }
 
 .ms-sl__popup-info-row a {
-  color: rgb(var(--color-foreground));
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.ms-sl__popup-info-row a:hover {
-  opacity: 0.7;
+  color: rgba(var(--color-link, var(--color-foreground)));
 }
 
 .ms-sl__popup-actions {

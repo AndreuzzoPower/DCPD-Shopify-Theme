@@ -505,16 +505,16 @@ if (!customElements.get('ms-store-locator')) {
       }
 
       if (store.telefono) {
-        html += `<div class="ms-sl__popup-info-row">${iconPhone}<a href="tel:${store.telefono}">${this.#esc(store.telefono)}</a></div>`;
+        html += `<div class="ms-sl__popup-info-row">${iconPhone}<a class="link" href="tel:${store.telefono}">${this.#esc(store.telefono)}</a></div>`;
       }
 
       if (store.email) {
-        html += `<div class="ms-sl__popup-info-row">${iconMail}<a href="mailto:${store.email}">${this.#esc(store.email)}</a></div>`;
+        html += `<div class="ms-sl__popup-info-row">${iconMail}<a class="link" href="mailto:${store.email}">${this.#esc(store.email)}</a></div>`;
       }
 
       if (store.sito) {
         const cleanUrl = store.sito.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
-        html += `<div class="ms-sl__popup-info-row">${iconGlobe}<a href="${store.sito}" target="_blank" rel="noopener noreferrer">${this.#esc(cleanUrl.length > 35 ? cleanUrl.substring(0, 35) + '…' : cleanUrl)}</a></div>`;
+        html += `<div class="ms-sl__popup-info-row">${iconGlobe}<a class="link" href="${store.sito}" target="_blank" rel="noopener noreferrer">${this.#esc(cleanUrl.length > 35 ? cleanUrl.substring(0, 35) + '…' : cleanUrl)}</a></div>`;
       }
 
       if (this.config.showDirections) {
