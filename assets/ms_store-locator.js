@@ -240,6 +240,7 @@ if (!customElements.get('ms-store-locator')) {
 
         marker.on('click', () => {
           this.#setActiveCard(store.id);
+          this.map.setView(marker.getLatLng(), Math.max(this.map.getZoom(), 13), { animate: true });
         });
 
         if (this.clusterGroup) {
@@ -331,6 +332,7 @@ if (!customElements.get('ms-store-locator')) {
         marker.addListener('click', () => {
           this.infoWindow.setContent(popupContent);
           this.infoWindow.open(this.map, marker);
+          this.map.panTo(marker.getPosition());
           this.#setActiveCard(store.id);
         });
 
