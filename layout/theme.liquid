@@ -12,9 +12,64 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
+    {%- liquid
+      assign _heading_custom = false
+      if settings.ms_custom_heading_enabled and settings.ms_custom_heading_family != blank
+        assign _heading_custom = true
+      endif
+      assign _body_custom = false
+      if settings.ms_custom_body_enabled and settings.ms_custom_body_family != blank
+        assign _body_custom = true
+      endif
+
+      assign _need_google_preconnect = false
+      if _heading_custom and settings.ms_custom_heading_source == 'google'
+        assign _need_google_preconnect = true
+      endif
+      if _body_custom and settings.ms_custom_body_source == 'google'
+        assign _need_google_preconnect = true
+      endif
+
+      assign _need_adobe = false
+      if _heading_custom and settings.ms_custom_heading_source == 'adobe' and settings.ms_adobe_fonts_id != blank
+        assign _need_adobe = true
+      endif
+      if _body_custom and settings.ms_custom_body_source == 'adobe' and settings.ms_adobe_fonts_id != blank
+        assign _need_adobe = true
+      endif
+    -%}
+
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
+
+    {%- if _need_google_preconnect -%}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {%- endif -%}
+    {%- if _need_adobe -%}
+      <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+    {%- endif -%}
+
+    {%- if _heading_custom and settings.ms_custom_heading_source == 'google' and settings.ms_custom_heading_url != blank -%}
+      <link rel="stylesheet" href="{{ settings.ms_custom_heading_url }}">
+    {%- endif -%}
+    {%- if _body_custom and settings.ms_custom_body_source == 'google' and settings.ms_custom_body_url != blank -%}
+      {%- unless settings.ms_custom_body_url == settings.ms_custom_heading_url -%}
+        <link rel="stylesheet" href="{{ settings.ms_custom_body_url }}">
+      {%- endunless -%}
+    {%- endif -%}
+    {%- if _need_adobe -%}
+      <link rel="stylesheet" href="https://use.typekit.net/{{ settings.ms_adobe_fonts_id }}.css">
+    {%- endif -%}
+    {%- if _heading_custom and settings.ms_custom_heading_source == 'custom' and settings.ms_custom_heading_url != blank -%}
+      <link rel="stylesheet" href="{{ settings.ms_custom_heading_url }}">
+    {%- endif -%}
+    {%- if _body_custom and settings.ms_custom_body_source == 'custom' and settings.ms_custom_body_url != blank -%}
+      {%- unless settings.ms_custom_body_url == settings.ms_custom_heading_url -%}
+        <link rel="stylesheet" href="{{ settings.ms_custom_body_url }}">
+      {%- endunless -%}
+    {%- endif -%}
 
     {%- render 'ms_title_description' -%}
     {%- render 'ms_redirect_noindex' -%}
@@ -43,11 +98,15 @@
     %}
 
     {% style %}
-      {{ settings.type_body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
-      {{ body_font_italic | font_face: font_display: 'swap' }}
-      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      {%- unless _body_custom -%}
+        {{ settings.type_body_font | font_face: font_display: 'swap' }}
+        {{ body_font_bold | font_face: font_display: 'swap' }}
+        {{ body_font_italic | font_face: font_display: 'swap' }}
+        {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {%- endunless -%}
+      {%- unless _heading_custom -%}
+        {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      {%- endunless -%}
 
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
@@ -95,14 +154,27 @@
       }
 
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-        --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+        {%- if _body_custom -%}
+          --font-body-family: '{{ settings.ms_custom_body_family }}', {{ settings.type_body_font.fallback_families }};
+          --font-body-style: {{ settings.ms_custom_body_style }};
+          --font-body-weight: {{ settings.ms_custom_body_weight | default: '400' }};
+          --font-body-weight-bold: {{ settings.ms_custom_body_weight | default: '400' | plus: 300 | at_most: 1000 }};
+        {%- else -%}
+          --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+          --font-body-style: {{ settings.type_body_font.style }};
+          --font-body-weight: {{ settings.type_body_font.weight }};
+          --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+        {%- endif -%}
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
+        {%- if _heading_custom -%}
+          --font-heading-family: '{{ settings.ms_custom_heading_family }}', {{ settings.type_header_font.fallback_families }};
+          --font-heading-style: {{ settings.ms_custom_heading_style }};
+          --font-heading-weight: {{ settings.ms_custom_heading_weight | default: '700' }};
+        {%- else -%}
+          --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+          --font-heading-style: {{ settings.type_header_font.style }};
+          --font-heading-weight: {{ settings.type_header_font.weight }};
+        {%- endif -%}
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
@@ -507,12 +579,12 @@
       {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
-    {%- unless settings.type_body_font.system? -%}
+    {%- unless settings.type_body_font.system? or _body_custom -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
+    {%- unless settings.type_header_font.system? or _heading_custom -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}

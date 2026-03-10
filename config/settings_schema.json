@@ -148,6 +148,127 @@
     ]
   },
   {
+    "name": "Font personalizzati",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Sovrascrivono i font Shopify predefiniti. I font vengono caricati dalla sorgente esterna indicata e le variabili CSS del tema vengono aggiornate automaticamente."
+      },
+      {
+        "type": "header",
+        "content": "Adobe Fonts"
+      },
+      {
+        "type": "text",
+        "id": "ms_adobe_fonts_id",
+        "label": "ID progetto Adobe Typekit",
+        "info": "L'ID del progetto Adobe Fonts (es. abc1def). Necessario se la sorgente titoli o corpo e \"Adobe Fonts\"."
+      },
+      {
+        "type": "header",
+        "content": "Font titoli"
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_custom_heading_enabled",
+        "label": "Usa font personalizzato per i titoli",
+        "default": false,
+        "info": "Se attivo, il font specificato qui sotto sovrascrive quello scelto nel font picker Shopify."
+      },
+      {
+        "type": "select",
+        "id": "ms_custom_heading_source",
+        "label": "Sorgente font titoli",
+        "options": [
+          { "value": "google", "label": "Google Fonts" },
+          { "value": "adobe", "label": "Adobe Fonts" },
+          { "value": "custom", "label": "URL personalizzato" }
+        ],
+        "default": "google"
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_heading_url",
+        "label": "URL CSS font titoli",
+        "info": "Per Google Fonts: incolla l'URL dall'attributo href del tag link (es. https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap). Per URL personalizzato: URL completo del file CSS. Non necessario per Adobe Fonts."
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_heading_family",
+        "label": "Font family titoli",
+        "info": "Il nome esatto del font (es. Montserrat, Playfair Display). Deve corrispondere a quello definito nel CSS caricato."
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_heading_weight",
+        "label": "Peso font titoli",
+        "default": "700",
+        "info": "Peso del font (es. 400, 600, 700). Deve essere tra quelli caricati dal CSS."
+      },
+      {
+        "type": "select",
+        "id": "ms_custom_heading_style",
+        "label": "Stile font titoli",
+        "options": [
+          { "value": "normal", "label": "Normale" },
+          { "value": "italic", "label": "Corsivo" }
+        ],
+        "default": "normal"
+      },
+      {
+        "type": "header",
+        "content": "Font corpo"
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_custom_body_enabled",
+        "label": "Usa font personalizzato per il corpo",
+        "default": false,
+        "info": "Se attivo, il font specificato qui sotto sovrascrive quello scelto nel font picker Shopify."
+      },
+      {
+        "type": "select",
+        "id": "ms_custom_body_source",
+        "label": "Sorgente font corpo",
+        "options": [
+          { "value": "google", "label": "Google Fonts" },
+          { "value": "adobe", "label": "Adobe Fonts" },
+          { "value": "custom", "label": "URL personalizzato" }
+        ],
+        "default": "google"
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_body_url",
+        "label": "URL CSS font corpo",
+        "info": "Per Google Fonts: incolla l'URL dall'attributo href del tag link. Per URL personalizzato: URL completo del file CSS. Non necessario per Adobe Fonts."
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_body_family",
+        "label": "Font family corpo",
+        "info": "Il nome esatto del font (es. Open Sans, Lato). Deve corrispondere a quello definito nel CSS caricato."
+      },
+      {
+        "type": "text",
+        "id": "ms_custom_body_weight",
+        "label": "Peso font corpo",
+        "default": "400",
+        "info": "Peso del font (es. 300, 400, 500). Deve essere tra quelli caricati dal CSS."
+      },
+      {
+        "type": "select",
+        "id": "ms_custom_body_style",
+        "label": "Stile font corpo",
+        "options": [
+          { "value": "normal", "label": "Normale" },
+          { "value": "italic", "label": "Corsivo" }
+        ],
+        "default": "normal"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.layout.name",
     "settings": [
       {
