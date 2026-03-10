@@ -2245,12 +2245,14 @@ input[type='checkbox'] {
 .announcement-bar__link .icon-arrow {
   display: inline-block;
   pointer-events: none;
-  margin-left: 0.8rem;
-  vertical-align: middle;
-  margin-bottom: 0.2rem;
+  flex-shrink: 0;
 }
 
 .announcement-bar__message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
   text-align: center;
   padding: 1rem 0;
   margin: 0;
