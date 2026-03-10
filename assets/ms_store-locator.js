@@ -261,13 +261,14 @@ if (!customElements.get('ms-store-locator')) {
             className: 'ms-sl__marker ms-sl__marker--image'
           });
         } else {
-          const defaultDot = '<span class="ms-sl__marker-glyph"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="rgba(255,255,255,0.9)"/></svg></span>';
-          const iconHtml = markerDef.icon
+          const hasIcon = !!markerDef.icon;
+          const iconHtml = hasIcon
             ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(markerDef.icon)}</span>`
-            : defaultDot;
+            : '';
+          const pinClass = hasIcon ? 'ms-sl__marker-pin ms-sl__marker-pin--has-icon' : 'ms-sl__marker-pin';
           divIcon = L.divIcon({
             className: 'ms-sl__marker',
-            html: `<div class="ms-sl__marker-pin" style="background-color:${markerDef.color}">${iconHtml}</div>`,
+            html: `<div class="${pinClass}" style="background-color:${markerDef.color}">${iconHtml}</div>`,
             iconSize: [36, 45],
             iconAnchor: [18, 45],
             popupAnchor: [0, -45]
@@ -352,7 +353,7 @@ if (!customElements.get('ms-store-locator')) {
             anchor: new google.maps.Point(18, 45)
           };
         } else {
-          const svgPin = this.#buildGooglePinSvg(markerDef.color);
+          const svgPin = this.#buildGooglePinSvg(markerDef.color, !markerDef.icon);
           markerIcon = {
             url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgPin),
             scaledSize: new google.maps.Size(36, 45),
@@ -383,10 +384,11 @@ if (!customElements.get('ms-store-locator')) {
       }
     }
 
-    #buildGooglePinSvg(color) {
+    #buildGooglePinSvg(color, showDot = true) {
+      const dot = showDot ? '<circle cx="18" cy="18" r="5" fill="rgba(255,255,255,0.85)"/>' : '';
       return `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="45" viewBox="0 0 36 45">
         <path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 27 18 27s18-13.5 18-27C36 8.06 27.94 0 18 0z" fill="${color}"/>
-        <circle cx="18" cy="18" r="5" fill="rgba(255,255,255,0.85)"/>
+        ${dot}
       </svg>`;
     }
 

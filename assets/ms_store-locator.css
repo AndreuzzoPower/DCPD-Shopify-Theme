@@ -817,6 +817,10 @@
   transform: translate(-50%, -50%);
 }
 
+.ms-sl__marker-pin--has-icon::after {
+  display: none;
+}
+
 .ms-sl__marker--active .ms-sl__marker-pin {
   transform: rotate(-45deg) scale(1.2);
   z-index: 1000 !important;
