@@ -798,31 +798,14 @@ if (!customElements.get('ms-store-locator')) {
 
     #focusStore(storeId) {
       this.#setActiveCard(storeId);
-
       if (this.mapEl) {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const mapWrapper = this.querySelector('.ms-sl__map-wrapper');
-        if (mapWrapper) {
-          mapWrapper.scrollIntoView({
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-            block: 'start'
-          });
-        }
-
-        const delay = prefersReducedMotion ? 50 : 400;
-        setTimeout(() => this.#openMarkerPopup(storeId), delay);
+        this.#openMarkerPopup(storeId);
       }
     }
 
     #setActiveCard(storeId) {
       for (const card of this.cards) {
-        const isActive = card.dataset.storeId === storeId;
-        card.classList.toggle('ms-sl__card--active', isActive);
-        if (isActive) {
-          card.classList.remove('ms-sl__card--highlight');
-          void card.offsetWidth;
-          card.classList.add('ms-sl__card--highlight');
-        }
+        card.classList.toggle('ms-sl__card--active', card.dataset.storeId === storeId);
       }
 
       const activeCard = this.listEl
