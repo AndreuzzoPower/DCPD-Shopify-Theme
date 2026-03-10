@@ -1,0 +1,985 @@
+{%- comment -%}
+  MS Store Locator — legge da shop.metaobjects.storelocator
+{%- endcomment -%}
+
+{{ 'ms_store-locator.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign layout = section.settings.layout | default: 'map_sidebar'
+  assign list_style = section.settings.list_style | default: 'list'
+  assign map_provider = section.settings.map_provider | default: 'openstreetmap'
+  assign sidebar_pos = section.settings.sidebar_position | default: 'right'
+
+  assign show_map = true
+  if layout == 'cards_only'
+    assign show_map = false
+  endif
+  assign show_list = true
+  if layout == 'map_only'
+    assign show_list = false
+  endif
+
+  assign stores = shop.metaobjects.storelocator.values
+  assign stores_count = stores.size
+
+  assign title_tag = section.settings.title_tag | default: 'h2'
+  assign title_classes = section.settings.heading_size | default: 'h1'
+  if section.settings.title_custom_class != blank
+    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
+  endif
+
+  assign content_class = 'ms-sl__content'
+  case layout
+    when 'map_sidebar'
+      assign content_class = content_class | append: ' ms-sl__content--sidebar'
+      if sidebar_pos == 'left'
+        assign content_class = content_class | append: ' ms-sl__content--sidebar-left'
+      endif
+      if section.settings.mobile_list_first
+        assign content_class = content_class | append: ' ms-sl__content--mobile-list-first'
+      endif
+    when 'map_top'
+      assign content_class = content_class | append: ' ms-sl__content--map-top'
+    when 'map_only'
+      assign content_class = content_class | append: ' ms-sl__content--map-only'
+    when 'cards_only'
+      assign content_class = content_class | append: ' ms-sl__content--cards-only'
+  endcase
+
+  assign list_class = 'ms-sl__list ms-sl__list--' | append: list_style
+  if list_style == 'grid'
+    assign cols = section.settings.list_columns | default: 3
+    assign list_class = list_class | append: ' ms-sl__list--cols-' | append: cols
+  endif
+-%}
+
+{%- comment -%} CDN condizionale provider mappa {%- endcomment -%}
+{%- if show_map -%}
+  {%- if map_provider == 'openstreetmap' -%}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer="defer" crossorigin=""></script>
+    {%- if section.settings.enable_clustering -%}
+      <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+      <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+      <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer="defer"></script>
+    {%- endif -%}
+  {%- elsif map_provider == 'google_maps' and section.settings.google_maps_api_key != blank -%}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ section.settings.google_maps_api_key }}&libraries=places" defer="defer"></script>
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Serializzazione dati store in JSON {%- endcomment -%}
+{%- capture stores_json -%}
+[
+{%- for store in stores -%}
+  {%- unless store.latitudine.value == blank and store.longitudine.value == blank -%}
+    {%- if forloop.first == false -%},{%- endif -%}
+    {
+      "id":{{ store.system.handle | json }},
+      "nome":{{ store.nome.value | default: '' | json }},
+      "ragione_sociale":{{ store.ragione_sociale.value | default: '' | json }},
+      "descrizione":{{ store.descrizione.value | default: '' | strip_html | strip | truncate: 500 | json }},
+      "indirizzo":{{ store.indirizzo.value | default: '' | json }},
+      "lat":"{{ store.latitudine.value | default: '0' | strip }}",
+      "lng":"{{ store.longitudine.value | default: '0' | strip }}",
+      "email":"{{ store.email.value | default: '' | strip }}",
+      "telefono":"{{ store.telefono.value | default: '' | strip }}",
+      "sito":"{{ store.sito.value | default: '' | strip }}",
+      "foto":"{%- if store.foto.value != blank -%}{{ store.foto.value | image_url: width: 600 }}{%- endif -%}",
+      "tags":{%- if store.tags.value != blank -%}{{ store.tags.value | json }}{%- else -%}[]{%- endif -%}
+    }
+  {%- endunless -%}
+{%- endfor -%}
+]
+{%- endcapture -%}
+
+{%- comment -%} Serializzazione blocchi tag in JSON {%- endcomment -%}
+{%- capture tags_json -%}
+[
+{%- assign tag_idx = 0 -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'tag_marker' -%}
+    {%- if tag_idx > 0 -%},{%- endif -%}
+    {
+      "tag":{{ block.settings.tag_value | json }},
+      "label":{{ block.settings.tag_label | json }},
+      "icon":{{ block.settings.marker_icon | default: '' | json }},
+      "color":"{{ block.settings.marker_color | default: '#E53E3E' }}",
+      "enabled":{{ block.settings.enabled }}
+    }
+    {%- assign tag_idx = tag_idx | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+]
+{%- endcapture -%}
+
+{%- comment -%} Serializzazione config per JS {%- endcomment -%}
+{%- capture config_json -%}
+{
+  "sectionId":"{{ section.id }}",
+  "provider":"{{ map_provider }}",
+  "layout":"{{ layout }}",
+  "zoom":{{ section.settings.map_zoom | default: 6 }},
+  "lat":{{ section.settings.default_lat | default: '41.9028' }},
+  "lng":{{ section.settings.default_lng | default: '12.4964' }},
+  "style":"{{ section.settings.map_style | default: 'standard' }}",
+  "clustering":{{ section.settings.enable_clustering }},
+  "fullscreen":{{ section.settings.enable_fullscreen }},
+  "searchRadius":{{ section.settings.search_radius | default: 50 }},
+  "enableSearch":{{ section.settings.enable_search }},
+  "enableGeo":{{ section.settings.enable_geolocation }},
+  "enableFilters":{{ section.settings.enable_filters }},
+  "showDistance":{{ section.settings.show_distance }},
+  "showDirections":{{ section.settings.show_directions_link }}
+}
+{%- endcapture -%}
+
+{%- render 'ms_mobile-padding' -%}
+
+<ms-store-locator
+  id="section-{{ section.id }}"
+  class="ms-store-locator color-{{ section.settings.color_scheme }} gradient"
+  data-section-id="{{ section.id }}"
+>
+  <div class="{{ sw_class }}">
+
+    {%- comment -%} Skip link accessibilita {%- endcomment -%}
+    {%- if show_map and show_list -%}
+      <a class="ms-sl__skip-link" href="#ms-sl-list-{{ section.id }}">
+        <span class="visually-hidden">Vai alla lista dei punti vendita</span>
+      </a>
+    {%- endif -%}
+
+    {%- comment -%} Header {%- endcomment -%}
+    {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
+      <div class="ms-sl__header">
+        {%- if section.settings.title != blank -%}
+          <{{ title_tag }} class="{{ title_classes }}">
+            {{- section.settings.title | escape -}}
+          </{{ title_tag }}>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="ms-sl__subtitle">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Toolbar {%- endcomment -%}
+    <div class="ms-sl__toolbar">
+
+      {%- comment -%} Ricerca {%- endcomment -%}
+      {%- if section.settings.enable_search -%}
+        <div class="ms-sl__search" role="search" aria-label="Cerca punti vendita">
+          <input
+            type="text"
+            class="ms-sl__search-input"
+            placeholder="{{ section.settings.search_placeholder | default: 'Cerca citta, indirizzo o CAP...' | escape }}"
+            aria-label="Cerca punti vendita per citta, indirizzo o CAP"
+            autocomplete="off"
+          />
+          <button type="button" class="ms-sl__search-btn" aria-label="Cerca">
+            {%- render 'ms_icon', icon: settings.ms_icon_search -%}
+          </button>
+          {%- if section.settings.enable_geolocation -%}
+            <button type="button" class="ms-sl__geo-btn" aria-label="Usa la mia posizione">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Filtri tag {%- endcomment -%}
+      {%- if section.settings.enable_filters and tag_idx > 0 -%}
+        <div class="ms-sl__filters" role="group" aria-label="Filtra per categoria">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+              <button
+                type="button"
+                class="ms-sl__filter-btn"
+                data-tag="{{ block.settings.tag_value | escape }}"
+                aria-pressed="false"
+                {{ block.shopify_attributes }}
+              >
+                <span class="ms-sl__filter-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true"></span>
+                {{ block.settings.tag_label | escape }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+          <button type="button" class="ms-sl__filter-reset" hidden aria-label="Azzera tutti i filtri">
+            Azzera filtri
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Legenda {%- endcomment -%}
+      {%- if section.settings.show_legend and section.settings.legend_position != 'none' and tag_idx > 0 -%}
+        <div class="ms-sl__legend" aria-label="Legenda categorie">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+              <span class="ms-sl__legend-item">
+                <span class="ms-sl__legend-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
+                  {%- if block.settings.marker_icon != blank -%}
+                    {%- render 'ms_icon', icon: block.settings.marker_icon -%}
+                  {%- endif -%}
+                </span>
+                {{ block.settings.tag_label | escape }}
+              </span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Contatore risultati {%- endcomment -%}
+      {%- if section.settings.show_results_count -%}
+        <div class="ms-sl__results-count" aria-live="polite" aria-atomic="true">
+          <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
+        </div>
+      {%- endif -%}
+
+    </div>
+
+    {%- comment -%} Area contenuto principale {%- endcomment -%}
+    <div class="{{ content_class }}">
+
+      {%- comment -%} Mappa {%- endcomment -%}
+      {%- if show_map -%}
+        <div class="ms-sl__map-wrapper">
+          <div
+            class="ms-sl__map"
+            id="ms-sl-map-{{ section.id }}"
+            role="application"
+            aria-label="Mappa punti vendita"
+            tabindex="0"
+          ></div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Lista punti vendita {%- endcomment -%}
+      {%- if show_list -%}
+        <div class="ms-sl__list-wrapper" id="ms-sl-list-{{ section.id }}">
+          {%- if stores_count > 0 -%}
+            <ul class="{{ list_class }}" role="list" aria-label="Elenco punti vendita">
+              {%- for store in stores -%}
+                {%- unless store.latitudine.value == blank and store.longitudine.value == blank -%}
+                  <li
+                    class="ms-sl__card"
+                    data-store-id="{{ store.system.handle }}"
+                    data-lat="{{ store.latitudine.value | strip }}"
+                    data-lng="{{ store.longitudine.value | strip }}"
+                    data-tags="{%- if store.tags.value != blank -%}{{ store.tags.value | join: ',' | escape }}{%- endif -%}"
+                    tabindex="0"
+                    role="article"
+                    aria-label="{{ store.nome.value | escape }}"
+                  >
+
+                    {%- if section.settings.show_photo and store.foto.value != blank -%}
+                      <img
+                        class="ms-sl__card-image"
+                        src="{{ store.foto.value | image_url: width: 600 }}"
+                        alt="{{ store.nome.value | default: 'Punto vendita' | escape }}"
+                        loading="lazy"
+                        width="600"
+                        height="375"
+                      />
+                    {%- endif -%}
+
+                    <div class="ms-sl__card-body">
+                      <p class="ms-sl__card-name">{{ store.nome.value | escape }}</p>
+
+                      {%- if store.ragione_sociale.value != blank -%}
+                        <p class="ms-sl__card-company">{{ store.ragione_sociale.value | escape }}</p>
+                      {%- endif -%}
+
+                      {%- if section.settings.show_description and store.descrizione.value != blank -%}
+                        <div class="ms-sl__card-description">
+                          {{ store.descrizione.value | strip_html | strip | truncate: 200 }}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="ms-sl__card-info">
+                        {%- if section.settings.show_address and store.indirizzo.value != blank -%}
+                          <div class="ms-sl__card-info-row">
+                            <span>{{ store.indirizzo.value | newline_to_br }}</span>
+                          </div>
+                        {%- endif -%}
+
+                        {%- if section.settings.show_phone and store.telefono.value != blank -%}
+                          <div class="ms-sl__card-info-row">
+                            <a href="tel:{{ store.telefono.value | strip | escape }}" aria-label="Chiama {{ store.nome.value | escape }}">
+                              {{ store.telefono.value | escape }}
+                            </a>
+                          </div>
+                        {%- endif -%}
+
+                        {%- if section.settings.show_email and store.email.value != blank -%}
+                          <div class="ms-sl__card-info-row">
+                            <a href="mailto:{{ store.email.value | strip | escape }}" aria-label="Invia email a {{ store.nome.value | escape }}">
+                              {{ store.email.value | escape }}
+                            </a>
+                          </div>
+                        {%- endif -%}
+
+                        {%- if section.settings.show_website and store.sito.value != blank -%}
+                          <div class="ms-sl__card-info-row">
+                            <a href="{{ store.sito.value }}" target="_blank" rel="noopener noreferrer" aria-label="Sito web di {{ store.nome.value | escape }}">
+                              {{ store.sito.value | remove: 'https://' | remove: 'http://' | remove: 'www.' | truncate: 40 }}
+                            </a>
+                          </div>
+                        {%- endif -%}
+                      </div>
+
+                      {%- if section.settings.show_distance -%}
+                        <div class="ms-sl__card-distance" data-ms-sl-distance aria-label="Distanza"></div>
+                      {%- endif -%}
+
+                      {%- if section.settings.show_tags and store.tags.value != blank -%}
+                        <div class="ms-sl__card-tags">
+                          {%- for tag in store.tags.value -%}
+                            <span class="ms-sl__card-tag">
+                              <span class="ms-sl__card-tag-dot" aria-hidden="true"></span>
+                              {{ tag | escape }}
+                            </span>
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+
+                      <div class="ms-sl__card-actions">
+                        {%- if section.settings.show_directions_link -%}
+                          <a
+                            href="https://www.google.com/maps/dir/?api=1&destination={{ store.latitudine.value | strip }},{{ store.longitudine.value | strip }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="ms-sl__card-action"
+                            aria-label="Ottieni indicazioni per {{ store.nome.value | escape }}"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                            Indicazioni
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </li>
+                {%- endunless -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+
+          <div class="ms-sl__empty" hidden aria-live="polite" aria-atomic="true">
+            <div class="ms-sl__empty-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            {{ section.settings.empty_message | default: 'Nessun punto vendita trovato per la tua ricerca.' | escape }}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Messaggio editor se nessun metaobject {%- endcomment -%}
+    {%- if stores_count == 0 and request.design_mode -%}
+      <div class="ms-sl__empty" style="opacity:0.6">
+        Nessun punto vendita trovato. Verifica che il metaobject "storelocator" contenga almeno un elemento con latitudine e longitudine.
+      </div>
+    {%- endif -%}
+
+  </div>
+
+  {%- comment -%} Dati JSON per JavaScript {%- endcomment -%}
+  <script type="application/json" data-ms-sl-stores>{{ stores_json }}</script>
+  <script type="application/json" data-ms-sl-tags>{{ tags_json }}</script>
+  <script type="application/json" data-ms-sl-config>{{ config_json }}</script>
+
+</ms-store-locator>
+
+{%- comment -%} Dati strutturati JSON-LD LocalBusiness {%- endcomment -%}
+{%- for store in stores -%}
+  {%- if store.nome.value != blank and store.latitudine.value != blank -%}
+    {%- assign sd_desc = store.descrizione.value | strip_html | strip | truncate: 5000 -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": {{ store.nome.value | json }},
+      {%- if sd_desc != blank -%}
+        "description": {{ sd_desc | json }},
+      {%- endif -%}
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": {{ store.indirizzo.value | default: '' | json }}
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "{{ store.latitudine.value | strip }}",
+        "longitude": "{{ store.longitudine.value | strip }}"
+      }
+      {%- if store.telefono.value != blank -%}
+        ,"telephone": {{ store.telefono.value | json }}
+      {%- endif -%}
+      {%- if store.email.value != blank -%}
+        ,"email": {{ store.email.value | json }}
+      {%- endif -%}
+      {%- if store.sito.value != blank -%}
+        ,"url": {{ store.sito.value | json }}
+      {%- endif -%}
+      {%- if store.foto.value != blank -%}
+        ,"image": "{{ store.foto.value | image_url: width: 800 }}"
+      {%- endif -%}
+    }
+    </script>
+  {%- endif -%}
+{%- endfor -%}
+
+{%- render 'ms_section-style' -%}
+
+{%- comment -%} Stili dinamici (altezza mappa, colonne griglia) {%- endcomment -%}
+{% style %}
+  #section-{{ section.id }} .ms-sl__map {
+    height: {{ section.settings.mobile_map_height | default: 300 }}px;
+  }
+  @media (min-width: 750px) {
+    #section-{{ section.id }} .ms-sl__map {
+      height: {{ section.settings.map_height | default: 500 }}px;
+    }
+  }
+  @media (min-width: 990px) {
+    #section-{{ section.id }} .ms-sl__content--sidebar .ms-sl__list-wrapper {
+      max-height: {{ section.settings.map_height | default: 500 }}px;
+    }
+  }
+{% endstyle %}
+
+<script src="{{ 'ms_store-locator.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "MS Store Locator",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Combinazione colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout sezione",
+      "options": [
+        { "label": "Mappa + Sidebar lista", "value": "map_sidebar" },
+        { "label": "Mappa sopra, lista sotto", "value": "map_top" },
+        { "label": "Solo mappa (popup al click)", "value": "map_only" },
+        { "label": "Solo elenco (nessuna mappa)", "value": "cards_only" }
+      ],
+      "default": "map_sidebar"
+    },
+    {
+      "type": "select",
+      "id": "sidebar_position",
+      "label": "Posizione sidebar",
+      "info": "Valido solo per il layout Mappa + Sidebar.",
+      "options": [
+        { "label": "Lista a destra", "value": "right" },
+        { "label": "Lista a sinistra", "value": "left" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "list_style",
+      "label": "Stile elenco punti vendita",
+      "options": [
+        { "label": "Lista (orizzontale)", "value": "list" },
+        { "label": "Griglia (card)", "value": "grid" },
+        { "label": "Compatto (solo info)", "value": "compact" }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "range",
+      "id": "list_columns",
+      "label": "Colonne griglia",
+      "info": "Valido solo per lo stile Griglia.",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "I Nostri Punti Vendita"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione titolo",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" },
+        { "label": "Extra grande", "value": "hxl" },
+        { "label": "Extra extra grande", "value": "hxxl" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sottotitolo"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Messaggio nessun risultato",
+      "default": "Nessun punto vendita trovato per la tua ricerca."
+    },
+
+    {
+      "type": "header",
+      "content": "Mappa"
+    },
+    {
+      "type": "select",
+      "id": "map_provider",
+      "label": "Provider mappa",
+      "options": [
+        { "label": "OpenStreetMap (gratuito)", "value": "openstreetmap" },
+        { "label": "Google Maps (richiede API key)", "value": "google_maps" }
+      ],
+      "default": "openstreetmap"
+    },
+    {
+      "type": "text",
+      "id": "google_maps_api_key",
+      "label": "Google Maps API Key",
+      "info": "Necessaria solo se hai selezionato Google Maps come provider. Ottienila da Google Cloud Console."
+    },
+    {
+      "type": "range",
+      "id": "map_height",
+      "label": "Altezza mappa (desktop)",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "map_zoom",
+      "label": "Zoom iniziale mappa",
+      "min": 1,
+      "max": 18,
+      "step": 1,
+      "default": 6,
+      "info": "1 = mondo intero, 18 = massimo dettaglio. 6 = Italia intera."
+    },
+    {
+      "type": "text",
+      "id": "default_lat",
+      "label": "Latitudine centro mappa",
+      "default": "41.9028",
+      "info": "Latitudine del punto centrale iniziale della mappa."
+    },
+    {
+      "type": "text",
+      "id": "default_lng",
+      "label": "Longitudine centro mappa",
+      "default": "12.4964",
+      "info": "Longitudine del punto centrale iniziale della mappa."
+    },
+    {
+      "type": "select",
+      "id": "map_style",
+      "label": "Stile mappa",
+      "options": [
+        { "label": "Standard", "value": "standard" },
+        { "label": "Scala di grigi", "value": "grayscale" },
+        { "label": "Scuro", "value": "dark" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_clustering",
+      "label": "Raggruppa marker vicini",
+      "default": true,
+      "info": "Quando ci sono molti punti vicini, li raggruppa in un cluster con il numero."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_fullscreen",
+      "label": "Pulsante schermo intero",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "Ricerca e Filtri"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Abilita ricerca",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder campo ricerca",
+      "default": "Cerca citta, indirizzo o CAP..."
+    },
+    {
+      "type": "range",
+      "id": "search_radius",
+      "label": "Raggio di ricerca",
+      "min": 5,
+      "max": 200,
+      "step": 5,
+      "unit": "km",
+      "default": 50,
+      "info": "Distanza massima (in km) entro cui mostrare i risultati dalla posizione cercata."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_geolocation",
+      "label": "Pulsante geolocalizzazione",
+      "default": true,
+      "info": "Mostra il pulsante \"Usa la mia posizione\" accanto alla ricerca."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filters",
+      "label": "Mostra filtri tag",
+      "default": true,
+      "info": "Mostra i pulsanti di filtro basati sui blocchi Tag Marker."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_results_count",
+      "label": "Mostra contatore risultati",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "Legenda"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_legend",
+      "label": "Mostra legenda",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "legend_position",
+      "label": "Posizione legenda",
+      "options": [
+        { "label": "Nella toolbar", "value": "toolbar" },
+        { "label": "Non mostrare", "value": "none" }
+      ],
+      "default": "toolbar"
+    },
+
+    {
+      "type": "header",
+      "content": "Dettagli Punto Vendita"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_photo",
+      "label": "Mostra foto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostra descrizione",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_address",
+      "label": "Mostra indirizzo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Mostra telefono",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Mostra email",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_website",
+      "label": "Mostra sito web",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Mostra tag",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_directions_link",
+      "label": "Mostra link indicazioni",
+      "default": true,
+      "info": "Aggiunge un link \"Ottieni indicazioni\" che apre Google Maps."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_distance",
+      "label": "Mostra distanza",
+      "default": true,
+      "info": "Mostra la distanza dal punto cercato o dalla posizione dell'utente."
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_map_height",
+      "label": "Altezza mappa (mobile)",
+      "min": 200,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_list_first",
+      "label": "Lista prima della mappa su mobile",
+      "default": false,
+      "info": "Su schermi piccoli, mostra la lista dei punti vendita prima della mappa."
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tag_marker",
+      "name": "Tag Marker",
+      "limit": 47,
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag_value",
+          "label": "Valore tag",
+          "info": "Deve corrispondere esattamente al valore del tag nel metaobject (es. \"rivenditore\")."
+        },
+        {
+          "type": "text",
+          "id": "tag_label",
+          "label": "Nome da visualizzare",
+          "info": "Nome mostrato nei filtri e nella legenda (es. \"Rivenditore Ufficiale\")."
+        },
+        {
+          "type": "text",
+          "id": "marker_icon",
+          "label": "Icona marker",
+          "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-store). Vuoto = solo colore."
+        },
+        {
+          "type": "color",
+          "id": "marker_color",
+          "label": "Colore marker",
+          "default": "#E53E3E"
+        },
+        {
+          "type": "checkbox",
+          "id": "enabled",
+          "label": "Attivo",
+          "default": true,
+          "info": "Se disattivato, questo tag non appare nei filtri e nella legenda."
+        }
+      ]
+    },
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 40
+        },
+        {
+          "type": "range", "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 40
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 30
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 30
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 20
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 20
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Store Locator",
+      "category": "Contenuti",
+      "blocks": [
+        { "type": "section_padding" }
+      ]
+    }
+  ]
+}
+{% endschema %}
