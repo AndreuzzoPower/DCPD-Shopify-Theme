@@ -508,6 +508,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .ms-sl__card-info {
