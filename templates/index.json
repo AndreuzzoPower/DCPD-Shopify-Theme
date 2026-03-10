@@ -747,39 +747,6 @@
         "line_weight": 1,
         "line_style": "solid"
       }
-    },
-    "ms_blocks_section_YEkxXr": {
-      "type": "ms_blocks-section",
-      "blocks": {
-        "featured_product_UiUrUB": {
-          "type": "featured-product",
-          "name": "Prodotto In Evidenza",
-          "settings": {
-            "desktop_layout": 4,
-            "tablet_layout": 6,
-            "mobile_layout": 12,
-            "vertical_align": "start",
-            "product": "",
-            "image_ratio": "adapt",
-            "show_secondary_image": false,
-            "color_scheme": "",
-            "show_vendor": false,
-            "show_rating": false,
-            "show_min_order": true,
-            "quick_add": "none"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "featured_product_UiUrUB"
-      ],
-      "name": "MS Blocchi Liberi",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "color_scheme": ""
-      }
     }
   },
   "order": [
@@ -793,7 +760,6 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX",
-    "ms_blocks_section_YEkxXr"
+    "ms_divider_qN8RVX"
   ]
 }
