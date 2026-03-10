@@ -783,6 +783,69 @@
         "line_weight": 1,
         "line_style": "solid"
       }
+    },
+    "ms_store_locator_c9JaGH": {
+      "type": "ms_store-locator",
+      "blocks": {
+        "section_padding_bptQjx": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 40,
+            "section_padding_bottom": 40,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_bptQjx"
+      ],
+      "name": "MS Store Locator",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "layout": "map_top",
+        "sidebar_position": "right",
+        "list_style": "list",
+        "list_columns": 3,
+        "title": "I Nostri Punti Vendita",
+        "title_tag": "h2",
+        "heading_size": "h1",
+        "title_custom_class": "",
+        "subtitle": "",
+        "empty_message": "Nessun punto vendita trovato per la tua ricerca.",
+        "map_provider": "openstreetmap",
+        "google_maps_api_key": "",
+        "map_height": 500,
+        "map_zoom": 6,
+        "default_lat": "41.9028",
+        "default_lng": "12.4964",
+        "map_style": "standard",
+        "enable_clustering": true,
+        "enable_fullscreen": true,
+        "enable_search": true,
+        "search_placeholder": "Cerca citta, indirizzo o CAP...",
+        "search_radius": 50,
+        "enable_geolocation": true,
+        "enable_filters": true,
+        "show_results_count": true,
+        "show_legend": true,
+        "legend_position": "toolbar",
+        "show_photo": true,
+        "show_description": true,
+        "show_address": true,
+        "show_phone": true,
+        "show_email": true,
+        "show_website": true,
+        "show_tags": false,
+        "show_directions_link": true,
+        "show_distance": true,
+        "mobile_map_height": 300,
+        "mobile_list_first": false,
+        "mobile_full_width": false
+      }
     }
   },
   "order": [
@@ -796,6 +859,7 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX"
+    "ms_divider_qN8RVX",
+    "ms_store_locator_c9JaGH"
   ]
 }
