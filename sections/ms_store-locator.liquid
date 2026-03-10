@@ -82,16 +82,17 @@
 {%- endif -%}
 
 {%- comment -%} Serializzazione dati store in JSON {%- endcomment -%}
+{%- comment -%} Serializzazione dati store in JSON — descrizione pre-renderizzata fuori dal capture JSON {%- endcomment -%}
+{%- assign ms_store_idx = 0 -%}
 {%- capture stores_json -%}
 [
 {%- for store in stores -%}
   {%- unless store.latitudine.value == blank and store.longitudine.value == blank -%}
-    {%- if forloop.first == false -%},{%- endif -%}
+    {%- if ms_store_idx > 0 -%},{%- endif -%}
     {
       "id":{{ store.system.handle | json }},
       "nome":{{ store.nome.value | default: '' | json }},
       "ragione_sociale":{{ store.ragione_sociale.value | default: '' | json }},
-      "descrizione":{%- capture ms_desc_raw -%}{%- if store.descrizione != blank -%}{{ store.descrizione | metafield_tag }}{%- endif -%}{%- endcapture -%}{{ ms_desc_raw | strip_html | strip | truncate: 500 | default: '' | json }},
       "indirizzo":{{ store.indirizzo.value | default: '' | json }},
       "lat":"{{ store.latitudine.value | default: '0' | strip }}",
       "lng":"{{ store.longitudine.value | default: '0' | strip }}",
@@ -101,6 +102,7 @@
       "foto":"{%- if store.foto.value != blank -%}{{ store.foto.value | image_url: width: 600 }}{%- endif -%}",
       "tags":{%- if store.tags.value != blank -%}{{ store.tags.value | json }}{%- else -%}[]{%- endif -%}
     }
+    {%- assign ms_store_idx = ms_store_idx | plus: 1 -%}
   {%- endunless -%}
 {%- endfor -%}
 ]

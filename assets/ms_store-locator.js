@@ -42,19 +42,32 @@ if (!customElements.get('ms-store-locator')) {
 
       try {
         this.stores = storesEl ? JSON.parse(storesEl.textContent) : [];
-      } catch { this.stores = []; }
+      } catch (e) {
+        console.error('[MS Store Locator] Errore parsing stores JSON:', e.message);
+        this.stores = [];
+      }
 
       try {
         this.tagDefs = tagsEl ? JSON.parse(tagsEl.textContent) : [];
-      } catch { this.tagDefs = []; }
+      } catch (e) {
+        console.error('[MS Store Locator] Errore parsing tags JSON:', e.message);
+        this.tagDefs = [];
+      }
 
       try {
         this.config = configEl ? JSON.parse(configEl.textContent) : {};
-      } catch { this.config = {}; }
+      } catch (e) {
+        console.error('[MS Store Locator] Errore parsing config JSON:', e.message);
+        this.config = {};
+      }
 
       for (const store of this.stores) {
         store._lat = parseFloat(store.lat) || 0;
         store._lng = parseFloat(store.lng) || 0;
+      }
+
+      if (this.stores.length === 0) {
+        console.warn('[MS Store Locator] Nessuno store caricato. Verificare i dati JSON.');
       }
     }
 
@@ -194,6 +207,7 @@ if (!customElements.get('ms-store-locator')) {
         if (!store._lat && !store._lng) continue;
 
         const markerDef = this.#getMarkerDef(store);
+        if (!markerDef) continue;
 
         let divIcon;
         if (markerDef.image) {
@@ -284,6 +298,7 @@ if (!customElements.get('ms-store-locator')) {
         if (!store._lat && !store._lng) continue;
 
         const markerDef = this.#getMarkerDef(store);
+        if (!markerDef) continue;
 
         let markerIcon;
         if (markerDef.image) {
