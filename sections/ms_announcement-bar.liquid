@@ -98,14 +98,16 @@
         role="region"
         aria-roledescription="{{ 'sections.announcements.carousel' | t }}"
         aria-label="{{ 'sections.announcements.announcement_bar' | t }}"
+        data-loop="none"
       >
-        <div class="announcement-bar-slider slider-buttons">
+        <div class="announcement-bar-slider slider-buttons{% unless section.settings.show_arrows %} announcement-bar-slider--no-arrows{% endunless %}">
           <button
             type="button"
             class="slider-button slider-button--prev"
             name="previous"
             aria-label="{{ 'sections.announcements.previous_announcement' | t }}"
             aria-controls="Slider-{{ section.id }}"
+            disabled
           >
             <span class="visually-hidden">Messaggio precedente</span>
             {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
@@ -247,6 +249,12 @@
       "default": 5
     },
     {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "default": true,
+      "label": "Mostra frecce navigazione"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
@@ -326,7 +334,7 @@
         {
           "type": "html",
           "id": "text",
-          "default": "<strong>Benvenuto nel nostro store</strong>",
+          "default": "Benvenuto nel nostro store",
           "label": "Testo messaggio"
         },
         {

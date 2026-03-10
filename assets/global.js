@@ -1824,14 +1824,8 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (!this.enableSliderLooping) {
-      if (isFirstSlide && event.currentTarget.name === 'previous') {
-        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
-        return;
-      }
-      if (isLastSlide && event.currentTarget.name === 'next') {
-        this.applyAnimationToAnnouncementBar(event.currentTarget.name);
-        return;
-      }
+      if (isFirstSlide && event.currentTarget.name === 'previous') return;
+      if (isLastSlide && event.currentTarget.name === 'next') return;
     }
 
     if (isFirstSlide && event.currentTarget.name === 'previous') {
@@ -2018,6 +2012,12 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (!this.enableSliderLooping && this.currentPage === this.sliderItems.length) {
+      if (this.announcementBarSlider) {
+        this.setSlidePosition(0);
+        this.play();
+        this.applyAnimationToAnnouncementBar();
+        return;
+      }
       this.pause();
       if (this.sliderAutoplayButton) {
         this.sliderAutoplayButton.classList.add('slideshow__autoplay--paused');
@@ -2065,6 +2065,25 @@ class SlideshowComponent extends SliderComponent {
       }
     });
     this.wasClicked = false;
+    this.updateArrowStates();
+  }
+
+  updateArrowStates() {
+    if (this.enableSliderLooping) return;
+    if (this.prevButton) {
+      if (this.currentPage <= 1) {
+        this.prevButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.prevButton.removeAttribute('disabled');
+      }
+    }
+    if (this.nextButton) {
+      if (this.currentPage >= this.sliderItemsToShow.length) {
+        this.nextButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.nextButton.removeAttribute('disabled');
+      }
+    }
   }
 
   applyAnimationToAnnouncementBar(button = 'next') {
