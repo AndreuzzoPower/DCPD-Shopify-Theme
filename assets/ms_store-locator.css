@@ -311,6 +311,31 @@
   z-index: 1;
 }
 
+/* Fullscreen state */
+.ms-sl__map-wrapper--fullscreen {
+  border-radius: 0;
+  border: none;
+}
+
+.ms-sl__map-wrapper--fullscreen .ms-sl__map {
+  height: 100vh !important;
+}
+
+/* Fullscreen control button */
+.ms-sl__fullscreen-control a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: rgb(var(--color-foreground, 0 0 0));
+  background: rgb(var(--color-background, 255 255 255));
+}
+
+.ms-sl__fullscreen-control a:hover {
+  background: rgba(var(--color-foreground, 0 0 0), 0.05);
+}
+
 /* Override Leaflet controls to match theme */
 .ms-sl__map-wrapper .leaflet-control-zoom a {
   color: rgb(var(--color-foreground));

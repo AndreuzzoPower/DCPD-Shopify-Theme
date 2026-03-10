@@ -171,8 +171,8 @@ if (!customElements.get('ms-store-locator')) {
 
       L.tileLayer(tileUrl, { attribution: tileAttrib, maxZoom: 19 }).addTo(this.map);
 
-      if (this.config.fullscreen && L.Control.Fullscreen) {
-        this.map.addControl(new L.Control.Fullscreen());
+      if (this.config.fullscreen) {
+        this.#addLeafletFullscreenControl();
       }
 
       if (this.config.clustering && typeof L.markerClusterGroup === 'function') {
@@ -198,6 +198,48 @@ if (!customElements.get('ms-store-locator')) {
         default:
           return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       }
+    }
+
+    #addLeafletFullscreenControl() {
+      const mapWrapper = this.querySelector('.ms-sl__map-wrapper');
+      if (!mapWrapper) return;
+
+      const btn = L.DomUtil.create('div', 'ms-sl__fullscreen-control leaflet-bar leaflet-control');
+      const link = L.DomUtil.create('a', '', btn);
+      link.href = '#';
+      link.role = 'button';
+      link.title = 'Schermo intero';
+      link.setAttribute('aria-label', 'Schermo intero');
+      link.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+
+      const exitIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 14h6v6m10-10h-6V4M14 10l7-7M3 21l7-7"/></svg>';
+      const enterIcon = link.innerHTML;
+
+      L.DomEvent.disableClickPropagation(btn);
+
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          mapWrapper.requestFullscreen();
+        }
+      });
+
+      mapWrapper.addEventListener('fullscreenchange', () => {
+        const isFs = !!document.fullscreenElement;
+        link.innerHTML = isFs ? exitIcon : enterIcon;
+        link.title = isFs ? 'Esci da schermo intero' : 'Schermo intero';
+        link.setAttribute('aria-label', link.title);
+        mapWrapper.classList.toggle('ms-sl__map-wrapper--fullscreen', isFs);
+        this.map.invalidateSize();
+      });
+
+      const control = L.Control.extend({
+        options: { position: 'topleft' },
+        onAdd: () => btn
+      });
+      this.map.addControl(new control());
     }
 
     #createLeafletMarkers() {
