@@ -37,7 +37,7 @@
         "announcement_WNfxe8": {
           "type": "announcement",
           "settings": {
-            "text": "Ti diamo il benvenuto nel nostro negozio",
+            "text": "Ti diamo il <b>benvenuto</b> nel nostro <a href=\"/\">negozio</a>",
             "link": "",
             "schedule_enabled": false,
             "schedule_start": "",
@@ -57,6 +57,7 @@
         "show_line_separator": true,
         "show_social": false,
         "enable_country_selector": false,
+        "show_country_currency": false,
         "enable_language_selector": false,
         "language_display_mode": "dropdown",
         "language_display_format": "name"
@@ -75,6 +76,7 @@
         "color_scheme": "scheme-5",
         "menu_color_scheme": "scheme-1",
         "enable_country_selector": true,
+        "show_country_currency": false,
         "enable_language_selector": true,
         "language_display_mode": "dropdown",
         "language_display_format": "iso",
