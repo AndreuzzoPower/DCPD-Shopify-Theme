@@ -230,7 +230,7 @@
                         <div class="visually-hidden" id="HeaderLanguageMobileLabel">
                           {{ 'localization.language_label' | t }}
                         </div>
-                        {%- render 'language-localization', localPosition: 'HeaderLanguageMobile' -%}
+                        {%- render 'language-localization', localPosition: 'HeaderLanguageMobile', displayMode: section.settings.language_display_mode_mobile, displayFormat: section.settings.language_display_format_mobile -%}
                       </div>
                     {%- endform -%}
                   </localization-form>

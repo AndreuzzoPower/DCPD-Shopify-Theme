@@ -320,7 +320,7 @@
                 <div class="h2 caption-large text-body" id="FooterLanguageLabel">
                   {{ 'localization.language_label' | t }}
                 </div>
-                {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+                {%- render 'language-localization', localPosition: 'FooterLanguage', displayMode: section.settings.language_display_mode, displayFormat: section.settings.language_display_format -%}
               </div>
             {%- endform -%}
           </localization-form>
@@ -1261,6 +1261,29 @@
       "default": true,
       "label": "Selettore lingua",
       "info": "Gestisci lingue nelle impostazioni"
+    },
+    {
+      "type": "select",
+      "id": "language_display_mode",
+      "label": "Modalita selettore lingua",
+      "options": [
+        { "value": "dropdown", "label": "Dropdown" },
+        { "value": "inline", "label": "Inline" }
+      ],
+      "default": "dropdown"
+    },
+    {
+      "type": "select",
+      "id": "language_display_format",
+      "label": "Formato lingua",
+      "options": [
+        { "value": "name", "label": "Nome completo" },
+        { "value": "flag", "label": "Bandiera" },
+        { "value": "iso", "label": "Codice ISO" },
+        { "value": "flag_name", "label": "Bandiera + nome" },
+        { "value": "flag_iso", "label": "Bandiera + codice ISO" }
+      ],
+      "default": "name"
     },
     {
       "type": "checkbox",

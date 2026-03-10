@@ -449,3 +449,93 @@
 .language-selector .disclosure__list {
   min-width: 200px;
 }
+
+/* Flag images */
+.language-flag {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+  vertical-align: middle;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Dropdown button with flag */
+.localization-selector--with-flag {
+  gap: 0.5rem;
+}
+
+/* Dropdown list item label (flag + text) */
+.disclosure__link-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Inline mode */
+.language-inline__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.language-inline__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1.3rem;
+  letter-spacing: 0.06rem;
+  color: rgba(var(--color-foreground), 0.75);
+  transition: color var(--duration-short) ease,
+              background-color var(--duration-short) ease;
+  cursor: pointer;
+}
+
+.language-inline__link:hover {
+  color: rgb(var(--color-foreground));
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.language-inline__link--active {
+  color: rgb(var(--color-foreground));
+  font-weight: 600;
+  background-color: rgba(var(--color-foreground), 0.08);
+}
+
+.language-inline__link--active:hover {
+  background-color: rgba(var(--color-foreground), 0.1);
+}
+
+/* Inline in header */
+.header-localization .language-inline__list {
+  gap: 0.2rem 0.4rem;
+}
+
+.header-localization .language-inline__link {
+  padding: 0.3rem 0.5rem;
+}
+
+/* Inline in footer */
+.footer__localization .language-inline__list {
+  gap: 0.4rem 0.6rem;
+}
+
+/* Inline in menu drawer */
+.menu-drawer__localization .language-inline {
+  padding: 0;
+}
+
+.menu-drawer__localization .language-inline__list {
+  gap: 0.4rem;
+}
+
+.menu-drawer__localization .language-inline__link {
+  padding: 0.5rem 0.8rem;
+}

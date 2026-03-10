@@ -16,10 +16,14 @@ if (!customElements.get('localization-form')) {
           searchIcon: this.querySelector('.country-filter__search-icon'),
           liveRegion: this.querySelector('#sr-country-search-results'),
         };
+        this.isInlineMode = !this.elements.button;
         this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
         this.addEventListener('keydown', this.onContainerKeyDown.bind(this));
-        this.addEventListener('focusout', this.closeSelector.bind(this));
-        this.elements.button.addEventListener('click', this.openSelector.bind(this));
+
+        if (!this.isInlineMode) {
+          this.addEventListener('focusout', this.closeSelector.bind(this));
+          this.elements.button.addEventListener('click', this.openSelector.bind(this));
+        }
 
         if (this.elements.search) {
           this.elements.search.addEventListener('keyup', this.filterCountries.bind(this));
@@ -39,6 +43,7 @@ if (!customElements.get('localization-form')) {
       }
 
       hidePanel() {
+        if (this.isInlineMode) return;
         this.elements.button.setAttribute('aria-expanded', 'false');
         this.elements.panel.setAttribute('hidden', true);
         if (this.elements.search) {
@@ -47,8 +52,8 @@ if (!customElements.get('localization-form')) {
           this.elements.search.setAttribute('aria-activedescendant', '');
         }
         document.body.classList.remove('overflow-hidden-mobile');
-        document.querySelector('.menu-drawer').classList.remove('country-selector-open');
-        this.header.preventHide = false;
+        document.querySelector('.menu-drawer')?.classList.remove('country-selector-open');
+        if (this.header) this.header.preventHide = false;
       }
 
       onContainerKeyDown(event) {
@@ -86,6 +91,7 @@ if (!customElements.get('localization-form')) {
       }
 
       onContainerKeyUp(event) {
+        if (this.isInlineMode) return;
         event.preventDefault();
 
         switch (event.code.toUpperCase()) {
@@ -110,6 +116,7 @@ if (!customElements.get('localization-form')) {
       }
 
       openSelector() {
+        if (this.isInlineMode) return;
         this.elements.button.focus();
         this.elements.panel.toggleAttribute('hidden');
         this.elements.button.setAttribute(
@@ -122,10 +129,10 @@ if (!customElements.get('localization-form')) {
         if (this.elements.search && this.mql.matches) {
           this.elements.search.focus();
         }
-        if (this.hasAttribute('data-prevent-hide')) {
+        if (this.hasAttribute('data-prevent-hide') && this.header) {
           this.header.preventHide = true;
         }
-        document.querySelector('.menu-drawer').classList.add('country-selector-open');
+        document.querySelector('.menu-drawer')?.classList.add('country-selector-open');
       }
 
       closeSelector(event) {

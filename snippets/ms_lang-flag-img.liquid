@@ -1,0 +1,77 @@
+{%- comment -%}
+  Renders a flag image for a language ISO code using flagcdn.com
+  Centralizes the language-to-country code mapping to avoid duplication.
+
+  Accepts:
+    - iso_code: language ISO code (e.g., 'it', 'en', 'zh-CN')
+{%- endcomment -%}
+{%- liquid
+  assign _base = iso_code | downcase | slice: 0, 2
+  assign _fc = _base
+
+  case _base
+    when 'en'
+      assign _fc = 'gb'
+    when 'ja'
+      assign _fc = 'jp'
+    when 'ko'
+      assign _fc = 'kr'
+    when 'zh'
+      assign _fc = 'cn'
+    when 'uk'
+      assign _fc = 'ua'
+    when 'cs'
+      assign _fc = 'cz'
+    when 'da'
+      assign _fc = 'dk'
+    when 'el'
+      assign _fc = 'gr'
+    when 'he'
+      assign _fc = 'il'
+    when 'hi'
+      assign _fc = 'in'
+    when 'sv'
+      assign _fc = 'se'
+    when 'sl'
+      assign _fc = 'si'
+    when 'sr'
+      assign _fc = 'rs'
+    when 'vi'
+      assign _fc = 'vn'
+    when 'ar'
+      assign _fc = 'sa'
+    when 'fa'
+      assign _fc = 'ir'
+    when 'ga'
+      assign _fc = 'ie'
+    when 'ms'
+      assign _fc = 'my'
+    when 'nb', 'nn'
+      assign _fc = 'no'
+    when 'sq'
+      assign _fc = 'al'
+    when 'et'
+      assign _fc = 'ee'
+    when 'bn'
+      assign _fc = 'bd'
+    when 'ka'
+      assign _fc = 'ge'
+    when 'hy'
+      assign _fc = 'am'
+  endcase
+
+  if iso_code contains '-'
+    assign _region = iso_code | downcase | split: '-' | last
+    case _region
+      when 'tw'
+        assign _fc = 'tw'
+      when 'br'
+        assign _fc = 'br'
+      when 'pt'
+        assign _fc = 'pt'
+      when 'cn'
+        assign _fc = 'cn'
+    endcase
+  endif
+-%}
+<img class="language-flag" src="https://flagcdn.com/w20/{{ _fc }}.png" srcset="https://flagcdn.com/w20/{{ _fc }}.png 1x, https://flagcdn.com/w40/{{ _fc }}.png 2x" width="20" height="15" alt="" loading="lazy">

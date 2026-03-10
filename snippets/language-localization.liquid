@@ -2,48 +2,134 @@
   Renders the language picker for the localization form
 
   Accepts:
-    - localPosition: pass in the position in which the form is coming up to create specific IDs
+    - localPosition: position identifier for unique IDs
+    - displayMode: 'dropdown' (default) or 'inline'
+    - displayFormat: 'name' (default), 'flag', 'iso', 'flag_name', 'flag_iso'
 {%- endcomment -%}
 
-<div class="disclosure">
-  <button
-    type="button"
-    class="disclosure__button localization-form__select localization-selector link link--text caption-large"
-    aria-expanded="false"
-    aria-controls="{{ localPosition }}List"
-    aria-describedby="{{ localPosition }}Label"
-  >
-    <span>{{ localization.language.endonym_name | capitalize }}</span>
-    {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
-  </button>
-  <div class="disclosure__list-wrapper language-selector" hidden>
-    <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">
+{%- liquid
+  assign d_mode = displayMode | default: 'dropdown'
+  assign d_format = displayFormat | default: 'name'
+
+  assign _show_flag = false
+  assign _show_text = true
+  assign _text_type = 'name'
+
+  case d_format
+    when 'flag'
+      assign _show_flag = true
+      assign _show_text = false
+    when 'iso'
+      assign _text_type = 'iso'
+    when 'flag_name'
+      assign _show_flag = true
+    when 'flag_iso'
+      assign _show_flag = true
+      assign _text_type = 'iso'
+  endcase
+-%}
+
+{%- if d_mode == 'inline' -%}
+  <div class="language-inline">
+    <ul class="language-inline__list" role="list">
       {%- for language in localization.available_languages -%}
-        <li class="disclosure__item" tabindex="-1">
+        {%- liquid
+          assign _is_active = false
+          if language.iso_code == localization.language.iso_code
+            assign _is_active = true
+          endif
+        -%}
+        <li class="language-inline__item">
           <a
-            class="link link--text disclosure__link caption-large focus-inset"
+            class="language-inline__link{% if _is_active %} language-inline__link--active{% endif %}"
             href="#"
             hreflang="{{ language.iso_code }}"
             lang="{{ language.iso_code }}"
-            {% if language.iso_code == localization.language.iso_code %}
-              aria-current="true"
-            {% endif %}
+            {% if _is_active %}aria-current="true"{% endif %}
             data-value="{{ language.iso_code }}"
+            {% unless _show_text %}aria-label="{{ language.endonym_name }}"{% endunless %}
           >
-            <span
-              {% if language.iso_code != localization.language.iso_code %}
-                class="visibility-hidden"
-              {% endif %}
-            >
-              {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
-            </span>
-            <span>
-              {{ language.endonym_name | capitalize }}
-            </span>
+            {%- if _show_flag -%}
+              {%- render 'ms_lang-flag-img', iso_code: language.iso_code -%}
+            {%- endif -%}
+            {%- if _show_text -%}
+              <span>
+                {%- if _text_type == 'iso' -%}
+                  {{- language.iso_code | upcase -}}
+                {%- else -%}
+                  {{- language.endonym_name | capitalize -}}
+                {%- endif -%}
+              </span>
+            {%- endif -%}
           </a>
         </li>
       {%- endfor -%}
     </ul>
   </div>
-</div>
+{%- else -%}
+  <div class="disclosure">
+    <button
+      type="button"
+      class="disclosure__button localization-form__select localization-selector link link--text caption-large{% if _show_flag %} localization-selector--with-flag{% endif %}"
+      aria-expanded="false"
+      aria-controls="{{ localPosition }}List"
+      aria-describedby="{{ localPosition }}Label"
+      {% unless _show_text %}aria-label="{{ localization.language.endonym_name }}"{% endunless %}
+    >
+      {%- if _show_flag -%}
+        {%- render 'ms_lang-flag-img', iso_code: localization.language.iso_code -%}
+      {%- endif -%}
+      {%- if _show_text -%}
+        <span>
+          {%- if _text_type == 'iso' -%}
+            {{- localization.language.iso_code | upcase -}}
+          {%- else -%}
+            {{- localization.language.endonym_name | capitalize -}}
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+      {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+    </button>
+    <div class="disclosure__list-wrapper language-selector" hidden>
+      <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">
+        {%- for language in localization.available_languages -%}
+          <li class="disclosure__item" tabindex="-1">
+            <a
+              class="link link--text disclosure__link caption-large focus-inset"
+              href="#"
+              hreflang="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              {% if language.iso_code == localization.language.iso_code %}
+                aria-current="true"
+              {% endif %}
+              data-value="{{ language.iso_code }}"
+            >
+              <span
+                {% if language.iso_code != localization.language.iso_code %}
+                  class="visibility-hidden"
+                {% endif %}
+              >
+                {%- render 'ms_icon', icon: settings.ms_icon_checkmark -%}
+              </span>
+              <span class="disclosure__link-label">
+                {%- if _show_flag -%}
+                  {%- render 'ms_lang-flag-img', iso_code: language.iso_code -%}
+                {%- endif -%}
+                {%- if _show_text -%}
+                  {%- if _text_type == 'iso' -%}
+                    {{- language.iso_code | upcase -}}
+                  {%- else -%}
+                    {{- language.endonym_name | capitalize -}}
+                  {%- endif -%}
+                {%- else -%}
+                  <span class="visually-hidden">{{ language.endonym_name }}</span>
+                {%- endif -%}
+              </span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+{%- endif -%}
 <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
