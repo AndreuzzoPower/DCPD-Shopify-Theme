@@ -278,8 +278,27 @@
             role="application"
             aria-label="Mappa punti vendita"
             tabindex="0"
-          ></div>
+          >          </div>
         </div>
+
+        {%- comment -%} Legenda (sotto mappa) {%- endcomment -%}
+        {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
+          {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
+          <div class="ms-sl__legend ms-sl__legend--below ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+                <span class="ms-sl__legend-item">
+                  <span class="ms-sl__legend-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
+                    {%- if block.settings.marker_icon != blank -%}
+                      {%- render 'ms_icon', icon: block.settings.marker_icon -%}
+                    {%- endif -%}
+                  </span>
+                  {{ block.settings.tag_label | escape }}
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       {%- endif -%}
 
       {%- comment -%} Lista punti vendita {%- endcomment -%}
@@ -402,25 +421,6 @@
         </div>
       {%- endif -%}
     </div>
-
-    {%- comment -%} Legenda (sotto mappa) {%- endcomment -%}
-    {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
-      {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
-      <div class="ms-sl__legend ms-sl__legend--below ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tag_marker' and block.settings.enabled -%}
-            <span class="ms-sl__legend-item">
-              <span class="ms-sl__legend-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
-                {%- if block.settings.marker_icon != blank -%}
-                  {%- render 'ms_icon', icon: block.settings.marker_icon -%}
-                {%- endif -%}
-              </span>
-              {{ block.settings.tag_label | escape }}
-            </span>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
 
     {%- comment -%} Messaggio editor se nessun metaobject {%- endcomment -%}
     {%- if stores_count == 0 and request.design_mode -%}
