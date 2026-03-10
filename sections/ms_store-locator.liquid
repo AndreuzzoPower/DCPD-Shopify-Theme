@@ -91,7 +91,7 @@
       "id":{{ store.system.handle | json }},
       "nome":{{ store.nome.value | default: '' | json }},
       "ragione_sociale":{{ store.ragione_sociale.value | default: '' | json }},
-      "descrizione":{{ store.descrizione.value | default: '' | strip_html | strip | truncate: 500 | json }},
+      "descrizione":{%- capture _desc_raw -%}{%- if store.descrizione != blank -%}{{ store.descrizione | metafield_tag }}{%- endif -%}{%- endcapture -%}{{ _desc_raw | strip_html | strip | truncate: 500 | default: '' | json }},
       "indirizzo":{{ store.indirizzo.value | default: '' | json }},
       "lat":"{{ store.latitudine.value | default: '0' | strip }}",
       "lng":"{{ store.longitudine.value | default: '0' | strip }}",
@@ -294,9 +294,10 @@
                         <p class="ms-sl__card-company">{{ store.ragione_sociale.value | escape }}</p>
                       {%- endif -%}
 
-                      {%- if section.settings.show_description and store.descrizione.value != blank -%}
+                      {%- if section.settings.show_description and store.descrizione != blank -%}
                         <div class="ms-sl__card-description">
-                          {{ store.descrizione.value | strip_html | strip | truncate: 200 }}
+                          {%- capture _card_desc -%}{{ store.descrizione | metafield_tag }}{%- endcapture -%}
+                          {{ _card_desc | strip_html | strip | truncate: 200 }}
                         </div>
                       {%- endif -%}
 
@@ -416,7 +417,8 @@
 {%- comment -%} Dati strutturati JSON-LD LocalBusiness {%- endcomment -%}
 {%- for store in stores -%}
   {%- if store.nome.value != blank and store.latitudine.value != blank -%}
-    {%- assign sd_desc = store.descrizione.value | strip_html | strip | truncate: 5000 -%}
+    {%- capture _sd_desc_raw -%}{%- if store.descrizione != blank -%}{{ store.descrizione | metafield_tag }}{%- endif -%}{%- endcapture -%}
+    {%- assign sd_desc = _sd_desc_raw | strip_html | strip | truncate: 5000 -%}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
