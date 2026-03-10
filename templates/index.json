@@ -793,7 +793,7 @@
             "tag_value": "rivenditore",
             "tag_label": "Rivenditore",
             "marker_icon": "fa-solid fa-store",
-            "marker_color": "#ecff00",
+            "marker_color": "#ff53a1",
             "enabled": true
           }
         },
