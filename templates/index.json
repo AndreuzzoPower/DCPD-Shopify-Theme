@@ -790,7 +790,7 @@
         "tag_marker_X7VNNW": {
           "type": "tag_marker",
           "settings": {
-            "tag_value": "riv",
+            "tag_value": "rivenditore",
             "tag_label": "Rivenditore",
             "marker_icon": "fa-solid fa-store",
             "marker_color": "#ecff00",
