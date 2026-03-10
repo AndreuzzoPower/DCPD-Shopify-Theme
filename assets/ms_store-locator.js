@@ -883,9 +883,24 @@ if (!customElements.get('ms-store-locator')) {
       const mapWrapper = this.querySelector('.ms-sl__map-wrapper');
       if (mapWrapper) {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        mapWrapper.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+        const isMobile = window.innerWidth < 750;
+        const offset = isMobile
+          ? (this.config.scrollOffsetMobile || 80)
+          : (this.config.scrollOffsetDesktop || 100);
 
-        const delay = prefersReducedMotion ? 50 : 400;
+        const rect = mapWrapper.getBoundingClientRect();
+        const isAboveViewport = rect.top < offset;
+        const isBelowViewport = rect.bottom > window.innerHeight;
+
+        if (isAboveViewport || isBelowViewport) {
+          const targetY = window.pageYOffset + rect.top - offset;
+          window.scrollTo({
+            top: Math.max(0, targetY),
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
+          });
+        }
+
+        const delay = prefersReducedMotion ? 50 : 500;
         setTimeout(() => this.#openMarkerPopup(storeId), delay);
       } else {
         this.#openMarkerPopup(storeId);

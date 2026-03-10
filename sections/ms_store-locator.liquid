@@ -152,7 +152,9 @@
   "defaultMarkerIcon":{{ section.settings.default_marker_icon | default: '' | json }},
   "defaultMarkerColor":"{{ section.settings.default_marker_color | default: '#EA4335' }}",
   "defaultMarkerImage":"{%- if section.settings.default_marker_image != blank -%}{{ section.settings.default_marker_image | image_url: width: 64 }}{%- endif -%}",
-  "defaultMarkerLabel":{{ section.settings.default_marker_label | default: '' | json }}
+  "defaultMarkerLabel":{{ section.settings.default_marker_label | default: '' | json }},
+  "scrollOffsetDesktop":{{ section.settings.scroll_offset_desktop | default: 100 }},
+  "scrollOffsetMobile":{{ section.settings.scroll_offset_mobile | default: 80 }}
 }
 {%- endcapture -%}
 
@@ -707,6 +709,28 @@
       "max": 4,
       "step": 1,
       "default": 3
+    },
+    {
+      "type": "range",
+      "id": "scroll_offset_desktop",
+      "label": "Offset scroll desktop (px)",
+      "info": "Altezza dell'header fisso su desktop, usata per compensare lo scroll automatico alla mappa.",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "scroll_offset_mobile",
+      "label": "Offset scroll mobile (px)",
+      "info": "Altezza dell'header fisso su mobile, usata per compensare lo scroll automatico alla mappa.",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 80
     },
 
     {
