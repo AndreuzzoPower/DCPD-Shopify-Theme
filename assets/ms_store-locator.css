@@ -36,6 +36,7 @@
 
 .ms-sl__search {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   width: 100%;
 }
@@ -247,7 +248,10 @@
 /* --- Results Count --- */
 
 .ms-sl__results-count {
+  flex-basis: 100%;
   color: rgba(var(--color-foreground), 0.6);
+  font-size: 0.875rem;
+  margin-top: -0.25rem;
 }
 
 .ms-sl__results-count strong {
