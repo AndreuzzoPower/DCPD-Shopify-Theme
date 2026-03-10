@@ -61,7 +61,7 @@
         "show_country_currency": false,
         "enable_language_selector": false,
         "language_display_mode": "dropdown",
-        "language_display_format": "name"
+        "language_display_format": "iso"
       }
     },
     "header": {
