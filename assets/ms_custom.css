@@ -72,6 +72,29 @@ body.ms-catalog-hide-prices .price,
 body.ms-catalog-hide-prices price-per-item,
 body.ms-catalog-hide-prices .volume-pricing { display: none !important; }
 
+/* ── Visibilita ospiti ── */
+body.ms-guest-hide-prices .price,
+body.ms-guest-hide-prices price-per-item,
+body.ms-guest-hide-prices .volume-pricing { display: none !important; }
+
+body.ms-guest-hide-buy #cart-icon-bubble,
+body.ms-guest-hide-buy .cart-count-bubble,
+body.ms-guest-hide-buy cart-drawer,
+body.ms-guest-hide-buy .cart-drawer,
+body.ms-guest-hide-buy cart-notification,
+body.ms-guest-hide-buy .cart-notification,
+body.ms-guest-hide-buy product-form,
+body.ms-guest-hide-buy .quick-add,
+body.ms-guest-hide-buy .shopify-payment-button,
+body.ms-guest-hide-buy .product-form__buttons,
+body.ms-guest-hide-buy quantity-popover,
+body.ms-guest-hide-buy .quantity,
+body.ms-guest-hide-buy .product-form__quantity,
+body.ms-guest-hide-buy .ms-min-order-label,
+body.ms-guest-hide-buy .product__tax { display: none !important; }
+
+body.ms-guest-hide-variants variant-selects { display: none !important; }
+
 /* ── IVA ── */
 .price__iva {
   display: block;

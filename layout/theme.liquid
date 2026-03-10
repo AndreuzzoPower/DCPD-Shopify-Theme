@@ -549,13 +549,15 @@
     </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if settings.ms_catalog_mode %} ms-catalog-mode{% if settings.ms_catalog_hide_prices %} ms-catalog-hide-prices{% endif %}{% endif %}">
+  <body class="gradient{%- if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif -%}{%- if settings.ms_catalog_mode %} ms-catalog-mode{% if settings.ms_catalog_hide_prices %} ms-catalog-hide-prices{% endif %}{% endif -%}{%- unless customer -%}{%- if settings.ms_guest_hide_prices %} ms-guest-hide-prices{% endif -%}{%- if settings.ms_guest_hide_buy %} ms-guest-hide-buy{% endif -%}{%- if settings.ms_guest_hide_variants %} ms-guest-hide-variants{% endif -%}{%- endunless -%}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
     {%- if settings.ms_catalog_mode -%}
       <script>if(window.location.pathname === '{{ routes.cart_url }}'){window.location.replace('/');}</script>
+    {%- elsif settings.ms_guest_hide_buy -%}
+      <script>if(!window.Shopify?.customer && window.location.pathname === '{{ routes.cart_url }}'){window.location.replace('/');}</script>
     {%- endif -%}
 
     {%- if settings.cart_type == 'drawer' -%}

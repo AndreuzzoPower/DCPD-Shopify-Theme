@@ -1932,6 +1932,35 @@
       },
       {
         "type": "header",
+        "content": "Visibilita per ospiti"
+      },
+      {
+        "type": "paragraph",
+        "content": "Elementi da nascondere agli utenti non loggati. Se la modalita solo catalogo e attiva, queste impostazioni sono irrilevanti perche il catalogo ha priorita su tutti."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_guest_hide_prices",
+        "label": "Nascondi i prezzi",
+        "default": false,
+        "info": "Nasconde prezzi, IVA e sconti volume per gli utenti non loggati."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_guest_hide_buy",
+        "label": "Nascondi acquisto",
+        "default": false,
+        "info": "Nasconde bottoni acquisto, carrello, quantita, spese di spedizione e quantita minima d'ordine per gli utenti non loggati."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_guest_hide_variants",
+        "label": "Nascondi varianti",
+        "default": false,
+        "info": "Nasconde il selettore varianti (colore, taglia, ecc.) per gli utenti non loggati."
+      },
+      {
+        "type": "header",
         "content": "IVA"
       },
       {
