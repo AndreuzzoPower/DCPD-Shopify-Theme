@@ -183,6 +183,11 @@
   outline-offset: 2px;
 }
 
+/* Filters below toolbar */
+.ms-sl__filters--below {
+  margin-bottom: var(--ms-sl-gap);
+}
+
 /* --- Legend --- */
 
 .ms-sl__legend {

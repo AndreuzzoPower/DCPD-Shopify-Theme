@@ -193,8 +193,9 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Filtri tag {%- endcomment -%}
-      {%- if section.settings.enable_filters and tag_idx > 0 -%}
+      {%- comment -%} Filtri tag (toolbar) {%- endcomment -%}
+      {%- assign filters_pos = section.settings.filters_position | default: 'toolbar' -%}
+      {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'toolbar' -%}
         <div class="ms-sl__filters" role="group" aria-label="Filtra per categoria">
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
@@ -243,6 +244,29 @@
       {%- endif -%}
 
     </div>
+
+    {%- comment -%} Filtri tag (sotto toolbar) {%- endcomment -%}
+    {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'below' -%}
+      <div class="ms-sl__filters ms-sl__filters--below" role="group" aria-label="Filtra per categoria">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+            <button
+              type="button"
+              class="ms-sl__filter-btn"
+              data-tag="{{ block.settings.tag_value | escape }}"
+              aria-pressed="false"
+              {{ block.shopify_attributes }}
+            >
+              <span class="ms-sl__filter-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true"></span>
+              {{ block.settings.tag_label | escape }}
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+        <button type="button" class="ms-sl__filter-reset" hidden aria-label="Azzera tutti i filtri">
+          Azzera filtri
+        </button>
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Area contenuto principale {%- endcomment -%}
     <div class="{{ content_class }}">
@@ -831,6 +855,16 @@
       "label": "Mostra filtri tag",
       "default": true,
       "info": "Mostra i pulsanti di filtro basati sui blocchi Tag Marker."
+    },
+    {
+      "type": "select",
+      "id": "filters_position",
+      "label": "Posizione filtri",
+      "options": [
+        { "label": "Nella toolbar", "value": "toolbar" },
+        { "label": "Sotto la toolbar", "value": "below" }
+      ],
+      "default": "toolbar"
     },
     {
       "type": "checkbox",
