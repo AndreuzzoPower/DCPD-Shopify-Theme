@@ -863,7 +863,7 @@
         "show_legend": true,
         "legend_position": "below_map",
         "legend_alignment": "left",
-        "show_photo": true,
+        "show_photo": false,
         "show_description": true,
         "show_address": true,
         "show_phone": true,
