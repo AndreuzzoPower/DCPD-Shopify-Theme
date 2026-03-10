@@ -151,7 +151,8 @@
   "showDirections":{{ section.settings.show_directions_link }},
   "defaultMarkerIcon":{{ section.settings.default_marker_icon | default: '' | json }},
   "defaultMarkerColor":"{{ section.settings.default_marker_color | default: '#EA4335' }}",
-  "defaultMarkerImage":"{%- if section.settings.default_marker_image != blank -%}{{ section.settings.default_marker_image | image_url: width: 64 }}{%- endif -%}"
+  "defaultMarkerImage":"{%- if section.settings.default_marker_image != blank -%}{{ section.settings.default_marker_image | image_url: width: 64 }}{%- endif -%}",
+  "defaultMarkerLabel":{{ section.settings.default_marker_label | default: '' | json }}
 }
 {%- endcapture -%}
 
@@ -202,6 +203,17 @@
 
       {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'toolbar' -%}
         <div class="ms-sl__filters" role="group" aria-label="Filtra per categoria">
+          {%- if section.settings.default_marker_label != blank -%}
+            <button
+              type="button"
+              class="ms-sl__filter-btn"
+              data-tag="__default__"
+              aria-pressed="false"
+            >
+              <span class="ms-sl__filter-swatch" style="background-color:{{ section.settings.default_marker_color | default: '#EA4335' }}" aria-hidden="true"></span>
+              {{ section.settings.default_marker_label | escape }}
+            </button>
+          {%- endif -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
               <button
@@ -225,6 +237,16 @@
       {%- if section.settings.show_legend and section.settings.legend_position == 'toolbar' and tag_idx > 0 -%}
         {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
         <div class="ms-sl__legend ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
+          {%- if section.settings.default_marker_label != blank -%}
+            <span class="ms-sl__legend-item">
+              <span class="ms-sl__legend-swatch" style="background-color:{{ section.settings.default_marker_color | default: '#EA4335' }}" aria-hidden="true">
+                {%- if section.settings.default_marker_icon != blank -%}
+                  {%- render 'ms_icon', icon: section.settings.default_marker_icon -%}
+                {%- endif -%}
+              </span>
+              {{ section.settings.default_marker_label | escape }}
+            </span>
+          {%- endif -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
               <span class="ms-sl__legend-item">
@@ -244,6 +266,17 @@
     {%- capture ms_filters_below -%}
       {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'below' -%}
         <div class="ms-sl__filters ms-sl__filters--below" role="group" aria-label="Filtra per categoria">
+          {%- if section.settings.default_marker_label != blank -%}
+            <button
+              type="button"
+              class="ms-sl__filter-btn"
+              data-tag="__default__"
+              aria-pressed="false"
+            >
+              <span class="ms-sl__filter-swatch" style="background-color:{{ section.settings.default_marker_color | default: '#EA4335' }}" aria-hidden="true"></span>
+              {{ section.settings.default_marker_label | escape }}
+            </button>
+          {%- endif -%}
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
               <button
@@ -295,6 +328,16 @@
         {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
           {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
           <div class="ms-sl__legend ms-sl__legend--below ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
+            {%- if section.settings.default_marker_label != blank -%}
+              <span class="ms-sl__legend-item">
+                <span class="ms-sl__legend-swatch" style="background-color:{{ section.settings.default_marker_color | default: '#EA4335' }}" aria-hidden="true">
+                  {%- if section.settings.default_marker_icon != blank -%}
+                    {%- render 'ms_icon', icon: section.settings.default_marker_icon -%}
+                  {%- endif -%}
+                </span>
+                {{ section.settings.default_marker_label | escape }}
+              </span>
+            {%- endif -%}
             {%- for block in section.blocks -%}
               {%- if block.type == 'tag_marker' and block.settings.enabled -%}
                 <span class="ms-sl__legend-item">
@@ -850,6 +893,13 @@
     {
       "type": "header",
       "content": "Marker predefinito"
+    },
+    {
+      "type": "text",
+      "id": "default_marker_label",
+      "label": "Etichetta marker predefinito",
+      "default": "",
+      "info": "Se compilata, appare nei filtri e nella legenda per indicare i punti vendita senza un Tag Marker."
     },
     {
       "type": "text",

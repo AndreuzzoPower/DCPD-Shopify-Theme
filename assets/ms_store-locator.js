@@ -753,13 +753,23 @@ if (!customElements.get('ms-store-locator')) {
 
         if (visible && this.activeFilters.size > 0) {
           const storeTags = (store.tags || []).map(t => t.toLowerCase());
+          const hasTagMatch = this.#getTagMatch(store) !== null;
           let matchesFilter = false;
-          for (const f of this.activeFilters) {
-            if (storeTags.includes(f.toLowerCase())) {
-              matchesFilter = true;
-              break;
+
+          if (this.activeFilters.has('__default__') && !hasTagMatch) {
+            matchesFilter = true;
+          }
+
+          if (!matchesFilter) {
+            for (const f of this.activeFilters) {
+              if (f === '__default__') continue;
+              if (storeTags.includes(f.toLowerCase())) {
+                matchesFilter = true;
+                break;
+              }
             }
           }
+
           if (!matchesFilter) visible = false;
         }
 
