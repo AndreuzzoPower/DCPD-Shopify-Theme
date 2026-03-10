@@ -388,7 +388,7 @@
 /* --- Card image --- */
 .ms-sl__card-image {
   width: 100%;
-  aspect-ratio: var(--ms-sl-card-image-ratio, 16 / 10);
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   display: block;
 }
@@ -743,7 +743,7 @@
 }
 
 .ms-sl__list--grid .ms-sl__card-image {
-  aspect-ratio: var(--ms-sl-card-image-ratio, 4 / 3);
+  aspect-ratio: 4 / 3;
 }
 
 /* --------------------------------------------------------------------------
@@ -875,7 +875,7 @@
   .ms-sl__list--list .ms-sl__card-image {
     width: 180px;
     flex-shrink: 0;
-    aspect-ratio: var(--ms-sl-card-image-ratio, 4 / 3);
+    aspect-ratio: 4 / 3;
     align-self: flex-start;
   }
 }

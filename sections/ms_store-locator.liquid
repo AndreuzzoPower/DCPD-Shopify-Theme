@@ -487,18 +487,6 @@
     --ms-sl-card-border-color: {{ section.settings.card_border_color | default: '#e0e0e0' }};
     --ms-sl-card-text-align: {{ section.settings.card_text_alignment | default: 'left' }};
     --ms-sl-card-image-padding: {{ section.settings.card_image_padding | default: 0 }}px;
-    {%- case section.settings.card_image_ratio -%}
-      {%- when '16-10' -%}
-        --ms-sl-card-image-ratio: 16 / 10;
-      {%- when '4-3' -%}
-        --ms-sl-card-image-ratio: 4 / 3;
-      {%- when 'square' -%}
-        --ms-sl-card-image-ratio: 1 / 1;
-      {%- when 'portrait' -%}
-        --ms-sl-card-image-ratio: 3 / 4;
-      {%- else -%}
-        --ms-sl-card-image-ratio: auto;
-    {%- endcase -%}
     {%- case section.settings.card_shadow -%}
       {%- when 'light' -%}
         --ms-sl-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -520,6 +508,20 @@
         --ms-sl-card-shadow-hover: none;
     {%- endcase -%}
   }
+  {%- unless section.settings.card_image_ratio == 'adapt' -%}
+    #section-{{ section.id }} .ms-sl__card-image {
+      {%- case section.settings.card_image_ratio -%}
+        {%- when '16-10' -%}
+          aspect-ratio: 16 / 10;
+        {%- when '4-3' -%}
+          aspect-ratio: 4 / 3;
+        {%- when 'square' -%}
+          aspect-ratio: 1 / 1;
+        {%- when 'portrait' -%}
+          aspect-ratio: 3 / 4;
+      {%- endcase -%}
+    }
+  {%- endunless -%}
   #section-{{ section.id }} .ms-sl__map {
     height: {{ section.settings.mobile_map_height | default: 300 }}px;
   }
