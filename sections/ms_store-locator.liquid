@@ -337,6 +337,25 @@
                         <p class="ms-sl__card-company">{{ store.ragione_sociale.value | escape }}</p>
                       {%- endif -%}
 
+                      {%- if store.tags.value != blank -%}
+                        <div class="ms-sl__card-markers">
+                          {%- for tag in store.tags.value -%}
+                            {%- for block in section.blocks -%}
+                              {%- if block.type == 'tag_marker' and block.settings.enabled and block.settings.tag_value == tag -%}
+                                <span class="ms-sl__card-marker">
+                                  <span class="ms-sl__card-marker-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
+                                    {%- if block.settings.marker_icon != blank -%}
+                                      {%- render 'ms_icon', icon: block.settings.marker_icon -%}
+                                    {%- endif -%}
+                                  </span>
+                                  {{ block.settings.tag_label | escape }}
+                                </span>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endfor -%}
+                        </div>
+                      {%- endif -%}
+
                       {%- if section.settings.show_description and store.descrizione != blank -%}
                         <div class="ms-sl__card-description">
                           {%- capture ms_card_desc -%}{{ store.descrizione | metafield_tag }}{%- endcapture -%}
