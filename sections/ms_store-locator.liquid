@@ -59,6 +59,8 @@
       assign content_class = content_class | append: ' ms-sl__content--cards-only'
   endcase
 
+  assign toolbar_pos = section.settings.toolbar_position | default: 'top'
+
   assign list_class = 'ms-sl__list ms-sl__list--' | append: list_style
   if list_style == 'grid'
     assign cols = section.settings.list_columns | default: 3
@@ -148,7 +150,7 @@
   "showDistance":{{ section.settings.show_distance }},
   "showDirections":{{ section.settings.show_directions_link }},
   "defaultMarkerIcon":{{ section.settings.default_marker_icon | default: '' | json }},
-  "defaultMarkerColor":"{{ section.settings.default_marker_color | default: '#6b7280' }}",
+  "defaultMarkerColor":"{{ section.settings.default_marker_color | default: '#EA4335' }}",
   "defaultMarkerImage":"{%- if section.settings.default_marker_image != blank -%}{{ section.settings.default_marker_image | image_url: width: 64 }}{%- endif -%}"
 }
 {%- endcapture -%}
@@ -169,10 +171,10 @@
       </a>
     {%- endif -%}
 
-    {%- comment -%} Toolbar {%- endcomment -%}
-    <div class="ms-sl__toolbar">
+    {%- comment -%} Toolbar — catturiamo il contenuto per poterlo posizionare {%- endcomment -%}
+    {%- assign filters_pos = section.settings.filters_position | default: 'toolbar' -%}
 
-      {%- comment -%} Ricerca {%- endcomment -%}
+    {%- capture ms_toolbar_content -%}
       {%- if section.settings.enable_search -%}
         <div class="ms-sl__search" role="search" aria-label="Cerca punti vendita">
           <input
@@ -198,8 +200,6 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Filtri tag (toolbar) {%- endcomment -%}
-      {%- assign filters_pos = section.settings.filters_position | default: 'toolbar' -%}
       {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'toolbar' -%}
         <div class="ms-sl__filters" role="group" aria-label="Filtra per categoria">
           {%- for block in section.blocks -%}
@@ -222,7 +222,6 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Legenda (toolbar) {%- endcomment -%}
       {%- if section.settings.show_legend and section.settings.legend_position == 'toolbar' and tag_idx > 0 -%}
         {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
         <div class="ms-sl__legend ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
@@ -240,30 +239,35 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
+    {%- endcapture -%}
 
-    </div>
+    {%- capture ms_filters_below -%}
+      {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'below' -%}
+        <div class="ms-sl__filters ms-sl__filters--below" role="group" aria-label="Filtra per categoria">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+              <button
+                type="button"
+                class="ms-sl__filter-btn"
+                data-tag="{{ block.settings.tag_value | escape }}"
+                aria-pressed="false"
+                {{ block.shopify_attributes }}
+              >
+                <span class="ms-sl__filter-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true"></span>
+                {{ block.settings.tag_label | escape }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+          <button type="button" class="ms-sl__filter-reset" hidden aria-label="Azzera tutti i filtri">
+            Azzera filtri
+          </button>
+        </div>
+      {%- endif -%}
+    {%- endcapture -%}
 
-    {%- comment -%} Filtri tag (sotto toolbar) {%- endcomment -%}
-    {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'below' -%}
-      <div class="ms-sl__filters ms-sl__filters--below" role="group" aria-label="Filtra per categoria">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tag_marker' and block.settings.enabled -%}
-            <button
-              type="button"
-              class="ms-sl__filter-btn"
-              data-tag="{{ block.settings.tag_value | escape }}"
-              aria-pressed="false"
-              {{ block.shopify_attributes }}
-            >
-              <span class="ms-sl__filter-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true"></span>
-              {{ block.settings.tag_label | escape }}
-            </button>
-          {%- endif -%}
-        {%- endfor -%}
-        <button type="button" class="ms-sl__filter-reset" hidden aria-label="Azzera tutti i filtri">
-          Azzera filtri
-        </button>
-      </div>
+    {%- if toolbar_pos == 'top' -%}
+      <div class="ms-sl__toolbar">{{ ms_toolbar_content }}</div>
+      {{ ms_filters_below }}
     {%- endif -%}
 
     {%- comment -%} Area contenuto principale {%- endcomment -%}
@@ -271,6 +275,12 @@
 
       {%- comment -%} Mappa {%- endcomment -%}
       {%- if show_map -%}
+        {%- if toolbar_pos == 'above_map' -%}
+          <div class="ms-sl__map-col">
+            <div class="ms-sl__toolbar ms-sl__toolbar--above-map">{{ ms_toolbar_content }}</div>
+            {{ ms_filters_below }}
+        {%- endif -%}
+
         <div class="ms-sl__map-wrapper">
           <div
             class="ms-sl__map"
@@ -298,6 +308,10 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
+        {%- endif -%}
+
+        {%- if toolbar_pos == 'above_map' -%}
+          </div>{%- comment -%} chiude .ms-sl__map-col {%- endcomment -%}
         {%- endif -%}
       {%- endif -%}
 
@@ -366,12 +380,18 @@
                       <div class="ms-sl__card-info">
                         {%- if section.settings.show_address and store.indirizzo.value != blank -%}
                           <div class="ms-sl__card-info-row">
+                            {%- if section.settings.card_show_icons -%}
+                              <svg class="ms-sl__card-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {%- endif -%}
                             <span>{{ store.indirizzo.value | newline_to_br }}</span>
                           </div>
                         {%- endif -%}
 
                         {%- if section.settings.show_phone and store.telefono.value != blank -%}
                           <div class="ms-sl__card-info-row">
+                            {%- if section.settings.card_show_icons -%}
+                              <svg class="ms-sl__card-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            {%- endif -%}
                             <a href="tel:{{ store.telefono.value | strip | escape }}" aria-label="Chiama {{ store.nome.value | escape }}">
                               {{ store.telefono.value | escape }}
                             </a>
@@ -380,6 +400,9 @@
 
                         {%- if section.settings.show_email and store.email.value != blank -%}
                           <div class="ms-sl__card-info-row">
+                            {%- if section.settings.card_show_icons -%}
+                              <svg class="ms-sl__card-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            {%- endif -%}
                             <a href="mailto:{{ store.email.value | strip | escape }}" aria-label="Invia email a {{ store.nome.value | escape }}">
                               {{ store.email.value | escape }}
                             </a>
@@ -388,6 +411,9 @@
 
                         {%- if section.settings.show_website and store.sito.value != blank -%}
                           <div class="ms-sl__card-info-row">
+                            {%- if section.settings.card_show_icons -%}
+                              <svg class="ms-sl__card-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            {%- endif -%}
                             <a href="{{ store.sito.value }}" target="_blank" rel="noopener noreferrer" aria-label="Sito web di {{ store.nome.value | escape }}">
                               {{ store.sito.value | remove: 'https://' | remove: 'http://' | remove: 'www.' | truncate: 40 }}
                             </a>
@@ -609,6 +635,17 @@
     },
     {
       "type": "select",
+      "id": "toolbar_position",
+      "label": "Posizione toolbar",
+      "options": [
+        { "label": "Sopra tutto (default)", "value": "top" },
+        { "label": "Sopra la mappa", "value": "above_map" }
+      ],
+      "default": "top",
+      "info": "Con 'Sopra la mappa' la toolbar si posiziona direttamente sopra la mappa, nel layout sidebar resta nella colonna mappa."
+    },
+    {
+      "type": "select",
       "id": "list_style",
       "label": "Stile elenco punti vendita",
       "options": [
@@ -824,7 +861,7 @@
       "type": "color",
       "id": "default_marker_color",
       "label": "Colore marker predefinito",
-      "default": "#6b7280",
+      "default": "#EA4335",
       "info": "Colore del pin per i punti vendita senza un Tag Marker corrispondente."
     },
     {
@@ -984,6 +1021,13 @@
       "label": "Mostra distanza",
       "default": true,
       "info": "Mostra la distanza dal punto cercato o dalla posizione dell'utente."
+    },
+    {
+      "type": "checkbox",
+      "id": "card_show_icons",
+      "label": "Mostra icone nelle card",
+      "default": true,
+      "info": "Mostra le icone accanto a indirizzo, telefono, email e sito web nelle card."
     },
 
     {

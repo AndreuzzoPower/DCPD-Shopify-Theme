@@ -261,9 +261,10 @@ if (!customElements.get('ms-store-locator')) {
             className: 'ms-sl__marker ms-sl__marker--image'
           });
         } else {
+          const defaultDot = '<span class="ms-sl__marker-glyph"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="rgba(255,255,255,0.9)"/></svg></span>';
           const iconHtml = markerDef.icon
             ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(markerDef.icon)}</span>`
-            : '';
+            : defaultDot;
           divIcon = L.divIcon({
             className: 'ms-sl__marker',
             html: `<div class="ms-sl__marker-pin" style="background-color:${markerDef.color}">${iconHtml}</div>`,
@@ -385,7 +386,7 @@ if (!customElements.get('ms-store-locator')) {
     #buildGooglePinSvg(color) {
       return `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="45" viewBox="0 0 36 45">
         <path d="M18 0C8.06 0 0 8.06 0 18c0 13.5 18 27 18 27s18-13.5 18-27C36 8.06 27.94 0 18 0z" fill="${color}"/>
-        <circle cx="18" cy="18" r="6" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="18" cy="18" r="5" fill="rgba(255,255,255,0.85)"/>
       </svg>`;
     }
 
@@ -458,13 +459,13 @@ if (!customElements.get('ms-store-locator')) {
       const tagMatch = this.#getTagMatch(store);
       if (tagMatch) {
         return {
-          color: tagMatch.color || '#6b7280',
+          color: tagMatch.color || '#EA4335',
           icon: tagMatch.icon || '',
           image: tagMatch.image || ''
         };
       }
       return {
-        color: this.config.defaultMarkerColor || '#6b7280',
+        color: this.config.defaultMarkerColor || '#EA4335',
         icon: this.config.defaultMarkerIcon || '',
         image: this.config.defaultMarkerImage || ''
       };
@@ -479,6 +480,12 @@ if (!customElements.get('ms-store-locator')) {
     }
 
     #buildPopupHtml(store) {
+      const iconMap = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+      const iconPhone = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+      const iconMail = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>';
+      const iconGlobe = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
+      const iconNav = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>';
+
       let html = '<div class="ms-sl__popup">';
 
       if (store.foto) {
@@ -492,21 +499,27 @@ if (!customElements.get('ms-store-locator')) {
       }
 
       if (store.indirizzo) {
-        html += `<p class="ms-sl__popup-address">${this.#esc(store.indirizzo)}</p>`;
+        html += `<div class="ms-sl__popup-info-row">${iconMap}<span>${this.#esc(store.indirizzo)}</span></div>`;
       }
 
-      html += '<div class="ms-sl__popup-links">';
       if (store.telefono) {
-        html += `<a class="ms-sl__popup-link" href="tel:${store.telefono}">${this.#esc(store.telefono)}</a>`;
+        html += `<div class="ms-sl__popup-info-row">${iconPhone}<a href="tel:${store.telefono}">${this.#esc(store.telefono)}</a></div>`;
       }
-      if (store.email) {
-        html += `<a class="ms-sl__popup-link" href="mailto:${store.email}">${this.#esc(store.email)}</a>`;
-      }
-      if (this.config.showDirections) {
-        html += `<a class="ms-sl__popup-link" href="https://www.google.com/maps/dir/?api=1&destination=${store._lat},${store._lng}" target="_blank" rel="noopener noreferrer" aria-label="Ottieni indicazioni per ${this.#esc(store.nome) || 'questo punto vendita'}">Indicazioni</a>`;
-      }
-      html += '</div></div>';
 
+      if (store.email) {
+        html += `<div class="ms-sl__popup-info-row">${iconMail}<a href="mailto:${store.email}">${this.#esc(store.email)}</a></div>`;
+      }
+
+      if (store.sito) {
+        const cleanUrl = store.sito.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+        html += `<div class="ms-sl__popup-info-row">${iconGlobe}<a href="${store.sito}" target="_blank" rel="noopener noreferrer">${this.#esc(cleanUrl.length > 35 ? cleanUrl.substring(0, 35) + '…' : cleanUrl)}</a></div>`;
+      }
+
+      if (this.config.showDirections) {
+        html += `<div class="ms-sl__popup-actions"><a class="ms-sl__popup-action" href="https://www.google.com/maps/dir/?api=1&destination=${store._lat},${store._lng}" target="_blank" rel="noopener noreferrer" aria-label="Ottieni indicazioni per ${this.#esc(store.nome) || 'questo punto vendita'}">${iconNav} Indicazioni</a></div>`;
+      }
+
+      html += '</div>';
       return html;
     }
 
@@ -613,13 +626,16 @@ if (!customElements.get('ms-store-locator')) {
       );
     }
 
-    #addUserMarker(lat, lng) {
+    #removeUserMarker() {
+      if (!this._userMarker) return;
       const provider = this.config.provider || 'openstreetmap';
+      if (provider === 'openstreetmap') this.map.removeLayer(this._userMarker);
+      else this._userMarker.setMap(null);
+      this._userMarker = null;
+    }
 
-      if (this._userMarker) {
-        if (provider === 'openstreetmap') this.map.removeLayer(this._userMarker);
-        else this._userMarker.setMap(null);
-      }
+    #addUserMarker(lat, lng) {
+      this.#removeUserMarker();
 
       if (provider === 'openstreetmap') {
         const icon = L.divIcon({
@@ -698,7 +714,17 @@ if (!customElements.get('ms-store-locator')) {
         btn.setAttribute('aria-pressed', 'false');
       }
       if (this.filterReset) this.filterReset.hidden = true;
+
+      this.searchPosition = null;
+      if (this.searchInput) this.searchInput.value = '';
+      for (const store of this.stores) {
+        delete store._distance;
+      }
+      this.#hideDistances();
+      this.#removeUserMarker();
+
       this.#filterAndUpdate();
+      this.#fitBounds();
     }
 
     /* ------------------------------------------------------------------
@@ -840,7 +866,16 @@ if (!customElements.get('ms-store-locator')) {
 
     #focusStore(storeId) {
       this.#setActiveCard(storeId);
-      if (this.mapEl) {
+      if (!this.mapEl) return;
+
+      const mapWrapper = this.querySelector('.ms-sl__map-wrapper');
+      if (mapWrapper) {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        mapWrapper.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+
+        const delay = prefersReducedMotion ? 50 : 400;
+        setTimeout(() => this.#openMarkerPopup(storeId), delay);
+      } else {
         this.#openMarkerPopup(storeId);
       }
     }
