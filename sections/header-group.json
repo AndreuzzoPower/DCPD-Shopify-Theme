@@ -27,8 +27,8 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "link": "",
+            "text": "Link link link link",
+            "link": "shopify://products/test-1",
             "schedule_enabled": false,
             "schedule_start": "",
             "schedule_end": ""
