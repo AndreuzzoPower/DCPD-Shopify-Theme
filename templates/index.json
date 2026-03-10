@@ -747,77 +747,6 @@
         "line_weight": 1,
         "line_style": "solid"
       }
-    },
-    "ms_featured_product_capR3G": {
-      "type": "ms_featured-product",
-      "blocks": {
-        "text_VQjaTe": {
-          "type": "text",
-          "settings": {
-            "text": "{{ section.settings.product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
-        "title_mRGxVj": {
-          "type": "title",
-          "settings": {
-            "heading_size": "h1",
-            "title_tag": "h2",
-            "title_custom_class": ""
-          }
-        },
-        "price_EVMUhi": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker_JEiXkV": {
-          "type": "variant_picker",
-          "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "quantity_selector_FzmG3d": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons_g3JVEU": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "share_iDwxB6": {
-          "type": "share",
-          "settings": {
-            "share_label": "Condividi"
-          }
-        }
-      },
-      "block_order": [
-        "text_VQjaTe",
-        "title_mRGxVj",
-        "price_EVMUhi",
-        "variant_picker_JEiXkV",
-        "quantity_selector_FzmG3d",
-        "buy_buttons_g3JVEU",
-        "share_iDwxB6"
-      ],
-      "name": "MS Featured Product",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "color_scheme": "",
-        "product": "multi-variante-test",
-        "media_size": "medium",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": false,
-        "enable_video_looping": false
-      }
     }
   },
   "order": [
@@ -831,7 +760,6 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX",
-    "ms_featured_product_capR3G"
+    "ms_divider_qN8RVX"
   ]
 }
