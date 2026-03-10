@@ -848,7 +848,7 @@
         "default_lat": "41.9028",
         "default_lng": "12.4964",
         "map_style": "standard",
-        "enable_clustering": true,
+        "enable_clustering": false,
         "enable_fullscreen": true,
         "default_marker_icon": "",
         "default_marker_color": "#6b7280",
