@@ -250,7 +250,7 @@
 .ms-sl__results-count {
   flex-basis: 100%;
   color: rgba(var(--color-foreground), 0.6);
-  font-size: 0.875rem;
+  font-size: 14px;
   margin-top: -0.25rem;
 }
 
