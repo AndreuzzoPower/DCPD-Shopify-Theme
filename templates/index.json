@@ -792,7 +792,7 @@
           "settings": {
             "tag_value": "riv",
             "tag_label": "Rivenditore",
-            "marker_icon": "",
+            "marker_icon": "fa-solid fa-store",
             "marker_color": "#ecff00",
             "enabled": true
           }
@@ -802,7 +802,7 @@
           "settings": {
             "tag_value": "point",
             "tag_label": "Punto Vendita",
-            "marker_icon": "",
+            "marker_icon": "fa-solid fa-store",
             "marker_color": "#e53e3e",
             "enabled": true
           }
