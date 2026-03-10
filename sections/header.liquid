@@ -240,7 +240,7 @@
             {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
               <div>
                 <div class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</div>
-                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+                {%- render 'country-localization', localPosition: 'HeaderCountry', showCurrency: section.settings.show_country_currency -%}
               </div>
             {%- endform -%}
           </localization-form>
@@ -655,6 +655,13 @@
       "default": true,
       "label": "t:sections.header.settings.enable_country_selector.label",
       "info": "t:sections.header.settings.enable_country_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_currency",
+      "default": false,
+      "label": "Mostra valuta nel selettore paese",
+      "info": "Visualizza codice e simbolo valuta accanto al nome del paese"
     },
     {
       "type": "checkbox",

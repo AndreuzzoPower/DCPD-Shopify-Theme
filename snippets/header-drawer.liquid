@@ -217,7 +217,7 @@
                         <div class="visually-hidden" id="HeaderCountryMobileLabel">
                           {{ 'localization.country_label' | t }}
                         </div>
-                        {%- render 'country-localization', localPosition: 'HeaderCountryMobile' -%}
+                        {%- render 'country-localization', localPosition: 'HeaderCountryMobile', showCurrency: section.settings.show_country_currency -%}
                       </div>
                     {%- endform -%}
                   </localization-form>

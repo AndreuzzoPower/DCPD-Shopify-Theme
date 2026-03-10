@@ -3,6 +3,7 @@
 
   Accepts:
     - localPosition: pass in the position in which the form is coming up to create specific IDs
+    - showCurrency: true/false - whether to display currency next to country name
 {%- endcomment -%}
 
 {%- liquid
@@ -20,7 +21,7 @@
   endif
 
   assign show_currencies = false
-  if currencies.size > 1
+  if showCurrency and currencies.size > 1
     assign show_currencies = true
   endif
 %}
@@ -34,9 +35,11 @@
     aria-describedby="{{ localPosition }}Label"
   >
     <span>
-      {{- localization.country.name }} |
+      {{- localization.country.name -}}
+      {%- if showCurrency %} |
       {{ localization.country.currency.iso_code }}
       {{ localization.country.currency.symbol -}}
+      {%- endif -%}
     </span>
     {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
   </button>
