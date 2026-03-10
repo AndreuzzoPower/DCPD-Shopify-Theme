@@ -64,6 +64,13 @@ body.ms-catalog-mode quantity-popover,
 body.ms-catalog-mode .quantity,
 body.ms-catalog-mode .product-form__quantity { display: none !important; }
 
+body.ms-catalog-mode .ms-min-order-label { display: none !important; }
+
+/* ── Nascondi prezzi (catalogo) ── */
+body.ms-catalog-hide-prices .price,
+body.ms-catalog-hide-prices price-per-item,
+body.ms-catalog-hide-prices .volume-pricing { display: none !important; }
+
 /* ── IVA ── */
 .price__iva {
   display: block;

@@ -230,7 +230,7 @@
               endif
             -%}
             {%- if card_effective_min > 1 and cp_show_min -%}
-              <p class="caption">{{ 'products.product.quantity.min_order' | t: quantity: card_effective_min }}</p>
+              <p class="caption ms-min-order-label">{{ 'products.product.quantity.min_order' | t: quantity: card_effective_min }}</p>
             {%- endif -%}
             {%- if card_product.quantity_price_breaks_configured? -%}
               {% if card_product.variants_count == 1 and quick_add == 'bulk' %}

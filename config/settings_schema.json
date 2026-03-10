@@ -1924,6 +1924,13 @@
         "info": "Nasconde icona carrello, bottoni di acquisto e quantita per tutti gli utenti. La pagina carrello ridireziona alla home."
       },
       {
+        "type": "checkbox",
+        "id": "ms_catalog_hide_prices",
+        "label": "Nascondi i prezzi",
+        "default": false,
+        "info": "Nasconde tutti i prezzi dei prodotti nel sito. Funziona solo quando la modalita solo catalogo e attiva."
+      },
+      {
         "type": "header",
         "content": "IVA"
       },
