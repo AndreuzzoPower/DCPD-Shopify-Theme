@@ -37,7 +37,9 @@
           if (container.dataset.msProcessed) continue;
 
           var handle = container.dataset.msMegaExtraTarget;
-          var menuCols = parseInt(container.dataset.msMegaExtraMenuCols, 10) || 8;
+          var menuColsRaw = container.dataset.msMegaExtraMenuCols;
+          var menuCols = menuColsRaw !== undefined ? parseInt(menuColsRaw, 10) : 8;
+          if (isNaN(menuCols)) menuCols = 8;
           var contentCols = parseInt(container.dataset.msMegaExtraContentCols, 10) || 4;
           var showMobile = container.dataset.msMegaExtraShowMobile === 'true';
 
@@ -50,16 +52,23 @@
 
           if (megaContent.querySelector('.ms-mega-extra__wrapper')) continue;
 
+          var hideMenu = menuCols === 0;
+          var effectiveContentCols = hideMenu ? 12 : contentCols;
+
           var wrapper = document.createElement('div');
           wrapper.className = 'ms-mega-extra__wrapper page-width';
           wrapper.style.setProperty('--ms-mega-extra-menu-cols', menuCols);
-          wrapper.style.setProperty('--ms-mega-extra-content-cols', contentCols);
+          wrapper.style.setProperty('--ms-mega-extra-content-cols', effectiveContentCols);
 
-          var menuArea = document.createElement('div');
-          menuArea.className = 'ms-mega-extra__menu-area';
-
-          megaList.classList.remove('page-width');
-          menuArea.appendChild(megaList);
+          if (!hideMenu) {
+            var menuArea = document.createElement('div');
+            menuArea.className = 'ms-mega-extra__menu-area';
+            megaList.classList.remove('page-width');
+            menuArea.appendChild(megaList);
+            wrapper.appendChild(menuArea);
+          } else {
+            megaList.style.display = 'none';
+          }
 
           var contentArea = document.createElement('div');
           contentArea.className = 'ms-mega-extra__content-area';
@@ -72,7 +81,6 @@
             }
           }
 
-          wrapper.appendChild(menuArea);
           wrapper.appendChild(contentArea);
           megaContent.insertBefore(wrapper, megaContent.firstChild);
 
@@ -146,13 +154,13 @@
     {
       "type": "range",
       "id": "menu_columns",
-      "min": 1,
+      "min": 0,
       "max": 12,
       "step": 1,
       "unit": "col",
       "label": "Colonne menu",
       "default": 8,
-      "info": "Colonne (su base 12) per i link del menu. Con 12 i contenuti extra vanno sotto."
+      "info": "Colonne (su base 12) per i link del menu. 0 = nasconde i link menu. Con 12 i contenuti extra vanno sotto."
     },
     {
       "type": "range",

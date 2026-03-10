@@ -70,6 +70,25 @@
               </div>
             </details>
           </header-menu>
+        {%- elsif link.url == '#mm' -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu" data-menu-handle="{{ link.handle }}">
+              <summary
+                id="HeaderMenu-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset"
+              >
+                <span>{{- link.title | escape -}}</span>
+                {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+              </summary>
+              <div
+                id="MegaMenu-Content-{{ forloop.index }}"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                tabindex="-1"
+              >
+                <ul class="mega-menu__list page-width" role="list"></ul>
+              </div>
+            </details>
+          </header-menu>
         {%- else -%}
           <a
             id="HeaderMenu-{{ link.handle }}"

@@ -126,6 +126,39 @@
                         </div>
                       </div>
                     </details>
+                  {%- elsif link.url == '#mm' -%}
+                    <details id="Details-menu-drawer-menu-item-{{ forloop.index }}" data-menu-handle="{{ link.handle }}">
+                      <summary
+                        id="HeaderDrawer-{{ link.handle }}"
+                        class="menu-drawer__menu-item list-menu__item link link--text focus-inset"
+                      >
+                        {{ link.title | escape }}
+                        <span class="svg-wrapper">
+                          <span class="visually-hidden">Navigazione contenuti</span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
+                        </span>
+                        <span class="svg-wrapper">
+                          <span class="visually-hidden">Navigazione contenuti</span>
+                          {%- render 'ms_icon', icon: settings.ms_icon_caret -%}
+                        </span>
+                      </summary>
+                      <div
+                        id="link-{{ link.handle | escape }}"
+                        class="menu-drawer__submenu has-submenu gradient motion-reduce"
+                        tabindex="-1"
+                      >
+                        <div class="menu-drawer__inner-submenu">
+                          <button class="menu-drawer__close-button link link--text focus-inset" aria-expanded="true">
+                            <span class="svg-wrapper">
+                              <span class="visually-hidden">Torna al menu genitore</span>
+                              {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
+                            </span>
+                            {{ link.title | escape }}
+                          </button>
+                          <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1"></ul>
+                        </div>
+                      </div>
+                    </details>
                   {%- else -%}
                     <a
                       id="HeaderDrawer-{{ link.handle }}"

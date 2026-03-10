@@ -32,6 +32,10 @@
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 
+.ms-mega-extra__wrapper:not(:has(.ms-mega-extra__menu-area)) .ms-mega-extra__content-area {
+  grid-column: 1 / -1;
+}
+
 @media screen and (max-width: 989px) {
   .ms-mega-extra__content-area--hide-mobile {
     display: none !important;
