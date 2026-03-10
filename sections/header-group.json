@@ -217,7 +217,7 @@
       "settings": {
         "menu_handle": "elementi",
         "show_on_mobile": false,
-        "menu_columns": 1,
+        "menu_columns": 0,
         "content_columns": 12
       }
     }
