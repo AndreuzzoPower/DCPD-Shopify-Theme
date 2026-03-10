@@ -41,12 +41,6 @@
   assign stores = shop.metaobjects.storelocator.values
   assign stores_count = stores.size
 
-  assign title_tag = section.settings.title_tag | default: 'h2'
-  assign title_classes = section.settings.heading_size | default: 'h1'
-  if section.settings.title_custom_class != blank
-    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-  endif
-
   assign content_class = 'ms-sl__content'
   case layout
     when 'map_sidebar'
@@ -124,6 +118,7 @@
       "label":{{ block.settings.tag_label | json }},
       "icon":{{ block.settings.marker_icon | default: '' | json }},
       "color":"{{ block.settings.marker_color | default: '#E53E3E' }}",
+      "image":"{%- if block.settings.marker_image != blank -%}{{ block.settings.marker_image | image_url: width: 64 }}{%- endif -%}",
       "enabled":{{ block.settings.enabled }}
     }
     {%- assign tag_idx = tag_idx | plus: 1 -%}
@@ -149,7 +144,10 @@
   "enableGeo":{{ section.settings.enable_geolocation }},
   "enableFilters":{{ section.settings.enable_filters }},
   "showDistance":{{ section.settings.show_distance }},
-  "showDirections":{{ section.settings.show_directions_link }}
+  "showDirections":{{ section.settings.show_directions_link }},
+  "defaultMarkerIcon":{{ section.settings.default_marker_icon | default: '' | json }},
+  "defaultMarkerColor":"{{ section.settings.default_marker_color | default: '#6b7280' }}",
+  "defaultMarkerImage":"{%- if section.settings.default_marker_image != blank -%}{{ section.settings.default_marker_image | image_url: width: 64 }}{%- endif -%}"
 }
 {%- endcapture -%}
 
@@ -167,20 +165,6 @@
       <a class="ms-sl__skip-link" href="#ms-sl-list-{{ section.id }}">
         <span class="visually-hidden">Vai alla lista dei punti vendita</span>
       </a>
-    {%- endif -%}
-
-    {%- comment -%} Header {%- endcomment -%}
-    {%- if section.settings.title != blank or section.settings.subtitle != blank -%}
-      <div class="ms-sl__header">
-        {%- if section.settings.title != blank -%}
-          <{{ title_tag }} class="{{ title_classes }}">
-            {{- section.settings.title | escape -}}
-          </{{ title_tag }}>
-        {%- endif -%}
-        {%- if section.settings.subtitle != blank -%}
-          <p class="ms-sl__subtitle">{{ section.settings.subtitle | escape }}</p>
-        {%- endif -%}
-      </div>
     {%- endif -%}
 
     {%- comment -%} Toolbar {%- endcomment -%}
@@ -230,9 +214,10 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Legenda {%- endcomment -%}
-      {%- if section.settings.show_legend and section.settings.legend_position != 'none' and tag_idx > 0 -%}
-        <div class="ms-sl__legend" aria-label="Legenda categorie">
+      {%- comment -%} Legenda (toolbar) {%- endcomment -%}
+      {%- if section.settings.show_legend and section.settings.legend_position == 'toolbar' and tag_idx > 0 -%}
+        {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
+        <div class="ms-sl__legend ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
               <span class="ms-sl__legend-item">
@@ -387,11 +372,30 @@
             <div class="ms-sl__empty-icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="48" height="48"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </div>
-            {{ section.settings.empty_message | default: 'Nessun punto vendita trovato per la tua ricerca.' | escape }}
+            Nessun punto vendita trovato per la tua ricerca.
           </div>
         </div>
       {%- endif -%}
     </div>
+
+    {%- comment -%} Legenda (sotto mappa) {%- endcomment -%}
+    {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
+      {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
+      <div class="ms-sl__legend ms-sl__legend--below ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'tag_marker' and block.settings.enabled -%}
+            <span class="ms-sl__legend-item">
+              <span class="ms-sl__legend-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
+                {%- if block.settings.marker_icon != blank -%}
+                  {%- render 'ms_icon', icon: block.settings.marker_icon -%}
+                {%- endif -%}
+              </span>
+              {{ block.settings.tag_label | escape }}
+            </span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
 
     {%- comment -%} Messaggio editor se nessun metaobject {%- endcomment -%}
     {%- if stores_count == 0 and request.design_mode -%}
@@ -541,63 +545,6 @@
 
     {
       "type": "header",
-      "content": "Contenuto"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titolo",
-      "default": "I Nostri Punti Vendita"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Dimensione titolo",
-      "options": [
-        { "label": "Piccola", "value": "h2" },
-        { "label": "Media", "value": "h1" },
-        { "label": "Grande", "value": "h0" },
-        { "label": "Extra grande", "value": "hxl" },
-        { "label": "Extra extra grande", "value": "hxxl" }
-      ],
-      "default": "h1"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Sottotitolo"
-    },
-    {
-      "type": "text",
-      "id": "empty_message",
-      "label": "Messaggio nessun risultato",
-      "default": "Nessun punto vendita trovato per la tua ricerca."
-    },
-
-    {
-      "type": "header",
       "content": "Mappa"
     },
     {
@@ -677,6 +624,30 @@
 
     {
       "type": "header",
+      "content": "Marker predefinito"
+    },
+    {
+      "type": "text",
+      "id": "default_marker_icon",
+      "label": "Icona marker predefinito",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-map-pin). Vuoto = solo colore. Viene usata quando il punto vendita non corrisponde a nessun Tag Marker."
+    },
+    {
+      "type": "color",
+      "id": "default_marker_color",
+      "label": "Colore marker predefinito",
+      "default": "#6b7280",
+      "info": "Colore del pin per i punti vendita senza un Tag Marker corrispondente."
+    },
+    {
+      "type": "image_picker",
+      "id": "default_marker_image",
+      "label": "Immagine marker predefinito",
+      "info": "Se impostata, sostituisce icona e colore per i marker senza un Tag Marker corrispondente."
+    },
+
+    {
+      "type": "header",
       "content": "Ricerca e Filtri"
     },
     {
@@ -739,9 +710,21 @@
       "label": "Posizione legenda",
       "options": [
         { "label": "Nella toolbar", "value": "toolbar" },
+        { "label": "Sotto la mappa", "value": "below_map" },
         { "label": "Non mostrare", "value": "none" }
       ],
       "default": "toolbar"
+    },
+    {
+      "type": "select",
+      "id": "legend_alignment",
+      "label": "Allineamento legenda",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Centro", "value": "center" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "left"
     },
 
     {
@@ -863,6 +846,12 @@
           "id": "marker_color",
           "label": "Colore marker",
           "default": "#E53E3E"
+        },
+        {
+          "type": "image_picker",
+          "id": "marker_image",
+          "label": "Immagine marker",
+          "info": "Immagine personalizzata per il marker (es. logo o pin custom). Se impostata, sostituisce icona e colore sulla mappa."
         },
         {
           "type": "checkbox",

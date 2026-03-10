@@ -145,7 +145,10 @@ if (!customElements.get('ms-store-locator')) {
 
     #initLeaflet() {
       const tileUrl = this.#getLeafletTileUrl();
-      const tileAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+      const style = this.config.style || 'standard';
+      const osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+      const cartoAttrib = osmAttrib + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
+      const tileAttrib = (style === 'grayscale' || style === 'dark') ? cartoAttrib : osmAttrib;
 
       this.map = L.map(this.mapEl, {
         center: [this.config.lat, this.config.lng],
@@ -176,9 +179,9 @@ if (!customElements.get('ms-store-locator')) {
       const style = this.config.style || 'standard';
       switch (style) {
         case 'grayscale':
-          return 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+          return 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
         case 'dark':
-          return 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+          return 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
         default:
           return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       }
@@ -190,19 +193,29 @@ if (!customElements.get('ms-store-locator')) {
       for (const store of this.stores) {
         if (!store._lat && !store._lng) continue;
 
-        const tagMatch = this.#getTagMatch(store);
-        const color = tagMatch ? tagMatch.color : '#6b7280';
-        const iconHtml = tagMatch && tagMatch.icon
-          ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(tagMatch.icon)}</span>`
-          : '';
+        const markerDef = this.#getMarkerDef(store);
 
-        const divIcon = L.divIcon({
-          className: 'ms-sl__marker',
-          html: `<div class="ms-sl__marker-pin" style="background-color:${color}">${iconHtml}</div>`,
-          iconSize: [36, 45],
-          iconAnchor: [18, 45],
-          popupAnchor: [0, -45]
-        });
+        let divIcon;
+        if (markerDef.image) {
+          divIcon = L.icon({
+            iconUrl: markerDef.image,
+            iconSize: [36, 45],
+            iconAnchor: [18, 45],
+            popupAnchor: [0, -45],
+            className: 'ms-sl__marker ms-sl__marker--image'
+          });
+        } else {
+          const iconHtml = markerDef.icon
+            ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(markerDef.icon)}</span>`
+            : '';
+          divIcon = L.divIcon({
+            className: 'ms-sl__marker',
+            html: `<div class="ms-sl__marker-pin" style="background-color:${markerDef.color}">${iconHtml}</div>`,
+            iconSize: [36, 45],
+            iconAnchor: [18, 45],
+            popupAnchor: [0, -45]
+          });
+        }
 
         const marker = L.marker([store._lat, store._lng], { icon: divIcon });
         marker._storeId = store.id;
@@ -270,18 +283,28 @@ if (!customElements.get('ms-store-locator')) {
       for (const store of this.stores) {
         if (!store._lat && !store._lng) continue;
 
-        const tagMatch = this.#getTagMatch(store);
-        const color = tagMatch ? tagMatch.color : '#6b7280';
+        const markerDef = this.#getMarkerDef(store);
 
-        const svgPin = this.#buildGooglePinSvg(color);
-        const marker = new google.maps.Marker({
-          position: { lat: store._lat, lng: store._lng },
-          map: this.map,
-          icon: {
+        let markerIcon;
+        if (markerDef.image) {
+          markerIcon = {
+            url: markerDef.image,
+            scaledSize: new google.maps.Size(36, 45),
+            anchor: new google.maps.Point(18, 45)
+          };
+        } else {
+          const svgPin = this.#buildGooglePinSvg(markerDef.color);
+          markerIcon = {
             url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgPin),
             scaledSize: new google.maps.Size(36, 45),
             anchor: new google.maps.Point(18, 45)
-          },
+          };
+        }
+
+        const marker = new google.maps.Marker({
+          position: { lat: store._lat, lng: store._lng },
+          map: this.map,
+          icon: markerIcon,
           title: store.nome
         });
 
@@ -370,6 +393,22 @@ if (!customElements.get('ms-store-locator')) {
         if (def) return def;
       }
       return null;
+    }
+
+    #getMarkerDef(store) {
+      const tagMatch = this.#getTagMatch(store);
+      if (tagMatch) {
+        return {
+          color: tagMatch.color || '#6b7280',
+          icon: tagMatch.icon || '',
+          image: tagMatch.image || ''
+        };
+      }
+      return {
+        color: this.config.defaultMarkerColor || '#6b7280',
+        icon: this.config.defaultMarkerIcon || '',
+        image: this.config.defaultMarkerImage || ''
+      };
     }
 
     #renderIconHtml(iconName) {

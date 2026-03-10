@@ -22,21 +22,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Header
-   -------------------------------------------------------------------------- */
-
-.ms-sl__header {
-  margin-bottom: var(--ms-sl-gap);
-  text-align: center;
-}
-
-.ms-sl__subtitle {
-  margin-top: 0.5rem;
-  opacity: 0.7;
-}
-
-/* --------------------------------------------------------------------------
-   3. Toolbar (Search + Filters + Legend + Count)
+   2. Toolbar (Search + Filters + Legend + Count)
    -------------------------------------------------------------------------- */
 
 .ms-sl__toolbar {
@@ -62,8 +48,8 @@
   border-radius: var(--ms-sl-radius);
   background: rgb(var(--color-background));
   color: rgb(var(--color-foreground));
-  font-size: 0.875rem;
   font-family: inherit;
+  font-size: inherit;
   transition: border-color var(--ms-sl-transition);
 }
 
@@ -141,8 +127,8 @@
   border-radius: 50px;
   background: rgb(var(--color-background));
   color: rgb(var(--color-foreground));
-  font-size: 0.8125rem;
   font-family: inherit;
+  font-size: inherit;
   cursor: pointer;
   transition: all var(--ms-sl-transition);
   white-space: nowrap;
@@ -181,8 +167,8 @@
   border-radius: 50px;
   background: none;
   color: rgba(var(--color-foreground), 0.6);
-  font-size: 0.8125rem;
   font-family: inherit;
+  font-size: inherit;
   cursor: pointer;
   text-decoration: underline;
   transition: color var(--ms-sl-transition);
@@ -207,7 +193,6 @@
   border: 1px solid rgba(var(--color-foreground), 0.1);
   border-radius: var(--ms-sl-radius);
   background: rgba(var(--color-foreground), 0.02);
-  font-size: 0.8125rem;
 }
 
 .ms-sl__legend-item {
@@ -236,10 +221,27 @@
   fill: #fff;
 }
 
+/* Legend alignment */
+.ms-sl__legend--align-left {
+  justify-content: flex-start;
+}
+
+.ms-sl__legend--align-center {
+  justify-content: center;
+}
+
+.ms-sl__legend--align-right {
+  justify-content: flex-end;
+}
+
+/* Legend below map */
+.ms-sl__legend--below {
+  margin-top: 1rem;
+}
+
 /* --- Results Count --- */
 
 .ms-sl__results-count {
-  font-size: 0.8125rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
@@ -377,13 +379,11 @@
 }
 
 .ms-sl__card-company {
-  font-size: 0.8125rem;
   opacity: 0.7;
   margin: 0;
 }
 
 .ms-sl__card-description {
-  font-size: 0.875rem;
   line-height: 1.5;
   opacity: 0.8;
   display: -webkit-box;
@@ -396,7 +396,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  font-size: 0.8125rem;
   margin-top: auto;
 }
 
@@ -432,7 +431,6 @@
 }
 
 .ms-sl__card-distance {
-  font-size: 0.75rem;
   font-weight: 600;
   color: rgba(var(--color-foreground), 0.55);
   display: none;
@@ -455,7 +453,7 @@
   gap: 0.25rem;
   padding: 0.2rem 0.6rem;
   border-radius: 50px;
-  font-size: 0.6875rem;
+  font-size: 0.85em;
   background: rgba(var(--color-foreground), 0.06);
   color: rgba(var(--color-foreground), 0.75);
 }
@@ -485,8 +483,8 @@
   border-radius: var(--ms-sl-radius);
   background: none;
   color: rgb(var(--color-foreground));
-  font-size: 0.75rem;
   font-family: inherit;
+  font-size: inherit;
   text-decoration: none;
   cursor: pointer;
   transition: all var(--ms-sl-transition);
@@ -527,18 +525,17 @@
 
 .ms-sl__popup-name {
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   margin: 0 0 0.25rem;
 }
 
 .ms-sl__popup-company {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   opacity: 0.65;
   margin: 0 0 0.5rem;
 }
 
 .ms-sl__popup-address {
-  font-size: 0.8125rem;
   margin: 0 0 0.5rem;
   white-space: pre-line;
   line-height: 1.4;
@@ -548,7 +545,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 .ms-sl__popup-link {
@@ -620,6 +617,14 @@
 .ms-sl__marker-glyph .icon-lib-wrapper i {
   color: #fff;
   font-size: 14px;
+}
+
+/* Marker with custom image */
+.ms-sl__marker--image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Default marker (no tag match) */
@@ -913,7 +918,6 @@
   color: rgb(var(--color-background));
   font-family: inherit;
   font-weight: 600;
-  font-size: 0.8125rem;
 }
 
 /* ==========================================================================
