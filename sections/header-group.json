@@ -211,7 +211,7 @@
           "type": "featured-article",
           "name": "Articolo In Evidenza",
           "settings": {
-            "desktop_layout": 4,
+            "desktop_layout": 3,
             "tablet_layout": 6,
             "mobile_layout": 12,
             "vertical_align": "start",
