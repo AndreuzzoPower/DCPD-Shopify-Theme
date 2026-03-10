@@ -557,6 +557,23 @@
     "ms_multicolumn_Bh7pk7": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_zNqc7k": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "GUEST",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità, dai settaggi generali, di nascondere degli elementi agli utenti non loggati come ad esempio il prezzo, la possibilità di acquisto o le varianti.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "section_background_yeVTAP": {
           "type": "section_background",
           "settings": {
@@ -684,6 +701,7 @@
         }
       },
       "block_order": [
+        "column_zNqc7k",
         "section_background_yeVTAP",
         "column_PMRyFm",
         "column_cjkdfj",
