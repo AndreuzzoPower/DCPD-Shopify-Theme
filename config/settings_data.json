@@ -159,7 +159,7 @@
     "ms_min_order_enabled": true,
     "ms_min_order_default": 10,
     "ms_min_order_show_label": true,
-    "ms_catalog_mode": false,
+    "ms_catalog_mode": true,
     "ms_catalog_hide_prices": false,
     "ms_guest_hide_prices": true,
     "ms_guest_hide_buy": true,
