@@ -2259,6 +2259,15 @@ input[type='checkbox'] {
   font-weight: var(--font-body-weight);
 }
 
+.announcement-bar__message a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.announcement-bar__message a:hover {
+  opacity: 0.75;
+}
+
 .announcement-bar-slider--no-arrows > .slider-button {
   display: none;
 }

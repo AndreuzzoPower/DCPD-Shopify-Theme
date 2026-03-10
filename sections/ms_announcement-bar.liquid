@@ -65,7 +65,15 @@
           {%- endif -%}
         >
           {%- if block.settings.text != blank -%}
-            {%- if block.settings.link != blank -%}
+            {%- liquid
+              assign _text_has_link = false
+              if block.settings.text contains '<a '
+                assign _text_has_link = true
+              elsif block.settings.text contains '<a>'
+                assign _text_has_link = true
+              endif
+            -%}
+            {%- if block.settings.link != blank and _text_has_link == false -%}
               <a
                 href="{{ block.settings.link }}"
                 class="announcement-bar__link link link--text focus-inset animate-arrow"
@@ -73,11 +81,11 @@
             {%- endif -%}
             <div class="announcement-bar__message">
               <span>{{ block.settings.text }}</span>
-              {%- if block.settings.link != blank -%}
+              {%- if block.settings.link != blank and _text_has_link == false -%}
                 {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
               {%- endif -%}
             </div>
-            {%- if block.settings.link != blank -%}
+            {%- if block.settings.link != blank and _text_has_link == false -%}
               </a>
             {%- endif -%}
           {%- endif -%}
@@ -149,7 +157,15 @@
                   aria-label="{{ 'sections.header.announcement' | t }}"
                 >
                   {%- if block.settings.text != blank -%}
-                    {%- if block.settings.link != blank -%}
+                    {%- liquid
+                      assign _text_has_link = false
+                      if block.settings.text contains '<a '
+                        assign _text_has_link = true
+                      elsif block.settings.text contains '<a>'
+                        assign _text_has_link = true
+                      endif
+                    -%}
+                    {%- if block.settings.link != blank and _text_has_link == false -%}
                       <a
                         href="{{ block.settings.link }}"
                         class="announcement-bar__link link link--text focus-inset animate-arrow"
@@ -157,11 +173,11 @@
                     {%- endif -%}
                     <div class="announcement-bar__message">
                       <span>{{ block.settings.text }}</span>
-                      {%- if block.settings.link != blank -%}
+                      {%- if block.settings.link != blank and _text_has_link == false -%}
                         {%- render 'ms_icon', icon: settings.ms_icon_arrow -%}
                       {%- endif -%}
                     </div>
-                    {%- if block.settings.link != blank -%}
+                    {%- if block.settings.link != blank and _text_has_link == false -%}
                       </a>
                     {%- endif -%}
                   {%- endif -%}
