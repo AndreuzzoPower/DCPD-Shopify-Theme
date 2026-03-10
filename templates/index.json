@@ -557,14 +557,14 @@
     "ms_multicolumn_Bh7pk7": {
       "type": "ms_multicolumn",
       "blocks": {
-        "column_zNqc7k": {
+        "column_PMRyFm": {
           "type": "column",
           "settings": {
             "image_alt": "",
-            "title": "GUEST",
+            "title": "CATALOGO",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Possibilità, dai settaggi generali, di nascondere degli elementi agli utenti non loggati come ad esempio il prezzo, la possibilità di acquisto o le varianti.</p>",
+            "text": "<p>Possibilità di impostare la modalità catalogo quindi nasconde quantità, bottoni di acquisto, icona carrello e inibisce la pagina carrello, c'è la poaaibilità di nascondere il prezzo.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -574,20 +574,14 @@
             "link_button_icon_position": "after"
           }
         },
-        "section_background_yeVTAP": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#919191"
-          }
-        },
-        "column_PMRyFm": {
+        "column_zNqc7k": {
           "type": "column",
           "settings": {
             "image_alt": "",
-            "title": "CATALOGO",
+            "title": "GUEST",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Possibilità di impostare la modalità catalogo quindi nasconde quantità, bottoni di acquisto, icona carrello e inibisce la pagina carrello.</p>",
+            "text": "<p>Possibilità, dai settaggi generali, di nascondere degli elementi agli utenti non loggati come ad esempio il prezzo, la possibilità di acquisto o le varianti.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -698,18 +692,24 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "section_background_yeVTAP": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#919191"
+          }
         }
       },
       "block_order": [
-        "column_zNqc7k",
-        "section_background_yeVTAP",
         "column_PMRyFm",
+        "column_zNqc7k",
         "column_cjkdfj",
         "column_jB8mQQ",
         "column_FdXgw7",
         "column_7DWF47",
         "column_RTHpCB",
-        "column_BzfMtC"
+        "column_BzfMtC",
+        "section_background_yeVTAP"
       ],
       "name": "MS Multicolonna",
       "settings": {
