@@ -787,6 +787,16 @@
     "ms_store_locator_c9JaGH": {
       "type": "ms_store-locator",
       "blocks": {
+        "tag_marker_X7VNNW": {
+          "type": "tag_marker",
+          "settings": {
+            "tag_value": "riv",
+            "tag_label": "Rivenditore",
+            "marker_icon": "",
+            "marker_color": "#ecff00",
+            "enabled": true
+          }
+        },
         "tag_marker_e9rqJf": {
           "type": "tag_marker",
           "settings": {
@@ -810,6 +820,7 @@
         }
       },
       "block_order": [
+        "tag_marker_X7VNNW",
         "tag_marker_e9rqJf",
         "section_padding_bptQjx"
       ],
@@ -821,12 +832,6 @@
         "sidebar_position": "right",
         "list_style": "list",
         "list_columns": 3,
-        "title": "I Nostri Punti Vendita",
-        "title_tag": "h2",
-        "heading_size": "h1",
-        "title_custom_class": "",
-        "subtitle": "",
-        "empty_message": "Nessun punto vendita trovato per la tua ricerca.",
         "map_provider": "openstreetmap",
         "google_maps_api_key": "",
         "map_height": 500,
