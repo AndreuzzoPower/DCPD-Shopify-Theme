@@ -248,7 +248,7 @@
 
         {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
           <localization-form class="small-hide medium-hide" data-prevent-hide>
-            xx{%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
               <div>
                 <div class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</div>
                 {%- render 'language-localization', localPosition: 'HeaderLanguage', displayMode: section.settings.language_display_mode, displayFormat: section.settings.language_display_format -%}
