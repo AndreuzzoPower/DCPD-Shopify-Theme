@@ -851,7 +851,7 @@
         "map_style": "standard",
         "enable_clustering": false,
         "enable_fullscreen": true,
-        "default_marker_icon": "fa-solid fa-map-pin",
+        "default_marker_icon": "",
         "default_marker_color": "#6b7280",
         "enable_search": true,
         "search_placeholder": "Cerca citta, indirizzo o CAP...",
