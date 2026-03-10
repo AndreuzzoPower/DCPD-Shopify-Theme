@@ -852,7 +852,6 @@
         "enable_fullscreen": true,
         "default_marker_icon": "fa-solid fa-map-pin",
         "default_marker_color": "#6b7280",
-        "default_marker_image": "shopify://shop_images/cropped-favicon-32x32-1-100x100.png",
         "enable_search": true,
         "search_placeholder": "Cerca citta, indirizzo o CAP...",
         "search_radius": 50,
