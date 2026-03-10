@@ -739,7 +739,13 @@
 }
 
 .ms-sl__popup-info-row a {
-  color: rgba(var(--color-link, var(--color-foreground)));
+  color: rgb(var(--color-foreground)) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+.ms-sl__popup-info-row a:hover {
+  opacity: 0.7;
 }
 
 .ms-sl__popup-actions {
@@ -759,7 +765,8 @@
   border: 1px solid rgba(var(--color-foreground), 0.15);
   border-radius: var(--ms-sl-radius, 8px);
   background: none;
-  color: rgb(var(--color-foreground));
+  color: rgb(var(--color-foreground)) !important;
+  text-decoration: none !important;
   font-family: inherit;
   font-size: inherit;
   text-decoration: none;
