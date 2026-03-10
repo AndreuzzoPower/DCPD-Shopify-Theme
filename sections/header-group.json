@@ -216,7 +216,7 @@
       "name": "MS Mega Menu Extra",
       "settings": {
         "menu_handle": "elementi",
-        "show_on_mobile": false,
+        "show_on_mobile": true,
         "menu_columns": 0,
         "content_columns": 12
       }
