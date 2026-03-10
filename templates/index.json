@@ -159,15 +159,21 @@
     "ms_multicolumn_dNmEq4": {
       "type": "ms_multicolumn",
       "blocks": {
-        "section_padding_NcpX8U": {
-          "type": "section_padding",
+        "column_fbcbm4": {
+          "type": "column",
           "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 50,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 50,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 60
+            "image_alt": "",
+            "title": "MEGA MENU",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità di attivare il mega menu e di aggiungere dei contenuti extra al suo interno (prodotto, post, altro menu, immagini, video ecc ecc)</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
           }
         },
         "column_qRBaXb": {
@@ -254,15 +260,27 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
+        },
+        "section_padding_NcpX8U": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 0,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 0,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 0,
+            "section_padding_bottom_xs": 60
+          }
         }
       },
       "block_order": [
-        "section_padding_NcpX8U",
+        "column_fbcbm4",
         "column_qRBaXb",
         "column_zjLaeT",
         "column_ab8Vch",
         "column_UmYKgJ",
-        "column_FihGPM"
+        "column_FihGPM",
+        "section_padding_NcpX8U"
       ],
       "name": "MS Multicolonna",
       "settings": {
