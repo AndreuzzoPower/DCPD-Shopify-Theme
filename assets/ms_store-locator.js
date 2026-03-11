@@ -27,6 +27,8 @@ if (!customElements.get('ms-store-locator')) {
 
       this.#parseData();
       this.#cacheElements();
+      this._hasInteracted = false;
+      this.#applyInitialCardVisibility();
       this.#bindEvents();
       this.#waitForLibAndInit();
     }
@@ -85,6 +87,20 @@ if (!customElements.get('ms-store-locator')) {
       this.countEl = this.querySelector('[data-ms-sl-count]');
       this.emptyEl = this.querySelector('.ms-sl__empty');
       this.cards = this.querySelectorAll('.ms-sl__card');
+    }
+
+    #applyInitialCardVisibility() {
+      if (this.config.cardsInitialVisibility === 'after_interaction') {
+        if (this.listWrapper) this.listWrapper.hidden = true;
+        if (this.countEl) this.countEl.closest('.ms-sl__results-count')?.classList.add('ms-sl__results-count--hidden');
+      }
+    }
+
+    #revealCards() {
+      if (this._hasInteracted) return;
+      this._hasInteracted = true;
+      if (this.listWrapper) this.listWrapper.hidden = false;
+      if (this.countEl) this.countEl.closest('.ms-sl__results-count')?.classList.remove('ms-sl__results-count--hidden');
     }
 
     #bindEvents() {
@@ -579,6 +595,7 @@ if (!customElements.get('ms-store-locator')) {
         this.#clearSearch();
         return;
       }
+      this.#revealCards();
 
       const provider = this.config.provider || 'openstreetmap';
       if (provider === 'openstreetmap') {
@@ -655,6 +672,7 @@ if (!customElements.get('ms-store-locator')) {
           this.userPosition = { lat, lng };
 
           if (this.searchInput) this.searchInput.value = '';
+          this.#revealCards();
           this.#applySearchPosition(lat, lng);
           this.#addUserMarker(lat, lng);
         },
@@ -745,6 +763,7 @@ if (!customElements.get('ms-store-locator')) {
         this.filterReset.hidden = this.activeFilters.size === 0;
       }
 
+      this.#revealCards();
       this.#filterAndUpdate();
     }
 
@@ -763,6 +782,11 @@ if (!customElements.get('ms-store-locator')) {
       this.#hideDistances();
       this.#removeUserMarker();
       this.#closeAllPopups();
+
+      if (this.config.cardsInitialVisibility === 'after_interaction') {
+        this._hasInteracted = false;
+        this.#applyInitialCardVisibility();
+      }
 
       this.#filterAndUpdate();
       this.#fitBounds();

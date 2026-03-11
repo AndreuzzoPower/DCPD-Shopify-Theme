@@ -150,7 +150,8 @@
   "showDistance":{{ section.settings.show_distance }},
   "showDirections":{{ section.settings.show_directions_link }},
   "scrollOffsetDesktop":{{ section.settings.scroll_offset_desktop | default: 100 }},
-  "scrollOffsetMobile":{{ section.settings.scroll_offset_mobile | default: 80 }}
+  "scrollOffsetMobile":{{ section.settings.scroll_offset_mobile | default: 80 }},
+  "cardsInitialVisibility":"{{ section.settings.cards_initial_visibility | default: 'always' }}"
 }
 {%- endcapture -%}
 
@@ -709,6 +710,17 @@
       "step": 5,
       "unit": "px",
       "default": 80
+    },
+    {
+      "type": "select",
+      "id": "cards_initial_visibility",
+      "label": "Visibilità schede iniziale",
+      "info": "Se impostato su 'Dopo interazione', le schede vengono mostrate solo dopo una ricerca o un filtro. Utile con molti punti vendita.",
+      "options": [
+        { "value": "always", "label": "Mostra sempre" },
+        { "value": "after_interaction", "label": "Dopo interazione (ricerca/filtro)" }
+      ],
+      "default": "always"
     },
 
     {

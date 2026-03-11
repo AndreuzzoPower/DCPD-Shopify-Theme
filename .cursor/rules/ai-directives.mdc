@@ -1,0 +1,14 @@
+---
+description: Leggere SEMPRE il file .ai-directives.md prima di qualsiasi intervento sul progetto
+alwaysApply: true
+---
+
+# Direttive AI Obbligatorie
+
+Prima di qualsiasi modifica, creazione o analisi di file nel progetto, DEVI:
+
+1. **Leggere il file `.ai-directives.md`** nella root del progetto
+2. **Rispettare tutte le direttive** contenute in quel file (standard accessibilità, convenzioni codice, naming, CSS, schema, icone, ecc.)
+3. **Seguire la checklist pre/durante/dopo modifica** descritta nella sezione 4 del file
+
+Il file `.ai-directives.md` è la fonte di verità per tutte le convenzioni del progetto DCPD Shopify Theme.

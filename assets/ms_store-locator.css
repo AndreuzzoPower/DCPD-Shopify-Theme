@@ -284,6 +284,9 @@
 .ms-sl__results-count strong {
   color: rgb(var(--color-foreground));
 }
+.ms-sl__results-count--hidden {
+  display: none !important;
+}
 
 /* --------------------------------------------------------------------------
    4. Content Area
