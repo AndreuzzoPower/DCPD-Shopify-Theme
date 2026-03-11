@@ -144,7 +144,7 @@
         "results_count_label_plural": "punti vendita trovati",
         "results_count_position": "top_right",
         "show_legend": true,
-        "legend_position": "below_map",
+        "legend_position": "between_map_cards",
         "legend_alignment": "left",
         "show_photo": true,
         "show_description": true,
