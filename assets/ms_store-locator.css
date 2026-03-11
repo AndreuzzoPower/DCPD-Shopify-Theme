@@ -276,7 +276,7 @@
 
 .ms-sl__results-count {
   position: absolute;
-  z-index: 1000;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
