@@ -87,6 +87,7 @@ if (!customElements.get('ms-store-locator')) {
       this.countEl = this.querySelector('[data-ms-sl-count]');
       this.emptyEl = this.querySelector('.ms-sl__empty');
       this.cards = this.querySelectorAll('.ms-sl__card');
+      this.radiusSelect = this.querySelector('[data-ms-sl-radius]');
     }
 
     #applyInitialCardVisibility() {
@@ -122,6 +123,13 @@ if (!customElements.get('ms-store-locator')) {
 
       if (this.filterReset) {
         this.filterReset.addEventListener('click', () => this.#resetFilters());
+      }
+
+      if (this.radiusSelect) {
+        this.radiusSelect.addEventListener('change', () => {
+          this.config.searchRadius = parseInt(this.radiusSelect.value, 10);
+          if (this.searchPosition) this.#filterAndUpdate();
+        });
       }
 
       for (const card of this.cards) {

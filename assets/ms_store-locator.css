@@ -119,6 +119,34 @@
   opacity: 0.5;
 }
 
+.ms-sl__radius-select {
+  height: 44px;
+  padding: 0 2rem 0 0.75rem;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  border-radius: var(--ms-sl-radius);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 12px;
+}
+
+.ms-sl__radius-select:hover {
+  background-color: rgba(var(--color-foreground), 0.05);
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.ms-sl__radius-select:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
 /* --- Filters --- */
 
 .ms-sl__filters {
@@ -1238,6 +1266,7 @@
   .ms-sl__search-input,
   .ms-sl__search-btn,
   .ms-sl__geo-btn,
+  .ms-sl__radius-select,
   .ms-sl__filter-btn,
   .ms-sl__filter-reset,
   .ms-sl__card,

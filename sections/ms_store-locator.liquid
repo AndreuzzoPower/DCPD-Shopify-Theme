@@ -194,6 +194,14 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>
             </button>
           {%- endif -%}
+          {%- if section.settings.show_radius_selector -%}
+            <select class="ms-sl__radius-select" aria-label="Raggio di ricerca" data-ms-sl-radius>
+              {%- assign radius_options = '5,10,15,20,50,100' | split: ',' -%}
+              {%- for r in radius_options -%}
+                <option value="{{ r }}"{% if r == section.settings.search_radius %}selected{% endif %}>{{ r }} km</option>
+              {%- endfor -%}
+            </select>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -962,6 +970,13 @@
       "unit": "km",
       "default": 50,
       "info": "Distanza massima (in km) entro cui mostrare i risultati dalla posizione cercata."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_radius_selector",
+      "label": "Mostra selettore raggio di ricerca",
+      "default": false,
+      "info": "Aggiunge un menu a tendina nella toolbar per permettere all'utente di scegliere il raggio di ricerca (5/10/15/20/50/100 km)."
     },
     {
       "type": "checkbox",
