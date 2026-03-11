@@ -136,9 +136,15 @@ if (!customElements.get('ms-store-locator')) {
       let attempts = 0;
       const maxAttempts = 80;
 
+      const needsCluster = this.config.clustering;
+
       const check = () => {
         attempts++;
         if (provider === 'openstreetmap' && typeof L !== 'undefined') {
+          if (needsCluster && typeof L.markerClusterGroup !== 'function') {
+            if (attempts < maxAttempts) { setTimeout(check, 150); }
+            return;
+          }
           this.#initLeaflet();
         } else if (provider === 'google_maps' && typeof google !== 'undefined' && google.maps) {
           this.#initGoogleMaps();
