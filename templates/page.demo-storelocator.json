@@ -140,7 +140,7 @@
         "filters_position": "below",
         "show_results_count": true,
         "results_count_label_singular": "punto vendita trovato",
-        "results_count_label_plural": "punti vendita trovatix",
+        "results_count_label_plural": "punti vendita trovati",
         "results_count_position": "top_right",
         "show_legend": true,
         "legend_position": "below_map",
