@@ -276,22 +276,7 @@
             {{ ms_filters_below }}
         {%- endif -%}
 
-        {%- assign counter_pos = section.settings.results_count_position | default: 'above_left' -%}
-        {%- assign counter_above = false -%}
-        {%- assign counter_below = false -%}
-        {%- if section.settings.show_results_count -%}
-          {%- if counter_pos == 'above_left' or counter_pos == 'above_center' or counter_pos == 'above_right' -%}
-            {%- assign counter_above = true -%}
-          {%- else -%}
-            {%- assign counter_below = true -%}
-          {%- endif -%}
-        {%- endif -%}
-
-        {%- if counter_above -%}
-          <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
-            <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
-          </div>
-        {%- endif -%}
+        {%- assign counter_pos = section.settings.results_count_position | default: 'top_left' -%}
 
         <div class="ms-sl__map-wrapper">
           <div
@@ -301,13 +286,12 @@
             aria-label="Mappa punti vendita"
             tabindex="0"
           >          </div>
+          {%- if section.settings.show_results_count -%}
+            <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
+              <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
+            </div>
+          {%- endif -%}
         </div>
-
-        {%- if counter_below -%}
-          <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
-            <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
-          </div>
-        {%- endif -%}
 
         {%- comment -%} Legenda (sotto mappa) {%- endcomment -%}
         {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
@@ -982,16 +966,16 @@
     {
       "type": "select",
       "id": "results_count_position",
-      "label": "Posizione contatore",
+      "label": "Posizione contatore (overlay mappa)",
       "options": [
-        { "value": "above_left", "label": "Sopra mappa - Sinistra" },
-        { "value": "above_center", "label": "Sopra mappa - Centro" },
-        { "value": "above_right", "label": "Sopra mappa - Destra" },
-        { "value": "below_left", "label": "Sotto mappa - Sinistra" },
-        { "value": "below_center", "label": "Sotto mappa - Centro" },
-        { "value": "below_right", "label": "Sotto mappa - Destra" }
+        { "value": "top_left", "label": "Alto - Sinistra" },
+        { "value": "top_center", "label": "Alto - Centro" },
+        { "value": "top_right", "label": "Alto - Destra" },
+        { "value": "bottom_left", "label": "Basso - Sinistra" },
+        { "value": "bottom_center", "label": "Basso - Centro" },
+        { "value": "bottom_right", "label": "Basso - Destra" }
       ],
-      "default": "above_left"
+      "default": "top_left"
     },
 
     {
