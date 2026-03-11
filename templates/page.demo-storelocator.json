@@ -104,7 +104,7 @@
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
-        "layout": "map_sidebar",
+        "layout": "map_top",
         "sidebar_position": "right",
         "search_position": "overlay_map",
         "list_style": "grid",
