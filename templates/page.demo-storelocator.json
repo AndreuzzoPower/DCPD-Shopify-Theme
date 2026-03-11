@@ -131,7 +131,7 @@
         "enable_clustering": false,
         "enable_fullscreen": true,
         "show_zoom_controls": true,
-        "map_controls_position": "bottomright",
+        "map_controls_position": "bottomleft",
         "enable_search": true,
         "search_placeholder": "Cerca citta, indirizzo o CAP...",
         "search_radius": 50,
