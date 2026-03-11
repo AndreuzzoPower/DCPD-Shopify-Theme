@@ -135,6 +135,7 @@
         "enable_search": true,
         "search_placeholder": "Cerca citta, indirizzo o CAP...",
         "search_radius": 50,
+        "show_radius_selector": true,
         "enable_geolocation": true,
         "enable_filters": true,
         "filters_position": "below",
