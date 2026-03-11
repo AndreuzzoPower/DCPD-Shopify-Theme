@@ -59,7 +59,9 @@
       assign content_class = content_class | append: ' ms-sl__content--cards-only'
   endcase
 
-  assign toolbar_pos = section.settings.toolbar_position | default: 'top'
+  assign search_pos = section.settings.search_position | default: 'before_map'
+  assign filters_pos = section.settings.filters_position | default: 'before_map'
+  assign legend_pos = section.settings.legend_position | default: 'before_map'
 
   assign list_class = 'ms-sl__list ms-sl__list--' | append: list_style
   if list_style == 'grid'
@@ -173,12 +175,10 @@
       </a>
     {%- endif -%}
 
-    {%- comment -%} Toolbar — catturiamo il contenuto per poterlo posizionare {%- endcomment -%}
-    {%- assign filters_pos = section.settings.filters_position | default: 'toolbar' -%}
-
-    {%- capture ms_toolbar_content -%}
+    {%- comment -%} ======== Blocco RICERCA (catturato per posizionamento) ======== {%- endcomment -%}
+    {%- capture ms_search_html -%}
       {%- if section.settings.enable_search -%}
-        <div class="ms-sl__search" role="search" aria-label="Cerca punti vendita">
+        <div class="ms-sl__search{% if search_pos == 'overlay_map' %} ms-sl__search--overlay{% endif %}" role="search" aria-label="Cerca punti vendita">
           <input
             type="text"
             class="ms-sl__search-input"
@@ -206,8 +206,11 @@
           {%- endif -%}
         </div>
       {%- endif -%}
+    {%- endcapture -%}
 
-      {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'toolbar' -%}
+    {%- comment -%} ======== Blocco FILTRI (catturato per posizionamento) ======== {%- endcomment -%}
+    {%- capture ms_filters_html -%}
+      {%- if section.settings.enable_filters and tag_idx > 0 -%}
         <div class="ms-sl__filters" role="group" aria-label="Filtra per categoria">
           {%- for block in section.blocks -%}
             {%- if block.type == 'tag_marker' and block.settings.enabled -%}
@@ -228,8 +231,11 @@
           </button>
         </div>
       {%- endif -%}
+    {%- endcapture -%}
 
-      {%- if section.settings.show_legend and section.settings.legend_position == 'toolbar' and tag_idx > 0 -%}
+    {%- comment -%} ======== Blocco LEGENDA (catturato per posizionamento) ======== {%- endcomment -%}
+    {%- capture ms_legend_html -%}
+      {%- if section.settings.show_legend and legend_pos != 'none' and tag_idx > 0 -%}
         {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
         <div class="ms-sl__legend ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
           {%- for block in section.blocks -%}
@@ -248,46 +254,26 @@
       {%- endif -%}
     {%- endcapture -%}
 
-    {%- capture ms_filters_below -%}
-      {%- if section.settings.enable_filters and tag_idx > 0 and filters_pos == 'below' -%}
-        <div class="ms-sl__filters ms-sl__filters--below" role="group" aria-label="Filtra per categoria">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'tag_marker' and block.settings.enabled -%}
-              <button
-                type="button"
-                class="ms-sl__filter-btn"
-                data-tag="{{ block.settings.tag_value | escape }}"
-                aria-pressed="false"
-                {{ block.shopify_attributes }}
-              >
-                <span class="ms-sl__filter-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true"></span>
-                {{ block.settings.tag_label | escape }}
-              </button>
-            {%- endif -%}
-          {%- endfor -%}
-          <button type="button" class="ms-sl__filter-reset" hidden aria-label="Azzera tutti i filtri">
-            Azzera filtri
-          </button>
-        </div>
-      {%- endif -%}
-    {%- endcapture -%}
-
-    {%- if toolbar_pos == 'top' -%}
-      <div class="ms-sl__toolbar">{{ ms_toolbar_content }}</div>
-      {{ ms_filters_below }}
+    {%- comment -%} ======== 1. RICERCA — prima della mappa ======== {%- endcomment -%}
+    {%- if search_pos == 'before_map' -%}
+      {{ ms_search_html }}
     {%- endif -%}
 
-    {%- comment -%} Area contenuto principale {%- endcomment -%}
+    {%- comment -%} ======== 2. FILTRI — prima della mappa ======== {%- endcomment -%}
+    {%- if filters_pos == 'before_map' -%}
+      {{ ms_filters_html }}
+    {%- endif -%}
+
+    {%- comment -%} ======== 3. LEGENDA — prima della mappa ======== {%- endcomment -%}
+    {%- if legend_pos == 'before_map' -%}
+      {{ ms_legend_html }}
+    {%- endif -%}
+
+    {%- comment -%} ======== Area contenuto principale ======== {%- endcomment -%}
     <div class="{{ content_class }}">
 
       {%- comment -%} Mappa {%- endcomment -%}
       {%- if show_map -%}
-        {%- if toolbar_pos == 'above_map' -%}
-          <div class="ms-sl__map-col">
-            <div class="ms-sl__toolbar ms-sl__toolbar--above-map">{{ ms_toolbar_content }}</div>
-            {{ ms_filters_below }}
-        {%- endif -%}
-
         {%- assign counter_pos = section.settings.results_count_position | default: 'top_left' -%}
 
         <div class="ms-sl__map-wrapper">
@@ -297,7 +283,14 @@
             role="application"
             aria-label="Mappa punti vendita"
             tabindex="0"
-          >          </div>
+          ></div>
+
+          {%- comment -%} Ricerca overlay sulla mappa {%- endcomment -%}
+          {%- if search_pos == 'overlay_map' -%}
+            {{ ms_search_html }}
+          {%- endif -%}
+
+          {%- comment -%} Contatore risultati overlay {%- endcomment -%}
           {%- if section.settings.show_results_count -%}
             {%- assign label_s = section.settings.results_count_label_singular | default: 'punto vendita trovato' -%}
             {%- assign label_p = section.settings.results_count_label_plural | default: 'punti vendita trovati' -%}
@@ -313,10 +306,16 @@
             </div>
           {%- endif -%}
         </div>
+      {%- endif -%}
 
-        {%- if toolbar_pos == 'above_map' -%}
-          </div>{%- comment -%} chiude .ms-sl__map-col {%- endcomment -%}
-        {%- endif -%}
+      {%- comment -%} Legenda — tra mappa e card (layout map_top) {%- endcomment -%}
+      {%- if legend_pos == 'between_map_cards' -%}
+        <div class="ms-sl__legend-between">{{ ms_legend_html }}</div>
+      {%- endif -%}
+
+      {%- comment -%} Filtri — sopra le schede {%- endcomment -%}
+      {%- if filters_pos == 'above_cards' and show_list -%}
+        {{ ms_filters_html }}
       {%- endif -%}
 
       {%- comment -%} Lista punti vendita {%- endcomment -%}
@@ -495,23 +494,9 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Legenda (sotto contenuto mappa+card) {%- endcomment -%}
-    {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
-      {%- assign legend_align = section.settings.legend_alignment | default: 'left' -%}
-      <div class="ms-sl__legend ms-sl__legend--below ms-sl__legend--align-{{ legend_align }}" aria-label="Legenda categorie">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'tag_marker' and block.settings.enabled -%}
-            <span class="ms-sl__legend-item">
-              <span class="ms-sl__legend-swatch" style="background-color:{{ block.settings.marker_color | default: '#E53E3E' }}" aria-hidden="true">
-                {%- if block.settings.marker_icon != blank -%}
-                  {%- render 'ms_icon', icon: block.settings.marker_icon -%}
-                {%- endif -%}
-              </span>
-              {{ block.settings.tag_label | escape }}
-            </span>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+    {%- comment -%} Legenda — sotto tutto (mappa+card, in layout sidebar) {%- endcomment -%}
+    {%- if legend_pos == 'below_all' -%}
+      <div class="ms-sl__legend-below">{{ ms_legend_html }}</div>
     {%- endif -%}
 
     {%- comment -%} Messaggio editor se nessun metaobject {%- endcomment -%}
@@ -682,14 +667,14 @@
     },
     {
       "type": "select",
-      "id": "toolbar_position",
-      "label": "Posizione toolbar",
+      "id": "search_position",
+      "label": "Posizione ricerca",
       "options": [
-        { "label": "Sopra tutto (default)", "value": "top" },
-        { "label": "Sopra la mappa", "value": "above_map" }
+        { "label": "Prima della mappa", "value": "before_map" },
+        { "label": "Overlay sulla mappa", "value": "overlay_map" }
       ],
-      "default": "top",
-      "info": "Con 'Sopra la mappa' la toolbar si posiziona direttamente sopra la mappa, nel layout sidebar resta nella colonna mappa."
+      "default": "before_map",
+      "info": "Con 'Overlay' la barra di ricerca si sovrappone alla mappa."
     },
     {
       "type": "select",
@@ -999,10 +984,11 @@
       "id": "filters_position",
       "label": "Posizione filtri",
       "options": [
-        { "label": "Nella toolbar", "value": "toolbar" },
-        { "label": "Sotto la toolbar", "value": "below" }
+        { "label": "Prima della mappa", "value": "before_map" },
+        { "label": "Sopra le schede", "value": "above_cards" }
       ],
-      "default": "toolbar"
+      "default": "before_map",
+      "info": "Con 'Sopra le schede' i filtri appaiono prima delle card (utile nel layout sidebar)."
     },
     {
       "type": "checkbox",
@@ -1052,11 +1038,13 @@
       "id": "legend_position",
       "label": "Posizione legenda",
       "options": [
-        { "label": "Nella toolbar", "value": "toolbar" },
-        { "label": "Sotto la mappa", "value": "below_map" },
+        { "label": "Prima della mappa", "value": "before_map" },
+        { "label": "Tra mappa e schede", "value": "between_map_cards" },
+        { "label": "Sotto tutto (mappa+schede)", "value": "below_all" },
         { "label": "Non mostrare", "value": "none" }
       ],
-      "default": "toolbar"
+      "default": "before_map",
+      "info": "'Tra mappa e schede' e ideale per il layout risultati sotto. 'Sotto tutto' per il layout sidebar."
     },
     {
       "type": "select",

@@ -25,20 +25,29 @@
    2. Toolbar (Search + Filters + Legend + Count)
    -------------------------------------------------------------------------- */
 
-.ms-sl__toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.ms-sl__search--overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 3;
+  pointer-events: auto;
+  max-width: 500px;
+  background: rgb(var(--color-background));
+  border-radius: var(--ms-sl-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 6px;
+}
+
+.ms-sl__legend-between {
+  margin-top: var(--ms-sl-gap);
   margin-bottom: var(--ms-sl-gap);
+  width: 100%;
 }
 
-.ms-sl__toolbar--above-map {
-  margin-bottom: 1rem;
-}
-
-.ms-sl__map-col {
-  display: flex;
-  flex-direction: column;
+.ms-sl__legend-below {
+  margin-top: 20px;
+  width: 100%;
 }
 
 /* --- Search --- */
@@ -48,6 +57,16 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   width: 100%;
+  margin-bottom: var(--ms-sl-gap);
+}
+
+.ms-sl__search--overlay {
+  margin-bottom: 0;
+}
+
+.ms-sl__content > .ms-sl__search,
+.ms-sl__content > .ms-sl__filters {
+  margin-bottom: 0;
 }
 
 .ms-sl__search-input {
@@ -154,6 +173,11 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+  margin-bottom: var(--ms-sl-gap);
+}
+
+.ms-sl__content > .ms-sl__filters {
+  margin-bottom: var(--ms-sl-gap);
 }
 
 .ms-sl__filter-btn {
@@ -221,10 +245,7 @@
   outline-offset: 2px;
 }
 
-/* Filters below toolbar */
-.ms-sl__filters--below {
-  margin-bottom: var(--ms-sl-gap);
-}
+/* Filters spacing handled by .ms-sl__filters margin-bottom */
 
 /* --- Legend --- */
 
@@ -295,10 +316,7 @@
   justify-content: flex-end;
 }
 
-/* Legend below map */
-.ms-sl__legend--below {
-  margin-top: 20px;
-}
+/* Legend spacing handled by .ms-sl__legend-below and .ms-sl__legend-between */
 
 /* --- Results Count --- */
 
@@ -1113,25 +1131,8 @@
   }
 
   /* Toolbar horizontal layout */
-  .ms-sl__toolbar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .ms-sl__toolbar--above-map {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ms-sl__search {
-    flex: 1;
-    min-width: 280px;
-    max-width: 480px;
-  }
-
-  .ms-sl__toolbar--above-map .ms-sl__search {
-    max-width: none;
+  .ms-sl__search:not(.ms-sl__search--overlay) {
+    max-width: 600px;
   }
 
   .ms-sl__filters {
