@@ -111,6 +111,7 @@
         "list_columns": 3,
         "scroll_offset_desktop": 100,
         "scroll_offset_mobile": 80,
+        "cards_initial_visibility": "after_interaction",
         "card_style": "card",
         "card_corner_radius": 6,
         "card_border_thickness": 1,
