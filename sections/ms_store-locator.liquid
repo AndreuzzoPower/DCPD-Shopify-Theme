@@ -192,11 +192,6 @@
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>
             </button>
           {%- endif -%}
-          {%- if section.settings.show_results_count -%}
-            <div class="ms-sl__results-count" aria-live="polite" aria-atomic="true">
-              <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
-            </div>
-          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -281,6 +276,23 @@
             {{ ms_filters_below }}
         {%- endif -%}
 
+        {%- assign counter_pos = section.settings.results_count_position | default: 'above_left' -%}
+        {%- assign counter_above = false -%}
+        {%- assign counter_below = false -%}
+        {%- if section.settings.show_results_count -%}
+          {%- if counter_pos == 'above_left' or counter_pos == 'above_center' or counter_pos == 'above_right' -%}
+            {%- assign counter_above = true -%}
+          {%- else -%}
+            {%- assign counter_below = true -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if counter_above -%}
+          <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
+            <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
+          </div>
+        {%- endif -%}
+
         <div class="ms-sl__map-wrapper">
           <div
             class="ms-sl__map"
@@ -290,6 +302,12 @@
             tabindex="0"
           >          </div>
         </div>
+
+        {%- if counter_below -%}
+          <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
+            <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Legenda (sotto mappa) {%- endcomment -%}
         {%- if section.settings.show_legend and section.settings.legend_position == 'below_map' and tag_idx > 0 -%}
@@ -960,6 +978,20 @@
       "id": "show_results_count",
       "label": "Mostra contatore risultati",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "results_count_position",
+      "label": "Posizione contatore",
+      "options": [
+        { "value": "above_left", "label": "Sopra mappa - Sinistra" },
+        { "value": "above_center", "label": "Sopra mappa - Centro" },
+        { "value": "above_right", "label": "Sopra mappa - Destra" },
+        { "value": "below_left", "label": "Sotto mappa - Sinistra" },
+        { "value": "below_center", "label": "Sotto mappa - Centro" },
+        { "value": "below_right", "label": "Sotto mappa - Destra" }
+      ],
+      "default": "above_left"
     },
 
     {
