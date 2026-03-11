@@ -792,7 +792,7 @@
           "settings": {
             "tag_value": "",
             "tag_label": "Default",
-            "marker_icon": "",
+            "marker_icon": "fa-regular fa-circle-dot",
             "marker_color": "#919191",
             "enabled": true
           }
