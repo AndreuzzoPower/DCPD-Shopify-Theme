@@ -195,10 +195,12 @@
             </button>
           {%- endif -%}
           {%- if section.settings.show_radius_selector -%}
+            {%- assign sl_default_radius = section.settings.search_radius | default: 50 -%}
             <select class="ms-sl__radius-select" aria-label="Raggio di ricerca" data-ms-sl-radius>
               {%- assign radius_options = '5,10,15,20,50,100' | split: ',' -%}
               {%- for r in radius_options -%}
-                <option value="{{ r }}"{% if r == section.settings.search_radius %}selected{% endif %}>{{ r }} km</option>
+                {%- assign r_num = r | plus: 0 -%}
+                <option value="{{ r }}"{% if r_num == sl_default_radius %} selected{% endif %}>{{ r }} km</option>
               {%- endfor -%}
             </select>
           {%- endif -%}
