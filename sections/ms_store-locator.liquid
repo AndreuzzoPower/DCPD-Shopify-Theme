@@ -143,7 +143,7 @@
   "style":"{{ section.settings.map_style | default: 'standard' }}",
   "clustering":{{ section.settings.enable_clustering }},
   "fullscreen":{{ section.settings.enable_fullscreen }},
-  "showZoom":{{ section.settings.show_zoom_controls | default: true }},
+  "showZoom":{% if section.settings.show_zoom_controls == false %}false{% else %}true{% endif %},
   "controlsPosition":"{{ section.settings.map_controls_position | default: 'topleft' }}",
   "searchRadius":{{ section.settings.search_radius | default: 50 }},
   "enableSearch":{{ section.settings.enable_search }},
