@@ -589,6 +589,7 @@
   }
   {%- unless section.settings.card_image_ratio == 'adapt' -%}
     #section-{{ section.id }} .ms-sl__card-image {
+      height: auto !important;
       {%- case section.settings.card_image_ratio -%}
         {%- when '16-10' -%}
           aspect-ratio: 16 / 10;
