@@ -64,6 +64,16 @@
     "ms_store_locator_Hkit6f": {
       "type": "ms_store-locator",
       "blocks": {
+        "tag_marker_6h4QF7": {
+          "type": "tag_marker",
+          "settings": {
+            "tag_value": "point",
+            "tag_label": "Punto Vendita",
+            "marker_icon": "fa-solid fa-store",
+            "marker_color": "#e53e3e",
+            "enabled": true
+          }
+        },
         "section_padding_aCzT9D": {
           "type": "section_padding",
           "settings": {
@@ -77,6 +87,7 @@
         }
       },
       "block_order": [
+        "tag_marker_6h4QF7",
         "section_padding_aCzT9D"
       ],
       "name": "MS Store Locator",
