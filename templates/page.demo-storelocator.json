@@ -137,6 +137,7 @@
         "enable_filters": true,
         "filters_position": "below",
         "show_results_count": true,
+        "results_count_position": "top_right",
         "show_legend": true,
         "legend_position": "below_map",
         "legend_alignment": "left",
