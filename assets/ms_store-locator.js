@@ -449,12 +449,17 @@ if (!customElements.get('ms-store-locator')) {
     }
 
     #getTagMatch(store) {
-      if (!store.tags || store.tags.length === 0) return null;
-      for (const tag of store.tags) {
-        const def = this.tagDefs.find(d => d.tag && d.tag.toLowerCase() === tag.toLowerCase());
-        if (def) return def;
+      if (store.tags && store.tags.length > 0) {
+        for (const tag of store.tags) {
+          const def = this.tagDefs.find(d => d.tag && d.tag.toLowerCase() === tag.toLowerCase());
+          if (def) return def;
+        }
       }
       return null;
+    }
+
+    #getDefaultTagDef() {
+      return this.tagDefs.find(d => !d.tag || d.tag.trim() === '') || null;
     }
 
     #getMarkerDef(store) {
@@ -466,11 +471,15 @@ if (!customElements.get('ms-store-locator')) {
           image: tagMatch.image || ''
         };
       }
-      return {
-        color: this.config.defaultMarkerColor || '#EA4335',
-        icon: this.config.defaultMarkerIcon || '',
-        image: this.config.defaultMarkerImage || ''
-      };
+      const defaultDef = this.#getDefaultTagDef();
+      if (defaultDef) {
+        return {
+          color: defaultDef.color || '#EA4335',
+          icon: defaultDef.icon || '',
+          image: defaultDef.image || ''
+        };
+      }
+      return { color: '#EA4335', icon: '', image: '' };
     }
 
     #renderIconHtml(iconName) {
@@ -756,17 +765,11 @@ if (!customElements.get('ms-store-locator')) {
           const hasTagMatch = this.#getTagMatch(store) !== null;
           let matchesFilter = false;
 
-          if (this.activeFilters.has('__default__') && !hasTagMatch) {
-            matchesFilter = true;
-          }
-
-          if (!matchesFilter) {
-            for (const f of this.activeFilters) {
-              if (f === '__default__') continue;
-              if (storeTags.includes(f.toLowerCase())) {
-                matchesFilter = true;
-                break;
-              }
+          for (const f of this.activeFilters) {
+            if (f === '') {
+              if (!hasTagMatch) { matchesFilter = true; break; }
+            } else {
+              if (storeTags.includes(f.toLowerCase())) { matchesFilter = true; break; }
             }
           }
 
