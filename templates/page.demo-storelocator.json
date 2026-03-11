@@ -64,6 +64,16 @@
     "ms_store_locator_Hkit6f": {
       "type": "ms_store-locator",
       "blocks": {
+        "tag_marker_pLVQYT": {
+          "type": "tag_marker",
+          "settings": {
+            "tag_value": "rivenditore",
+            "tag_label": "Rivenditore",
+            "marker_icon": "fa-regular fa-circle-dot",
+            "marker_color": "#f0066f",
+            "enabled": true
+          }
+        },
         "tag_marker_6h4QF7": {
           "type": "tag_marker",
           "settings": {
@@ -73,22 +83,11 @@
             "marker_color": "#e53e3e",
             "enabled": true
           }
-        },
-        "section_padding_aCzT9D": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 40,
-            "section_padding_bottom": 40,
-            "section_padding_top_md": 30,
-            "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 20,
-            "section_padding_bottom_xs": 20
-          }
         }
       },
       "block_order": [
-        "tag_marker_6h4QF7",
-        "section_padding_aCzT9D"
+        "tag_marker_pLVQYT",
+        "tag_marker_6h4QF7"
       ],
       "name": "MS Store Locator",
       "settings": {
