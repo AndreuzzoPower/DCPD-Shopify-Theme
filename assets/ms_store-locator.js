@@ -291,10 +291,7 @@ if (!customElements.get('ms-store-locator')) {
           const popupContent = this.#buildPopupHtml(store);
           marker.bindPopup(popupContent, { maxWidth: 400, minWidth: 280, className: 'ms-sl__popup-wrapper' });
 
-          marker.on('click', () => {
-            this.#setActiveCard(store.id);
-            this.map.setView(marker.getLatLng(), Math.max(this.map.getZoom(), 13), { animate: true });
-          });
+          marker.on('click', () => {});
 
           if (this.clusterGroup) {
             this.clusterGroup.addLayer(marker);
@@ -393,8 +390,6 @@ if (!customElements.get('ms-store-locator')) {
           marker.addListener('click', () => {
             this.infoWindow.setContent(popupContent);
             this.infoWindow.open(this.map, marker);
-            this.map.panTo(marker.getPosition());
-            this.#setActiveCard(store.id);
           });
 
           this.markers.push(marker);
@@ -445,6 +440,15 @@ if (!customElements.get('ms-store-locator')) {
         return this.map.hasLayer(marker);
       }
       return marker.getMap() !== null;
+    }
+
+    #closeAllPopups() {
+      const provider = this.config.provider || 'openstreetmap';
+      if (provider === 'openstreetmap' && this.map) {
+        this.map.closePopup();
+      } else if (provider === 'google_maps' && this.infoWindow) {
+        this.infoWindow.close();
+      }
     }
 
     #openMarkerPopup(storeId) {
@@ -758,6 +762,7 @@ if (!customElements.get('ms-store-locator')) {
       }
       this.#hideDistances();
       this.#removeUserMarker();
+      this.#closeAllPopups();
 
       this.#filterAndUpdate();
       this.#fitBounds();
