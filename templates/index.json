@@ -783,111 +783,6 @@
         "line_weight": 1,
         "line_style": "solid"
       }
-    },
-    "ms_store_locator_c9JaGH": {
-      "type": "ms_store-locator",
-      "blocks": {
-        "tag_marker_HT7iCG": {
-          "type": "tag_marker",
-          "settings": {
-            "tag_value": "",
-            "tag_label": "Default",
-            "marker_icon": "",
-            "marker_color": "#919191",
-            "enabled": true
-          }
-        },
-        "tag_marker_X7VNNW": {
-          "type": "tag_marker",
-          "settings": {
-            "tag_value": "rivenditore",
-            "tag_label": "Rivenditore",
-            "marker_icon": "fa-solid fa-store",
-            "marker_color": "#ff53a1",
-            "enabled": true
-          }
-        },
-        "tag_marker_e9rqJf": {
-          "type": "tag_marker",
-          "settings": {
-            "tag_value": "point",
-            "tag_label": "Punto Vendita",
-            "marker_icon": "fa-solid fa-store",
-            "marker_color": "#e53e3e",
-            "enabled": true
-          }
-        },
-        "section_padding_bptQjx": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 40,
-            "section_padding_bottom": 40,
-            "section_padding_top_md": 30,
-            "section_padding_bottom_md": 30,
-            "section_padding_top_xs": 20,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "tag_marker_HT7iCG",
-        "tag_marker_X7VNNW",
-        "tag_marker_e9rqJf",
-        "section_padding_bptQjx"
-      ],
-      "name": "MS Store Locator",
-      "settings": {
-        "section_width": "page_width",
-        "color_scheme": "",
-        "layout": "map_top",
-        "sidebar_position": "left",
-        "toolbar_position": "top",
-        "list_style": "grid",
-        "list_columns": 3,
-        "scroll_offset_desktop": 100,
-        "scroll_offset_mobile": 80,
-        "card_style": "card",
-        "card_corner_radius": 6,
-        "card_border_thickness": 1,
-        "card_border_color": "#e0e0e0",
-        "card_shadow": "light",
-        "card_shadow_hover": "medium",
-        "card_image_padding": 0,
-        "card_image_ratio": "portrait",
-        "card_text_alignment": "left",
-        "map_provider": "openstreetmap",
-        "google_maps_api_key": "",
-        "map_height": 500,
-        "map_zoom": 6,
-        "default_lat": "41.9028",
-        "default_lng": "12.4964",
-        "map_style": "standard",
-        "enable_clustering": false,
-        "enable_fullscreen": true,
-        "enable_search": true,
-        "search_placeholder": "Cerca citta, indirizzo o CAP...",
-        "search_radius": 50,
-        "enable_geolocation": true,
-        "enable_filters": true,
-        "filters_position": "below",
-        "show_results_count": true,
-        "show_legend": true,
-        "legend_position": "below_map",
-        "legend_alignment": "left",
-        "show_photo": true,
-        "show_description": true,
-        "show_address": true,
-        "show_phone": true,
-        "show_email": true,
-        "show_website": true,
-        "show_tags": false,
-        "show_directions_link": true,
-        "show_distance": true,
-        "card_show_icons": true,
-        "mobile_map_height": 300,
-        "mobile_list_first": false,
-        "mobile_full_width": false
-      }
     }
   },
   "order": [
@@ -901,7 +796,6 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
-    "ms_divider_qN8RVX",
-    "ms_store_locator_c9JaGH"
+    "ms_divider_qN8RVX"
   ]
 }
