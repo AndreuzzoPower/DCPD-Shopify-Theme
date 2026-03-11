@@ -1,0 +1,410 @@
+{%- comment -%}
+  MS Brand Page — Pagina singola brand (metaobject).
+  Mostra logo, nome, descrizione e griglia prodotti collegati.
+
+  Usa metaobject.system per accedere ai dati del brand corrente.
+  I prodotti vengono mostrati filtrando collections.all per vendor
+  oppure usando una collection dedicata (campo "collezione" nel metaobject).
+{%- endcomment -%}
+
+{{ 'ms_brand-page.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign brand = metaobject
+  assign brand_name = brand.nome.value | default: brand.system.handle
+  assign brand_logo = brand.logo.value
+  assign brand_desc = brand.descrizione.value
+  assign brand_collection = brand.collezione.value
+
+  assign title_tag = section.settings.title_tag | default: 'h1'
+  assign title_classes = section.settings.heading_size | default: 'h0'
+  if section.settings.title_custom_class != blank
+    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
+  endif
+
+  assign products_title_tag = section.settings.products_title_tag | default: 'h2'
+  assign products_title_classes = section.settings.products_heading_size | default: 'h1'
+
+  assign cols_desktop = section.settings.products_columns_desktop | default: 4
+  assign cols_mobile = section.settings.products_columns_mobile | default: 2
+-%}
+
+{%- render 'ms_mobile-padding' -%}
+
+<div id="section-{{ section.id }}" class="ms-brand-page color-{{ section.settings.color_scheme }} gradient">
+  <div class="{{ sw_class }}">
+
+    {%- comment -%} Hero brand {%- endcomment -%}
+    <div class="ms-bp__hero">
+      {%- if brand_logo != blank -%}
+        <div class="ms-bp__logo-wrap">
+          {{
+            brand_logo
+            | image_url: width: 600
+            | image_tag:
+                class: 'ms-bp__logo',
+                loading: 'eager',
+                alt: brand_name,
+                widths: '200, 400, 600',
+                sizes: '(min-width: 750px) 300px, 200px'
+          }}
+        </div>
+      {%- endif -%}
+
+      <{{ title_tag }} class="{{ title_classes }} ms-bp__title">
+        {{- brand_name | escape -}}
+      </{{ title_tag }}>
+
+      {%- if brand_desc != blank -%}
+        <div class="ms-bp__description rte">
+          {{ brand_desc }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Griglia prodotti {%- endcomment -%}
+    {%- liquid
+      if brand_collection != blank
+        assign brand_products = brand_collection.products
+      else
+        assign brand_products = collections.all.products
+      endif
+    -%}
+
+    {%- capture products_html -%}
+      {%- assign product_count = 0 -%}
+      {%- for product in brand_products limit: section.settings.products_limit -%}
+        {%- liquid
+          assign show_product = true
+          if brand_collection == blank
+            if product.vendor != brand_name
+              assign show_product = false
+            endif
+          endif
+        -%}
+        {%- if show_product -%}
+          {%- assign product_count = product_count | plus: 1 -%}
+          <li class="ms-bp__product-item grid__item">
+            {%- render 'card-product',
+              card_product: product,
+              show_vendor: false
+            -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if products_html != blank and product_count > 0 -%}
+      <div class="ms-bp__products">
+        {%- if section.settings.products_title != blank -%}
+          <{{ products_title_tag }} class="{{ products_title_classes }} ms-bp__products-title">
+            {{- section.settings.products_title | escape -}}
+          </{{ products_title_tag }}>
+        {%- endif -%}
+
+        <ul
+          class="ms-bp__products-grid grid"
+          role="list"
+          style="--bp-cols-desktop: {{ cols_desktop }}; --bp-cols-mobile: {{ cols_mobile }};"
+        >
+          {{ products_html }}
+        </ul>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{%- comment -%} Dati strutturati {%- endcomment -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Brand",
+    "name": {{ brand_name | json }}
+    {%- if brand.system.url != blank -%}
+      ,"url": {{ brand.system.url | json }}
+    {%- endif -%}
+    {%- if brand_logo != blank -%}
+      ,"logo": {{ brand_logo | image_url: width: 600 | json }}
+    {%- endif -%}
+    {%- if brand_desc != blank -%}
+      {%- assign sd_desc = brand_desc | strip_html | strip | truncate: 5000 -%}
+      ,"description": {{ sd_desc | json }}
+    {%- endif -%}
+  }
+</script>
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Brand Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Combinazione colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    },
+
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo brand",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione titolo brand",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" },
+        { "label": "Extra grande", "value": "hxl" },
+        { "label": "Extra extra grande", "value": "hxxl" }
+      ],
+      "default": "h0"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+
+    {
+      "type": "header",
+      "content": "Prodotti"
+    },
+    {
+      "type": "text",
+      "id": "products_title",
+      "label": "Titolo sezione prodotti",
+      "default": "Prodotti"
+    },
+    {
+      "type": "select",
+      "id": "products_title_tag",
+      "label": "Tag titolo prodotti",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "products_heading_size",
+      "label": "Dimensione titolo prodotti",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" },
+        { "label": "Extra grande", "value": "hxl" },
+        { "label": "Extra extra grande", "value": "hxxl" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Numero massimo prodotti",
+      "min": 4,
+      "max": 50,
+      "step": 2,
+      "default": 24,
+      "info": "Numero massimo di prodotti mostrati nella griglia."
+    },
+    {
+      "type": "range",
+      "id": "products_columns_desktop",
+      "label": "Colonne prodotti desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_columns_mobile",
+      "label": "Colonne prodotti mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 40
+        },
+        {
+          "type": "range", "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 40
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 30
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 30
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 20
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 20
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Brand Page",
+      "category": "Prodotti & Collezioni",
+      "blocks": [
+        { "type": "section_padding" }
+      ]
+    }
+  ]
+}
+{% endschema %}

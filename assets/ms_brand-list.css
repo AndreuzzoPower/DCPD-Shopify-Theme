@@ -1,0 +1,471 @@
+/* ==========================================================================
+   MS Brand List — Sezione lista brand con filtro, ricerca e 3 viste
+   Mobile-first
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Header & Titolo
+   -------------------------------------------------------------------------- */
+
+.ms-brand-list {
+  position: relative;
+}
+
+.ms-bl__header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.ms-bl__title {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Toolbar
+   -------------------------------------------------------------------------- */
+
+.ms-bl__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ms-bl__toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   3. Filtro Alfabetico
+   -------------------------------------------------------------------------- */
+
+.ms-bl__alpha-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+.ms-bl__alpha-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 4px;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ms-bl__alpha-btn:hover {
+  background-color: rgba(var(--color-foreground), 0.06);
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.ms-bl__alpha-btn:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.ms-bl__alpha-btn--active {
+  background-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  border-color: rgb(var(--color-foreground));
+}
+
+.ms-bl__alpha-btn--disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. Ricerca
+   -------------------------------------------------------------------------- */
+
+.ms-bl__search {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.ms-bl__search-input {
+  width: 100%;
+  padding: 0.6rem 2.8rem 0.6rem 1rem;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 6px;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font-size: 0.875rem;
+  font-family: inherit;
+  line-height: 1.5;
+  transition: border-color 0.2s ease;
+}
+
+.ms-bl__search-input::placeholder {
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+.ms-bl__search-input:focus {
+  outline: none;
+  border-color: rgb(var(--color-foreground));
+  box-shadow: 0 0 0 1px rgb(var(--color-foreground));
+}
+
+.ms-bl__search-btn,
+.ms-bl__search-clear {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(var(--color-foreground), 0.6);
+  cursor: pointer;
+}
+
+.ms-bl__search-btn {
+  right: 0.25rem;
+}
+
+.ms-bl__search-clear {
+  right: 2rem;
+}
+
+.ms-bl__search-btn:hover,
+.ms-bl__search-clear:hover {
+  color: rgb(var(--color-foreground));
+}
+
+.ms-bl__search-btn:focus-visible,
+.ms-bl__search-clear:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.ms-bl__search-btn svg,
+.ms-bl__search-clear svg,
+.ms-bl__search-btn .icon,
+.ms-bl__search-clear .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Switch Vista
+   -------------------------------------------------------------------------- */
+
+.ms-bl__view-switch {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.ms-bl__view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  border-radius: 4px;
+  background: transparent;
+  color: rgba(var(--color-foreground), 0.5);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.ms-bl__view-btn:hover {
+  color: rgb(var(--color-foreground));
+  border-color: rgba(var(--color-foreground), 0.3);
+}
+
+.ms-bl__view-btn:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.ms-bl__view-btn--active {
+  color: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  background-color: rgba(var(--color-foreground), 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   6. Contatore Risultati
+   -------------------------------------------------------------------------- */
+
+.ms-bl__results-count {
+  font-size: 0.8125rem;
+  color: rgba(var(--color-foreground), 0.6);
+  padding-top: 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. Contenitore Brand — Layout Griglia (default)
+   -------------------------------------------------------------------------- */
+
+.ms-bl__container {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(var(--bl-cols-mobile, 2), 1fr);
+}
+
+.ms-bl__item {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.ms-bl__item[hidden] {
+  display: none;
+}
+
+.ms-bl__item--hiding {
+  opacity: 0;
+}
+
+.ms-bl__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(var(--color-foreground), 0.08);
+  border-radius: 8px;
+  background: rgb(var(--color-background));
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+a.ms-bl__link:hover {
+  border-color: rgba(var(--color-foreground), 0.2);
+  box-shadow: 0 4px 12px rgba(var(--color-foreground), 0.06);
+  transform: translateY(-2px);
+}
+
+a.ms-bl__link:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Logo
+   -------------------------------------------------------------------------- */
+
+.ms-bl__logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.ms-bl__logo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.ms-bl__logo-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--color-foreground), 0.05);
+  border-radius: 4px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(var(--color-foreground), 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   9. Info (nome + descrizione)
+   -------------------------------------------------------------------------- */
+
+.ms-bl__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ms-bl__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgb(var(--color-foreground));
+}
+
+.ms-bl__description {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.65);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   10. Vista Lista
+   -------------------------------------------------------------------------- */
+
+.ms-bl__container--list {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.ms-bl__container--list .ms-bl__link {
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  gap: 1rem;
+}
+
+.ms-bl__container--list .ms-bl__link:hover {
+  transform: none;
+  box-shadow: none;
+  background-color: rgba(var(--color-foreground), 0.02);
+}
+
+.ms-bl__container--list .ms-bl__logo-wrap {
+  width: 60px;
+  min-width: 60px;
+  aspect-ratio: 1;
+  margin-bottom: 0;
+}
+
+.ms-bl__container--list .ms-bl__info {
+  flex: 1;
+}
+
+.ms-bl__container--list .ms-bl__description {
+  -webkit-line-clamp: 2;
+}
+
+/* --------------------------------------------------------------------------
+   11. Vista Solo Loghi
+   -------------------------------------------------------------------------- */
+
+.ms-bl__container--logo .ms-bl__link {
+  padding: 1rem;
+}
+
+.ms-bl__container--logo .ms-bl__info {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.ms-bl__container--logo .ms-bl__logo-wrap {
+  margin-bottom: 0;
+  aspect-ratio: 1;
+}
+
+/* --------------------------------------------------------------------------
+   12. Messaggio vuoto / Placeholder
+   -------------------------------------------------------------------------- */
+
+.ms-bl__empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: rgba(var(--color-foreground), 0.5);
+  font-size: 0.9375rem;
+}
+
+.ms-bl__placeholder {
+  text-align: center;
+  padding: 4rem 1rem;
+  border: 2px dashed rgba(var(--color-foreground), 0.15);
+  border-radius: 8px;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   13. Desktop (min-width: 750px)
+   -------------------------------------------------------------------------- */
+
+@media screen and (min-width: 750px) {
+  .ms-bl__container {
+    grid-template-columns: repeat(var(--bl-cols-desktop, 4), 1fr);
+  }
+
+  .ms-bl__container--list {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-bl__container--list .ms-bl__logo-wrap {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .ms-bl__container--list .ms-bl__link {
+    padding: 1rem 1.5rem;
+  }
+
+  .ms-bl__alpha-btn {
+    min-width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .ms-bl__toolbar-row {
+    flex-wrap: nowrap;
+  }
+
+  .ms-bl__name {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. Reduced Motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-bl__item,
+  .ms-bl__link,
+  .ms-bl__alpha-btn,
+  .ms-bl__view-btn,
+  .ms-bl__search-input {
+    transition: none;
+  }
+
+  a.ms-bl__link:hover {
+    transform: none;
+  }
+}

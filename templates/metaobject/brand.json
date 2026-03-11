@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "ms_brand-page",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,524 @@
+{%- comment -%}
+  MS Brand List — legge da shop.metaobjects.brand
+  Filtro alfabetico, ricerca, 3 modalita di visualizzazione (griglia, lista, solo loghi).
+
+  Metaobject "brand" richiesto con campi:
+    - nome (single_line_text_field)
+    - logo (file_reference)
+    - descrizione (rich_text_field)
+    - url_custom (url) — fallback se pagina web metaobject non abilitata
+
+  Metafield prodotto consigliato:
+    - custom.brand (metaobject_reference → brand)
+{%- endcomment -%}
+
+{{ 'ms_brand-list.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign brands = shop.metaobjects.brand.values
+  assign brands_count = brands.size
+  assign default_view = section.settings.default_view | default: 'grid'
+  assign cols_desktop = section.settings.columns_desktop | default: 4
+  assign cols_mobile = section.settings.columns_mobile | default: 2
+  assign show_description = section.settings.show_description
+  assign enable_search = section.settings.enable_search
+  assign enable_alpha_filter = section.settings.enable_alpha_filter
+  assign search_placeholder = section.settings.search_placeholder | default: 'Cerca brand...'
+
+  assign title_tag = section.settings.title_tag | default: 'h2'
+  assign title_classes = section.settings.heading_size | default: 'h1'
+  if section.settings.title_custom_class != blank
+    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
+  endif
+-%}
+
+{%- render 'ms_mobile-padding' -%}
+
+<ms-brand-list
+  id="section-{{ section.id }}"
+  class="ms-brand-list color-{{ section.settings.color_scheme }} gradient"
+  data-section-id="{{ section.id }}"
+  data-default-view="{{ default_view }}"
+>
+  <div class="{{ sw_class }}">
+
+    {%- if section.settings.title != blank -%}
+      <div class="ms-bl__header">
+        <{{ title_tag }} class="{{ title_classes }} ms-bl__title">
+          {{- section.settings.title | escape -}}
+        </{{ title_tag }}>
+      </div>
+    {%- endif -%}
+
+    {%- if brands_count > 0 -%}
+
+      {%- comment -%} Toolbar: filtro alfabetico + ricerca + switch vista {%- endcomment -%}
+      <div class="ms-bl__toolbar" role="toolbar" aria-label="Strumenti di filtro e visualizzazione brand">
+
+        {%- if enable_alpha_filter -%}
+          <div class="ms-bl__alpha-filter" role="group" aria-label="Filtra per lettera iniziale">
+            <button type="button" class="ms-bl__alpha-btn ms-bl__alpha-btn--active" data-letter="all" aria-pressed="true">
+              Tutti
+            </button>
+            {%- assign alphabet = 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z' | split: ',' -%}
+            {%- for letter in alphabet -%}
+              <button type="button" class="ms-bl__alpha-btn" data-letter="{{ letter }}" aria-pressed="false">
+                {{ letter }}
+              </button>
+            {%- endfor -%}
+            <button type="button" class="ms-bl__alpha-btn" data-letter="#" aria-pressed="false" aria-label="Caratteri non alfabetici">
+              #
+            </button>
+          </div>
+        {%- endif -%}
+
+        <div class="ms-bl__toolbar-row">
+          {%- if enable_search -%}
+            <div class="ms-bl__search" role="search" aria-label="Cerca brand">
+              <input
+                type="text"
+                class="ms-bl__search-input"
+                placeholder="{{ search_placeholder | escape }}"
+                aria-label="Cerca brand per nome"
+                autocomplete="off"
+              />
+              <button type="button" class="ms-bl__search-btn" aria-label="Cerca">
+                {%- render 'ms_icon', icon: settings.ms_icon_search -%}
+              </button>
+              <button type="button" class="ms-bl__search-clear" aria-label="Cancella ricerca" hidden>
+                {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
+              </button>
+            </div>
+          {%- endif -%}
+
+          <div class="ms-bl__view-switch" role="group" aria-label="Cambia visualizzazione">
+            <button type="button" class="ms-bl__view-btn{% if default_view == 'grid' %} ms-bl__view-btn--active{% endif %}" data-view="grid" aria-pressed="{% if default_view == 'grid' %}true{% else %}false{% endif %}" aria-label="Visualizzazione griglia">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="1" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="12" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <button type="button" class="ms-bl__view-btn{% if default_view == 'list' %} ms-bl__view-btn--active{% endif %}" data-view="list" aria-pressed="{% if default_view == 'list' %}true{% else %}false{% endif %}" aria-label="Visualizzazione lista">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="1" y="2" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="8.5" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="15" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <button type="button" class="ms-bl__view-btn{% if default_view == 'logo' %} ms-bl__view-btn--active{% endif %}" data-view="logo" aria-pressed="{% if default_view == 'logo' %}true{% else %}false{% endif %}" aria-label="Visualizzazione solo loghi">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="5" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="5" cy="15" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="15" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
+          <span data-bl-count>{{ brands_count }}</span>
+          <span data-bl-count-label>
+            {%- if brands_count == 1 -%}brand trovato{%- else -%}brand trovati{%- endif -%}
+          </span>
+        </div>
+      </div>
+
+      {%- comment -%} Contenitore brand — tutte e 3 le viste condividono lo stesso markup {%- endcomment -%}
+      <div
+        class="ms-bl__container ms-bl__container--{{ default_view }}"
+        data-bl-container
+        style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
+      >
+        {%- for brand in brands -%}
+          {%- liquid
+            assign brand_name = brand.nome.value | default: brand.system.handle
+            assign brand_initial = brand_name | slice: 0 | upcase
+            assign brand_logo = brand.logo.value
+            assign brand_desc = brand.descrizione.value
+            assign brand_url = brand.system.url | default: nil
+            if brand_url == blank and brand.url_custom.value != blank
+              assign brand_url = brand.url_custom.value
+            endif
+          -%}
+
+          <div
+            class="ms-bl__item"
+            data-brand-name="{{ brand_name | escape }}"
+            data-brand-initial="{{ brand_initial | escape }}"
+          >
+            {%- if brand_url != blank -%}
+              <a href="{{ brand_url }}" class="ms-bl__link" aria-label="{{ brand_name | escape }}">
+            {%- else -%}
+              <div class="ms-bl__link ms-bl__link--no-url">
+            {%- endif -%}
+
+              <div class="ms-bl__logo-wrap">
+                {%- if brand_logo != blank -%}
+                  {{
+                    brand_logo
+                    | image_url: width: 400
+                    | image_tag:
+                        class: 'ms-bl__logo',
+                        loading: 'lazy',
+                        alt: brand_name,
+                        widths: '100, 200, 300, 400',
+                        sizes: '(min-width: 750px) 200px, 100px'
+                  }}
+                {%- else -%}
+                  <div class="ms-bl__logo-placeholder" aria-hidden="true">
+                    <span>{{ brand_initial }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <div class="ms-bl__info">
+                <span class="ms-bl__name">{{ brand_name | escape }}</span>
+                {%- if show_description and brand_desc != blank -%}
+                  <div class="ms-bl__description">{{ brand_desc }}</div>
+                {%- endif -%}
+              </div>
+
+            {%- if brand_url != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Messaggio nessun risultato {%- endcomment -%}
+      <div class="ms-bl__empty" hidden aria-live="polite">
+        <p>{{ section.settings.empty_message | default: 'Nessun brand trovato.' | escape }}</p>
+      </div>
+
+    {%- else -%}
+      {%- if request.design_mode -%}
+        <div class="ms-bl__placeholder">
+          <p>Nessun brand trovato. Crea il metaobject "brand" in Shopify Admin e aggiungi delle voci.</p>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+  </div>
+
+  {%- comment -%} Dati strutturati JSON-LD {%- endcomment -%}
+  {%- if brands_count > 0 -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": {{ section.settings.title | default: 'Brand' | json }},
+        "numberOfItems": {{ brands_count }},
+        "itemListElement": [
+          {%- for brand in brands -%}
+            {%- liquid
+              assign brand_name = brand.nome.value | default: brand.system.handle
+              assign brand_url = brand.system.url | default: nil
+              if brand_url == blank and brand.url_custom.value != blank
+                assign brand_url = brand.url_custom.value
+              endif
+            -%}
+            {
+              "@type": "ListItem",
+              "position": {{ forloop.index }},
+              "item": {
+                "@type": "Brand",
+                "name": {{ brand_name | json }}
+                {%- if brand_url != blank -%}
+                  ,"url": {{ brand_url | json }}
+                {%- endif -%}
+                {%- if brand.logo.value != blank -%}
+                  ,"logo": {{ brand.logo.value | image_url: width: 400 | json }}
+                {%- endif -%}
+                {%- if brand.descrizione.value != blank -%}
+                  {%- assign sd_desc = brand.descrizione.value | strip_html | strip | truncate: 5000 -%}
+                  ,"description": {{ sd_desc | json }}
+                {%- endif -%}
+              }
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+</ms-brand-list>
+
+{%- render 'ms_section-style' -%}
+
+<script src="{{ 'ms_brand-list.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "MS Brand List",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Combinazione colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_width",
+      "label": "Full width da mobile",
+      "default": false,
+      "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
+    },
+
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "I Nostri Brand"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione titolo",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" },
+        { "label": "Extra grande", "value": "hxl" },
+        { "label": "Extra extra grande", "value": "hxxl" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+
+    {
+      "type": "header",
+      "content": "Visualizzazione"
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "Visualizzazione predefinita",
+      "options": [
+        { "label": "Griglia", "value": "grid" },
+        { "label": "Lista", "value": "list" },
+        { "label": "Solo loghi", "value": "logo" }
+      ],
+      "default": "grid",
+      "info": "L'utente puo cambiare la vista dalla toolbar."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Colonne desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "info": "Numero di colonne nella vista griglia e loghi su desktop."
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Colonne mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "info": "Numero di colonne nella vista griglia e loghi su mobile."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostra descrizione",
+      "default": true,
+      "info": "Mostra la descrizione del brand nella vista griglia."
+    },
+
+    {
+      "type": "header",
+      "content": "Filtri e ricerca"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_alpha_filter",
+      "label": "Abilita filtro alfabetico",
+      "default": true,
+      "info": "Mostra i pulsanti A-Z per filtrare i brand per lettera iniziale."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Abilita ricerca",
+      "default": true,
+      "info": "Mostra il campo di ricerca per filtrare i brand per nome."
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder campo ricerca",
+      "default": "Cerca brand..."
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Messaggio nessun risultato",
+      "default": "Nessun brand trovato."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 40
+        },
+        {
+          "type": "range", "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 40
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 30
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 30
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 20
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 20
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Brand List",
+      "category": "Prodotti & Collezioni",
+      "blocks": [
+        { "type": "section_padding" }
+      ]
+    }
+  ]
+}
+{% endschema %}
