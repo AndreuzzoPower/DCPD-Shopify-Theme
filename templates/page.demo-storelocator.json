@@ -119,7 +119,7 @@
         "card_shadow": "light",
         "card_shadow_hover": "medium",
         "card_image_padding": 0,
-        "card_image_ratio": "square",
+        "card_image_ratio": "16-10",
         "card_text_alignment": "left",
         "map_provider": "openstreetmap",
         "google_maps_api_key": "",
