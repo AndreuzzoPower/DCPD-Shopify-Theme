@@ -787,6 +787,16 @@
     "ms_store_locator_c9JaGH": {
       "type": "ms_store-locator",
       "blocks": {
+        "tag_marker_HT7iCG": {
+          "type": "tag_marker",
+          "settings": {
+            "tag_value": "",
+            "tag_label": "Default",
+            "marker_icon": "",
+            "marker_color": "#ecff00",
+            "enabled": true
+          }
+        },
         "tag_marker_X7VNNW": {
           "type": "tag_marker",
           "settings": {
@@ -820,6 +830,7 @@
         }
       },
       "block_order": [
+        "tag_marker_HT7iCG",
         "tag_marker_X7VNNW",
         "tag_marker_e9rqJf",
         "section_padding_bptQjx"
