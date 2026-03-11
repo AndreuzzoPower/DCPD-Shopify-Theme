@@ -793,7 +793,7 @@
             "tag_value": "",
             "tag_label": "Default",
             "marker_icon": "",
-            "marker_color": "#ecff00",
+            "marker_color": "#919191",
             "enabled": true
           }
         },
@@ -844,6 +844,8 @@
         "toolbar_position": "top",
         "list_style": "grid",
         "list_columns": 3,
+        "scroll_offset_desktop": 100,
+        "scroll_offset_mobile": 80,
         "card_style": "card",
         "card_corner_radius": 6,
         "card_border_thickness": 1,
@@ -862,8 +864,6 @@
         "map_style": "standard",
         "enable_clustering": false,
         "enable_fullscreen": true,
-        "default_marker_icon": "icon-map-pin.svg",
-        "default_marker_color": "#919191",
         "enable_search": true,
         "search_placeholder": "Cerca citta, indirizzo o CAP...",
         "search_radius": 50,
