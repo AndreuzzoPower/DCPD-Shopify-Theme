@@ -40,8 +40,6 @@
 }
 
 .ms-sl__legend-between {
-  margin-top: var(--ms-sl-gap);
-  margin-bottom: var(--ms-sl-gap);
   width: 100%;
 }
 
