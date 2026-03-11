@@ -819,7 +819,7 @@
   height: var(--ms-sl-marker-size);
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
