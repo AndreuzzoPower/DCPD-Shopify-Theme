@@ -83,10 +83,10 @@
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
-        "layout": "map_sidebar",
+        "layout": "map_top",
         "sidebar_position": "right",
         "toolbar_position": "top",
-        "list_style": "list",
+        "list_style": "grid",
         "list_columns": 3,
         "scroll_offset_desktop": 100,
         "scroll_offset_mobile": 80,
