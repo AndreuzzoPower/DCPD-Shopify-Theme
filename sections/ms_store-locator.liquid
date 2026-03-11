@@ -143,6 +143,8 @@
   "style":"{{ section.settings.map_style | default: 'standard' }}",
   "clustering":{{ section.settings.enable_clustering }},
   "fullscreen":{{ section.settings.enable_fullscreen }},
+  "showZoom":{{ section.settings.show_zoom_controls | default: true }},
+  "controlsPosition":"{{ section.settings.map_controls_position | default: 'topleft' }}",
   "searchRadius":{{ section.settings.search_radius | default: 50 }},
   "enableSearch":{{ section.settings.enable_search }},
   "enableGeo":{{ section.settings.enable_geolocation }},
@@ -287,8 +289,17 @@
             tabindex="0"
           >          </div>
           {%- if section.settings.show_results_count -%}
-            <div class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}" aria-live="polite" aria-atomic="true">
-              <strong data-ms-sl-count>{{ stores_count }}</strong> punti vendita trovati
+            {%- assign label_s = section.settings.results_count_label_singular | default: 'punto vendita trovato' -%}
+            {%- assign label_p = section.settings.results_count_label_plural | default: 'punti vendita trovati' -%}
+            <div
+              class="ms-sl__results-count ms-sl__results-count--{{ counter_pos }}"
+              aria-live="polite"
+              aria-atomic="true"
+              data-label-singular="{{ label_s | escape }}"
+              data-label-plural="{{ label_p | escape }}"
+            >
+              <strong data-ms-sl-count>{{ stores_count }}</strong>
+              <span data-ms-sl-count-label>{% if stores_count == 1 %}{{ label_s }}{% else %}{{ label_p }}{% endif %}</span>
             </div>
           {%- endif -%}
         </div>
@@ -905,6 +916,25 @@
       "label": "Pulsante schermo intero",
       "default": true
     },
+    {
+      "type": "checkbox",
+      "id": "show_zoom_controls",
+      "label": "Pulsanti zoom (+ / -)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "map_controls_position",
+      "label": "Posizione controlli mappa",
+      "info": "Posizione dei pulsanti zoom e schermo intero sulla mappa.",
+      "options": [
+        { "value": "topleft", "label": "Alto - Sinistra" },
+        { "value": "topright", "label": "Alto - Destra" },
+        { "value": "bottomleft", "label": "Basso - Sinistra" },
+        { "value": "bottomright", "label": "Basso - Destra" }
+      ],
+      "default": "topleft"
+    },
 
     {
       "type": "header",
@@ -962,6 +992,18 @@
       "id": "show_results_count",
       "label": "Mostra contatore risultati",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "results_count_label_singular",
+      "label": "Label contatore (singolare)",
+      "default": "punto vendita trovato"
+    },
+    {
+      "type": "text",
+      "id": "results_count_label_plural",
+      "label": "Label contatore (plurale)",
+      "default": "punti vendita trovati"
     },
     {
       "type": "select",

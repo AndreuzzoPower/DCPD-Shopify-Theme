@@ -187,16 +187,23 @@ if (!customElements.get('ms-store-locator')) {
       const cartoAttrib = osmAttrib + ' &copy; <a href="https://carto.com/attributions">CARTO</a>';
       const tileAttrib = (style === 'grayscale' || style === 'dark') ? cartoAttrib : osmAttrib;
 
+      const ctrlPos = this.config.controlsPosition || 'topleft';
+
       this.map = L.map(this.mapEl, {
         center: [this.config.lat, this.config.lng],
         zoom: this.config.zoom || 6,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        zoomControl: false
       });
+
+      if (this.config.showZoom !== false) {
+        L.control.zoom({ position: ctrlPos }).addTo(this.map);
+      }
 
       L.tileLayer(tileUrl, { attribution: tileAttrib, maxZoom: 19 }).addTo(this.map);
 
       if (this.config.fullscreen) {
-        this.#addLeafletFullscreenControl();
+        this.#addLeafletFullscreenControl(ctrlPos);
       }
 
       if (this.config.clustering && typeof L.markerClusterGroup === 'function') {
@@ -224,7 +231,7 @@ if (!customElements.get('ms-store-locator')) {
       }
     }
 
-    #addLeafletFullscreenControl() {
+    #addLeafletFullscreenControl(position = 'topleft') {
       const mapWrapper = this.querySelector('.ms-sl__map-wrapper');
       if (!mapWrapper) return;
 
@@ -260,7 +267,7 @@ if (!customElements.get('ms-store-locator')) {
       });
 
       const control = L.Control.extend({
-        options: { position: 'topleft' },
+        options: { position },
         onAdd: () => btn
       });
       this.map.addControl(new control());
@@ -333,11 +340,21 @@ if (!customElements.get('ms-store-locator')) {
     #initGoogleMaps() {
       const mapStyles = this.#getGoogleMapStyles();
 
+      const gmCtrlPos = {
+        topleft: google.maps.ControlPosition.TOP_LEFT,
+        topright: google.maps.ControlPosition.TOP_RIGHT,
+        bottomleft: google.maps.ControlPosition.BOTTOM_LEFT,
+        bottomright: google.maps.ControlPosition.BOTTOM_RIGHT
+      }[this.config.controlsPosition] || google.maps.ControlPosition.TOP_LEFT;
+
       this.map = new google.maps.Map(this.mapEl, {
         center: { lat: this.config.lat, lng: this.config.lng },
         zoom: this.config.zoom || 6,
         styles: mapStyles,
         fullscreenControl: !!this.config.fullscreen,
+        fullscreenControlOptions: { position: gmCtrlPos },
+        zoomControl: this.config.showZoom !== false,
+        zoomControlOptions: { position: gmCtrlPos },
         mapTypeControl: false,
         streetViewControl: false,
         gestureHandling: 'cooperative'
@@ -913,7 +930,18 @@ if (!customElements.get('ms-store-locator')) {
     }
 
     #updateCount(count) {
-      if (this.countEl) this.countEl.textContent = count;
+      if (this.countEl) {
+        this.countEl.textContent = count;
+        const wrapper = this.countEl.closest('.ms-sl__results-count');
+        if (wrapper) {
+          const labelEl = wrapper.querySelector('[data-ms-sl-count-label]');
+          if (labelEl) {
+            labelEl.textContent = count === 1
+              ? (wrapper.dataset.labelSingular || 'punto vendita trovato')
+              : (wrapper.dataset.labelPlural || 'punti vendita trovati');
+          }
+        }
+      }
     }
 
     #updateEmpty(count) {
