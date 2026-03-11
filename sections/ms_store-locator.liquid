@@ -308,8 +308,8 @@
         </div>
       {%- endif -%}
 
-      {%- comment -%} Legenda — tra mappa e card (layout map_top) {%- endcomment -%}
-      {%- if legend_pos == 'between_map_cards' -%}
+      {%- comment -%} Legenda — tra mappa e card (solo layout non-sidebar) {%- endcomment -%}
+      {%- if legend_pos == 'between_map_cards' and layout != 'map_sidebar' -%}
         <div class="ms-sl__legend-between">{{ ms_legend_html }}</div>
       {%- endif -%}
 
@@ -494,8 +494,10 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Legenda — sotto tutto (mappa+card, in layout sidebar) {%- endcomment -%}
+    {%- comment -%} Legenda — sotto tutto oppure between_map_cards in sidebar (spostata fuori dal flex row) {%- endcomment -%}
     {%- if legend_pos == 'below_all' -%}
+      <div class="ms-sl__legend-below">{{ ms_legend_html }}</div>
+    {%- elsif legend_pos == 'between_map_cards' and layout == 'map_sidebar' -%}
       <div class="ms-sl__legend-below">{{ ms_legend_html }}</div>
     {%- endif -%}
 
