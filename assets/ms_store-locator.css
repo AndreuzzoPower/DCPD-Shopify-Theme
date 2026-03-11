@@ -425,6 +425,9 @@
    -------------------------------------------------------------------------- */
 
 /* --- Card base --- */
+.ms-sl__card[hidden] {
+  display: none !important;
+}
 .ms-sl__card {
   display: flex;
   flex-direction: column;
