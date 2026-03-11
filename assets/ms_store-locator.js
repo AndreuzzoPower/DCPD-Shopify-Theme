@@ -62,8 +62,10 @@ if (!customElements.get('ms-store-locator')) {
       }
 
       for (const store of this.stores) {
-        store._lat = parseFloat(store.lat) || 0;
-        store._lng = parseFloat(store.lng) || 0;
+        const lat = parseFloat(store.lat);
+        const lng = parseFloat(store.lng);
+        store._lat = isNaN(lat) ? null : lat;
+        store._lng = isNaN(lng) ? null : lng;
       }
 
       if (this.stores.length === 0) {
@@ -246,54 +248,62 @@ if (!customElements.get('ms-store-locator')) {
       this.markers = [];
 
       for (const store of this.stores) {
-        if (!store._lat && !store._lng) continue;
+        try {
+          if (store._lat == null || store._lng == null) continue;
 
-        const markerDef = this.#getMarkerDef(store);
-        if (!markerDef) continue;
+          const markerDef = this.#getMarkerDef(store);
+          if (!markerDef) continue;
 
-        let divIcon;
-        if (markerDef.image) {
-          divIcon = L.icon({
-            iconUrl: markerDef.image,
-            iconSize: [36, 45],
-            iconAnchor: [18, 45],
-            popupAnchor: [0, -45],
-            className: 'ms-sl__marker ms-sl__marker--image'
+          let divIcon;
+          if (markerDef.image) {
+            divIcon = L.icon({
+              iconUrl: markerDef.image,
+              iconSize: [36, 45],
+              iconAnchor: [18, 45],
+              popupAnchor: [0, -45],
+              className: 'ms-sl__marker ms-sl__marker--image'
+            });
+          } else {
+            const hasIcon = !!markerDef.icon;
+            const iconHtml = hasIcon
+              ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(markerDef.icon)}</span>`
+              : '';
+            const pinClass = hasIcon ? 'ms-sl__marker-pin ms-sl__marker-pin--has-icon' : 'ms-sl__marker-pin';
+            divIcon = L.divIcon({
+              className: 'ms-sl__marker',
+              html: `<div class="${pinClass}" style="background-color:${markerDef.color}">${iconHtml}</div>`,
+              iconSize: [36, 45],
+              iconAnchor: [18, 45],
+              popupAnchor: [0, -45]
+            });
+          }
+
+          const marker = L.marker([store._lat, store._lng], { icon: divIcon });
+          marker._storeId = store.id;
+          marker._storeTags = store.tags || [];
+
+          const popupContent = this.#buildPopupHtml(store);
+          marker.bindPopup(popupContent, { maxWidth: 400, minWidth: 280, className: 'ms-sl__popup-wrapper' });
+
+          marker.on('click', () => {
+            this.#setActiveCard(store.id);
+            this.map.setView(marker.getLatLng(), Math.max(this.map.getZoom(), 13), { animate: true });
           });
-        } else {
-          const hasIcon = !!markerDef.icon;
-          const iconHtml = hasIcon
-            ? `<span class="ms-sl__marker-glyph">${this.#renderIconHtml(markerDef.icon)}</span>`
-            : '';
-          const pinClass = hasIcon ? 'ms-sl__marker-pin ms-sl__marker-pin--has-icon' : 'ms-sl__marker-pin';
-          divIcon = L.divIcon({
-            className: 'ms-sl__marker',
-            html: `<div class="${pinClass}" style="background-color:${markerDef.color}">${iconHtml}</div>`,
-            iconSize: [36, 45],
-            iconAnchor: [18, 45],
-            popupAnchor: [0, -45]
-          });
+
+          if (this.clusterGroup) {
+            this.clusterGroup.addLayer(marker);
+          } else {
+            marker.addTo(this.map);
+          }
+
+          this.markers.push(marker);
+        } catch (err) {
+          console.error(`[MS Store Locator] Errore creazione marker per store "${store.id}":`, err);
         }
+      }
 
-        const marker = L.marker([store._lat, store._lng], { icon: divIcon });
-        marker._storeId = store.id;
-        marker._storeTags = store.tags || [];
-
-        const popupContent = this.#buildPopupHtml(store);
-        marker.bindPopup(popupContent, { maxWidth: 400, minWidth: 280, className: 'ms-sl__popup-wrapper' });
-
-        marker.on('click', () => {
-          this.#setActiveCard(store.id);
-          this.map.setView(marker.getLatLng(), Math.max(this.map.getZoom(), 13), { animate: true });
-        });
-
-        if (this.clusterGroup) {
-          this.clusterGroup.addLayer(marker);
-        } else {
-          marker.addTo(this.map);
-        }
-
-        this.markers.push(marker);
+      if (this.markers.length !== this.stores.length) {
+        console.warn(`[MS Store Locator] Marker creati: ${this.markers.length}/${this.stores.length}`);
       }
     }
 
@@ -340,47 +350,55 @@ if (!customElements.get('ms-store-locator')) {
       this.markers = [];
 
       for (const store of this.stores) {
-        if (!store._lat && !store._lng) continue;
+        try {
+          if (store._lat == null || store._lng == null) continue;
 
-        const markerDef = this.#getMarkerDef(store);
-        if (!markerDef) continue;
+          const markerDef = this.#getMarkerDef(store);
+          if (!markerDef) continue;
 
-        let markerIcon;
-        if (markerDef.image) {
-          markerIcon = {
-            url: markerDef.image,
-            scaledSize: new google.maps.Size(36, 45),
-            anchor: new google.maps.Point(18, 45)
-          };
-        } else {
-          const svgPin = this.#buildGooglePinSvg(markerDef.color, !markerDef.icon);
-          markerIcon = {
-            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgPin),
-            scaledSize: new google.maps.Size(36, 45),
-            anchor: new google.maps.Point(18, 45)
-          };
+          let markerIcon;
+          if (markerDef.image) {
+            markerIcon = {
+              url: markerDef.image,
+              scaledSize: new google.maps.Size(36, 45),
+              anchor: new google.maps.Point(18, 45)
+            };
+          } else {
+            const svgPin = this.#buildGooglePinSvg(markerDef.color, !markerDef.icon);
+            markerIcon = {
+              url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgPin),
+              scaledSize: new google.maps.Size(36, 45),
+              anchor: new google.maps.Point(18, 45)
+            };
+          }
+
+          const marker = new google.maps.Marker({
+            position: { lat: store._lat, lng: store._lng },
+            map: this.map,
+            icon: markerIcon,
+            title: store.nome
+          });
+
+          marker._storeId = store.id;
+          marker._storeTags = store.tags || [];
+
+          const popupContent = this.#buildPopupHtml(store);
+
+          marker.addListener('click', () => {
+            this.infoWindow.setContent(popupContent);
+            this.infoWindow.open(this.map, marker);
+            this.map.panTo(marker.getPosition());
+            this.#setActiveCard(store.id);
+          });
+
+          this.markers.push(marker);
+        } catch (err) {
+          console.error(`[MS Store Locator] Errore creazione marker Google per store "${store.id}":`, err);
         }
+      }
 
-        const marker = new google.maps.Marker({
-          position: { lat: store._lat, lng: store._lng },
-          map: this.map,
-          icon: markerIcon,
-          title: store.nome
-        });
-
-        marker._storeId = store.id;
-        marker._storeTags = store.tags || [];
-
-        const popupContent = this.#buildPopupHtml(store);
-
-        marker.addListener('click', () => {
-          this.infoWindow.setContent(popupContent);
-          this.infoWindow.open(this.map, marker);
-          this.map.panTo(marker.getPosition());
-          this.#setActiveCard(store.id);
-        });
-
-        this.markers.push(marker);
+      if (this.markers.length !== this.stores.length) {
+        console.warn(`[MS Store Locator] Marker Google creati: ${this.markers.length}/${this.stores.length}`);
       }
     }
 
@@ -680,6 +698,7 @@ if (!customElements.get('ms-store-locator')) {
 
     #computeDistances(fromLat, fromLng) {
       for (const store of this.stores) {
+        if (store._lat == null || store._lng == null) continue;
         store._distance = this.#haversine(fromLat, fromLng, store._lat, store._lng);
       }
     }
