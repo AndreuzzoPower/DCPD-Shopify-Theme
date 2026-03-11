@@ -1,5 +1,5 @@
 /**
- * MS Store Locator — Custom Element
+ * MS Store Locator — Custom Element v2.1
  * Supporta Leaflet (OpenStreetMap) e Google Maps.
  * Gestisce ricerca, filtri tag, geolocalizzazione, clustering, popup.
  */
