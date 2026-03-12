@@ -81,6 +81,7 @@
       ],
       "name": "MS Brand List",
       "settings": {
+        "data_source": "vendor",
         "section_width": "page_width",
         "color_scheme": "",
         "mobile_full_width": false,
