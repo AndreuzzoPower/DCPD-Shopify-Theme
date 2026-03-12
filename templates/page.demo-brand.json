@@ -91,6 +91,8 @@
         "columns_mobile": 2,
         "show_logo": false,
         "show_description": false,
+        "brand_name_bold": false,
+        "brand_name_underline": true,
         "card_corner_radius": 6,
         "card_border_thickness": 0,
         "card_border_color": "#e0e0e0",
