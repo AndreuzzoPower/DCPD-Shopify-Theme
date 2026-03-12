@@ -78,10 +78,25 @@
   margin-bottom: 2rem;
 }
 
-.ms-bp__long-desc-preview,
-.ms-bp__long-desc-full {
-  max-width: 700px;
+/* Full = 100% container; narrow = colonna stretta centrata */
+.ms-bp__long-desc--full .ms-bp__long-desc-preview,
+.ms-bp__long-desc--full .ms-bp__long-desc-full {
+  max-width: none;
+  width: 100%;
   color: rgba(var(--color-foreground), 0.7);
+}
+
+.ms-bp__long-desc--narrow .ms-bp__long-desc-preview,
+.ms-bp__long-desc--narrow .ms-bp__long-desc-full {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.ms-bp__long-desc--narrow .ms-bp__long-desc-actions {
+  display: flex;
+  justify-content: center;
 }
 
 .ms-bp__long-desc-preview > *:first-child,
@@ -140,49 +155,22 @@
 
 .ms-bp__products-description {
   margin: 0 0 1.5rem;
-  max-width: 700px;
 }
 
-.ms-bp__products-description--left {
+/* Allineamento titolo e descrizione prodotti (sx / centro / dx) */
+.ms-bp__products-heading--left {
   text-align: left;
 }
 
-.ms-bp__products-description--center {
+.ms-bp__products-heading--center {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
 
-.ms-bp__products-description--right {
+.ms-bp__products-heading--right {
   text-align: right;
   margin-left: auto;
-}
-
-/* Griglia a tutta larghezza: esce dal page-width */
-/* Consenti alla griglia full-width di uscire dal page-width */
-.ms-brand-page--products-full .page-width {
-  overflow-x: visible;
-}
-
-.ms-bp__products--full-width .product-grid-container {
-  overflow: visible;
-}
-
-.ms-bp__products--full-width .ms-bp__products-grid-full {
-  width: 100vw;
-  max-width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  box-sizing: border-box;
-}
-
-@media screen and (min-width: 750px) {
-  .ms-bp__products--full-width .ms-bp__products-grid-full {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
 }
 
 /* --------------------------------------------------------------------------

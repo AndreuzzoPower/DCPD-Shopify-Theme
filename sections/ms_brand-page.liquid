@@ -88,6 +88,7 @@
   assign bp_long_desc_chars = section.settings.long_desc_truncate_chars | default: 300
   assign bp_long_desc_label_more = section.settings.long_desc_button_label_more | default: 'Leggi di più'
   assign bp_long_desc_label_less = section.settings.long_desc_button_label_less | default: 'Leggi di meno'
+  assign bp_long_desc_width = section.settings.long_desc_width | default: 'full'
 -%}
 
 {%- render 'ms_mobile-padding' -%}
@@ -99,7 +100,7 @@
   }
 {%- endstyle -%}
 
-<div id="section-{{ section.id }}" class="ms-brand-page color-{{ section.settings.color_scheme }} gradient{% if section.settings.products_full_width %} ms-brand-page--products-full{% endif %}">
+<div id="section-{{ section.id }}" class="ms-brand-page color-{{ section.settings.color_scheme }} gradient">
   <div class="{{ sw_class }}">
 
     {%- comment -%} Hero brand {%- endcomment -%}
@@ -147,7 +148,7 @@
             {%- assign needs_toggle = true -%}
           {%- endif -%}
         {%- endif -%}
-        <div class="ms-bp__long-desc{% if needs_toggle %} ms-bp__long-desc--collapsible{% endif %}" id="long-desc-{{ section.id }}">
+        <div class="ms-bp__long-desc ms-bp__long-desc--{{ bp_long_desc_width }}{% if needs_toggle %} ms-bp__long-desc--collapsible{% endif %}" id="long-desc-{{ section.id }}">
           {%- if needs_toggle -%}
             <div class="ms-bp__long-desc-preview rte text-body">{{ desc_lunga_truncated }}</div>
             <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}" hidden>{{ brand_desc_lunga }}</div>
@@ -187,14 +188,15 @@
 
     {%- comment -%} Griglia prodotti (stessa struttura e opzioni di main-collection-product-grid) {%- endcomment -%}
 
-    <div class="ms-bp__products{% if section.settings.products_full_width %} ms-bp__products--full-width{% endif %}">
+    <div class="ms-bp__products">
+      {%- assign bp_products_align = section.settings.products_description_alignment | default: 'left' -%}
       {%- if section.settings.products_title != blank -%}
-        <{{ products_title_tag }} class="{{ products_title_classes }} ms-bp__products-title">
+        <{{ products_title_tag }} class="{{ products_title_classes }} ms-bp__products-title ms-bp__products-heading--{{ bp_products_align }}">
           {{- section.settings.products_title | escape -}}
         </{{ products_title_tag }}>
       {%- endif -%}
       {%- if section.settings.products_description != blank -%}
-        <div class="ms-bp__products-description rte text-body ms-bp__products-description--{{ section.settings.products_description_alignment | default: 'left' }}">
+        <div class="ms-bp__products-description rte text-body ms-bp__products-heading--{{ bp_products_align }}">
           {{ section.settings.products_description }}
         </div>
       {%- endif -%}
@@ -208,13 +210,13 @@
             {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}
           >
             {%- if brand_collection.products.size == 0 -%}
-              <div class="collection collection--empty{% unless section.settings.products_full_width %} {{ sw_class }}{% endunless %}{% if section.settings.products_full_width %} ms-bp__products-grid-full{% endif %}" id="product-grid" data-id="{{ section.id }}">
+              <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
                 <div class="loading-overlay gradient"></div>
                 <p class="title title--primary">{{ 'sections.collection_template.empty' | t }}</p>
               </div>
             {%- else -%}
               <div
-                class="collection{% unless section.settings.products_full_width %} {{ sw_class }}{% endunless %}{% if section.settings.products_full_width %} ms-bp__products-grid-full{% endif %}"
+                class="collection"
                 {% if section.settings.enable_infinite_scroll %}
                   data-infinite-scroll
                   data-infinite-grid="#product-grid"
@@ -310,7 +312,7 @@
             id="ProductGridContainer"
             {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}
           >
-            <div class="collection{% unless section.settings.products_full_width %} {{ sw_class }}{% endunless %}{% if section.settings.products_full_width %} ms-bp__products-grid-full{% endif %}">
+            <div class="collection">
               <div class="loading-overlay gradient"></div>
               <ul
                 id="product-grid"
@@ -536,6 +538,17 @@
     },
     {
       "type": "select",
+      "id": "long_desc_width",
+      "label": "Larghezza descrizione lunga",
+      "options": [
+        { "label": "100% del container", "value": "full" },
+        { "label": "Stretta e centrata (narrow)", "value": "narrow" }
+      ],
+      "default": "full",
+      "info": "Full = tutta la larghezza disponibile. Narrow = colonna stretta centrata."
+    },
+    {
+      "type": "select",
       "id": "long_desc_position",
       "label": "Posizione",
       "options": [
@@ -678,20 +691,14 @@
     {
       "type": "select",
       "id": "products_description_alignment",
-      "label": "Allineamento descrizione",
+      "label": "Allineamento titolo e descrizione",
       "default": "left",
       "options": [
         { "value": "left", "label": "Sinistra" },
         { "value": "center", "label": "Centro" },
         { "value": "right", "label": "Destra" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "products_full_width",
-      "label": "Griglia prodotti a tutta larghezza",
-      "default": false,
-      "info": "Rimuove i margini laterali dalla griglia prodotti (estensione fino ai bordi della pagina)."
+      ],
+      "info": "Si applica al titolo della sezione prodotti e alla descrizione sotto."
     },
     {
       "type": "paragraph",
