@@ -94,10 +94,6 @@
   color: rgba(var(--color-foreground), 0.7);
 }
 
-.ms-bp__long-desc--narrow .ms-bp__long-desc-actions {
-  display: flex;
-  justify-content: center;
-}
 
 .ms-bp__long-desc-preview > *:first-child,
 .ms-bp__long-desc-full > *:first-child {
@@ -115,6 +111,19 @@
 
 .ms-bp__long-desc-actions {
   margin-top: 1rem;
+  display: flex;
+}
+
+.ms-bp__long-desc-actions--left {
+  justify-content: flex-start;
+}
+
+.ms-bp__long-desc-actions--center {
+  justify-content: center;
+}
+
+.ms-bp__long-desc-actions--right {
+  justify-content: flex-end;
 }
 
 .ms-bp__long-desc-toggle {

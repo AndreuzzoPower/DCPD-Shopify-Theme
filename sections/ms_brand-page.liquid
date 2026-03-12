@@ -156,7 +156,7 @@
           {%- if needs_toggle -%}
             <div class="ms-bp__long-desc-preview rte text-body">{{ desc_lunga_truncated }}</div>
             <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}" hidden>{{ brand_desc_lunga }}</div>
-            <div class="ms-bp__long-desc-actions">
+            <div class="ms-bp__long-desc-actions ms-bp__long-desc-actions--{{ section.settings.long_desc_button_alignment | default: 'left' }}">
               <button
                 type="button"
                 class="ms-bp__long-desc-toggle {% render 'ms_button_classes', type: section.settings.long_desc_button_type, secondary: section.settings.long_desc_button_secondary, size: section.settings.long_desc_button_size %}"
@@ -644,6 +644,17 @@
       "options": [
         { "value": "before", "label": "Prima del testo" },
         { "value": "after", "label": "Dopo il testo" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "long_desc_button_alignment",
+      "label": "Allineamento pulsante",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
       ]
     },
 
