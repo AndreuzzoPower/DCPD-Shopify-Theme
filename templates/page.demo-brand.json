@@ -86,6 +86,8 @@
         "mobile_full_width": false,
         "default_view": "grid",
         "layout_mode": "grouped",
+        "group_separator_thickness": 1,
+        "group_separator_color": "#e0e0e0",
         "text_alignment": "left",
         "columns_desktop": 4,
         "columns_mobile": 2,
