@@ -43,7 +43,7 @@
         "logo_max_width": 300,
         "logo_max_height": 200,
         "long_desc_width": "full",
-        "long_desc_position": "before_products",
+        "long_desc_position": "after_products",
         "long_desc_display": "truncated",
         "long_desc_truncate_chars": 300,
         "long_desc_button_label_more": "Leggi di più",
