@@ -60,10 +60,48 @@
         "desktop_content_position": "center",
         "content_alignment": "center"
       }
+    },
+    "ms_brand_list_fHFQtj": {
+      "type": "ms_brand-list",
+      "blocks": {
+        "section_padding_frhtnB": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 40,
+            "section_padding_bottom": 40,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_frhtnB"
+      ],
+      "name": "MS Brand List",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "mobile_full_width": false,
+        "title": "I Nostri Brand",
+        "title_tag": "h2",
+        "heading_size": "h1",
+        "title_custom_class": "",
+        "default_view": "grid",
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "show_description": true,
+        "enable_alpha_filter": true,
+        "enable_search": true,
+        "search_placeholder": "Cerca brand...",
+        "empty_message": "Nessun brand trovato."
+      }
     }
   },
   "order": [
     "main",
-    "rich_text_ezAqEK"
+    "rich_text_ezAqEK",
+    "ms_brand_list_fHFQtj"
   ]
 }
