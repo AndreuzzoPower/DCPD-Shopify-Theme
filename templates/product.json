@@ -15,10 +15,15 @@
         "brand_info_cXU8LX": {
           "type": "brand_info",
           "settings": {
-            "style": "simple",
+            "style": "card",
             "show_logo": true,
-            "show_name": false,
-            "show_description": false
+            "show_name": true,
+            "show_description": true,
+            "card_corner_radius": 6,
+            "card_border_thickness": 1,
+            "card_border_color": "#e0e0e0",
+            "card_shadow": "light",
+            "card_shadow_hover": "medium"
           }
         },
         "vendor": {
