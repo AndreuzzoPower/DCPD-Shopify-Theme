@@ -1,0 +1,50 @@
+{%- comment -%}
+  Snippet card brand — usato da ms_brand-list.liquid
+  Variabili attese: brand_name, brand_initial, brand_logo, brand_desc, brand_url, show_logo, show_description
+{%- endcomment -%}
+
+<div
+  class="ms-bl__item"
+  data-brand-name="{{ brand_name | escape }}"
+  data-brand-initial="{{ brand_initial | escape }}"
+>
+  {%- if brand_url != blank -%}
+    <a href="{{ brand_url }}" class="ms-bl__link">
+  {%- else -%}
+    <div class="ms-bl__link ms-bl__link--no-url">
+  {%- endif -%}
+
+    {%- if show_logo -%}
+      <div class="ms-bl__logo-wrap">
+        {%- if brand_logo != blank -%}
+          {{
+            brand_logo
+            | image_url: width: 400
+            | image_tag:
+                class: 'ms-bl__logo',
+                loading: 'lazy',
+                alt: brand_name,
+                widths: '100, 200, 300, 400',
+                sizes: '(min-width: 750px) 200px, 100px'
+          }}
+        {%- else -%}
+          <div class="ms-bl__logo-placeholder" aria-hidden="true">
+            <span>{{ brand_initial }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ms-bl__info">
+      <span class="ms-bl__name">{{ brand_name | escape }}</span>
+      {%- if show_description and brand_desc != blank -%}
+        <div class="ms-bl__description">{{ brand_desc }}</div>
+      {%- endif -%}
+    </div>
+
+  {%- if brand_url != blank -%}
+    </a>
+  {%- else -%}
+    </div>
+  {%- endif -%}
+</div>

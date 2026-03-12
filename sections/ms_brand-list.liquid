@@ -1,6 +1,9 @@
 {%- comment -%}
-  MS Brand List — legge da shop.metaobjects.brand
-  Filtro alfabetico, ricerca, 3 modalita di visualizzazione (griglia, lista, solo loghi).
+  MS Brand List — due modalità di origine dati:
+    1. "metaobject" → legge da shop.metaobjects.brand (logo, descrizione, url)
+    2. "vendor" → legge da shop.vendors (solo nome, link a collezione filtrata)
+
+  Filtro alfabetico, ricerca, 2 viste (griglia, lista).
   2 layout: tutti di seguito oppure raggruppati per iniziale.
 
   Metaobject "brand" richiesto con campi:
@@ -35,8 +38,7 @@
       assign sw_class = ''
   endcase
 
-  assign brands = shop.metaobjects.brand.values
-  assign brands_count = brands.size
+  assign data_source = section.settings.data_source | default: 'metaobject'
   assign default_view = section.settings.default_view | default: 'grid'
   assign layout_mode = section.settings.layout_mode | default: 'flat'
   assign cols_desktop = section.settings.columns_desktop | default: 4
@@ -47,6 +49,13 @@
   assign enable_alpha_filter = section.settings.enable_alpha_filter
   assign search_placeholder = section.settings.search_placeholder | default: 'Cerca brand...'
   assign text_alignment = section.settings.text_alignment | default: 'center'
+
+  if data_source == 'vendor'
+    assign brands_raw = shop.vendors
+  else
+    assign brands_raw = shop.metaobjects.brand.values
+  endif
+  assign brands_count = brands_raw.size
 -%}
 
 {%- comment -%} Stili dinamici card (border, shadow, radius) {%- endcomment -%}
@@ -155,62 +164,34 @@
           data-bl-container
           style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
         >
-          {%- for brand in brands -%}
+          {%- for brand_entry in brands_raw -%}
             {%- liquid
-              assign brand_name = brand.nome.value | default: brand.system.handle
-              assign brand_initial = brand_name | slice: 0 | upcase
-              assign brand_logo = brand.logo.value
-              assign brand_desc = brand.descrizione.value
-              assign brand_url = brand.system.url | default: nil
-              if brand_url == blank and brand.url_custom.value != blank
-                assign brand_url = brand.url_custom.value
+              if data_source == 'vendor'
+                assign brand_name = brand_entry
+                assign brand_initial = brand_name | slice: 0 | upcase
+                assign brand_logo = nil
+                assign brand_desc = nil
+                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+              else
+                assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
+                assign brand_initial = brand_name | slice: 0 | upcase
+                assign brand_logo = brand_entry.logo.value
+                assign brand_desc = brand_entry.descrizione.value
+                assign brand_url = brand_entry.system.url | default: nil
+                if brand_url == blank and brand_entry.url_custom.value != blank
+                  assign brand_url = brand_entry.url_custom.value
+                endif
               endif
             -%}
-            <div
-              class="ms-bl__item"
-              data-brand-name="{{ brand_name | escape }}"
-              data-brand-initial="{{ brand_initial | escape }}"
-            >
-              {%- if brand_url != blank -%}
-                <a href="{{ brand_url }}" class="ms-bl__link">
-              {%- else -%}
-                <div class="ms-bl__link ms-bl__link--no-url">
-              {%- endif -%}
-
-                {%- if show_logo -%}
-                  <div class="ms-bl__logo-wrap">
-                    {%- if brand_logo != blank -%}
-                      {{
-                        brand_logo
-                        | image_url: width: 400
-                        | image_tag:
-                            class: 'ms-bl__logo',
-                            loading: 'lazy',
-                            alt: brand_name,
-                            widths: '100, 200, 300, 400',
-                            sizes: '(min-width: 750px) 200px, 100px'
-                      }}
-                    {%- else -%}
-                      <div class="ms-bl__logo-placeholder" aria-hidden="true">
-                        <span>{{ brand_initial }}</span>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-
-                <div class="ms-bl__info">
-                  <span class="ms-bl__name">{{ brand_name | escape }}</span>
-                  {%- if show_description and brand_desc != blank -%}
-                    <div class="ms-bl__description">{{ brand_desc }}</div>
-                  {%- endif -%}
-                </div>
-
-              {%- if brand_url != blank -%}
-                </a>
-              {%- else -%}
-                </div>
-              {%- endif -%}
-            </div>
+            {%- render 'ms_brand-card',
+              brand_name: brand_name,
+              brand_initial: brand_initial,
+              brand_logo: brand_logo,
+              brand_desc: brand_desc,
+              brand_url: brand_url,
+              show_logo: show_logo,
+              show_description: show_description
+            -%}
           {%- endfor -%}
         </div>
 
@@ -219,8 +200,12 @@
         <div data-bl-container class="ms-bl__grouped">
           {%- liquid
             assign sorted_letters = ''
-            for brand in brands
-              assign bl = brand.nome.value | default: brand.system.handle | slice: 0 | upcase
+            for brand_entry in brands_raw
+              if data_source == 'vendor'
+                assign bl = brand_entry | slice: 0 | upcase
+              else
+                assign bl = brand_entry.nome.value | default: brand_entry.system.handle | slice: 0 | upcase
+              endif
               unless sorted_letters contains bl
                 if sorted_letters != ''
                   assign sorted_letters = sorted_letters | append: ','
@@ -240,65 +225,40 @@
                 class="ms-bl__container ms-bl__container--{{ default_view }}"
                 style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
               >
-                {%- for brand in brands -%}
+                {%- for brand_entry in brands_raw -%}
                   {%- liquid
-                    assign brand_name = brand.nome.value | default: brand.system.handle
-                    assign brand_initial = brand_name | slice: 0 | upcase
-                    if brand_initial != current_letter
-                      continue
-                    endif
-                    assign brand_logo = brand.logo.value
-                    assign brand_desc = brand.descrizione.value
-                    assign brand_url = brand.system.url | default: nil
-                    if brand_url == blank and brand.url_custom.value != blank
-                      assign brand_url = brand.url_custom.value
+                    if data_source == 'vendor'
+                      assign brand_name = brand_entry
+                      assign brand_initial = brand_name | slice: 0 | upcase
+                      if brand_initial != current_letter
+                        continue
+                      endif
+                      assign brand_logo = nil
+                      assign brand_desc = nil
+                      assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+                    else
+                      assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
+                      assign brand_initial = brand_name | slice: 0 | upcase
+                      if brand_initial != current_letter
+                        continue
+                      endif
+                      assign brand_logo = brand_entry.logo.value
+                      assign brand_desc = brand_entry.descrizione.value
+                      assign brand_url = brand_entry.system.url | default: nil
+                      if brand_url == blank and brand_entry.url_custom.value != blank
+                        assign brand_url = brand_entry.url_custom.value
+                      endif
                     endif
                   -%}
-                  <div
-                    class="ms-bl__item"
-                    data-brand-name="{{ brand_name | escape }}"
-                    data-brand-initial="{{ brand_initial | escape }}"
-                  >
-                    {%- if brand_url != blank -%}
-                      <a href="{{ brand_url }}" class="ms-bl__link">
-                    {%- else -%}
-                      <div class="ms-bl__link ms-bl__link--no-url">
-                    {%- endif -%}
-
-                      {%- if show_logo -%}
-                        <div class="ms-bl__logo-wrap">
-                          {%- if brand_logo != blank -%}
-                            {{
-                              brand_logo
-                              | image_url: width: 400
-                              | image_tag:
-                                  class: 'ms-bl__logo',
-                                  loading: 'lazy',
-                                  alt: brand_name,
-                                  widths: '100, 200, 300, 400',
-                                  sizes: '(min-width: 750px) 200px, 100px'
-                            }}
-                          {%- else -%}
-                            <div class="ms-bl__logo-placeholder" aria-hidden="true">
-                              <span>{{ brand_initial }}</span>
-                            </div>
-                          {%- endif -%}
-                        </div>
-                      {%- endif -%}
-
-                      <div class="ms-bl__info">
-                        <span class="ms-bl__name">{{ brand_name | escape }}</span>
-                        {%- if show_description and brand_desc != blank -%}
-                          <div class="ms-bl__description">{{ brand_desc }}</div>
-                        {%- endif -%}
-                      </div>
-
-                    {%- if brand_url != blank -%}
-                      </a>
-                    {%- else -%}
-                      </div>
-                    {%- endif -%}
-                  </div>
+                  {%- render 'ms_brand-card',
+                    brand_name: brand_name,
+                    brand_initial: brand_initial,
+                    brand_logo: brand_logo,
+                    brand_desc: brand_desc,
+                    brand_url: brand_url,
+                    show_logo: show_logo,
+                    show_description: show_description
+                  -%}
                 {%- endfor -%}
               </div>
             </div>
@@ -314,7 +274,11 @@
     {%- else -%}
       {%- if request.design_mode -%}
         <div class="ms-bl__placeholder">
-          <p>Nessun brand trovato. Crea il metaobject "brand" in Shopify Admin e aggiungi delle voci.</p>
+          {%- if data_source == 'vendor' -%}
+            <p>Nessun vendor trovato. Aggiungi dei prodotti con un vendor assegnato.</p>
+          {%- else -%}
+            <p>Nessun brand trovato. Crea il metaobject "brand" in Shopify Admin e aggiungi delle voci.</p>
+          {%- endif -%}
         </div>
       {%- endif -%}
     {%- endif -%}
@@ -330,12 +294,17 @@
         "name": "Brand",
         "numberOfItems": {{ brands_count }},
         "itemListElement": [
-          {%- for brand in brands -%}
+          {%- for brand_entry in brands_raw -%}
             {%- liquid
-              assign brand_name = brand.nome.value | default: brand.system.handle
-              assign brand_url = brand.system.url | default: nil
-              if brand_url == blank and brand.url_custom.value != blank
-                assign brand_url = brand.url_custom.value
+              if data_source == 'vendor'
+                assign brand_name = brand_entry
+                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+              else
+                assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
+                assign brand_url = brand_entry.system.url | default: nil
+                if brand_url == blank and brand_entry.url_custom.value != blank
+                  assign brand_url = brand_entry.url_custom.value
+                endif
               endif
             -%}
             {
@@ -347,12 +316,14 @@
                 {%- if brand_url != blank -%}
                   ,"url": {{ brand_url | json }}
                 {%- endif -%}
-                {%- if brand.logo.value != blank -%}
-                  ,"logo": {{ brand.logo.value | image_url: width: 400 | json }}
-                {%- endif -%}
-                {%- if brand.descrizione.value != blank -%}
-                  {%- assign sd_desc = brand.descrizione.value | strip_html | strip | truncate: 5000 -%}
-                  ,"description": {{ sd_desc | json }}
+                {%- if data_source == 'metaobject' -%}
+                  {%- if brand_entry.logo.value != blank -%}
+                    ,"logo": {{ brand_entry.logo.value | image_url: width: 400 | json }}
+                  {%- endif -%}
+                  {%- if brand_entry.descrizione.value != blank -%}
+                    {%- assign sd_desc = brand_entry.descrizione.value | strip_html | strip | truncate: 5000 -%}
+                    ,"description": {{ sd_desc | json }}
+                  {%- endif -%}
                 {%- endif -%}
               }
             }{%- unless forloop.last -%},{%- endunless -%}
@@ -371,6 +342,22 @@
 {
   "name": "MS Brand List",
   "settings": [
+    {
+      "type": "header",
+      "content": "Origine dati"
+    },
+    {
+      "type": "select",
+      "id": "data_source",
+      "label": "Origine dati brand",
+      "options": [
+        { "label": "Metaobject (logo, descrizione, URL)", "value": "metaobject" },
+        { "label": "Vendor prodotto (solo nome)", "value": "vendor" }
+      ],
+      "default": "metaobject",
+      "info": "\"Metaobject\" legge dal metaobject brand con logo e descrizione. \"Vendor\" legge i vendor dei prodotti (solo nome, link a collezione filtrata)."
+    },
+
     {
       "type": "header",
       "content": "Layout"
@@ -400,6 +387,7 @@
       "default": false,
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
+
     {
       "type": "header",
       "content": "Visualizzazione"
@@ -461,7 +449,7 @@
       "max": 6,
       "step": 1,
       "default": 4,
-      "info": "Numero di colonne nella vista griglia e loghi su desktop."
+      "info": "Numero di colonne nella vista griglia su desktop."
     },
     {
       "type": "range",
@@ -471,21 +459,21 @@
       "max": 3,
       "step": 1,
       "default": 2,
-      "info": "Numero di colonne nella vista griglia e loghi su mobile."
+      "info": "Numero di colonne nella vista griglia su mobile."
     },
     {
       "type": "checkbox",
       "id": "show_logo",
       "label": "Mostra logo",
       "default": true,
-      "info": "Mostra il logo del brand nelle card."
+      "info": "Mostra il logo del brand nelle card. Solo con origine dati Metaobject."
     },
     {
       "type": "checkbox",
       "id": "show_description",
       "label": "Mostra descrizione",
       "default": true,
-      "info": "Mostra la descrizione del brand nelle card."
+      "info": "Mostra la descrizione del brand nelle card. Solo con origine dati Metaobject."
     },
     {
       "type": "checkbox",
@@ -586,7 +574,7 @@
       "id": "show_results_count",
       "label": "Mostra contatore risultati",
       "default": true,
-      "info": "Mostra il numero di brand trovati sotto la toolbar."
+      "info": "Mostra il numero di brand trovati nella toolbar."
     },
     {
       "type": "text",
