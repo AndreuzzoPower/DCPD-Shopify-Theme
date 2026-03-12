@@ -829,10 +829,10 @@
           "type": "column",
           "settings": {
             "image_alt": "",
-            "title": "GUEST",
+            "title": "BRAND",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Possibilità, dai settaggi generali, di nascondere degli elementi agli utenti non loggati come ad esempio il prezzo, la possibilità di acquisto o le varianti.</p>",
+            "text": "",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -846,95 +846,10 @@
           "type": "column",
           "settings": {
             "image_alt": "",
-            "title": "MINIMO D'ORDINE",
+            "title": "WISHLIST",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Il tema gestisce un minimo d'ordine a livello globale (da settings) con la possibilità di sovrascrivere tale minimo a livello prodotto tramite metafield dedicato.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_BFj3yg": {
-          "type": "column",
-          "settings": {
-            "image_alt": "",
-            "title": "DATI FATTURAZIONE",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Il sistema prevede l'opzione di poter attivare la richiesta dei dati di fatturazione che verrano salvati nell'ordine senza i quali non si potrà procedere al checkout.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_AgHPj7": {
-          "type": "column",
-          "settings": {
-            "image_alt": "",
-            "title": "ACCETTAZIONE CONDIZIONI DIVENDITA",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Nel carrello ci sarà la possibilità di richiedere l'accettazione delle condizioi di vendita senza le quali non si potrà procedere al checkout.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_QMqKaF": {
-          "type": "column",
-          "settings": {
-            "image_alt": "",
-            "title": "CARRELLO",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Si potrà visualizzare il carrello in 3 modi:</p><ol><li>Drawer laterale</li><li>Pagina</li><li>Popup all'aggiunta</li></ol>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_Dqt4ch": {
-          "type": "column",
-          "settings": {
-            "image_alt": "",
-            "title": "IVA ESPOSTA",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Il sistema, sempre da settaggi generali, permette la visualizzazione dell'iva esposta in ogni parte dove si preveda il prezzo. L'iva sarà impostabile come default nei settings ed eventualmente sovrascivibile a livello di ogni singolo prodotto tramite metafield.</p>",
-            "link_label": "",
-            "link": "",
-            "link_button_style_secondary": false,
-            "link_button_type": "link",
-            "link_button_size": "default",
-            "link_button_icon": "",
-            "link_button_icon_position": "after"
-          }
-        },
-        "column_JUwqx8": {
-          "type": "column",
-          "settings": {
-            "image_alt": "",
-            "title": "EXPERT ADVICE",
-            "title_tag": "h3",
-            "title_custom_class": "",
-            "text": "<p>Possibilità di associare degli articoli del blog ad una collection, se presenti crea una navigazione a tab</p>",
+            "text": "",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
@@ -955,11 +870,6 @@
         "column_T3HL4K",
         "column_NPREPa",
         "column_eE4JQ4",
-        "column_BFj3yg",
-        "column_AgHPj7",
-        "column_QMqKaF",
-        "column_Dqt4ch",
-        "column_JUwqx8",
         "section_background_BBQAPF"
       ],
       "name": "MS Multicolonna",
