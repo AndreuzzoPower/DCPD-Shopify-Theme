@@ -22,6 +22,10 @@
   border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
 }
 
+.ms-bp__hero.ms-bp__hero--no-separator {
+  border-bottom: none;
+}
+
 .ms-bp__logo-wrap {
   display: flex;
   align-items: center;

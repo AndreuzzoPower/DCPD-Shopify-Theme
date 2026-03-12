@@ -103,7 +103,8 @@
   <div class="{{ sw_class }}">
 
     {%- comment -%} Hero brand {%- endcomment -%}
-    <div class="ms-bp__hero ms-bp__hero--image-{{ bp_image_position }}{% if bp_show_logo and brand_logo != blank %} ms-bp__hero--has-image{% endif %}">
+    {%- if section.settings.show_hero != false -%}
+    <div class="ms-bp__hero ms-bp__hero--image-{{ bp_image_position }}{% if bp_show_logo and brand_logo != blank %} ms-bp__hero--has-image{% endif %}{% if section.settings.show_hero_separator == false %} ms-bp__hero--no-separator{% endif %}">
       {%- if bp_show_logo and brand_logo != blank -%}
         <div class="ms-bp__logo-wrap">
           {{
@@ -133,6 +134,7 @@
         {%- endif -%}
       </div>
     </div>
+    {%- endif -%}
 
     {%- comment -%} Descrizione lunga (metaobject descrizione_lunga) {%- endcomment -%}
     {%- if brand_desc_lunga != blank -%}
@@ -460,6 +462,20 @@
     {
       "type": "header",
       "content": "Informazioni brand (hero)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Mostra blocco hero",
+      "default": true,
+      "info": "Se disattivato, logo, titolo e descrizione brand non vengono mostrati."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero_separator",
+      "label": "Mostra riga separatore sotto l'hero",
+      "default": true,
+      "info": "La linea sotto il blocco hero che separa dalla sezione prodotti."
     },
     {
       "type": "checkbox",
