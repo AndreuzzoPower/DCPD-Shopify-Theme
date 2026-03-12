@@ -56,6 +56,8 @@
     --bl-card-border-width: {{ section.settings.card_border_thickness | default: 1 }}px;
     --bl-card-border-color: {{ section.settings.card_border_color | default: '#e0e0e0' }};
     --bl-text-align: {{ text_alignment }};
+    --bl-name-weight: {% if section.settings.brand_name_bold %}600{% else %}400{% endif %};
+    --bl-name-decoration: {% if section.settings.brand_name_underline %}underline{% else %}none{% endif %};
     {%- case section.settings.card_shadow -%}
       {%- when 'light' -%}
         --bl-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -112,32 +114,34 @@
           </div>
         {%- endif -%}
 
-        {%- if enable_search -%}
+        {%- if enable_search or section.settings.show_results_count -%}
           <div class="ms-bl__toolbar-row">
-            <div class="ms-bl__search" role="search" aria-label="Cerca brand">
-              <input
-                type="text"
-                class="ms-bl__search-input"
-                placeholder="{{ search_placeholder | escape }}"
-                aria-label="Cerca brand per nome"
-                autocomplete="off"
-              />
-              <button type="button" class="ms-bl__search-btn" aria-label="Cerca">
-                {%- render 'ms_icon', icon: settings.ms_icon_search -%}
-              </button>
-              <button type="button" class="ms-bl__search-clear" aria-label="Cancella ricerca" hidden>
-                {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
-              </button>
-            </div>
-          </div>
-        {%- endif -%}
+            {%- if enable_search -%}
+              <div class="ms-bl__search" role="search" aria-label="Cerca brand">
+                <input
+                  type="text"
+                  class="ms-bl__search-input"
+                  placeholder="{{ search_placeholder | escape }}"
+                  aria-label="Cerca brand per nome"
+                  autocomplete="off"
+                />
+                <button type="button" class="ms-bl__search-btn" aria-label="Cerca">
+                  {%- render 'ms_icon', icon: settings.ms_icon_search -%}
+                </button>
+                <button type="button" class="ms-bl__search-clear" aria-label="Cancella ricerca" hidden>
+                  {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
+                </button>
+              </div>
+            {%- endif -%}
 
-        {%- if section.settings.show_results_count -%}
-          <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
-            <span data-bl-count>{{ brands_count }}</span>
-            <span data-bl-count-label>
-              {%- if brands_count == 1 -%}brand trovato{%- else -%}brand trovati{%- endif -%}
-            </span>
+            {%- if section.settings.show_results_count -%}
+              <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
+                <span data-bl-count>{{ brands_count }}</span>
+                <span data-bl-count-label>
+                  {%- if brands_count == 1 -%}brand trovato{%- else -%}brand trovati{%- endif -%}
+                </span>
+              </div>
+            {%- endif -%}
           </div>
         {%- endif -%}
       </div>
@@ -463,6 +467,18 @@
       "label": "Mostra descrizione",
       "default": true,
       "info": "Mostra la descrizione del brand nelle card."
+    },
+    {
+      "type": "checkbox",
+      "id": "brand_name_bold",
+      "label": "Nome brand in grassetto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "brand_name_underline",
+      "label": "Nome brand sottolineato",
+      "default": false
     },
 
     {

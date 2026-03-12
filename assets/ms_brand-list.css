@@ -177,7 +177,9 @@
 .ms-bl__results-count {
   font-size: 1.3rem;
   color: rgba(var(--color-foreground), 0.6);
-  padding-top: 0.25rem;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
 }
 
 /* --------------------------------------------------------------------------
@@ -277,7 +279,8 @@ a.ms-bl__link:focus-visible {
 
 .ms-bl__name {
   font-size: calc(var(--font-heading-scale) * 1.5rem);
-  font-weight: 600;
+  font-weight: var(--bl-name-weight, 600);
+  text-decoration: var(--bl-name-decoration, none);
   line-height: calc(1 + 0.5 / var(--font-body-scale));
   color: rgb(var(--color-foreground));
 }
