@@ -1,9 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "ms_brand-page",
-      "settings": {}
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "mobile_full_width": false,
+        "title_tag": "h1",
+        "heading_size": "h0",
+        "title_custom_class": "",
+        "products_title": "Prodotti",
+        "products_title_tag": "h2",
+        "products_heading_size": "h1",
+        "products_limit": 24,
+        "products_columns_desktop": 4,
+        "products_columns_mobile": 2
+      }
+    },
+    "ms_brand_carousel_BWWLEP": {
+      "type": "ms_brand-carousel",
+      "blocks": {
+        "section_padding_U6pFD4": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 40,
+            "section_padding_bottom": 40,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_U6pFD4"
+      ],
+      "name": "MS Brand Carousel",
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "title": "I Nostri Brand",
+        "title_tag": "h2",
+        "heading_size": "h1",
+        "text_alignment": "center",
+        "show_logo": true,
+        "show_description": false,
+        "brand_name_bold": true,
+        "brand_name_underline": false,
+        "card_corner_radius": 8,
+        "card_border_thickness": 1,
+        "card_border_color": "#e0e0e0",
+        "card_shadow": "none",
+        "card_shadow_hover": "medium",
+        "columns_desktop": 4,
+        "enable_desktop_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5,
+        "carousel_loop": "circular",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "below_center",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "counter",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "ms_brand_carousel_BWWLEP"
+  ]
 }
