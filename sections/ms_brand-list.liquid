@@ -132,12 +132,14 @@
           </div>
         {%- endif -%}
 
-        <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
-          <span data-bl-count>{{ brands_count }}</span>
-          <span data-bl-count-label>
-            {%- if brands_count == 1 -%}brand trovato{%- else -%}brand trovati{%- endif -%}
-          </span>
-        </div>
+        {%- if section.settings.show_results_count -%}
+          <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
+            <span data-bl-count>{{ brands_count }}</span>
+            <span data-bl-count-label>
+              {%- if brands_count == 1 -%}brand trovato{%- else -%}brand trovati{%- endif -%}
+            </span>
+          </div>
+        {%- endif -%}
       </div>
 
       {%- comment -%} ===== LAYOUT FLAT: tutti di seguito ===== {%- endcomment -%}
@@ -543,6 +545,13 @@
       "id": "search_placeholder",
       "label": "Placeholder campo ricerca",
       "default": "Cerca brand..."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_results_count",
+      "label": "Mostra contatore risultati",
+      "default": true,
+      "info": "Mostra il numero di brand trovati sotto la toolbar."
     },
     {
       "type": "text",
