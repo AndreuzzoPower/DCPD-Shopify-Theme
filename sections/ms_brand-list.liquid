@@ -41,6 +41,7 @@
   assign layout_mode = section.settings.layout_mode | default: 'flat'
   assign cols_desktop = section.settings.columns_desktop | default: 4
   assign cols_mobile = section.settings.columns_mobile | default: 2
+  assign show_logo = section.settings.show_logo
   assign show_description = section.settings.show_description
   assign enable_search = section.settings.enable_search
   assign enable_alpha_filter = section.settings.enable_alpha_filter
@@ -168,24 +169,26 @@
                 <div class="ms-bl__link ms-bl__link--no-url">
               {%- endif -%}
 
-                <div class="ms-bl__logo-wrap">
-                  {%- if brand_logo != blank -%}
-                    {{
-                      brand_logo
-                      | image_url: width: 400
-                      | image_tag:
-                          class: 'ms-bl__logo',
-                          loading: 'lazy',
-                          alt: brand_name,
-                          widths: '100, 200, 300, 400',
-                          sizes: '(min-width: 750px) 200px, 100px'
-                    }}
-                  {%- else -%}
-                    <div class="ms-bl__logo-placeholder" aria-hidden="true">
-                      <span>{{ brand_initial }}</span>
-                    </div>
-                  {%- endif -%}
-                </div>
+                {%- if show_logo -%}
+                  <div class="ms-bl__logo-wrap">
+                    {%- if brand_logo != blank -%}
+                      {{
+                        brand_logo
+                        | image_url: width: 400
+                        | image_tag:
+                            class: 'ms-bl__logo',
+                            loading: 'lazy',
+                            alt: brand_name,
+                            widths: '100, 200, 300, 400',
+                            sizes: '(min-width: 750px) 200px, 100px'
+                      }}
+                    {%- else -%}
+                      <div class="ms-bl__logo-placeholder" aria-hidden="true">
+                        <span>{{ brand_initial }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
 
                 <div class="ms-bl__info">
                   <span class="ms-bl__name">{{ brand_name | escape }}</span>
@@ -254,24 +257,26 @@
                       <div class="ms-bl__link ms-bl__link--no-url">
                     {%- endif -%}
 
-                      <div class="ms-bl__logo-wrap">
-                        {%- if brand_logo != blank -%}
-                          {{
-                            brand_logo
-                            | image_url: width: 400
-                            | image_tag:
-                                class: 'ms-bl__logo',
-                                loading: 'lazy',
-                                alt: brand_name,
-                                widths: '100, 200, 300, 400',
-                                sizes: '(min-width: 750px) 200px, 100px'
-                          }}
-                        {%- else -%}
-                          <div class="ms-bl__logo-placeholder" aria-hidden="true">
-                            <span>{{ brand_initial }}</span>
-                          </div>
-                        {%- endif -%}
-                      </div>
+                      {%- if show_logo -%}
+                        <div class="ms-bl__logo-wrap">
+                          {%- if brand_logo != blank -%}
+                            {{
+                              brand_logo
+                              | image_url: width: 400
+                              | image_tag:
+                                  class: 'ms-bl__logo',
+                                  loading: 'lazy',
+                                  alt: brand_name,
+                                  widths: '100, 200, 300, 400',
+                                  sizes: '(min-width: 750px) 200px, 100px'
+                            }}
+                          {%- else -%}
+                            <div class="ms-bl__logo-placeholder" aria-hidden="true">
+                              <span>{{ brand_initial }}</span>
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
 
                       <div class="ms-bl__info">
                         <span class="ms-bl__name">{{ brand_name | escape }}</span>
@@ -397,8 +402,7 @@
       "label": "Tipo visualizzazione",
       "options": [
         { "label": "Griglia", "value": "grid" },
-        { "label": "Lista", "value": "list" },
-        { "label": "Solo loghi", "value": "logo" }
+        { "label": "Lista", "value": "list" }
       ],
       "default": "grid"
     },
@@ -446,10 +450,17 @@
     },
     {
       "type": "checkbox",
+      "id": "show_logo",
+      "label": "Mostra logo",
+      "default": true,
+      "info": "Mostra il logo del brand nelle card."
+    },
+    {
+      "type": "checkbox",
       "id": "show_description",
       "label": "Mostra descrizione",
       "default": true,
-      "info": "Mostra la descrizione del brand nella vista griglia."
+      "info": "Mostra la descrizione del brand nelle card."
     },
 
     {

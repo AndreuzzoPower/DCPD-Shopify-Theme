@@ -336,30 +336,7 @@ a.ms-bl__link:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   11. Vista Solo Loghi
-   -------------------------------------------------------------------------- */
-
-.ms-bl__container--logo .ms-bl__link {
-  padding: 1.25rem;
-  align-items: center;
-}
-
-.ms-bl__container--logo .ms-bl__info {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}
-
-.ms-bl__container--logo .ms-bl__logo-wrap {
-  margin-bottom: 0;
-  aspect-ratio: 1;
-}
-
-/* --------------------------------------------------------------------------
-   12. Layout raggruppato per iniziale
+   11. Layout raggruppato per iniziale
    -------------------------------------------------------------------------- */
 
 .ms-bl__grouped {
