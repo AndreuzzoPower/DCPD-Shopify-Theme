@@ -12,6 +12,15 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "brand_info_cXU8LX": {
+          "type": "brand_info",
+          "settings": {
+            "style": "simple",
+            "show_logo": true,
+            "show_name": false,
+            "show_description": false
+          }
+        },
         "vendor": {
           "type": "text",
           "settings": {
@@ -149,6 +158,7 @@
         }
       },
       "block_order": [
+        "brand_info_cXU8LX",
         "vendor",
         "title",
         "judge_me_reviews_preview_badge_Da3NPW",
