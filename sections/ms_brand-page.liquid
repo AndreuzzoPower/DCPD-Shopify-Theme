@@ -3,11 +3,38 @@
   Mostra logo, nome, descrizione e griglia prodotti collegati.
 
   Usa metaobject.system per accedere ai dati del brand corrente.
-  I prodotti vengono mostrati filtrando collections.all per vendor
-  oppure usando una collection dedicata (campo "collezione" nel metaobject).
+  Con collezione: paginazione e infinite scroll (nessun limite prodotti).
+  Senza collezione: filtra collections.all per vendor (max 50 prodotti, limite Shopify).
 {%- endcomment -%}
 
 {{ 'ms_brand-page.css' | asset_url | stylesheet_tag }}
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.products_image_shape == 'blob' -%}
+  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- unless section.settings.products_quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+
+{%- if section.settings.products_quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.products_quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.enable_infinite_scroll -%}
+  <script src="{{ 'ms_infinite-scroll.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- liquid
   assign sw = section.settings.section_width | default: 'page_width'
@@ -44,18 +71,33 @@
   assign products_title_tag = section.settings.products_title_tag | default: 'h2'
   assign products_title_classes = section.settings.products_heading_size | default: 'h1'
 
-  assign cols_desktop = section.settings.products_columns_desktop | default: 4
-  assign cols_mobile = section.settings.products_columns_mobile | default: 2
+  assign bp_products_per_page = section.settings.products_per_page | default: 16
+  assign bp_cols_desktop = section.settings.products_columns_desktop | default: 4
+  assign bp_cols_mobile = section.settings.products_columns_mobile | default: '2'
+
+  assign bp_show_title = section.settings.show_title | default: true
+  assign bp_show_logo = section.settings.show_logo | default: true
+  assign bp_show_description = section.settings.show_description | default: true
+  assign bp_image_position = section.settings.image_position | default: 'left'
+  assign bp_logo_max_w = section.settings.logo_max_width | default: 300
+  assign bp_logo_max_h = section.settings.logo_max_height | default: 200
 -%}
 
 {%- render 'ms_mobile-padding' -%}
+
+{%- style -%}
+  #section-{{ section.id }} .ms-bp__logo-wrap {
+    --bp-logo-max-width: {{ bp_logo_max_w }}px;
+    --bp-logo-max-height: {{ bp_logo_max_h }}px;
+  }
+{%- endstyle -%}
 
 <div id="section-{{ section.id }}" class="ms-brand-page color-{{ section.settings.color_scheme }} gradient">
   <div class="{{ sw_class }}">
 
     {%- comment -%} Hero brand {%- endcomment -%}
-    <div class="ms-bp__hero">
-      {%- if brand_logo != blank -%}
+    <div class="ms-bp__hero ms-bp__hero--image-{{ bp_image_position }}{% if bp_show_logo and brand_logo != blank %} ms-bp__hero--has-image{% endif %}">
+      {%- if bp_show_logo and brand_logo != blank -%}
         <div class="ms-bp__logo-wrap">
           {{
             brand_logo
@@ -70,66 +112,162 @@
         </div>
       {%- endif -%}
 
-      <{{ title_tag }} class="{{ title_classes }} ms-bp__title">
-        {{- brand_name | escape -}}
-      </{{ title_tag }}>
+      <div class="ms-bp__hero-content">
+        {%- if bp_show_title -%}
+          <{{ title_tag }} class="{{ title_classes }} ms-bp__title">
+            {{- brand_name | escape -}}
+          </{{ title_tag }}>
+        {%- endif -%}
 
-      {%- if brand_desc != blank -%}
-        <div class="ms-bp__description rte">
-          {{ brand_desc }}
-        </div>
-      {%- endif -%}
+        {%- if bp_show_description and brand_desc != blank -%}
+          <div class="ms-bp__description rte text-body">
+            {{ brand_desc }}
+          </div>
+        {%- endif -%}
+      </div>
     </div>
 
-    {%- comment -%} Griglia prodotti {%- endcomment -%}
-    {%- liquid
-      if brand_collection != blank
-        assign brand_products = brand_collection.products
-      else
-        assign brand_products = collections.all.products
-      endif
-    -%}
+    {%- comment -%} Griglia prodotti (stessa struttura e opzioni di main-collection-product-grid) {%- endcomment -%}
 
-    {%- capture products_html -%}
-      {%- assign product_count = 0 -%}
-      {%- for product in brand_products limit: section.settings.products_limit -%}
-        {%- liquid
-          assign show_product = true
-          if brand_collection == blank
-            if product.vendor != brand_name
-              assign show_product = false
-            endif
-          endif
-        -%}
-        {%- if show_product -%}
-          {%- assign product_count = product_count | plus: 1 -%}
-          <li class="ms-bp__product-item grid__item">
-            {%- render 'card-product',
-              card_product: product,
-              show_vendor: false
-            -%}
-          </li>
+    <div class="ms-bp__products">
+      {%- if section.settings.products_title != blank -%}
+        <{{ products_title_tag }} class="{{ products_title_classes }} ms-bp__products-title">
+          {{- section.settings.products_title | escape -}}
+        </{{ products_title_tag }}>
+      {%- endif -%}
+
+      {%- if brand_collection != blank -%}
+        {%- comment -%} Con collezione: paginazione + infinite scroll (nessun limite 50) {%- endcomment -%}
+        {%- paginate brand_collection.products by bp_products_per_page -%}
+          <div
+            class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            id="ProductGridContainer"
+            {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}
+          >
+            {%- if brand_collection.products.size == 0 -%}
+              <div class="collection collection--empty {{ sw_class }}" id="product-grid" data-id="{{ section.id }}">
+                <div class="loading-overlay gradient"></div>
+                <p class="title title--primary">{{ 'sections.collection_template.empty' | t }}</p>
+              </div>
+            {%- else -%}
+              <div
+                class="collection {{ sw_class }}"
+                {% if section.settings.enable_infinite_scroll %}
+                  data-infinite-scroll
+                  data-infinite-grid="#product-grid"
+                  data-infinite-item="#product-grid > li"
+                {% endif %}
+              >
+                <div class="loading-overlay gradient"></div>
+                <ul
+                  id="product-grid"
+                  data-id="{{ section.id }}"
+                  class="
+                    grid product-grid grid--{{ bp_cols_mobile }}-col-tablet-down
+                    grid--{{ bp_cols_desktop }}-col-desktop
+                    {% if section.settings.products_quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
+                  "
+                >
+                  {%- assign skip_card_product_styles = false -%}
+                  {%- for product in brand_collection.products -%}
+                    {%- assign lazy_load = false -%}
+                    {%- if forloop.index > 2 -%}{%- assign lazy_load = true -%}{%- endif -%}
+                    <li
+                      class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                      {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        style="--animation-order: {{ forloop.index }};"
+                      {% endif %}
+                    >
+                      {%- render 'card-product',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.products_image_ratio,
+                        image_shape: section.settings.products_image_shape,
+                        show_secondary_image: section.settings.products_show_secondary_image,
+                        show_vendor: section.settings.products_show_vendor,
+                        show_rating: section.settings.products_show_rating,
+                        show_min_order: section.settings.products_show_min_order,
+                        lazy_load: lazy_load,
+                        skip_styles: skip_card_product_styles,
+                        quick_add: section.settings.products_quick_add,
+                        section_id: section.id
+                      -%}
+                    </li>
+                    {%- assign skip_card_product_styles = true -%}
+                  {%- endfor -%}
+                </ul>
+                {%- if paginate.pages > 1 -%}
+                  {%- render 'pagination', paginate: paginate, anchor: '' -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endpaginate -%}
+      {%- else -%}
+        {%- comment -%} Senza collezione: filtra per vendor (max 50 prodotti, limite Liquid) {%- endcomment -%}
+        {%- capture vendor_grid_items -%}
+          {%- assign skip_card_product_styles = false -%}
+          {%- assign item_index = 0 -%}
+          {%- for product in collections.all.products limit: 50 -%}
+            {%- if product.vendor == brand_name -%}
+              {%- assign item_index = item_index | plus: 1 -%}
+              {%- if item_index > 2 -%}
+                {%- assign lazy_load = true -%}
+              {%- else -%}
+                {%- assign lazy_load = false -%}
+              {%- endif -%}
+              <li
+                class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                {% if settings.animations_reveal_on_scroll %}
+                  data-cascade
+                  style="--animation-order: {{ item_index }};"
+                {% endif %}
+              >
+                {%- render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: section.settings.products_image_ratio,
+                  image_shape: section.settings.products_image_shape,
+                  show_secondary_image: section.settings.products_show_secondary_image,
+                  show_vendor: section.settings.products_show_vendor,
+                  show_rating: section.settings.products_show_rating,
+                  show_min_order: section.settings.products_show_min_order,
+                  lazy_load: lazy_load,
+                  skip_styles: skip_card_product_styles,
+                  quick_add: section.settings.products_quick_add,
+                  section_id: section.id
+                -%}
+              </li>
+              {%- assign skip_card_product_styles = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if vendor_grid_items != blank -%}
+          <div
+            class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            id="ProductGridContainer"
+            {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}
+          >
+            <div class="collection {{ sw_class }}">
+              <div class="loading-overlay gradient"></div>
+              <ul
+                id="product-grid"
+                data-id="{{ section.id }}"
+                class="
+                  grid product-grid grid--{{ bp_cols_mobile }}-col-tablet-down
+                  grid--{{ bp_cols_desktop }}-col-desktop
+                  {% if section.settings.products_quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
+                "
+              >
+                {{ vendor_grid_items }}
+              </ul>
+            </div>
+          </div>
         {%- endif -%}
-      {%- endfor -%}
-    {%- endcapture -%}
-
-    {%- if products_html != blank and product_count > 0 -%}
-      <div class="ms-bp__products">
-        {%- if section.settings.products_title != blank -%}
-          <{{ products_title_tag }} class="{{ products_title_classes }} ms-bp__products-title">
-            {{- section.settings.products_title | escape -}}
-          </{{ products_title_tag }}>
-        {%- endif -%}
-
-        <ul
-          class="ms-bp__products-grid grid"
-          role="list"
-          style="--bp-cols-desktop: {{ cols_desktop }}; --bp-cols-mobile: {{ cols_mobile }};"
-        >
-          {{ products_html }}
-        </ul>
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+      {%- if section.settings.products_image_shape == 'arch' -%}
+        {{ 'mask-arch.svg' | inline_asset_content }}
+      {%- endif -%}
+    </div>
 
   </div>
 </div>
@@ -228,6 +366,59 @@
       "label": "Classe CSS personalizzata titolo",
       "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
+    {
+      "type": "header",
+      "content": "Informazioni brand (hero)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Mostra titolo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Mostra logo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostra descrizione",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Posizione immagine (logo)",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "left",
+      "info": "Su desktop: logo a lato del testo. Su mobile resta centrato."
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "label": "Larghezza massima logo (px)",
+      "min": 80,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "logo_max_height",
+      "label": "Altezza massima logo (px)",
+      "min": 60,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "default": 200
+    },
 
     {
       "type": "header",
@@ -269,32 +460,118 @@
       "default": "h1"
     },
     {
+      "type": "paragraph",
+      "content": "Con collezione assegnata al brand: paginazione e infinite scroll, nessun limite. Senza collezione (solo vendor): max 50 prodotti (limite Shopify)."
+    },
+    {
       "type": "range",
-      "id": "products_limit",
-      "label": "Numero massimo prodotti",
-      "min": 4,
-      "max": 50,
-      "step": 2,
-      "default": 24,
-      "info": "Numero massimo di prodotti mostrati nella griglia."
+      "id": "products_per_page",
+      "label": "Prodotti per pagina",
+      "min": 8,
+      "max": 36,
+      "step": 4,
+      "default": 16,
+      "info": "Usato quando il brand ha una collezione assegnata (paginazione)."
     },
     {
       "type": "range",
       "id": "products_columns_desktop",
-      "label": "Colonne prodotti desktop",
-      "min": 2,
+      "label": "Colonne desktop",
+      "min": 1,
       "max": 6,
       "step": 1,
       "default": 4
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "products_columns_mobile",
-      "label": "Colonne prodotti mobile",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "default": 2
+      "label": "Colonne mobile",
+      "default": "2",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Media prodotti"
+    },
+    {
+      "type": "select",
+      "id": "products_image_ratio",
+      "label": "Proporzione immagine",
+      "options": [
+        { "value": "adapt", "label": "Adatta" },
+        { "value": "portrait", "label": "Ritratto" },
+        { "value": "square", "label": "Quadrata" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "select",
+      "id": "products_image_shape",
+      "label": "Forma immagine",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "arch", "label": "Arco" },
+        { "value": "blob", "label": "Blob" },
+        { "value": "chevronleft", "label": "Chevron sinistra" },
+        { "value": "chevronright", "label": "Chevron destra" },
+        { "value": "diamond", "label": "Diamante" },
+        { "value": "parallelogram", "label": "Parallelogramma" },
+        { "value": "round", "label": "Rotondo" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "products_show_secondary_image",
+      "label": "Mostra seconda immagine al passaggio",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Scheda prodotto"
+    },
+    {
+      "type": "checkbox",
+      "id": "products_show_vendor",
+      "label": "Mostra vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "products_show_rating",
+      "label": "Mostra valutazione",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "products_show_min_order",
+      "label": "Mostra quantita minima",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "products_quick_add",
+      "label": "Quick add",
+      "default": "none",
+      "options": [
+        { "value": "none", "label": "Nessuno" },
+        { "value": "standard", "label": "Standard" },
+        { "value": "bulk", "label": "Bulk" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Infinite scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_infinite_scroll",
+      "label": "Abilita infinite scroll",
+      "default": false,
+      "info": "Solo con collezione assegnata al brand. Carica automaticamente i prodotti successivi."
     }
   ],
   "blocks": [

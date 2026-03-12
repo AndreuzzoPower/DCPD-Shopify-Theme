@@ -26,25 +26,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  max-width: 100%;
+  width: 100%;
+  max-width: min(var(--bp-logo-max-width, 200px), 100%);
+  max-height: var(--bp-logo-max-height, 200px);
   margin-bottom: 0.5rem;
 }
 
 .ms-bp__logo {
   max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
   object-fit: contain;
+}
+
+.ms-bp__hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .ms-bp__title {
   margin: 0;
 }
 
+/* Descrizione: usa .text-body per font standard del sito */
 .ms-bp__description {
   max-width: 700px;
-  font-size: 0.9375rem;
-  line-height: 1.7;
   color: rgba(var(--color-foreground), 0.7);
 }
 
@@ -57,7 +66,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Griglia Prodotti
+   2. Griglia Prodotti (usa stessi stili di template-collection / collection grid)
    -------------------------------------------------------------------------- */
 
 .ms-bp__products {
@@ -68,26 +77,14 @@
   margin: 0 0 1.5rem;
 }
 
-.ms-bp__products-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--bp-cols-mobile, 2), 1fr);
-  gap: var(--grid-mobile-vertical-spacing) var(--grid-mobile-horizontal-spacing);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.ms-bp__product-item {
-  width: 100%;
-}
-
 /* --------------------------------------------------------------------------
    3. Desktop (min-width: 750px)
    -------------------------------------------------------------------------- */
 
 @media screen and (min-width: 750px) {
   .ms-bp__logo-wrap {
-    width: 300px;
+    width: min(var(--bp-logo-max-width, 300px), 100%);
+    flex-shrink: 0;
   }
 
   .ms-bp__hero {
@@ -96,12 +93,36 @@
     padding-bottom: 3rem;
   }
 
-  .ms-bp__description {
-    font-size: 1rem;
+  /* Layout con immagine a lato: riga orizzontale */
+  .ms-bp__hero.ms-bp__hero--has-image {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
   }
 
-  .ms-bp__products-grid {
-    grid-template-columns: repeat(var(--bp-cols-desktop, 4), 1fr);
-    gap: var(--grid-desktop-vertical-spacing) var(--grid-desktop-horizontal-spacing);
+  .ms-bp__hero.ms-bp__hero--has-image .ms-bp__hero-content {
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ms-bp__hero--image-left.ms-bp__hero--has-image .ms-bp__logo-wrap {
+    order: 0;
+    margin-bottom: 0;
+    margin-right: 1.5rem;
+  }
+
+  .ms-bp__hero--image-left.ms-bp__hero--has-image .ms-bp__hero-content {
+    order: 1;
+  }
+
+  .ms-bp__hero--image-right.ms-bp__hero--has-image .ms-bp__logo-wrap {
+    order: 1;
+    margin-bottom: 0;
+    margin-left: 1.5rem;
+  }
+
+  .ms-bp__hero--image-right.ms-bp__hero--has-image .ms-bp__hero-content {
+    order: 0;
   }
 }
