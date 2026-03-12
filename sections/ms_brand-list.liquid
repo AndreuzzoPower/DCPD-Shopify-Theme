@@ -171,7 +171,8 @@
                 assign brand_initial = brand_name | slice: 0 | upcase
                 assign brand_logo = nil
                 assign brand_desc = nil
-                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+                assign brand_name_encoded = brand_name | url_encode
+                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name_encoded
               else
                 assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
                 assign brand_initial = brand_name | slice: 0 | upcase
@@ -235,7 +236,8 @@
                       endif
                       assign brand_logo = nil
                       assign brand_desc = nil
-                      assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+                      assign brand_name_encoded = brand_name | url_encode
+                      assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name_encoded
                     else
                       assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
                       assign brand_initial = brand_name | slice: 0 | upcase
@@ -298,7 +300,8 @@
             {%- liquid
               if data_source == 'vendor'
                 assign brand_name = brand_entry
-                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name | url_encode
+                assign brand_name_encoded = brand_name | url_encode
+                assign brand_url = routes.collections_url | append: '/all?filter.p.vendor=' | append: brand_name_encoded
               else
                 assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
                 assign brand_url = brand_entry.system.url | default: nil
