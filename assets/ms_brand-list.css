@@ -375,7 +375,7 @@ a.ms-bl__link:focus-visible {
 .ms-bl__group-header {
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: var(--bl-group-separator-width, 2px) solid var(--bl-group-separator-color, rgba(var(--color-foreground), 0.12));
+  border-bottom: 2px solid rgba(var(--color-foreground), 0.12);
 }
 
 .ms-bl__group-letter {
