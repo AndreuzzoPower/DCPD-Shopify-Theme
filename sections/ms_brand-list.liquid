@@ -46,12 +46,6 @@
   assign enable_alpha_filter = section.settings.enable_alpha_filter
   assign search_placeholder = section.settings.search_placeholder | default: 'Cerca brand...'
   assign text_alignment = section.settings.text_alignment | default: 'center'
-
-  assign title_tag = section.settings.title_tag | default: 'h2'
-  assign title_classes = section.settings.heading_size | default: 'h1'
-  if section.settings.title_custom_class != blank
-    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-  endif
 -%}
 
 {%- comment -%} Stili dinamici card (border, shadow, radius) {%- endcomment -%}
@@ -94,14 +88,6 @@
   data-layout-mode="{{ layout_mode }}"
 >
   <div class="{{ sw_class }}">
-
-    {%- if section.settings.title != blank -%}
-      <div class="ms-bl__header">
-        <{{ title_tag }} class="{{ title_classes }} ms-bl__title">
-          {{- section.settings.title | escape -}}
-        </{{ title_tag }}>
-      </div>
-    {%- endif -%}
 
     {%- if brands_count > 0 -%}
 
@@ -328,7 +314,7 @@
       {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": {{ section.settings.title | default: 'Brand' | json }},
+        "name": "Brand",
         "numberOfItems": {{ brands_count }},
         "itemListElement": [
           {%- for brand in brands -%}
@@ -401,48 +387,6 @@
       "default": false,
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titolo",
-      "default": "I Nostri Brand"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h2"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Dimensione titolo",
-      "options": [
-        { "label": "Piccola", "value": "h2" },
-        { "label": "Media", "value": "h1" },
-        { "label": "Grande", "value": "h0" },
-        { "label": "Extra grande", "value": "hxl" },
-        { "label": "Extra extra grande", "value": "hxxl" }
-      ],
-      "default": "h1"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
-    },
-
     {
       "type": "header",
       "content": "Visualizzazione"
