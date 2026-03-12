@@ -89,6 +89,7 @@
         "text_alignment": "left",
         "columns_desktop": 4,
         "columns_mobile": 2,
+        "show_logo": false,
         "show_description": false,
         "card_corner_radius": 6,
         "card_border_thickness": 0,
@@ -98,6 +99,7 @@
         "enable_alpha_filter": true,
         "enable_search": true,
         "search_placeholder": "Cerca brand...",
+        "show_results_count": true,
         "empty_message": "Nessun brand trovato."
       }
     }
