@@ -55,7 +55,7 @@
         "products_heading_size": "h1",
         "products_description": "",
         "products_description_alignment": "left",
-        "products_full_width": true,
+        "products_full_width": false,
         "products_per_page": 8,
         "products_columns_desktop": 4,
         "products_columns_mobile": "1",
