@@ -134,6 +134,53 @@
   margin: 0 0 1.5rem;
 }
 
+.ms-bp__products-description {
+  margin: 0 0 1.5rem;
+  max-width: 700px;
+}
+
+.ms-bp__products-description--left {
+  text-align: left;
+}
+
+.ms-bp__products-description--center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ms-bp__products-description--right {
+  text-align: right;
+  margin-left: auto;
+}
+
+/* Griglia a tutta larghezza: esce dal page-width */
+/* Consenti alla griglia full-width di uscire dal page-width */
+.ms-brand-page--products-full .page-width {
+  overflow-x: visible;
+}
+
+.ms-bp__products--full-width .product-grid-container {
+  overflow: visible;
+}
+
+.ms-bp__products--full-width .ms-bp__products-grid-full {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 750px) {
+  .ms-bp__products--full-width .ms-bp__products-grid-full {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
 /* --------------------------------------------------------------------------
    4. Desktop (min-width: 750px)
    -------------------------------------------------------------------------- */
