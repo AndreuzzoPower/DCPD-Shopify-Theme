@@ -78,19 +78,19 @@
   margin-bottom: 2rem;
 }
 
-/* Full = 100% container; narrow = colonna stretta centrata */
-.ms-bp__long-desc--full .ms-bp__long-desc-preview,
-.ms-bp__long-desc--full .ms-bp__long-desc-full {
-  max-width: none;
+/* Contenitore interno: in narrow ha la stessa larghezza del testo (pulsante allineato al testo) */
+.ms-bp__long-desc-inner {
   width: 100%;
-  color: rgba(var(--color-foreground), 0.7);
 }
 
-.ms-bp__long-desc--narrow .ms-bp__long-desc-preview,
-.ms-bp__long-desc--narrow .ms-bp__long-desc-full {
+.ms-bp__long-desc--narrow .ms-bp__long-desc-inner {
   max-width: 65ch;
   margin-left: auto;
   margin-right: auto;
+}
+
+.ms-bp__long-desc-preview,
+.ms-bp__long-desc-full {
   color: rgba(var(--color-foreground), 0.7);
 }
 

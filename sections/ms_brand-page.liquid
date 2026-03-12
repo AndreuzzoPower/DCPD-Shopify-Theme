@@ -153,6 +153,7 @@
           {%- endif -%}
         {%- endif -%}
         <div class="ms-bp__long-desc ms-bp__long-desc--{{ bp_long_desc_width }}{% if needs_toggle %} ms-bp__long-desc--collapsible{% endif %}" id="long-desc-{{ section.id }}">
+          <div class="ms-bp__long-desc-inner">
           {%- if needs_toggle -%}
             <div class="ms-bp__long-desc-preview rte text-body">{{ desc_lunga_truncated }}</div>
             <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}" hidden>{{ brand_desc_lunga }}</div>
@@ -182,6 +183,7 @@
           {%- else -%}
             <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}">{{ brand_desc_lunga }}</div>
           {%- endif -%}
+          </div>
         </div>
       {%- endcapture -%}
     {%- endif -%}
