@@ -11,6 +11,22 @@
   "sections": {
     "main": {
       "type": "ms_brand-page",
+      "blocks": {
+        "section_padding_VPrCmt": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "section_padding_top_md": 30,
+            "section_padding_bottom_md": 30,
+            "section_padding_top_xs": 20,
+            "section_padding_bottom_xs": 20
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_VPrCmt"
+      ],
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
