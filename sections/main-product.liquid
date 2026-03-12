@@ -1447,6 +1447,40 @@
                   endif
                 -%}
                 {%- if bi_brand != blank -%}
+                  {%- liquid
+                    assign bi_radius = block.settings.card_corner_radius | default: 6
+                    assign bi_border_w = block.settings.card_border_thickness | default: 1
+                    assign bi_border_color = block.settings.card_border_color | default: '#e0e0e0'
+                    assign bi_shadow = block.settings.card_shadow | default: 'light'
+                    assign bi_shadow_hover = block.settings.card_shadow_hover | default: 'medium'
+                  -%}
+                  {%- style -%}
+                    #MainProduct-{{ section.id }} .ms-brand-info {
+                      --bi-card-radius: {{ bi_radius }}px;
+                      --bi-card-border-width: {{ bi_border_w }}px;
+                      --bi-card-border-color: {{ bi_border_color }};
+                      {%- case bi_shadow -%}
+                        {%- when 'light' -%}
+                          --bi-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                        {%- when 'medium' -%}
+                          --bi-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+                        {%- when 'strong' -%}
+                          --bi-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+                        {%- else -%}
+                          --bi-card-shadow: none;
+                      {%- endcase -%}
+                      {%- case bi_shadow_hover -%}
+                        {%- when 'light' -%}
+                          --bi-card-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.08);
+                        {%- when 'medium' -%}
+                          --bi-card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+                        {%- when 'strong' -%}
+                          --bi-card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.18);
+                        {%- else -%}
+                          --bi-card-shadow-hover: none;
+                      {%- endcase -%}
+                    }
+                  {%- endstyle -%}
                   <div class="ms-brand-info ms-brand-info--{{ block.settings.style | default: 'card' }}" {{ block.shopify_attributes }}>
                     {%- if bi_url != blank -%}
                       <a href="{{ bi_url }}" class="ms-brand-info__link">
@@ -1489,10 +1523,14 @@
                     }
                     .ms-brand-info--card {
                       padding: 1.5rem;
-                      border: 1px solid rgba(var(--color-foreground), 0.12);
-                      border-radius: 8px;
+                      border: var(--bi-card-border-width, 1px) solid var(--bi-card-border-color, rgba(var(--color-foreground), 0.12));
+                      border-radius: var(--bi-card-radius, 8px);
                       background: rgb(var(--color-background));
-                      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+                      box-shadow: var(--bi-card-shadow, 0 2px 8px rgba(0, 0, 0, 0.06));
+                      transition: box-shadow 0.2s ease;
+                    }
+                    .ms-brand-info--card:hover {
+                      box-shadow: var(--bi-card-shadow-hover, 0 4px 16px rgba(0, 0, 0, 0.12));
                     }
                     .ms-brand-info__link {
                       display: flex;
@@ -3511,6 +3549,62 @@
           "id": "show_description",
           "label": "Mostra descrizione",
           "default": true
+        },
+        {
+          "type": "header",
+          "content": "Stile card"
+        },
+        {
+          "type": "range",
+          "id": "card_corner_radius",
+          "label": "Angoli arrotondati",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "default": 6
+        },
+        {
+          "type": "range",
+          "id": "card_border_thickness",
+          "label": "Spessore bordo",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "default": 1,
+          "info": "Imposta 0 per nessun bordo."
+        },
+        {
+          "type": "color",
+          "id": "card_border_color",
+          "label": "Colore bordo",
+          "default": "#e0e0e0"
+        },
+        {
+          "type": "select",
+          "id": "card_shadow",
+          "label": "Ombra card",
+          "options": [
+            { "label": "Nessuna", "value": "none" },
+            { "label": "Leggera", "value": "light" },
+            { "label": "Media", "value": "medium" },
+            { "label": "Forte", "value": "strong" }
+          ],
+          "default": "light"
+        },
+        {
+          "type": "select",
+          "id": "card_shadow_hover",
+          "label": "Ombra card al passaggio",
+          "info": "Ombra visibile al passaggio del mouse sulla card.",
+          "options": [
+            { "label": "Nessuna", "value": "none" },
+            { "label": "Leggera", "value": "light" },
+            { "label": "Media", "value": "medium" },
+            { "label": "Forte", "value": "strong" }
+          ],
+          "default": "medium"
         }
       ]
     }
