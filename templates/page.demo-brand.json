@@ -43,7 +43,7 @@
         "text_kw8JyG": {
           "type": "text",
           "settings": {
-            "text": "<p>In questa pagina sarà possibile visualizzare la lista di brands dello shop.<br/>Il widget permette vari tipi di visualizzazioni e due modalità di origine dati: classica (basata sul venditore) e enhanced (basata su metaobject).<br/><br/>Se verrà utilizzo il metodo enhanced (richiede metaobject e metafield di prodotto) sarà possibile gestire logo, descrizione ed eventualmente , se attivo, la possibilità di gestire dei template pagina dedicati.</p>"
+            "text": "<p>In questa pagina sarà possibile visualizzare la lista di brands dello shop.<br/>Il widget permette vari tipi di visualizzazioni e due modalità di origine dati: classica (basata sul venditore) e enhanced (basata su metaobject).<br/><br/>Se verrà utilizzo il metodo enhanced (richiede metaobject e metafield di prodotto) sarà possibile gestire logo, descrizione ed eventualmente , se attivo, la possibilità di gestire dei template pagina dedicati, se si sceglierà quella classica invece ci sarà solo un elenco di brand con il link alle collezioni pre-filtrate.</p>"
           }
         }
       },
@@ -81,7 +81,7 @@
       ],
       "name": "MS Brand List",
       "settings": {
-        "data_source": "vendor",
+        "data_source": "metaobject",
         "section_width": "page_width",
         "color_scheme": "",
         "mobile_full_width": false,
