@@ -1,6 +1,7 @@
 {%- comment -%}
   MS Brand List — legge da shop.metaobjects.brand
   Filtro alfabetico, ricerca, 3 modalita di visualizzazione (griglia, lista, solo loghi).
+  2 layout: tutti di seguito oppure raggruppati per iniziale.
 
   Metaobject "brand" richiesto con campi:
     - nome (single_line_text_field)
@@ -37,12 +38,14 @@
   assign brands = shop.metaobjects.brand.values
   assign brands_count = brands.size
   assign default_view = section.settings.default_view | default: 'grid'
+  assign layout_mode = section.settings.layout_mode | default: 'flat'
   assign cols_desktop = section.settings.columns_desktop | default: 4
   assign cols_mobile = section.settings.columns_mobile | default: 2
   assign show_description = section.settings.show_description
   assign enable_search = section.settings.enable_search
   assign enable_alpha_filter = section.settings.enable_alpha_filter
   assign search_placeholder = section.settings.search_placeholder | default: 'Cerca brand...'
+  assign text_alignment = section.settings.text_alignment | default: 'center'
 
   assign title_tag = section.settings.title_tag | default: 'h2'
   assign title_classes = section.settings.heading_size | default: 'h1'
@@ -51,6 +54,36 @@
   endif
 -%}
 
+{%- comment -%} Stili dinamici card (border, shadow, radius) {%- endcomment -%}
+{% style %}
+  #section-{{ section.id }} {
+    --bl-card-radius: {{ section.settings.card_corner_radius | default: 8 }}px;
+    --bl-card-border-width: {{ section.settings.card_border_thickness | default: 1 }}px;
+    --bl-card-border-color: {{ section.settings.card_border_color | default: '#e0e0e0' }};
+    --bl-text-align: {{ text_alignment }};
+    {%- case section.settings.card_shadow -%}
+      {%- when 'light' -%}
+        --bl-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      {%- when 'medium' -%}
+        --bl-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      {%- when 'strong' -%}
+        --bl-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+      {%- else -%}
+        --bl-card-shadow: none;
+    {%- endcase -%}
+    {%- case section.settings.card_shadow_hover -%}
+      {%- when 'light' -%}
+        --bl-card-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.08);
+      {%- when 'medium' -%}
+        --bl-card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+      {%- when 'strong' -%}
+        --bl-card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.18);
+      {%- else -%}
+        --bl-card-shadow-hover: none;
+    {%- endcase -%}
+  }
+{% endstyle %}
+
 {%- render 'ms_mobile-padding' -%}
 
 <ms-brand-list
@@ -58,6 +91,7 @@
   class="ms-brand-list color-{{ section.settings.color_scheme }} gradient"
   data-section-id="{{ section.id }}"
   data-default-view="{{ default_view }}"
+  data-layout-mode="{{ layout_mode }}"
 >
   <div class="{{ sw_class }}">
 
@@ -71,8 +105,8 @@
 
     {%- if brands_count > 0 -%}
 
-      {%- comment -%} Toolbar: filtro alfabetico + ricerca + switch vista {%- endcomment -%}
-      <div class="ms-bl__toolbar" role="toolbar" aria-label="Strumenti di filtro e visualizzazione brand">
+      {%- comment -%} Toolbar: filtro alfabetico + ricerca {%- endcomment -%}
+      <div class="ms-bl__toolbar" role="toolbar" aria-label="Strumenti di filtro brand">
 
         {%- if enable_alpha_filter -%}
           <div class="ms-bl__alpha-filter" role="group" aria-label="Filtra per lettera iniziale">
@@ -91,8 +125,8 @@
           </div>
         {%- endif -%}
 
-        <div class="ms-bl__toolbar-row">
-          {%- if enable_search -%}
+        {%- if enable_search -%}
+          <div class="ms-bl__toolbar-row">
             <div class="ms-bl__search" role="search" aria-label="Cerca brand">
               <input
                 type="text"
@@ -108,20 +142,8 @@
                 {%- render 'ms_icon', icon: settings.ms_icon_close_small -%}
               </button>
             </div>
-          {%- endif -%}
-
-          <div class="ms-bl__view-switch" role="group" aria-label="Cambia visualizzazione">
-            <button type="button" class="ms-bl__view-btn{% if default_view == 'grid' %} ms-bl__view-btn--active{% endif %}" data-view="grid" aria-pressed="{% if default_view == 'grid' %}true{% else %}false{% endif %}" aria-label="Visualizzazione griglia">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="1" y="1" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="1" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="12" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="12" y="12" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-            <button type="button" class="ms-bl__view-btn{% if default_view == 'list' %} ms-bl__view-btn--active{% endif %}" data-view="list" aria-pressed="{% if default_view == 'list' %}true{% else %}false{% endif %}" aria-label="Visualizzazione lista">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="1" y="2" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="8.5" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="15" width="18" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
-            <button type="button" class="ms-bl__view-btn{% if default_view == 'logo' %} ms-bl__view-btn--active{% endif %}" data-view="logo" aria-pressed="{% if default_view == 'logo' %}true{% else %}false{% endif %}" aria-label="Visualizzazione solo loghi">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="5" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="5" cy="15" r="3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="15" cy="15" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
           </div>
-        </div>
+        {%- endif -%}
 
         <div class="ms-bl__results-count" aria-live="polite" aria-atomic="true">
           <span data-bl-count>{{ brands_count }}</span>
@@ -131,69 +153,159 @@
         </div>
       </div>
 
-      {%- comment -%} Contenitore brand — tutte e 3 le viste condividono lo stesso markup {%- endcomment -%}
-      <div
-        class="ms-bl__container ms-bl__container--{{ default_view }}"
-        data-bl-container
-        style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
-      >
-        {%- for brand in brands -%}
+      {%- comment -%} ===== LAYOUT FLAT: tutti di seguito ===== {%- endcomment -%}
+      {%- if layout_mode == 'flat' -%}
+        <div
+          class="ms-bl__container ms-bl__container--{{ default_view }}"
+          data-bl-container
+          style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
+        >
+          {%- for brand in brands -%}
+            {%- liquid
+              assign brand_name = brand.nome.value | default: brand.system.handle
+              assign brand_initial = brand_name | slice: 0 | upcase
+              assign brand_logo = brand.logo.value
+              assign brand_desc = brand.descrizione.value
+              assign brand_url = brand.system.url | default: nil
+              if brand_url == blank and brand.url_custom.value != blank
+                assign brand_url = brand.url_custom.value
+              endif
+            -%}
+            <div
+              class="ms-bl__item"
+              data-brand-name="{{ brand_name | escape }}"
+              data-brand-initial="{{ brand_initial | escape }}"
+            >
+              {%- if brand_url != blank -%}
+                <a href="{{ brand_url }}" class="ms-bl__link">
+              {%- else -%}
+                <div class="ms-bl__link ms-bl__link--no-url">
+              {%- endif -%}
+
+                <div class="ms-bl__logo-wrap">
+                  {%- if brand_logo != blank -%}
+                    {{
+                      brand_logo
+                      | image_url: width: 400
+                      | image_tag:
+                          class: 'ms-bl__logo',
+                          loading: 'lazy',
+                          alt: brand_name,
+                          widths: '100, 200, 300, 400',
+                          sizes: '(min-width: 750px) 200px, 100px'
+                    }}
+                  {%- else -%}
+                    <div class="ms-bl__logo-placeholder" aria-hidden="true">
+                      <span>{{ brand_initial }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                <div class="ms-bl__info">
+                  <span class="ms-bl__name">{{ brand_name | escape }}</span>
+                  {%- if show_description and brand_desc != blank -%}
+                    <div class="ms-bl__description">{{ brand_desc }}</div>
+                  {%- endif -%}
+                </div>
+
+              {%- if brand_url != blank -%}
+                </a>
+              {%- else -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+      {%- comment -%} ===== LAYOUT GROUPED: divisi per iniziale ===== {%- endcomment -%}
+      {%- else -%}
+        <div data-bl-container class="ms-bl__grouped">
           {%- liquid
-            assign brand_name = brand.nome.value | default: brand.system.handle
-            assign brand_initial = brand_name | slice: 0 | upcase
-            assign brand_logo = brand.logo.value
-            assign brand_desc = brand.descrizione.value
-            assign brand_url = brand.system.url | default: nil
-            if brand_url == blank and brand.url_custom.value != blank
-              assign brand_url = brand.url_custom.value
-            endif
+            assign sorted_letters = ''
+            for brand in brands
+              assign bl = brand.nome.value | default: brand.system.handle | slice: 0 | upcase
+              unless sorted_letters contains bl
+                if sorted_letters != ''
+                  assign sorted_letters = sorted_letters | append: ','
+                endif
+                assign sorted_letters = sorted_letters | append: bl
+              endunless
+            endfor
+            assign letters_array = sorted_letters | split: ','
           -%}
 
-          <div
-            class="ms-bl__item"
-            data-brand-name="{{ brand_name | escape }}"
-            data-brand-initial="{{ brand_initial | escape }}"
-          >
-            {%- if brand_url != blank -%}
-              <a href="{{ brand_url }}" class="ms-bl__link" aria-label="{{ brand_name | escape }}">
-            {%- else -%}
-              <div class="ms-bl__link ms-bl__link--no-url">
-            {%- endif -%}
+          {%- for current_letter in letters_array -%}
+            <div class="ms-bl__group" data-group-letter="{{ current_letter | escape }}">
+              <div class="ms-bl__group-header" aria-hidden="true">
+                <span class="ms-bl__group-letter">{{ current_letter }}</span>
+              </div>
+              <div
+                class="ms-bl__container ms-bl__container--{{ default_view }}"
+                style="--bl-cols-desktop: {{ cols_desktop }}; --bl-cols-mobile: {{ cols_mobile }};"
+              >
+                {%- for brand in brands -%}
+                  {%- liquid
+                    assign brand_name = brand.nome.value | default: brand.system.handle
+                    assign brand_initial = brand_name | slice: 0 | upcase
+                    if brand_initial != current_letter
+                      continue
+                    endif
+                    assign brand_logo = brand.logo.value
+                    assign brand_desc = brand.descrizione.value
+                    assign brand_url = brand.system.url | default: nil
+                    if brand_url == blank and brand.url_custom.value != blank
+                      assign brand_url = brand.url_custom.value
+                    endif
+                  -%}
+                  <div
+                    class="ms-bl__item"
+                    data-brand-name="{{ brand_name | escape }}"
+                    data-brand-initial="{{ brand_initial | escape }}"
+                  >
+                    {%- if brand_url != blank -%}
+                      <a href="{{ brand_url }}" class="ms-bl__link">
+                    {%- else -%}
+                      <div class="ms-bl__link ms-bl__link--no-url">
+                    {%- endif -%}
 
-              <div class="ms-bl__logo-wrap">
-                {%- if brand_logo != blank -%}
-                  {{
-                    brand_logo
-                    | image_url: width: 400
-                    | image_tag:
-                        class: 'ms-bl__logo',
-                        loading: 'lazy',
-                        alt: brand_name,
-                        widths: '100, 200, 300, 400',
-                        sizes: '(min-width: 750px) 200px, 100px'
-                  }}
-                {%- else -%}
-                  <div class="ms-bl__logo-placeholder" aria-hidden="true">
-                    <span>{{ brand_initial }}</span>
+                      <div class="ms-bl__logo-wrap">
+                        {%- if brand_logo != blank -%}
+                          {{
+                            brand_logo
+                            | image_url: width: 400
+                            | image_tag:
+                                class: 'ms-bl__logo',
+                                loading: 'lazy',
+                                alt: brand_name,
+                                widths: '100, 200, 300, 400',
+                                sizes: '(min-width: 750px) 200px, 100px'
+                          }}
+                        {%- else -%}
+                          <div class="ms-bl__logo-placeholder" aria-hidden="true">
+                            <span>{{ brand_initial }}</span>
+                          </div>
+                        {%- endif -%}
+                      </div>
+
+                      <div class="ms-bl__info">
+                        <span class="ms-bl__name">{{ brand_name | escape }}</span>
+                        {%- if show_description and brand_desc != blank -%}
+                          <div class="ms-bl__description">{{ brand_desc }}</div>
+                        {%- endif -%}
+                      </div>
+
+                    {%- if brand_url != blank -%}
+                      </a>
+                    {%- else -%}
+                      </div>
+                    {%- endif -%}
                   </div>
-                {%- endif -%}
+                {%- endfor -%}
               </div>
-
-              <div class="ms-bl__info">
-                <span class="ms-bl__name">{{ brand_name | escape }}</span>
-                {%- if show_description and brand_desc != blank -%}
-                  <div class="ms-bl__description">{{ brand_desc }}</div>
-                {%- endif -%}
-              </div>
-
-            {%- if brand_url != blank -%}
-              </a>
-            {%- else -%}
-              </div>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
       {%- comment -%} Messaggio nessun risultato {%- endcomment -%}
       <div class="ms-bl__empty" hidden aria-live="polite">
@@ -289,11 +401,6 @@
       "default": false,
       "info": "Se attivo, la sezione occupa tutta la larghezza su mobile/tablet senza padding laterale."
     },
-
-    {
-      "type": "header",
-      "content": "Contenuto"
-    },
     {
       "type": "text",
       "id": "title",
@@ -343,14 +450,35 @@
     {
       "type": "select",
       "id": "default_view",
-      "label": "Visualizzazione predefinita",
+      "label": "Tipo visualizzazione",
       "options": [
         { "label": "Griglia", "value": "grid" },
         { "label": "Lista", "value": "list" },
         { "label": "Solo loghi", "value": "logo" }
       ],
-      "default": "grid",
-      "info": "L'utente puo cambiare la vista dalla toolbar."
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "layout_mode",
+      "label": "Disposizione brand",
+      "options": [
+        { "label": "Tutti di seguito", "value": "flat" },
+        { "label": "Raggruppati per iniziale", "value": "grouped" }
+      ],
+      "default": "flat",
+      "info": "\"Raggruppati\" mostra una lettera di intestazione seguita dai brand corrispondenti."
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Allineamento testo card",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Centro", "value": "center" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "center"
     },
     {
       "type": "range",
@@ -378,6 +506,63 @@
       "label": "Mostra descrizione",
       "default": true,
       "info": "Mostra la descrizione del brand nella vista griglia."
+    },
+
+    {
+      "type": "header",
+      "content": "Stile card"
+    },
+    {
+      "type": "range",
+      "id": "card_corner_radius",
+      "label": "Angoli arrotondati",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_border_thickness",
+      "label": "Spessore bordo",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "info": "Imposta 0 per nessun bordo."
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Colore bordo",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Ombra card",
+      "options": [
+        { "label": "Nessuna", "value": "none" },
+        { "label": "Leggera", "value": "light" },
+        { "label": "Media", "value": "medium" },
+        { "label": "Forte", "value": "strong" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow_hover",
+      "label": "Ombra card al passaggio",
+      "info": "Ombra visibile al passaggio del mouse sulla card.",
+      "options": [
+        { "label": "Nessuna", "value": "none" },
+        { "label": "Leggera", "value": "light" },
+        { "label": "Media", "value": "medium" },
+        { "label": "Forte", "value": "strong" }
+      ],
+      "default": "medium"
     },
 
     {

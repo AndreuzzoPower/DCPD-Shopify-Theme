@@ -1,10 +1,10 @@
 /* ==========================================================================
-   MS Brand List — Sezione lista brand con filtro, ricerca e 3 viste
-   Mobile-first
+   MS Brand List — Sezione lista brand
+   Mobile-first, font basati su variabili tema
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Header & Titolo
+   1. Base & Header
    -------------------------------------------------------------------------- */
 
 .ms-brand-list {
@@ -45,8 +45,8 @@
 .ms-bl__alpha-filter {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  padding-bottom: 0.5rem;
+  gap: 0.3rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
 }
 
@@ -54,15 +54,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  height: 2rem;
-  padding: 0 0.4rem;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
   border: 1px solid rgba(var(--color-foreground), 0.15);
   border-radius: 4px;
   background: transparent;
   color: rgb(var(--color-foreground));
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   line-height: 1;
@@ -99,17 +100,17 @@
   position: relative;
   flex: 1;
   min-width: 200px;
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .ms-bl__search-input {
   width: 100%;
-  padding: 0.6rem 2.8rem 0.6rem 1rem;
+  padding: 0.75rem 2.8rem 0.75rem 1rem;
   border: 1px solid rgba(var(--color-foreground), 0.15);
   border-radius: 6px;
   background: rgb(var(--color-background));
   color: rgb(var(--color-foreground));
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-family: inherit;
   line-height: 1.5;
   transition: border-color 0.2s ease;
@@ -133,8 +134,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   border: none;
   background: transparent;
@@ -147,7 +148,7 @@
 }
 
 .ms-bl__search-clear {
-  right: 2rem;
+  right: 2.25rem;
 }
 
 .ms-bl__search-btn:hover,
@@ -165,63 +166,22 @@
 .ms-bl__search-clear svg,
 .ms-bl__search-btn .icon,
 .ms-bl__search-clear .icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 /* --------------------------------------------------------------------------
-   5. Switch Vista
-   -------------------------------------------------------------------------- */
-
-.ms-bl__view-switch {
-  display: flex;
-  gap: 0.25rem;
-  margin-left: auto;
-}
-
-.ms-bl__view-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-  border: 1px solid rgba(var(--color-foreground), 0.15);
-  border-radius: 4px;
-  background: transparent;
-  color: rgba(var(--color-foreground), 0.5);
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.ms-bl__view-btn:hover {
-  color: rgb(var(--color-foreground));
-  border-color: rgba(var(--color-foreground), 0.3);
-}
-
-.ms-bl__view-btn:focus-visible {
-  outline: 2px solid rgb(var(--color-foreground));
-  outline-offset: 2px;
-}
-
-.ms-bl__view-btn--active {
-  color: rgb(var(--color-foreground));
-  border-color: rgb(var(--color-foreground));
-  background-color: rgba(var(--color-foreground), 0.06);
-}
-
-/* --------------------------------------------------------------------------
-   6. Contatore Risultati
+   5. Contatore Risultati
    -------------------------------------------------------------------------- */
 
 .ms-bl__results-count {
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   color: rgba(var(--color-foreground), 0.6);
   padding-top: 0.25rem;
 }
 
 /* --------------------------------------------------------------------------
-   7. Contenitore Brand — Layout Griglia (default)
+   6. Contenitore Brand — Griglia (default)
    -------------------------------------------------------------------------- */
 
 .ms-bl__container {
@@ -239,28 +199,28 @@
   display: none;
 }
 
-.ms-bl__item--hiding {
-  opacity: 0;
-}
+/* --------------------------------------------------------------------------
+   7. Card Brand (link wrapper)
+   -------------------------------------------------------------------------- */
 
 .ms-bl__link {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: var(--bl-text-align, center);
+  text-align: var(--bl-text-align, center);
   text-decoration: none;
   color: inherit;
   height: 100%;
-  padding: 1.25rem;
-  border: 1px solid rgba(var(--color-foreground), 0.08);
-  border-radius: 8px;
+  padding: 1.5rem;
+  border: var(--bl-card-border-width) solid var(--bl-card-border-color);
+  border-radius: var(--bl-card-radius);
   background: rgb(var(--color-background));
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--bl-card-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 a.ms-bl__link:hover {
-  border-color: rgba(var(--color-foreground), 0.2);
-  box-shadow: 0 4px 12px rgba(var(--color-foreground), 0.06);
+  box-shadow: var(--bl-card-shadow-hover);
   transform: translateY(-2px);
 }
 
@@ -279,7 +239,7 @@ a.ms-bl__link:focus-visible {
   justify-content: center;
   width: 100%;
   aspect-ratio: 3 / 2;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   overflow: hidden;
 }
 
@@ -299,31 +259,32 @@ a.ms-bl__link:focus-visible {
   height: 100%;
   background-color: rgba(var(--color-foreground), 0.05);
   border-radius: 4px;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: rgba(var(--color-foreground), 0.3);
+  color: rgba(var(--color-foreground), 0.25);
 }
 
 /* --------------------------------------------------------------------------
-   9. Info (nome + descrizione)
+   9. Info (nome + descrizione) — font piu grandi
    -------------------------------------------------------------------------- */
 
 .ms-bl__info {
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .ms-bl__name {
-  font-size: 0.9375rem;
+  font-size: calc(var(--font-heading-scale) * 1rem);
   font-weight: 600;
   line-height: 1.3;
   color: rgb(var(--color-foreground));
 }
 
 .ms-bl__description {
-  font-size: 0.8125rem;
-  line-height: 1.5;
+  font-size: calc(var(--font-body-scale) * 0.9rem);
+  line-height: 1.6;
   color: rgba(var(--color-foreground), 0.65);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -344,18 +305,18 @@ a.ms-bl__link:focus-visible {
   flex-direction: row;
   align-items: center;
   text-align: left;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
   border-radius: 0;
   border-left: none;
   border-right: none;
   border-top: none;
-  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
-  gap: 1rem;
+  border-bottom: var(--bl-card-border-width) solid var(--bl-card-border-color);
+  box-shadow: none;
+  gap: 1.25rem;
 }
 
 .ms-bl__container--list .ms-bl__link:hover {
   transform: none;
-  box-shadow: none;
   background-color: rgba(var(--color-foreground), 0.02);
 }
 
@@ -379,7 +340,8 @@ a.ms-bl__link:focus-visible {
    -------------------------------------------------------------------------- */
 
 .ms-bl__container--logo .ms-bl__link {
-  padding: 1rem;
+  padding: 1.25rem;
+  align-items: center;
 }
 
 .ms-bl__container--logo .ms-bl__info {
@@ -397,14 +359,42 @@ a.ms-bl__link:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   12. Messaggio vuoto / Placeholder
+   12. Layout raggruppato per iniziale
+   -------------------------------------------------------------------------- */
+
+.ms-bl__grouped {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.ms-bl__group[hidden] {
+  display: none;
+}
+
+.ms-bl__group-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(var(--color-foreground), 0.12);
+}
+
+.ms-bl__group-letter {
+  font-size: calc(var(--font-heading-scale) * 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgb(var(--color-foreground));
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   13. Messaggio vuoto / Placeholder
    -------------------------------------------------------------------------- */
 
 .ms-bl__empty {
   text-align: center;
   padding: 3rem 1rem;
   color: rgba(var(--color-foreground), 0.5);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .ms-bl__placeholder {
@@ -413,10 +403,11 @@ a.ms-bl__link:focus-visible {
   border: 2px dashed rgba(var(--color-foreground), 0.15);
   border-radius: 8px;
   color: rgba(var(--color-foreground), 0.4);
+  font-size: 1rem;
 }
 
 /* --------------------------------------------------------------------------
-   13. Desktop (min-width: 750px)
+   14. Desktop (min-width: 750px)
    -------------------------------------------------------------------------- */
 
 @media screen and (min-width: 750px) {
@@ -434,13 +425,13 @@ a.ms-bl__link:focus-visible {
   }
 
   .ms-bl__container--list .ms-bl__link {
-    padding: 1rem 1.5rem;
+    padding: 1.25rem 1.5rem;
   }
 
   .ms-bl__alpha-btn {
-    min-width: 2.25rem;
-    height: 2.25rem;
-    font-size: 0.8125rem;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.9375rem;
   }
 
   .ms-bl__toolbar-row {
@@ -448,19 +439,22 @@ a.ms-bl__link:focus-visible {
   }
 
   .ms-bl__name {
-    font-size: 1rem;
+    font-size: calc(var(--font-heading-scale) * 1.1rem);
+  }
+
+  .ms-bl__group-letter {
+    font-size: calc(var(--font-heading-scale) * 2rem);
   }
 }
 
 /* --------------------------------------------------------------------------
-   14. Reduced Motion
+   15. Reduced Motion
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .ms-bl__item,
   .ms-bl__link,
   .ms-bl__alpha-btn,
-  .ms-bl__view-btn,
   .ms-bl__search-input {
     transition: none;
   }

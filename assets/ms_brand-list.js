@@ -1,6 +1,7 @@
 /**
  * MS Brand List — Custom Element
- * Gestisce filtro alfabetico, ricerca e cambio vista.
+ * Gestisce filtro alfabetico e ricerca.
+ * Supporta layout flat e grouped (raggruppato per iniziale).
  */
 
 if (!customElements.get('ms-brand-list')) {
@@ -10,33 +11,27 @@ if (!customElements.get('ms-brand-list')) {
       this._debounceTimer = null;
       this._activeLetter = 'all';
       this._searchQuery = '';
-      this._currentView = 'grid';
+      this._isGrouped = false;
     }
 
     connectedCallback() {
       this.sectionId = this.dataset.sectionId;
       if (!this.sectionId) return;
 
-      this._currentView = this.dataset.defaultView || 'grid';
-
-      const saved = sessionStorage.getItem('ms-bl-view');
-      if (saved && ['grid', 'list', 'logo'].includes(saved)) {
-        this._currentView = saved;
-      }
+      this._isGrouped = this.dataset.layoutMode === 'grouped';
 
       this.#cacheElements();
       this.#disableUnusedLetters();
-      this.#applyView(this._currentView);
       this.#bindEvents();
     }
 
     #cacheElements() {
-      this.container = this.querySelector('[data-bl-container]');
-      this.items = this.container ? [...this.container.querySelectorAll('.ms-bl__item')] : [];
+      this.containerEl = this.querySelector('[data-bl-container]');
+      this.items = [...this.querySelectorAll('.ms-bl__item')];
+      this.groups = [...this.querySelectorAll('.ms-bl__group')];
       this.alphaButtons = [...this.querySelectorAll('.ms-bl__alpha-btn')];
       this.searchInput = this.querySelector('.ms-bl__search-input');
       this.searchClearBtn = this.querySelector('.ms-bl__search-clear');
-      this.viewButtons = [...this.querySelectorAll('.ms-bl__view-btn')];
       this.countEl = this.querySelector('[data-bl-count]');
       this.countLabelEl = this.querySelector('[data-bl-count-label]');
       this.emptyEl = this.querySelector('.ms-bl__empty');
@@ -48,9 +43,7 @@ if (!customElements.get('ms-brand-list')) {
       }
 
       if (this.searchInput) {
-        this.searchInput.addEventListener('input', () => {
-          this.#debounceSearch();
-        });
+        this.searchInput.addEventListener('input', () => this.#debounceSearch());
         this.searchInput.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             this.searchInput.value = '';
@@ -66,18 +59,7 @@ if (!customElements.get('ms-brand-list')) {
           this.searchInput?.focus();
         });
       }
-
-      for (const btn of this.viewButtons) {
-        btn.addEventListener('click', () => {
-          const view = btn.dataset.view;
-          if (view) this.#applyView(view);
-        });
-      }
     }
-
-    /* ------------------------------------------------------------------
-       Filtro Alfabetico
-       ------------------------------------------------------------------ */
 
     #handleLetterClick(btn) {
       const letter = btn.dataset.letter;
@@ -114,10 +96,6 @@ if (!customElements.get('ms-brand-list')) {
       }
     }
 
-    /* ------------------------------------------------------------------
-       Ricerca
-       ------------------------------------------------------------------ */
-
     #debounceSearch() {
       clearTimeout(this._debounceTimer);
       this._debounceTimer = setTimeout(() => this.#handleSearch(), 300);
@@ -132,10 +110,6 @@ if (!customElements.get('ms-brand-list')) {
 
       this.#filterItems();
     }
-
-    /* ------------------------------------------------------------------
-       Filtraggio Combinato
-       ------------------------------------------------------------------ */
 
     #filterItems() {
       let visibleCount = 0;
@@ -160,63 +134,30 @@ if (!customElements.get('ms-brand-list')) {
 
         const visible = matchesLetter && matchesSearch;
         item.hidden = !visible;
-
         if (visible) visibleCount++;
+      }
+
+      if (this._isGrouped) {
+        for (const group of this.groups) {
+          const visibleItems = group.querySelectorAll('.ms-bl__item:not([hidden])');
+          group.hidden = visibleItems.length === 0;
+        }
       }
 
       this.#updateCount(visibleCount);
       this.#updateEmpty(visibleCount === 0);
     }
 
-    /* ------------------------------------------------------------------
-       Contatore Risultati
-       ------------------------------------------------------------------ */
-
     #updateCount(count) {
-      if (this.countEl) {
-        this.countEl.textContent = count;
-      }
+      if (this.countEl) this.countEl.textContent = count;
       if (this.countLabelEl) {
         this.countLabelEl.textContent = count === 1 ? 'brand trovato' : 'brand trovati';
       }
     }
 
     #updateEmpty(isEmpty) {
-      if (this.emptyEl) {
-        this.emptyEl.hidden = !isEmpty;
-      }
-      if (this.container) {
-        this.container.hidden = isEmpty;
-      }
-    }
-
-    /* ------------------------------------------------------------------
-       Cambio Vista
-       ------------------------------------------------------------------ */
-
-    #applyView(view) {
-      this._currentView = view;
-
-      if (this.container) {
-        this.container.classList.remove(
-          'ms-bl__container--grid',
-          'ms-bl__container--list',
-          'ms-bl__container--logo'
-        );
-        this.container.classList.add(`ms-bl__container--${view}`);
-      }
-
-      for (const btn of this.viewButtons) {
-        const isActive = btn.dataset.view === view;
-        btn.classList.toggle('ms-bl__view-btn--active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      }
-
-      try {
-        sessionStorage.setItem('ms-bl-view', view);
-      } catch (_) {
-        /* sessionStorage non disponibile */
-      }
+      if (this.emptyEl) this.emptyEl.hidden = !isEmpty;
+      if (this.containerEl) this.containerEl.hidden = isEmpty;
     }
   }
 
