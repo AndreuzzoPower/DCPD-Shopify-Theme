@@ -86,7 +86,7 @@
         "mobile_full_width": false,
         "default_view": "grid",
         "layout_mode": "grouped",
-        "text_alignment": "center",
+        "text_alignment": "left",
         "columns_desktop": 4,
         "columns_mobile": 2,
         "show_description": true,
