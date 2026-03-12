@@ -858,19 +858,12 @@
             "link_button_icon": "",
             "link_button_icon_position": "after"
           }
-        },
-        "section_background_BBQAPF": {
-          "type": "section_background",
-          "settings": {
-            "section_bg_color": "#919191"
-          }
         }
       },
       "block_order": [
         "column_T3HL4K",
         "column_NPREPa",
-        "column_eE4JQ4",
-        "section_background_BBQAPF"
+        "column_eE4JQ4"
       ],
       "name": "MS Multicolonna",
       "settings": {
@@ -939,8 +932,8 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
+    "ms_divider_qN8RVX",
     "ms_rich_text_NT3Umf",
-    "ms_multicolumn_dgChGB",
-    "ms_divider_qN8RVX"
+    "ms_multicolumn_dgChGB"
   ]
 }
