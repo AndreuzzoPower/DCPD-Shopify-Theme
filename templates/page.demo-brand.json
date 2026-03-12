@@ -34,7 +34,7 @@
         "heading_HDELaw": {
           "type": "heading",
           "settings": {
-            "heading": "BLOG",
+            "heading": "BRANDS",
             "heading_size": "h1",
             "title_tag": "div",
             "title_custom_class": ""
@@ -43,7 +43,7 @@
         "text_kw8JyG": {
           "type": "text",
           "settings": {
-            "text": "<p>Questa è una pagina generica che include un widget <strong>MS Blog in Evidenza</strong>, creato appositamente per sopperire al fatto che Shopify <strong>non</strong> utilizza le <strong>categorie</strong> ma blog differenti ... in questo modo possiamo avere riuniti in un'unica pagina gli ultimi post di tutti i blog.<br/><br/>Il widget da varie possibilità tra cui <strong>impostare un unico blog </strong>da cui recuperare i post o si potrà fornire un <strong>menu</strong> in cui ci sono tutti i blogs che si vogliono includere.<br/><br/>E' stato aggiunto un menu che rappresenta le categorie Blog per avere un rapido accesso (Gestito dai menu e renderizzato con un widget ad hoc).</p>"
+            "text": "<p>In questa pagina sarà possibile visualizzare la lista di brands dello shop.<br/>Il widget permette vari tipi di visualizzazioni e due modalità: classica (basata sul venditore) e enhanced (basata su metaobject).<br/><br/>Se verrà utilizzo il metodo enhanced (richiede metaobject e metafield di prodotto) sarà possibile gestire logo, descrizione ed eventualmente , se attivo, la possibilità di gestire dei template pagina dedicati.</p>"
           }
         }
       },
@@ -60,105 +60,10 @@
         "desktop_content_position": "center",
         "content_alignment": "center"
       }
-    },
-    "ms_render_menu_3gr93w": {
-      "type": "ms_render_menu",
-      "blocks": {
-        "section_padding_pa4eB4": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 20,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 15,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 10
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_pa4eB4"
-      ],
-      "name": "MS Render Menu",
-      "settings": {
-        "menu": "menu-categorie-blog",
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "alignment": "center",
-        "style": "pills",
-        "color_scheme": ""
-      }
-    },
-    "ms_featured_blog_xFQgWm": {
-      "type": "ms_featured-blog",
-      "blocks": {
-        "section_padding_LHWa3r": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 35,
-            "section_padding_bottom": 35,
-            "section_padding_top_md": 25,
-            "section_padding_bottom_md": 25,
-            "section_padding_top_xs": 20,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_LHWa3r"
-      ],
-      "name": "MS Blog in evidenza",
-      "settings": {
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "blog": "",
-        "blogs_menu": "menu-categorie-blog",
-        "post_limit": 50,
-        "columns_desktop": "3",
-        "enable_desktop_slider": false,
-        "enable_autoplay": true,
-        "autoplay_speed": 3,
-        "carousel_loop": "circular",
-        "carousel_peek_size": "medium",
-        "carousel_arrows_position": "below_center",
-        "carousel_arrows_overlay_dark": false,
-        "carousel_pagination_style": "counter",
-        "carousel_scroll_mode": "page",
-        "carousel_show_arrows": true,
-        "carousel_show_pagination": true,
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
-        "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
-        "show_author": false,
-        "show_reading": true,
-        "show_excerpt": true,
-        "show_blog_name": true,
-        "show_tags": true,
-        "tags_style": "pill",
-        "show_icons": true,
-        "custom_icon_date": "",
-        "custom_icon_reading": "",
-        "custom_icon_author": "",
-        "card_info_padding_top": 16,
-        "card_info_padding_right": 16,
-        "card_info_padding_bottom": 16,
-        "card_info_padding_left": 16,
-        "show_view_all": true,
-        "button_size": "default",
-        "button_style_secondary": false,
-        "button_type": "pill",
-        "button_icon": "",
-        "button_icon_position": "before",
-        "color_scheme": ""
-      }
     }
   },
   "order": [
     "main",
-    "rich_text_ezAqEK",
-    "ms_render_menu_3gr93w",
-    "ms_featured_blog_xFQgWm"
+    "rich_text_ezAqEK"
   ]
 }
