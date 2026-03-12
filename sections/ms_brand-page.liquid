@@ -98,6 +98,10 @@
     --bp-logo-max-width: {{ bp_logo_max_w }}px;
     --bp-logo-max-height: {{ bp_logo_max_h }}px;
   }
+  #section-{{ section.id }} .ms-bp__products {
+    margin-top: {{ section.settings.products_spacing_top | default: 20 }}px;
+    margin-bottom: {{ section.settings.products_spacing_bottom | default: 0 }}px;
+  }
 {%- endstyle -%}
 
 <div id="section-{{ section.id }}" class="ms-brand-page color-{{ section.settings.color_scheme }} gradient">
@@ -699,6 +703,26 @@
         { "value": "right", "label": "Destra" }
       ],
       "info": "Si applica al titolo della sezione prodotti e alla descrizione sotto."
+    },
+    {
+      "type": "range",
+      "id": "products_spacing_top",
+      "label": "Spazio sopra i prodotti",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "products_spacing_bottom",
+      "label": "Spazio sotto i prodotti",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "paragraph",

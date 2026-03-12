@@ -145,10 +145,6 @@
    3. Griglia Prodotti (usa stessi stili di template-collection / collection grid)
    -------------------------------------------------------------------------- */
 
-.ms-bp__products {
-  margin-top: 2rem;
-}
-
 .ms-bp__products-title {
   margin: 0 0 1.5rem;
 }
