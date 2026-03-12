@@ -180,7 +180,15 @@
           <div class="card-information">
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
-              <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
+              {%- liquid
+                assign _brand_meta = card_product.metafields.custom.brand.value
+                if _brand_meta != blank
+                  assign _vendor_display = _brand_meta.nome.value | default: card_product.vendor
+                else
+                  assign _vendor_display = card_product.vendor
+                endif
+              -%}
+              <div class="caption-with-letter-spacing light">{{ _vendor_display }}</div>
             {%- endif -%}
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>

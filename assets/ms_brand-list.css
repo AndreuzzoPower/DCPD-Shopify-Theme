@@ -432,7 +432,28 @@ a.ms-bl__link:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   15. Reduced Motion
+   15. Brand Carousel header
+   -------------------------------------------------------------------------- */
+
+.ms-brand-carousel {
+  position: relative;
+}
+
+.ms-bc__header {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.ms-bc__title {
+  margin: 0;
+}
+
+.ms-bc__slide .ms-bl__item {
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   16. Reduced Motion
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

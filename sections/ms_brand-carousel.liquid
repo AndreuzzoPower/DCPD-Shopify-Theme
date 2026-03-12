@@ -1,0 +1,613 @@
+{%- comment -%}
+  MS Brand Carousel — carosello brand da metaobject.
+  Su pagina brand (metaobject), esclude automaticamente il brand corrente.
+  Utilizza slider-component e ms_brand-card.liquid.
+{%- endcomment -%}
+
+{{ 'ms_brand-list.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign brands_raw = shop.metaobjects.brand.values
+  assign show_logo = section.settings.show_logo
+  assign show_description = section.settings.show_description
+  assign cols_desktop = section.settings.columns_desktop | default: 4
+  assign cols_mobile = section.settings.columns_mobile | default: 1
+  assign cols_mobile_int = cols_mobile | plus: 0
+  assign text_alignment = section.settings.text_alignment | default: 'center'
+
+  assign current_brand_handle = nil
+  if template.suffix == 'brand' and metaobject != blank
+    assign current_brand_handle = metaobject.system.handle
+  endif
+
+  assign brand_count = 0
+  for brand in brands_raw
+    if brand.system.handle == current_brand_handle
+      continue
+    endif
+    assign brand_count = brand_count | plus: 1
+  endfor
+
+  assign show_mobile_slider = false
+  if section.settings.swipe_on_mobile and brand_count > cols_mobile_int
+    assign show_mobile_slider = true
+  endif
+
+  assign show_desktop_slider = false
+  if section.settings.enable_desktop_slider and brand_count > cols_desktop
+    assign show_desktop_slider = true
+  endif
+
+  assign show_carousel = false
+  if show_mobile_slider or show_desktop_slider
+    assign show_carousel = true
+  endif
+
+  assign is_full_width = false
+  if sw == 'full_width'
+    assign is_full_width = true
+  endif
+
+  assign peek = section.settings.carousel_peek_size | default: 'medium'
+
+  assign title_tag = section.settings.title_tag | default: 'h2'
+  assign title_classes = section.settings.heading_size | default: 'h1'
+-%}
+
+{%- comment -%} Stili dinamici {%- endcomment -%}
+{% style %}
+  #section-{{ section.id }} {
+    --bl-card-radius: {{ section.settings.card_corner_radius | default: 8 }}px;
+    --bl-card-border-width: {{ section.settings.card_border_thickness | default: 1 }}px;
+    --bl-card-border-color: {{ section.settings.card_border_color | default: '#e0e0e0' }};
+    --bl-text-align: {{ text_alignment }};
+    --bl-name-weight: {% if section.settings.brand_name_bold %}600{% else %}400{% endif %};
+    --bl-name-decoration: {% if section.settings.brand_name_underline %}underline{% else %}none{% endif %};
+    {%- case section.settings.card_shadow -%}
+      {%- when 'light' -%}
+        --bl-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      {%- when 'medium' -%}
+        --bl-card-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      {%- when 'strong' -%}
+        --bl-card-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+      {%- else -%}
+        --bl-card-shadow: none;
+    {%- endcase -%}
+    {%- case section.settings.card_shadow_hover -%}
+      {%- when 'light' -%}
+        --bl-card-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.08);
+      {%- when 'medium' -%}
+        --bl-card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+      {%- when 'strong' -%}
+        --bl-card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.18);
+      {%- else -%}
+        --bl-card-shadow-hover: none;
+    {%- endcase -%}
+  }
+{% endstyle %}
+
+{%- unless is_full_width -%}
+  {%- if show_desktop_slider -%}
+    {% style %}
+      @media screen and (min-width: 990px) {
+        #section-{{ section.id }} .slider.slider--desktop {
+          margin-left: 0;
+          scroll-padding-left: 0;
+        }
+        {%- if peek == 'none' -%}
+        #section-{{ section.id }} .slider--desktop.grid--{{ cols_desktop }}-col-desktop .grid__item { width: calc({{ 100.0 | divided_by: cols_desktop }}% - var(--grid-desktop-horizontal-spacing) * {{ cols_desktop | minus: 1 }} / {{ cols_desktop }}); }
+        {%- else -%}
+        {%- assign peek_extra = 1 -%}
+        {%- if peek == 'small' -%}{%- assign peek_extra = 0.33 -%}{%- elsif peek == 'large' -%}{%- assign peek_extra = 0.75 -%}{%- else -%}{%- assign peek_extra = 0.5 -%}{%- endif -%}
+        {%- assign total_vis = cols_desktop | plus: peek_extra -%}
+        #section-{{ section.id }} .slider--desktop.grid--{{ cols_desktop }}-col-desktop .grid__item { width: calc({{ 100.0 | divided_by: total_vis }}% - var(--grid-desktop-horizontal-spacing)); }
+        {%- endif -%}
+      }
+    {% endstyle %}
+  {%- endif -%}
+{%- endunless -%}
+
+{%- render 'ms_mobile-padding' -%}
+
+{%- if brand_count > 0 -%}
+<div
+  class="ms-brand-carousel color-{{ section.settings.color_scheme }} gradient"
+  id="section-{{ section.id }}"
+>
+  <div class="{{ sw_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+    {% if settings.animations_reveal_on_scroll %}data-cascade{% endif %}
+  >
+
+    {%- if section.settings.title != blank -%}
+      <div class="ms-bc__header">
+        <{{ title_tag }} class="{{ title_classes }} ms-bc__title">
+          {{- section.settings.title | escape -}}
+        </{{ title_tag }}>
+      </div>
+    {%- endif -%}
+
+    <slider-component
+      data-scroll-mode="{{ section.settings.carousel_scroll_mode | default: 'page' }}"
+      data-loop="{{ section.settings.carousel_loop | default: 'circular' }}"
+      data-peek="{{ peek }}"
+      data-autoplay="{{ section.settings.enable_autoplay | default: false }}"
+      data-speed="{{ section.settings.autoplay_speed | default: 5 }}000"
+      class="slider-mobile-gutter{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if section.settings.carousel_arrows_position == 'overlay_sides' %} ms-carousel--arrows-overlay-sides{% elsif section.settings.carousel_arrows_position == 'above_right' %} ms-carousel--arrows-above-right{% endif %}{% if section.settings.carousel_arrows_overlay_dark %} ms-carousel--arrows-overlay-dark{% endif %}{% unless section.settings.carousel_show_arrows %} ms-carousel--no-arrows{% endunless %}{% unless section.settings.carousel_show_pagination %} ms-carousel--no-pagination{% endunless %}"
+      {% unless is_full_width %}style="--desktop-margin-left-first-item: 0px"{% endunless %}
+    >
+      <ul
+        class="ms-bc__list grid grid--{{ cols_mobile }}-col-tablet-down grid--{{ cols_desktop }}-col-desktop{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
+        id="Slider-{{ section.id }}"
+        role="list"
+      >
+        {%- assign slide_index = 0 -%}
+        {%- for brand_entry in brands_raw -%}
+          {%- liquid
+            if brand_entry.system.handle == current_brand_handle
+              continue
+            endif
+            assign slide_index = slide_index | plus: 1
+
+            assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
+            assign brand_initial = brand_name | slice: 0 | upcase
+            assign brand_logo = brand_entry.logo.value
+            assign brand_desc = brand_entry.descrizione.value
+            assign brand_url = brand_entry.system.url | default: nil
+            if brand_url == blank and brand_entry.url_custom.value != blank
+              assign brand_url = brand_entry.url_custom.value
+            endif
+          -%}
+          <li
+            id="Slide-{{ section.id }}-{{ slide_index }}"
+            class="ms-bc__slide grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ slide_index }};"
+            {% endif %}
+          >
+            {%- render 'ms_brand-card',
+              brand_name: brand_name,
+              brand_initial: brand_initial,
+              brand_logo: brand_logo,
+              brand_desc: brand_desc,
+              brand_url: brand_url,
+              show_logo: show_logo,
+              show_description: show_description
+            -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if show_carousel -%}
+        {%- render 'ms_carousel-controls',
+          section_id: section.id,
+          total_items: brand_count,
+          pagination_style: section.settings.carousel_pagination_style,
+          show_arrows: section.settings.carousel_show_arrows,
+          show_pagination: section.settings.carousel_show_pagination,
+          enable_autoplay: section.settings.enable_autoplay
+        -%}
+      {%- endif -%}
+    </slider-component>
+
+  </div>
+</div>
+{%- elsif request.design_mode -%}
+<div class="ms-brand-carousel color-{{ section.settings.color_scheme }} gradient" id="section-{{ section.id }}">
+  <div class="{{ sw_class }}">
+    <div class="ms-bl__placeholder">
+      <p>Nessun brand trovato. Crea il metaobject "brand" in Shopify Admin e aggiungi delle voci.</p>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+{%- render 'ms_section-style' -%}
+
+{% schema %}
+{
+  "name": "MS Brand Carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Combinazione colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "I Nostri Brand"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "Paragrafo", "value": "p" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione titolo",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" }
+      ],
+      "default": "h1"
+    },
+
+    {
+      "type": "header",
+      "content": "Contenuto card"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Allineamento testo",
+      "options": [
+        { "label": "Sinistra", "value": "left" },
+        { "label": "Centro", "value": "center" },
+        { "label": "Destra", "value": "right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "Mostra logo",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostra descrizione",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "brand_name_bold",
+      "label": "Nome in grassetto",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "brand_name_underline",
+      "label": "Nome sottolineato",
+      "default": false
+    },
+
+    {
+      "type": "header",
+      "content": "Stile card"
+    },
+    {
+      "type": "range",
+      "id": "card_corner_radius",
+      "label": "Angoli arrotondati",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_border_thickness",
+      "label": "Spessore bordo",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "info": "Imposta 0 per nessun bordo."
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Colore bordo",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow",
+      "label": "Ombra card",
+      "options": [
+        { "label": "Nessuna", "value": "none" },
+        { "label": "Leggera", "value": "light" },
+        { "label": "Media", "value": "medium" },
+        { "label": "Forte", "value": "strong" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "card_shadow_hover",
+      "label": "Ombra card al passaggio",
+      "options": [
+        { "label": "Nessuna", "value": "none" },
+        { "label": "Leggera", "value": "light" },
+        { "label": "Media", "value": "medium" },
+        { "label": "Forte", "value": "strong" }
+      ],
+      "default": "medium"
+    },
+
+    {
+      "type": "header",
+      "content": "Carosello"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Colonne desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_desktop_slider",
+      "label": "Abilita carosello desktop",
+      "default": true,
+      "info": "Attiva lo slider orizzontale su desktop."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Rotazione automatica",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Velocità rotazione",
+      "default": 5
+    },
+    {
+      "type": "select",
+      "id": "carousel_loop",
+      "label": "Tipo loop",
+      "default": "circular",
+      "options": [
+        { "value": "none", "label": "Nessuno (si ferma alla fine)" },
+        { "value": "circular", "label": "Circolare" },
+        { "value": "rewind", "label": "Riavvolgi" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "carousel_peek_size",
+      "label": "Anteprima prossimo elemento",
+      "default": "medium",
+      "options": [
+        { "value": "none", "label": "Nessuna" },
+        { "value": "small", "label": "Piccola" },
+        { "value": "medium", "label": "Media" },
+        { "value": "large", "label": "Grande" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "carousel_arrows_position",
+      "label": "Posizionamento frecce",
+      "default": "below_center",
+      "options": [
+        { "value": "below_center", "label": "Sotto (centrato)" },
+        { "value": "above_right", "label": "Sopra a destra" },
+        { "value": "overlay_sides", "label": "Ai lati (sovrapposto)" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_arrows_overlay_dark",
+      "label": "Frecce overlay in tema scuro",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "carousel_pagination_style",
+      "label": "Stile paginazione",
+      "default": "counter",
+      "options": [
+        { "value": "counter", "label": "Contatore (1 / 5)" },
+        { "value": "dots", "label": "Pallini" },
+        { "value": "numbers", "label": "Numeri" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "carousel_scroll_mode",
+      "label": "Modalità scorrimento",
+      "default": "page",
+      "options": [
+        { "value": "page", "label": "Pagina (set di elementi)" },
+        { "value": "single", "label": "Singolo elemento" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_arrows",
+      "label": "Mostra frecce",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_show_pagination",
+      "label": "Mostra paginazione",
+      "default": true
+    },
+
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        { "value": "1", "label": "1 colonna" },
+        { "value": "2", "label": "2 colonne" }
+      ],
+      "default": "1",
+      "label": "Colonne mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "swipe_on_mobile",
+      "default": true,
+      "label": "Abilita swipe su mobile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 40
+        },
+        {
+          "type": "range", "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 40
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 30
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 30
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 20
+        },
+        {
+          "type": "range", "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 20
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range", "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range", "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range", "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range", "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Brand Carousel",
+      "category": "Prodotti & Collezioni",
+      "blocks": [
+        { "type": "section_padding" }
+      ]
+    }
+  ]
+}
+{% endschema %}
