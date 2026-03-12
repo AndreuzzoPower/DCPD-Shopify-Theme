@@ -29,16 +29,15 @@
   assign text_alignment = section.settings.text_alignment | default: 'center'
 
   assign current_brand_handle = nil
-  if template.suffix == 'brand' and metaobject != blank
+  if metaobject != blank and metaobject.system.handle != blank
     assign current_brand_handle = metaobject.system.handle
   endif
 
   assign brand_count = 0
   for brand in brands_raw
-    if brand.system.handle == current_brand_handle
-      continue
-    endif
-    assign brand_count = brand_count | plus: 1
+    unless brand.system.handle == current_brand_handle
+      assign brand_count = brand_count | plus: 1
+    endunless
   endfor
 
   assign show_mobile_slider = false
@@ -155,12 +154,9 @@
       >
         {%- assign slide_index = 0 -%}
         {%- for brand_entry in brands_raw -%}
+          {%- unless brand_entry.system.handle == current_brand_handle -%}
           {%- liquid
-            if brand_entry.system.handle == current_brand_handle
-              continue
-            endif
             assign slide_index = slide_index | plus: 1
-
             assign brand_name = brand_entry.nome.value | default: brand_entry.system.handle
             assign brand_initial = brand_name | slice: 0 | upcase
             assign brand_logo = brand_entry.logo.value
@@ -188,6 +184,7 @@
               show_description: show_description
             -%}
           </li>
+          {%- endunless -%}
         {%- endfor -%}
       </ul>
 
