@@ -55,6 +55,8 @@
     --bl-card-border-width: {{ section.settings.card_border_thickness | default: 1 }}px;
     --bl-card-border-color: {{ section.settings.card_border_color | default: '#e0e0e0' }};
     --bl-text-align: {{ text_alignment }};
+    --bl-group-separator-width: {{ section.settings.group_separator_thickness | default: 2 }}px;
+    --bl-group-separator-color: {{ section.settings.group_separator_color | default: '#000000' }};
     {%- case section.settings.card_shadow -%}
       {%- when 'light' -%}
         --bl-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -412,6 +414,23 @@
       ],
       "default": "flat",
       "info": "\"Raggruppati\" mostra una lettera di intestazione seguita dai brand corrispondenti."
+    },
+    {
+      "type": "range",
+      "id": "group_separator_thickness",
+      "label": "Spessore linea separatore gruppo",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 2,
+      "info": "Linea sotto la lettera iniziale nel layout raggruppato. Imposta 0 per nasconderla."
+    },
+    {
+      "type": "color",
+      "id": "group_separator_color",
+      "label": "Colore linea separatore gruppo",
+      "default": "#000000"
     },
     {
       "type": "select",
