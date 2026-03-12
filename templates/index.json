@@ -761,6 +761,239 @@
         "swipe_on_mobile": true
       }
     },
+    "ms_rich_text_NT3Umf": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "section_padding_wYG3Fn": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 50,
+            "section_padding_top_xs": 50,
+            "section_padding_bottom_xs": 50
+          }
+        },
+        "heading_xDQTqb": {
+          "type": "heading",
+          "settings": {
+            "heading": "Pagine Speciali",
+            "heading_size": "h1",
+            "title_tag": "div",
+            "title_custom_class": ""
+          }
+        },
+        "text_pjQEMx": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sono state create delle pagine / sezioni speciali per aggiungere funzionalità già disponibili di default.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "section_padding_wYG3Fn",
+        "heading_xDQTqb",
+        "text_pjQEMx"
+      ],
+      "name": "MS Rich text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
+      }
+    },
+    "ms_multicolumn_dgChGB": {
+      "type": "ms_multicolumn",
+      "blocks": {
+        "column_T3HL4K": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "STORELOCATOR",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Con l'utilizzo dei metaobject ci sarà la possibilità di gestire uno store locator, basato su open street map o google map con molteplici possibilità di personalizzazione senza l'utilizzo di app esterne</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_NPREPa": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "GUEST",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità, dai settaggi generali, di nascondere degli elementi agli utenti non loggati come ad esempio il prezzo, la possibilità di acquisto o le varianti.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_eE4JQ4": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "MINIMO D'ORDINE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Il tema gestisce un minimo d'ordine a livello globale (da settings) con la possibilità di sovrascrivere tale minimo a livello prodotto tramite metafield dedicato.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_BFj3yg": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "DATI FATTURAZIONE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Il sistema prevede l'opzione di poter attivare la richiesta dei dati di fatturazione che verrano salvati nell'ordine senza i quali non si potrà procedere al checkout.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_AgHPj7": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "ACCETTAZIONE CONDIZIONI DIVENDITA",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Nel carrello ci sarà la possibilità di richiedere l'accettazione delle condizioi di vendita senza le quali non si potrà procedere al checkout.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_QMqKaF": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "CARRELLO",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Si potrà visualizzare il carrello in 3 modi:</p><ol><li>Drawer laterale</li><li>Pagina</li><li>Popup all'aggiunta</li></ol>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_Dqt4ch": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "IVA ESPOSTA",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Il sistema, sempre da settaggi generali, permette la visualizzazione dell'iva esposta in ogni parte dove si preveda il prezzo. L'iva sarà impostabile come default nei settings ed eventualmente sovrascivibile a livello di ogni singolo prodotto tramite metafield.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "column_JUwqx8": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "EXPERT ADVICE",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità di associare degli articoli del blog ad una collection, se presenti crea una navigazione a tab</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
+        "section_background_BBQAPF": {
+          "type": "section_background",
+          "settings": {
+            "section_bg_color": "#919191"
+          }
+        }
+      },
+      "block_order": [
+        "column_T3HL4K",
+        "column_NPREPa",
+        "column_eE4JQ4",
+        "column_BFj3yg",
+        "column_AgHPj7",
+        "column_QMqKaF",
+        "column_Dqt4ch",
+        "column_JUwqx8",
+        "section_background_BBQAPF"
+      ],
+      "name": "MS Multicolonna",
+      "settings": {
+        "section_width": "page_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "column_alignment": "left",
+        "background_style": "primary",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "button_style_secondary": false,
+        "button_type": "pill",
+        "button_size": "default",
+        "button_icon": "",
+        "button_icon_position": "before",
+        "columns_desktop": 3,
+        "enable_desktop_slider": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5,
+        "carousel_loop": "none",
+        "carousel_peek_size": "medium",
+        "carousel_arrows_position": "overlay_sides",
+        "carousel_arrows_overlay_dark": false,
+        "carousel_pagination_style": "dots",
+        "carousel_scroll_mode": "page",
+        "carousel_show_arrows": true,
+        "carousel_show_pagination": true,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true
+      }
+    },
     "ms_divider_qN8RVX": {
       "type": "ms_divider",
       "name": "MS Divisore",
@@ -796,6 +1029,8 @@
     "ms_divider_NGpeWm",
     "ms_rich_text_fMywcR",
     "ms_multicolumn_Bh7pk7",
+    "ms_rich_text_NT3Umf",
+    "ms_multicolumn_dgChGB",
     "ms_divider_qN8RVX"
   ]
 }
