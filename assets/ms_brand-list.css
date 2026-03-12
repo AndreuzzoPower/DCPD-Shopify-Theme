@@ -61,7 +61,7 @@
   border-radius: 4px;
   background: transparent;
   color: rgb(var(--color-foreground));
-  font-size: 0.875rem;
+  font-size: 1.3rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -110,7 +110,7 @@
   border-radius: 6px;
   background: rgb(var(--color-background));
   color: rgb(var(--color-foreground));
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-family: inherit;
   line-height: 1.5;
   transition: border-color 0.2s ease;
@@ -166,8 +166,8 @@
 .ms-bl__search-clear svg,
 .ms-bl__search-btn .icon,
 .ms-bl__search-clear .icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -175,7 +175,7 @@
    -------------------------------------------------------------------------- */
 
 .ms-bl__results-count {
-  font-size: 0.9375rem;
+  font-size: 1.3rem;
   color: rgba(var(--color-foreground), 0.6);
   padding-top: 0.25rem;
 }
@@ -259,7 +259,7 @@ a.ms-bl__link:focus-visible {
   height: 100%;
   background-color: rgba(var(--color-foreground), 0.05);
   border-radius: 4px;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: rgba(var(--color-foreground), 0.25);
 }
@@ -276,15 +276,15 @@ a.ms-bl__link:focus-visible {
 }
 
 .ms-bl__name {
-  font-size: calc(var(--font-heading-scale) * 1rem);
+  font-size: calc(var(--font-heading-scale) * 1.5rem);
   font-weight: 600;
-  line-height: 1.3;
+  line-height: calc(1 + 0.5 / var(--font-body-scale));
   color: rgb(var(--color-foreground));
 }
 
 .ms-bl__description {
-  font-size: calc(var(--font-body-scale) * 0.9rem);
-  line-height: 1.6;
+  font-size: 1.4rem;
+  line-height: calc(1 + 0.8 / var(--font-body-scale));
   color: rgba(var(--color-foreground), 0.65);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -379,7 +379,7 @@ a.ms-bl__link:focus-visible {
 }
 
 .ms-bl__group-letter {
-  font-size: calc(var(--font-heading-scale) * 1.75rem);
+  font-size: calc(var(--font-heading-scale) * 2.4rem);
   font-weight: 700;
   line-height: 1.2;
   color: rgb(var(--color-foreground));
@@ -394,7 +394,7 @@ a.ms-bl__link:focus-visible {
   text-align: center;
   padding: 3rem 1rem;
   color: rgba(var(--color-foreground), 0.5);
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .ms-bl__placeholder {
@@ -403,7 +403,7 @@ a.ms-bl__link:focus-visible {
   border: 2px dashed rgba(var(--color-foreground), 0.15);
   border-radius: 8px;
   color: rgba(var(--color-foreground), 0.4);
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -429,9 +429,9 @@ a.ms-bl__link:focus-visible {
   }
 
   .ms-bl__alpha-btn {
-    min-width: 2.5rem;
-    height: 2.5rem;
-    font-size: 0.9375rem;
+    min-width: 3rem;
+    height: 3rem;
+    font-size: 1.4rem;
   }
 
   .ms-bl__toolbar-row {
@@ -439,11 +439,15 @@ a.ms-bl__link:focus-visible {
   }
 
   .ms-bl__name {
-    font-size: calc(var(--font-heading-scale) * 1.1rem);
+    font-size: calc(var(--font-heading-scale) * 1.7rem);
+  }
+
+  .ms-bl__description {
+    font-size: 1.5rem;
   }
 
   .ms-bl__group-letter {
-    font-size: calc(var(--font-heading-scale) * 2rem);
+    font-size: calc(var(--font-heading-scale) * 3rem);
   }
 }
 
