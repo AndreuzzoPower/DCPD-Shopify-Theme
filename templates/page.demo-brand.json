@@ -89,7 +89,7 @@
         "heading_size": "h1",
         "title_custom_class": "",
         "default_view": "grid",
-        "columns_desktop": 4,
+        "columns_desktop": 2,
         "columns_mobile": 2,
         "show_description": true,
         "enable_alpha_filter": true,
