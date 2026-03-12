@@ -66,7 +66,64 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. Griglia Prodotti (usa stessi stili di template-collection / collection grid)
+   2. Descrizione lunga (metaobject descrizione_lunga)
+   -------------------------------------------------------------------------- */
+
+.ms-bp__long-desc {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ms-bp__long-desc-preview,
+.ms-bp__long-desc-full {
+  max-width: 700px;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.ms-bp__long-desc-preview > *:first-child,
+.ms-bp__long-desc-full > *:first-child {
+  margin-top: 0;
+}
+
+.ms-bp__long-desc-preview > *:last-child,
+.ms-bp__long-desc-full > *:last-child {
+  margin-bottom: 0;
+}
+
+.ms-bp__long-desc-full[hidden] {
+  display: none !important;
+}
+
+.ms-bp__long-desc-actions {
+  margin-top: 1rem;
+}
+
+.ms-bp__long-desc-toggle {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ms-bp__long-desc-toggle:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+/* Stile link: underline; button/pill ereditano da tema */
+.ms-bp__long-desc-toggle.button,
+.ms-bp__long-desc-toggle.button--pill {
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Griglia Prodotti (usa stessi stili di template-collection / collection grid)
    -------------------------------------------------------------------------- */
 
 .ms-bp__products {
@@ -78,7 +135,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Desktop (min-width: 750px)
+   4. Desktop (min-width: 750px)
    -------------------------------------------------------------------------- */
 
 @media screen and (min-width: 750px) {

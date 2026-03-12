@@ -60,6 +60,7 @@
   assign brand_name = brand.nome.value | default: brand.system.handle
   assign brand_logo = brand.logo.value
   assign brand_desc = brand.descrizione.value
+  assign brand_desc_lunga = brand.descrizione_lunga.value
   assign brand_collection = brand.collezione.value
 
   assign title_tag = section.settings.title_tag | default: 'h1'
@@ -81,6 +82,12 @@
   assign bp_image_position = section.settings.image_position | default: 'left'
   assign bp_logo_max_w = section.settings.logo_max_width | default: 300
   assign bp_logo_max_h = section.settings.logo_max_height | default: 200
+
+  assign bp_long_desc_position = section.settings.long_desc_position | default: 'after_products'
+  assign bp_long_desc_display = section.settings.long_desc_display | default: 'full'
+  assign bp_long_desc_chars = section.settings.long_desc_truncate_chars | default: 300
+  assign bp_long_desc_label_more = section.settings.long_desc_button_label_more | default: 'Leggi di più'
+  assign bp_long_desc_label_less = section.settings.long_desc_button_label_less | default: 'Leggi di meno'
 -%}
 
 {%- render 'ms_mobile-padding' -%}
@@ -126,6 +133,55 @@
         {%- endif -%}
       </div>
     </div>
+
+    {%- comment -%} Descrizione lunga (metaobject descrizione_lunga) {%- endcomment -%}
+    {%- if brand_desc_lunga != blank -%}
+      {%- capture long_desc_html -%}
+        {%- assign desc_lunga_plain = brand_desc_lunga | strip_html | strip -%}
+        {%- assign desc_lunga_truncated = desc_lunga_plain | truncate: bp_long_desc_chars -%}
+        {%- assign needs_toggle = false -%}
+        {%- if bp_long_desc_display == 'truncated' -%}
+          {%- if desc_lunga_plain.size > bp_long_desc_chars -%}
+            {%- assign needs_toggle = true -%}
+          {%- endif -%}
+        {%- endif -%}
+        <div class="ms-bp__long-desc{% if needs_toggle %} ms-bp__long-desc--collapsible{% endif %}" id="long-desc-{{ section.id }}">
+          {%- if needs_toggle -%}
+            <div class="ms-bp__long-desc-preview rte text-body">{{ desc_lunga_truncated }}</div>
+            <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}" hidden>{{ brand_desc_lunga }}</div>
+            <div class="ms-bp__long-desc-actions">
+              <button
+                type="button"
+                class="ms-bp__long-desc-toggle {% render 'ms_button_classes', type: section.settings.long_desc_button_type, secondary: section.settings.long_desc_button_secondary, size: section.settings.long_desc_button_size %}"
+                aria-expanded="false"
+                aria-controls="long-desc-full-{{ section.id }}"
+                id="long-desc-toggle-{{ section.id }}"
+                data-label-more="{{ bp_long_desc_label_more | escape }}"
+                data-label-less="{{ bp_long_desc_label_less | escape }}"
+              >
+                {%- if section.settings.long_desc_button_icon != blank -%}
+                  {%- if section.settings.long_desc_button_icon_position == 'before' -%}
+                    {%- render 'ms_icon', icon: section.settings.long_desc_button_icon -%}
+                  {%- endif -%}
+                {%- endif -%}
+                <span class="ms-bp__long-desc-toggle-text">{{ bp_long_desc_label_more | escape }}</span>
+                {%- if section.settings.long_desc_button_icon != blank -%}
+                  {%- if section.settings.long_desc_button_icon_position == 'after' -%}
+                    {%- render 'ms_icon', icon: section.settings.long_desc_button_icon -%}
+                  {%- endif -%}
+                {%- endif -%}
+              </button>
+            </div>
+          {%- else -%}
+            <div class="ms-bp__long-desc-full rte text-body" id="long-desc-full-{{ section.id }}">{{ brand_desc_lunga }}</div>
+          {%- endif -%}
+        </div>
+      {%- endcapture -%}
+    {%- endif -%}
+
+    {%- if brand_desc_lunga != blank and bp_long_desc_position == 'before_products' -%}
+      {{ long_desc_html }}
+    {%- endif -%}
 
     {%- comment -%} Griglia prodotti (stessa struttura e opzioni di main-collection-product-grid) {%- endcomment -%}
 
@@ -269,8 +325,38 @@
       {%- endif -%}
     </div>
 
+    {%- if brand_desc_lunga != blank and bp_long_desc_position == 'after_products' -%}
+      {{ long_desc_html }}
+    {%- endif -%}
+
   </div>
 </div>
+
+{%- if brand_desc_lunga != blank and bp_long_desc_display == 'truncated' -%}
+<script>
+  (function() {
+    var btn = document.getElementById('long-desc-toggle-{{ section.id }}');
+    if (!btn) return;
+    var wrapper = btn.closest('.ms-bp__long-desc');
+    var preview = wrapper && wrapper.querySelector('.ms-bp__long-desc-preview');
+    var full = wrapper && wrapper.querySelector('.ms-bp__long-desc-full');
+    var textEl = wrapper && wrapper.querySelector('.ms-bp__long-desc-toggle-text');
+    var labelMore = btn.getAttribute('data-label-more') || 'Leggi di più';
+    var labelLess = btn.getAttribute('data-label-less') || 'Leggi di meno';
+    function updateState(expanded) {
+      if (preview) preview.hidden = expanded;
+      if (full) full.hidden = !expanded;
+      if (textEl) textEl.textContent = expanded ? labelLess : labelMore;
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      wrapper.classList.toggle('ms-bp__long-desc--expanded', expanded);
+    }
+    btn.addEventListener('click', function() {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      updateState(!expanded);
+    });
+  })();
+</script>
+{%- endif -%}
 
 {%- comment -%} Dati strutturati {%- endcomment -%}
 <script type="application/ld+json">
@@ -418,6 +504,109 @@
       "step": 20,
       "unit": "px",
       "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Descrizione lunga"
+    },
+    {
+      "type": "paragraph",
+      "content": "Campo metaobject descrizione_lunga. Se presente, viene mostrata prima o dopo la griglia prodotti."
+    },
+    {
+      "type": "select",
+      "id": "long_desc_position",
+      "label": "Posizione",
+      "options": [
+        { "label": "Prima dei prodotti", "value": "before_products" },
+        { "label": "Dopo i prodotti", "value": "after_products" }
+      ],
+      "default": "after_products"
+    },
+    {
+      "type": "select",
+      "id": "long_desc_display",
+      "label": "Visualizzazione",
+      "options": [
+        { "label": "Sempre estesa", "value": "full" },
+        { "label": "Troncata con pulsante", "value": "truncated" }
+      ],
+      "default": "truncated",
+      "info": "Se troncata, il testo viene nascosto dopo un numero di caratteri con pulsante per espandere."
+    },
+    {
+      "type": "range",
+      "id": "long_desc_truncate_chars",
+      "label": "Caratteri prima del troncamento",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "default": 300,
+      "info": "Solo se visualizzazione \"Troncata con pulsante\"."
+    },
+    {
+      "type": "header",
+      "content": "Pulsante Leggi di più / Leggi di meno"
+    },
+    {
+      "type": "text",
+      "id": "long_desc_button_label_more",
+      "label": "Etichetta (testo nascosto)",
+      "default": "Leggi di più"
+    },
+    {
+      "type": "text",
+      "id": "long_desc_button_label_less",
+      "label": "Etichetta (testo espanso)",
+      "default": "Leggi di meno"
+    },
+    {
+      "type": "select",
+      "id": "long_desc_button_type",
+      "label": "Stile pulsante",
+      "options": [
+        { "value": "link", "label": "Link" },
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill" }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "checkbox",
+      "id": "long_desc_button_secondary",
+      "label": "Stile contorno",
+      "default": false,
+      "info": "Bordo visibile e sfondo trasparente (solo per Pulsante/Pill)."
+    },
+    {
+      "type": "select",
+      "id": "long_desc_button_size",
+      "label": "Dimensione pulsante",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "long_desc_button_icon",
+      "label": "Icona",
+      "info": "File .svg in assets o classe libreria (es. fa-solid fa-chevron-down). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "long_desc_button_icon_position",
+      "label": "Posizione icona",
+      "default": "after",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
     },
 
     {
