@@ -226,6 +226,7 @@ class WishlistPage extends HTMLElement {
     const showMinOrder = this.dataset.showMinOrder === 'true';
     const quickAdd = this.dataset.quickAdd || 'none';
     const showSecondaryImage = this.dataset.showSecondaryImage === 'true';
+    const imageRatio = this.dataset.imageRatio || 'adapt';
 
     const fetches = items.map(item => this._fetchCard(item.handle));
     const cards = await Promise.all(fetches);
@@ -241,6 +242,7 @@ class WishlistPage extends HTMLElement {
       wrapper.innerHTML = cardHTML;
 
       this._applySettings(wrapper, { showVendor, showRating, showMinOrder, quickAdd, showSecondaryImage });
+      this._applyImageRatio(wrapper, imageRatio);
 
       const removeOverlay = document.createElement('div');
       removeOverlay.className = 'ms-wishlist-card-item__remove';
@@ -270,6 +272,28 @@ class WishlistPage extends HTMLElement {
         e.preventDefault();
         e.stopPropagation();
         this._wm.remove(btn.dataset.handle);
+      });
+    });
+  }
+
+  _applyImageRatio(wrapper, ratio) {
+    if (ratio === 'adapt') return;
+    const percent = ratio === 'square' ? '100%' : '125%';
+    const aspect = ratio === 'square' ? '1 / 1' : '4 / 5';
+
+    wrapper.querySelectorAll('.card, .card__inner').forEach(el => {
+      el.style.setProperty('--ratio-percent', percent);
+    });
+    wrapper.querySelectorAll('.card__media .media').forEach(media => {
+      media.style.aspectRatio = aspect;
+      media.style.overflow = 'hidden';
+      media.querySelectorAll('img').forEach(img => {
+        img.style.position = 'absolute';
+        img.style.top = '0';
+        img.style.left = '0';
+        img.style.width = '100%';
+        img.style.height = '100%';
+        img.style.objectFit = 'cover';
       });
     });
   }
