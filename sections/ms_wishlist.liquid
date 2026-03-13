@@ -27,11 +27,6 @@
       assign sw_class = ''
   endcase
 
-  assign title_tag = section.settings.title_tag | default: 'h1'
-  assign title_classes = section.settings.heading_size | default: 'h1'
-  if section.settings.title_custom_class != blank
-    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
-  endif
 -%}
 
 {%- render 'ms_mobile-padding', section: section -%}
@@ -44,12 +39,6 @@
       data-remove-label="Rimuovi dalla wishlist"
       data-confirm-clear="Rimuovere tutti i prodotti dalla wishlist?"
     >
-      {%- if section.settings.title != blank -%}
-        <{{ title_tag }} class="{{ title_classes }}">
-          {{- section.settings.title | escape -}}
-        </{{ title_tag }}>
-      {%- endif -%}
-
       <div class="ms-wishlist-header" style="display:none;">
         <span class="ms-wishlist-header__count" role="status" aria-live="polite"></span>
         <button type="button" class="ms-wishlist-clear-btn">
@@ -117,47 +106,6 @@
     {
       "type": "header",
       "content": "Contenuto"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titolo",
-      "default": "I Miei Preferiti"
-    },
-    {
-      "type": "select",
-      "id": "title_tag",
-      "label": "Tag titolo",
-      "options": [
-        { "label": "H1", "value": "h1" },
-        { "label": "H2", "value": "h2" },
-        { "label": "H3", "value": "h3" },
-        { "label": "H4", "value": "h4" },
-        { "label": "H5", "value": "h5" },
-        { "label": "H6", "value": "h6" },
-        { "label": "Paragrafo", "value": "p" },
-        { "label": "Div", "value": "div" }
-      ],
-      "default": "h1"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "label": "Dimensione titolo",
-      "options": [
-        { "label": "Piccola", "value": "h2" },
-        { "label": "Media", "value": "h1" },
-        { "label": "Grande", "value": "h0" },
-        { "label": "Extra grande", "value": "hxl" },
-        { "label": "Extra extra grande", "value": "hxxl" }
-      ],
-      "default": "h1"
-    },
-    {
-      "type": "text",
-      "id": "title_custom_class",
-      "label": "Classe CSS personalizzata titolo",
-      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
     },
     {
       "type": "text",

@@ -12,10 +12,7 @@
     "main": {
       "type": "ms_wishlist",
       "settings": {
-        "section_width": "page_width",
-        "title": "I Miei Preferiti",
-        "title_tag": "h1",
-        "heading_size": "h1"
+        "section_width": "page_width"
       },
       "blocks": {
         "padding": {
