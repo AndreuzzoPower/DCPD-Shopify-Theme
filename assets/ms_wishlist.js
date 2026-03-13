@@ -164,6 +164,7 @@ class WishlistPage extends HTMLElement {
   constructor() {
     super();
     this._wm = WishlistManager.getInstance();
+    this._productCache = {};
   }
 
   connectedCallback() {
@@ -189,6 +190,7 @@ class WishlistPage extends HTMLElement {
     if (!grid || !empty) return;
 
     if (items.length === 0) {
+      grid.innerHTML = '';
       grid.style.display = 'none';
       empty.style.display = '';
       if (header) header.style.display = 'none';
@@ -205,48 +207,109 @@ class WishlistPage extends HTMLElement {
       countEl.textContent = label;
     }
 
-    if (clearBtn) {
-      clearBtn.onclick = () => {
+    if (clearBtn && !clearBtn._bound) {
+      clearBtn._bound = true;
+      clearBtn.addEventListener('click', () => {
         if (window.confirm(this.dataset.confirmClear || 'Rimuovere tutti i prodotti dalla wishlist?')) {
           this._wm.clear();
         }
-      };
+      });
     }
 
-    grid.innerHTML = items.map(item => this._cardHTML(item)).join('');
+    this._fetchAndRender(items, grid);
+  }
+
+  async _fetchAndRender(items, grid) {
+    const imageRatio = this.dataset.imageRatio || 'adapt';
+    const showVendor = this.dataset.showVendor === 'true';
+    const removeLabel = this.dataset.removeLabel || 'Rimuovi dalla wishlist';
+
+    const fetches = items.map(item => this._getProduct(item.handle));
+    const products = await Promise.all(fetches);
+
+    grid.innerHTML = '';
+    products.forEach((product, i) => {
+      if (!product) return;
+      const li = document.createElement('li');
+      li.className = 'grid__item';
+      li.innerHTML = this._cardHTML(product, items[i], imageRatio, showVendor, removeLabel);
+      grid.appendChild(li);
+    });
 
     grid.querySelectorAll('.ms-wishlist-remove-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         this._wm.remove(btn.dataset.handle);
       });
     });
   }
 
-  _cardHTML(item) {
-    const imgSrc = item.image
-      ? item.image.replace(/(\.\w+)(\?|$)/, '_400x$1$2')
-      : '';
-    const removeLabel = this.dataset.removeLabel || 'Rimuovi dalla wishlist';
+  async _getProduct(handle) {
+    if (this._productCache[handle]) return this._productCache[handle];
+    try {
+      const res = await fetch(`/products/${handle}.json`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      this._productCache[handle] = data.product;
+      return data.product;
+    } catch { return null; }
+  }
+
+  _cardHTML(product, item, imageRatio, showVendor, removeLabel) {
+    const url = item.url || `/products/${product.handle}`;
+    const img = product.images && product.images[0] ? product.images[0].src : '';
+    const imgSized = img ? img.replace(/(\.\w+)(\?|$)/, '_600x$1$2') : '';
+    const title = this._esc(product.title);
+    const vendor = showVendor && product.vendor ? this._esc(product.vendor) : '';
+    const price = product.variants && product.variants[0] ? product.variants[0].price : '';
+    const comparePrice = product.variants && product.variants[0] ? product.variants[0].compare_at_price : '';
+    const available = product.variants ? product.variants.some(v => v.available) : true;
+    const onSale = comparePrice && parseFloat(comparePrice) > parseFloat(price);
+
+    const ratioClass = imageRatio === 'portrait' ? 'media--portrait'
+      : imageRatio === 'square' ? 'media--square' : 'media--adapt';
+
+    const formatMoney = (cents) => {
+      if (!cents) return '';
+      const val = parseFloat(cents);
+      return new Intl.NumberFormat(Shopify.locale || 'it-IT', {
+        style: 'currency',
+        currency: Shopify.currency?.active || 'EUR'
+      }).format(val);
+    };
 
     return `
-      <article class="ms-wishlist-card-item">
-        <div class="ms-wishlist-card-item__media">
-          <a href="${item.url}" aria-label="${this._esc(item.title)}">
-            ${imgSrc ? `<img src="${imgSrc}" alt="${this._esc(item.title)}" loading="lazy" width="400" height="400">` : ''}
-          </a>
-          <div class="ms-wishlist-card-item__remove">
-            <button type="button" class="ms-wishlist-btn ms-wishlist-remove-btn" data-handle="${this._esc(item.handle)}" aria-label="${removeLabel}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
+      <div class="card-wrapper">
+        <div class="card card--standard card--media" style="--ratio-percent: 100%;">
+          <div class="card__inner ratio" style="--ratio-percent: 100%;">
+            <div class="card__media">
+              <div class="media ${ratioClass}">
+                ${imgSized ? `<img src="${imgSized}" alt="${title}" loading="lazy" width="600" class="motion-reduce">` : ''}
+              </div>
+            </div>
+            <div class="ms-wishlist-card-item__remove">
+              <button type="button" class="ms-wishlist-remove-btn" data-handle="${this._esc(product.handle)}" aria-label="${removeLabel}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="card__content">
+            <div class="card__information">
+              <div class="card__heading h5">
+                <a href="${url}" class="full-unstyled-link">${title}</a>
+              </div>
+              ${vendor ? `<span class="visually-hidden">Vendor:</span><div class="caption-with-letter-spacing light">${vendor}</div>` : ''}
+              <div class="price${onSale ? ' price--on-sale' : ''}${!available ? ' price--sold-out' : ''}">
+                <div class="price__container">
+                  ${onSale ? `<div class="price__sale"><span class="visually-hidden">Prezzo scontato</span><s class="price-item price-item--regular">${formatMoney(comparePrice)}</s>&nbsp;<span class="price-item price-item--sale">${formatMoney(price)}</span></div>` : `<div class="price__regular"><span class="price-item price-item--regular">${formatMoney(price)}</span></div>`}
+                </div>
+              </div>
+              ${!available ? '<span class="badge badge--bottom-left color-inverse">Esaurito</span>' : ''}
+            </div>
           </div>
         </div>
-        <div class="ms-wishlist-card-item__info">
-          <div class="ms-wishlist-card-item__title">
-            <a href="${item.url}">${this._esc(item.title)}</a>
-          </div>
-          ${item.price ? `<div class="ms-wishlist-card-item__price">${item.price}</div>` : ''}
-        </div>
-      </article>
+      </div>
     `;
   }
 

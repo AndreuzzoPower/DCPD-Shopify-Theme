@@ -5,6 +5,9 @@
 {%- endcomment -%}
 
 {{ 'ms_wishlist.css' | asset_url | stylesheet_tag }}
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
   assign sw = section.settings.section_width | default: 'page_width'
@@ -26,7 +29,6 @@
     when 'full_width'
       assign sw_class = ''
   endcase
-
 -%}
 
 {%- render 'ms_mobile-padding', section: section -%}
@@ -38,15 +40,33 @@
       data-label-plural="{count} prodotti salvati"
       data-remove-label="Rimuovi dalla wishlist"
       data-confirm-clear="Rimuovere tutti i prodotti dalla wishlist?"
+      data-columns-desktop="{{ section.settings.columns_desktop }}"
+      data-columns-mobile="{{ section.settings.columns_mobile }}"
+      data-image-ratio="{{ section.settings.image_ratio }}"
+      data-show-vendor="{{ section.settings.show_vendor }}"
+      data-show-price="true"
+      data-section-id="{{ section.id }}"
     >
       <div class="ms-wishlist-header" style="display:none;">
         <span class="ms-wishlist-header__count" role="status" aria-live="polite"></span>
-        <button type="button" class="ms-wishlist-clear-btn">
+        {%- capture clear_btn_classes -%}
+          {%- render 'ms_button_classes',
+            type: section.settings.clear_button_type,
+            secondary: section.settings.clear_button_style_secondary,
+            size: section.settings.clear_button_size
+          -%}
+        {%- endcapture -%}
+        <button type="button" class="ms-wishlist-clear-btn {{ clear_btn_classes | strip }}{% if section.settings.clear_button_custom_class != blank %} {{ section.settings.clear_button_custom_class }}{% endif %}">
+          {%- render 'ms_button_icon', icon: section.settings.clear_button_icon, position: section.settings.clear_button_icon_position, slot: 'before' -%}
           {{ section.settings.clear_label | default: 'Svuota wishlist' }}
+          {%- render 'ms_button_icon', icon: section.settings.clear_button_icon, position: section.settings.clear_button_icon_position, slot: 'after' -%}
         </button>
       </div>
 
-      <div class="ms-wishlist-grid"></div>
+      <ul
+        class="ms-wishlist-grid grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
+        style="display:none;"
+      ></ul>
 
       <div class="ms-wishlist-empty">
         <div class="ms-wishlist-empty__icon" aria-hidden="true">
@@ -105,13 +125,112 @@
     },
     {
       "type": "header",
-      "content": "Contenuto"
+      "content": "Griglia"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Colonne desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "default": "2",
+      "label": "Colonne mobile",
+      "options": [
+        { "value": "1", "label": "1 colonna" },
+        { "value": "2", "label": "2 colonne" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        { "value": "adapt", "label": "Adatta all'immagine" },
+        { "value": "portrait", "label": "Ritratto" },
+        { "value": "square", "label": "Quadrato" }
+      ],
+      "default": "adapt",
+      "label": "Proporzione immagine"
+    },
+    {
+      "type": "header",
+      "content": "Scheda prodotto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Mostra brand/vendor"
+    },
+    {
+      "type": "header",
+      "content": "Pulsante Svuota wishlist"
     },
     {
       "type": "text",
       "id": "clear_label",
-      "label": "Testo pulsante svuota",
+      "label": "Testo pulsante",
       "default": "Svuota wishlist"
+    },
+    {
+      "type": "select",
+      "id": "clear_button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "clear_button_style_secondary",
+      "label": "Stile contorno",
+      "default": true,
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "clear_button_size",
+      "label": "Dimensione pulsante",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "clear_button_icon",
+      "label": "Icona pulsante",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone. Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "clear_button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "clear_button_custom_class",
+      "label": "Classe CSS personalizzata"
     },
     {
       "type": "header",
@@ -159,8 +278,7 @@
       "type": "checkbox",
       "id": "empty_button_style_secondary",
       "label": "Stile contorno",
-      "default": false,
-      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+      "default": false
     },
     {
       "type": "select",
@@ -176,8 +294,7 @@
     {
       "type": "text",
       "id": "empty_button_icon",
-      "label": "Icona pulsante",
-      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+      "label": "Icona pulsante"
     },
     {
       "type": "select",

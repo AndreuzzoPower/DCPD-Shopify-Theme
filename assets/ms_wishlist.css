@@ -189,93 +189,56 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 }
 
 /* --------------------------------------------------------------------------
-   5. Pagina Wishlist — Griglia prodotti
+   5. Pagina Wishlist — Griglia (usa classi grid Dawn)
    -------------------------------------------------------------------------- */
 
 .ms-wishlist-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--grid-mobile-horizontal-spacing, 1rem);
-}
-
-@media screen and (min-width: 750px) {
-  .ms-wishlist-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--grid-desktop-horizontal-spacing, 2rem);
-  }
-}
-
-@media screen and (min-width: 990px) {
-  .ms-wishlist-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* --------------------------------------------------------------------------
-   6. Pagina Wishlist — Card
+   6. Pagina Wishlist — Bottone Rimuovi (stile frecce carousel)
    -------------------------------------------------------------------------- */
-
-.ms-wishlist-card-item {
-  position: relative;
-  border-radius: var(--product-card-corner-radius, 0);
-  border: var(--product-card-border-width, 0) solid var(--product-card-border-color, transparent);
-  overflow: hidden;
-  background: rgb(var(--color-background));
-  transition: box-shadow 0.2s ease;
-}
-
-.ms-wishlist-card-item:hover {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-}
-
-.ms-wishlist-card-item__media {
-  position: relative;
-  aspect-ratio: 1;
-  overflow: hidden;
-}
-
-.ms-wishlist-card-item__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ms-wishlist-card-item__media a {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
 
 .ms-wishlist-card-item__remove {
   position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  z-index: 3;
+  top: 0.8rem;
+  right: 0.8rem;
+  z-index: 5;
+  pointer-events: auto;
 }
 
-.ms-wishlist-card-item__info {
-  padding: 1rem 1.2rem 1.4rem;
+.ms-wishlist-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.2);
+  color: rgb(var(--color-background));
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.ms-wishlist-card-item__title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0 0 0.4rem;
+.ms-wishlist-remove-btn:hover {
+  background: rgba(var(--color-foreground), 0.45);
+  transform: scale(1.08);
 }
 
-.ms-wishlist-card-item__title a {
-  color: rgb(var(--color-foreground));
-  text-decoration: none;
+.ms-wishlist-remove-btn:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.3rem;
 }
 
-.ms-wishlist-card-item__title a:hover {
-  text-decoration: underline;
-}
-
-.ms-wishlist-card-item__price {
-  font-size: 1.3rem;
-  color: rgba(var(--color-foreground), 0.75);
+.ms-wishlist-remove-btn svg {
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -326,23 +289,7 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 }
 
 .ms-wishlist-clear-btn {
-  font-size: 1.3rem;
-  padding: 0.6rem 1.2rem;
-  border: 1px solid rgba(var(--color-foreground), 0.15);
-  border-radius: var(--buttons-radius, 0);
-  background: transparent;
-  color: rgb(var(--color-foreground));
   cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.ms-wishlist-clear-btn:hover {
-  background: rgba(var(--color-foreground), 0.04);
-}
-
-.ms-wishlist-clear-btn:focus-visible {
-  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
-  outline-offset: 0.3rem;
 }
 
 /* --------------------------------------------------------------------------
