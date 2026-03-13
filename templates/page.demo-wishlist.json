@@ -60,8 +60,8 @@
         "color_scheme": "",
         "columns_desktop": 4,
         "columns_mobile": "2",
-        "image_ratio": "adapt",
-        "image_shape": "default",
+        "image_ratio": "square",
+        "image_shape": "blob",
         "show_secondary_image": false,
         "show_vendor": true,
         "show_rating": false,
@@ -84,10 +84,34 @@
         "empty_button_icon": "",
         "empty_button_icon_position": "before"
       }
+    },
+    "ms_divider_atgPQx": {
+      "type": "ms_divider",
+      "name": "MS Divisore",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "divider_type": "tilt",
+        "fill_mode": "solid",
+        "divider_color": "#ffffff",
+        "gradient_color_1": "#ffffff",
+        "gradient_color_2": "#000000",
+        "gradient_color_3": "",
+        "gradient_angle": 0,
+        "gradient_css": "",
+        "divider_height": 80,
+        "divider_height_mobile": 50,
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "line_weight": 1,
+        "line_style": "solid"
+      }
     }
   },
   "order": [
     "ms_rich_text_Yy3Phf",
-    "main"
+    "main",
+    "ms_divider_atgPQx"
   ]
 }
