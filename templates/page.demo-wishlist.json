@@ -12,6 +12,17 @@
     "ms_rich_text_Yy3Phf": {
       "type": "ms_rich-text",
       "blocks": {
+        "section_padding_BWHHYK": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 60,
+            "section_padding_bottom": 0,
+            "section_padding_top_md": 50,
+            "section_padding_bottom_md": 0,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 0
+          }
+        },
         "heading_KqgCwt": {
           "type": "heading",
           "settings": {
@@ -29,6 +40,7 @@
         }
       },
       "block_order": [
+        "section_padding_BWHHYK",
         "heading_KqgCwt",
         "text_fP6L9D"
       ],
@@ -43,22 +55,6 @@
     },
     "main": {
       "type": "ms_wishlist",
-      "blocks": {
-        "padding": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 50,
-            "section_padding_bottom": 80,
-            "section_padding_top_md": 40,
-            "section_padding_bottom_md": 60,
-            "section_padding_top_xs": 30,
-            "section_padding_bottom_xs": 50
-          }
-        }
-      },
-      "block_order": [
-        "padding"
-      ],
       "settings": {
         "section_width": "page_width",
         "color_scheme": "",
