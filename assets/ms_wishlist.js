@@ -267,8 +267,8 @@ class WishlistPage extends HTMLElement {
     const available = product.variants ? product.variants.some(v => v.available) : true;
     const onSale = comparePrice && parseFloat(comparePrice) > parseFloat(price);
 
-    const ratioClass = imageRatio === 'portrait' ? 'media--portrait'
-      : imageRatio === 'square' ? 'media--square' : 'media--adapt';
+    const aspectRatio = imageRatio === 'portrait' ? '2/3'
+      : imageRatio === 'square' ? '1/1' : 'auto';
 
     const formatMoney = (cents) => {
       if (!cents) return '';
@@ -279,14 +279,16 @@ class WishlistPage extends HTMLElement {
       }).format(val);
     };
 
+    const imgUrl = img ? img.replace(/\?(.*)/,'?width=600&$1') : '';
+
     return `
       <div class="card-wrapper">
-        <div class="card card--standard card--media" style="--ratio-percent: 100%;">
-          <div class="card__inner ratio" style="--ratio-percent: 100%;">
-            <div class="card__media">
-              <div class="media ${ratioClass}">
-                ${imgSized ? `<img src="${imgSized}" alt="${title}" loading="lazy" width="600" class="motion-reduce">` : ''}
-              </div>
+        <div class="card card--standard card--media">
+          <div class="card__inner" style="position:relative;">
+            <div class="card__media" style="position:relative;overflow:hidden;">
+              <a href="${url}" style="display:block;aspect-ratio:${aspectRatio};">
+                ${imgUrl ? `<img src="${imgUrl}" alt="${title}" loading="lazy" width="600" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
+              </a>
             </div>
             <div class="ms-wishlist-card-item__remove">
               <button type="button" class="ms-wishlist-remove-btn" data-handle="${this._esc(product.handle)}" aria-label="${removeLabel}">
