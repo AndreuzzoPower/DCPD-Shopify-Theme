@@ -582,7 +582,7 @@
             "title": "DATA DI NASCITA",
             "title_tag": "h3",
             "title_custom_class": "",
-            "text": "<p>Possibilità di attivare la racolta della data di nascita da carrello. Verrà salvata nei dati dellì'ordine e trasferita tramite un Flow (necessario) direttamente in un metafield del cliente.</p>",
+            "text": "<p>Possibilità di attivare la raccolta della data di nascita da carrello. Verrà salvata nei dati dellì'ordine e trasferita tramite un flusso Flow (necessario) direttamente in un metafield del cliente.</p>",
             "link_label": "",
             "link": "",
             "link_button_style_secondary": false,
