@@ -30,6 +30,8 @@
   - button_icon: {String} Button icon (SVG file or icon class).
   - button_icon_position: {String} Icon position: 'before' or 'after'. Default: 'after'.
   - button_align: {String} Button alignment: 'left', 'center', 'right'. Default: 'left'.
+  - overlay: {Boolean} Render card content as overlay on the image. Default: false.
+  - card_layout: {String} Card layout direction: 'vertical' (default) or 'horizontal' (image + info side by side).
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 
   Usage:
@@ -73,12 +75,14 @@
         {% if media_height and media_height != 'adapt' %} article-card__image--{{ media_height }}{% endif %}
         {% if article.image and show_image %} card--media{% else %} card--text{% endif %}
         {% if settings.blog_card_style == 'card' %} color-{{ settings.blog_card_color_scheme }} gradient{% endif %}
-        {% if settings.blog_card_style == 'card' and media_height == nil and article.image == empty or show_image == false %} ratio{% endif %}
+        {% if card_layout != 'horizontal' %}{% if settings.blog_card_style == 'card' and media_height == nil and article.image == empty or show_image == false %} ratio{% endif %}{% endif %}
+        {% if overlay %} article-card--overlay{% endif %}
+        {% if card_layout == 'horizontal' %} article-card--horizontal{% endif %}
       "
       style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
     >
       <div
-        class="card__inner {% if settings.blog_card_style == 'standard' %} color-{{ settings.blog_card_color_scheme }} gradient{% endif %}{% if article.image and show_image or settings.blog_card_style == 'standard' %} ratio{% endif %}"
+        class="card__inner {% if settings.blog_card_style == 'standard' %} color-{{ settings.blog_card_color_scheme }} gradient{% endif %}{% if card_layout != 'horizontal' %}{% if article.image and show_image or settings.blog_card_style == 'standard' %} ratio{% endif %}{% endif %}"
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
         {%- if show_image == true and article.image -%}

@@ -1,3 +1,10 @@
+/* ==========================================================================
+   section-main-blog.css
+   Layout: grid, collage, list, editorial, mosaic
+   Overlay: info sopra immagine per articoli a riga intera
+   ========================================================================== */
+
+/* --- Base grid (mobile-first) --- */
 .blog-articles {
   display: grid;
   grid-gap: 1rem;
@@ -9,53 +16,232 @@
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 750px) {
   .blog-articles {
-    grid-template-columns: 1fr 1fr;
     column-gap: var(--grid-desktop-horizontal-spacing);
     row-gap: var(--grid-desktop-vertical-spacing);
   }
+}
 
-  .blog-articles--collage > *:nth-child(3n + 1),
-  .blog-articles--collage > *:nth-child(3n + 2):last-child {
-    grid-column: span 2;
+/* ==========================================================================
+   GRID layout (colonne gestite dal dynamic style tag)
+   ========================================================================== */
+
+/* ==========================================================================
+   COLLAGE layout
+   ========================================================================== */
+.blog-articles--collage .blog-articles__article--full {
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .blog-articles--collage .blog-articles__article--full {
+    grid-column: 1 / -1;
+  }
+
+  .blog-articles--collage .blog-articles__article--full .card {
     text-align: center;
   }
 
-  .blog-articles--collage > *:nth-child(3n + 1) .card,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .card {
-    text-align: center;
-  }
-
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--small .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--small .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--small .ratio::before {
     padding-bottom: 22rem;
   }
-
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--medium .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--medium .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--medium .ratio::before {
     padding-bottom: 44rem;
   }
-
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--large .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--large .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--large .ratio::before {
     padding-bottom: 66rem;
   }
 }
 
 @media screen and (min-width: 992px) {
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--small .ratio .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--small .ratio .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--small .ratio::before {
     padding-bottom: 27.5rem;
   }
-
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--medium .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--medium .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--medium .ratio::before {
     padding-bottom: 55rem;
   }
-
-  .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--large .ratio::before,
-  .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--large .ratio::before {
+  .blog-articles--collage .blog-articles__article--full .article-card__image--large .ratio::before {
     padding-bottom: 82.5rem;
   }
+}
+
+/* ==========================================================================
+   LIST layout
+   ========================================================================== */
+.blog-articles--list {
+  grid-template-columns: 1fr !important;
+}
+
+/* Horizontal card: desktop only */
+@media screen and (min-width: 750px) {
+  .article-card--horizontal > .card__inner {
+    display: grid;
+    grid-template-columns: var(--blog-list-image-ratio, 50%) 1fr;
+    align-items: stretch;
+  }
+
+  .article-card--horizontal > .card__inner > .card__media {
+    position: relative;
+    overflow: hidden;
+    min-height: 22rem;
+  }
+
+  .article-card--horizontal > .card__inner > .card__media .article-card__image {
+    position: absolute;
+    inset: 0;
+    padding-bottom: 0 !important;
+  }
+
+  .article-card--horizontal > .card__inner > .card__media .article-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .article-card--horizontal > .card__inner > .card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Hide outer card__content for horizontal cards */
+  .article-card--horizontal > .card__content:last-child {
+    display: none;
+  }
+
+  /* Image right: swap visual order */
+  .blog-articles__article--image-right .article-card--horizontal > .card__inner {
+    grid-template-columns: 1fr var(--blog-list-image-ratio, 50%);
+  }
+
+  .blog-articles__article--image-right .article-card--horizontal > .card__inner > .card__media {
+    order: 2;
+  }
+
+  .blog-articles__article--image-right .article-card--horizontal > .card__inner > .card__content {
+    order: 1;
+  }
+}
+
+/* ==========================================================================
+   EDITORIAL layout
+   ========================================================================== */
+@media screen and (min-width: 750px) {
+  .blog-articles--editorial .blog-articles__article--hero {
+    grid-column: 1 / -1;
+  }
+
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--small .ratio::before {
+    padding-bottom: 25rem;
+  }
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--medium .ratio::before {
+    padding-bottom: 40rem;
+  }
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--large .ratio::before {
+    padding-bottom: 55rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--small .ratio::before {
+    padding-bottom: 30rem;
+  }
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--medium .ratio::before {
+    padding-bottom: 50rem;
+  }
+  .blog-articles--editorial .blog-articles__article--hero .article-card__image--large .ratio::before {
+    padding-bottom: 65rem;
+  }
+}
+
+/* ==========================================================================
+   MOSAIC layout (12-column grid, 3 row patterns, 9 articles per cycle)
+   Pattern: 3-3-6 / 3-6-3 / 6-3-3
+   ========================================================================== */
+@media screen and (min-width: 750px) {
+  .blog-articles--mosaic {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  /* Row 1: 3-3-6 (25%-25%-50%) */
+  .blog-articles--mosaic > :nth-child(9n+1) { grid-column: span 3; }
+  .blog-articles--mosaic > :nth-child(9n+2) { grid-column: span 3; }
+  .blog-articles--mosaic > :nth-child(9n+3) { grid-column: span 6; }
+
+  /* Row 2: 3-6-3 (25%-50%-25%) */
+  .blog-articles--mosaic > :nth-child(9n+4) { grid-column: span 3; }
+  .blog-articles--mosaic > :nth-child(9n+5) { grid-column: span 6; }
+  .blog-articles--mosaic > :nth-child(9n+6) { grid-column: span 3; }
+
+  /* Row 3: 6-3-3 (50%-25%-25%) */
+  .blog-articles--mosaic > :nth-child(9n+7) { grid-column: span 6; }
+  .blog-articles--mosaic > :nth-child(9n+8) { grid-column: span 3; }
+  .blog-articles--mosaic > :nth-child(9n+9) { grid-column: span 3; }
+}
+
+/* ==========================================================================
+   OVERLAY
+   ========================================================================== */
+.article-card--overlay .card__inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.article-card--overlay .card__inner > .card__content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: var(--overlay-justify, flex-end);
+  padding: 2rem;
+  background: rgba(var(--overlay-bg-rgb, 0, 0, 0), var(--overlay-bg-opacity, 0.5));
+}
+
+.article-card--overlay .card__inner > .card__content .card__heading,
+.article-card--overlay .card__inner > .card__content .card__heading a,
+.article-card--overlay .card__inner > .card__content .article-card__info,
+.article-card--overlay .card__inner > .card__content .article-card__info *,
+.article-card--overlay .card__inner > .card__content .article-card__excerpt,
+.article-card--overlay .card__inner > .card__content .article-card__tags *,
+.article-card--overlay .card__inner > .card__content .article-card__footer,
+.article-card--overlay .card__inner > .card__content .article-card__cta {
+  color: var(--overlay-text-color, #fff) !important;
+}
+
+.article-card--overlay .card__inner > .card__content .article-card__tag--pill {
+  border-color: var(--overlay-text-color, #fff);
+  color: var(--overlay-text-color, #fff) !important;
+  background-color: transparent;
+}
+
+.article-card--overlay .card__inner > .card__content .article-card__tag--pill:hover {
+  background-color: var(--overlay-text-color, #fff);
+  color: rgba(var(--overlay-bg-rgb, 0, 0, 0), 1) !important;
+}
+
+.article-card--overlay .card__inner > .card__content .article-card__cta--pill {
+  border-color: var(--overlay-text-color, #fff);
+}
+
+.article-card--overlay .card__inner > .card__content .article-card__cta--pill:hover {
+  background-color: var(--overlay-text-color, #fff);
+  color: rgba(var(--overlay-bg-rgb, 0, 0, 0), 1) !important;
+}
+
+.article-card--overlay .card__inner > .card__content .circle-divider::after {
+  background: var(--overlay-text-color, #fff);
+}
+
+/* Hide outer card__content when overlay is active */
+.article-card--overlay > .card__content:last-child {
+  display: none !important;
+}
+
+/* Overlay hover: sottolinea solo il titolo */
+.article-card--overlay .card__inner > .card__content .card__heading a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
 }

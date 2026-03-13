@@ -69,17 +69,74 @@
     border-color: rgb(var(--color-foreground));
   }
 
-  /* Griglia colonne */
-  .blog-articles--grid {
-    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-  }
-  @media screen and (min-width: 750px) {
-    .blog-articles--grid {
-      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+  /* Colonne griglia: grid + editorial */
+  {% if section.settings.layout == 'grid' or section.settings.layout == 'editorial' %}
+    .section-{{ section.id }}-padding .blog-articles--grid,
+    .section-{{ section.id }}-padding .blog-articles--editorial {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
     }
-  }
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding .blog-articles--grid,
+      .section-{{ section.id }}-padding .blog-articles--editorial {
+        grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      }
+    }
+  {% endif %}
 
-  /* Stile card: bordi e ombra – gestiti da settings globali */
+  /* Colonne griglia: collage */
+  {% if section.settings.layout == 'collage' %}
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding .blog-articles--collage {
+        grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      }
+    }
+  {% endif %}
+
+  /* Colonne mobile: mosaico */
+  {% if section.settings.layout == 'mosaic' %}
+    .section-{{ section.id }}-padding .blog-articles--mosaic {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    }
+  {% endif %}
+
+  /* Lista: rapporto immagine */
+  {% if section.settings.layout == 'list' %}
+    .section-{{ section.id }}-padding .blog-articles--list {
+      {% case section.settings.list_image_ratio %}
+        {% when '30_70' %}
+          --blog-list-image-ratio: 30%;
+        {% when '40_60' %}
+          --blog-list-image-ratio: 40%;
+        {% when '60_40' %}
+          --blog-list-image-ratio: 60%;
+        {% else %}
+          --blog-list-image-ratio: 50%;
+      {% endcase %}
+    }
+  {% endif %}
+
+  /* Overlay */
+  {% if section.settings.enable_overlay %}
+    {%- assign overlay_color = section.settings.overlay_bg_color | default: '#000000' -%}
+    {%- assign overlay_r = overlay_color | color_extract: 'red' -%}
+    {%- assign overlay_g = overlay_color | color_extract: 'green' -%}
+    {%- assign overlay_b = overlay_color | color_extract: 'blue' -%}
+    .section-{{ section.id }}-padding .article-card--overlay {
+      --overlay-bg-rgb: {{ overlay_r }}, {{ overlay_g }}, {{ overlay_b }};
+      --overlay-bg-opacity: {{ section.settings.overlay_bg_opacity | divided_by: 100.0 }};
+      --overlay-text-color: {{ section.settings.overlay_text_color }};
+      {% case section.settings.overlay_position %}
+        {% when 'top' %}
+          --overlay-justify: flex-start;
+        {% when 'center' %}
+          --overlay-justify: center;
+        {% else %}
+          --overlay-justify: flex-end;
+      {% endcase %}
+    }
+  {% endif %}
+
+  /* Stile card: bordi e ombra */
   .section-{{ section.id }}-padding .article-card-wrapper {
     {% if settings.blog_card_border_thickness > 0 %}
       border: {{ settings.blog_card_border_thickness }}px solid {{ settings.blog_card_border_color }};
@@ -97,12 +154,17 @@
     overflow: hidden;
   }
 
-  /* Stile card: padding info (solo area testo, non immagine) */
+  /* Stile card: padding info */
   .section-{{ section.id }}-padding .card__information {
     padding-top: {{ section.settings.card_info_padding_top }}px !important;
     padding-right: {{ section.settings.card_info_padding_right }}px !important;
     padding-bottom: {{ section.settings.card_info_padding_bottom }}px !important;
     padding-left: {{ section.settings.card_info_padding_left }}px !important;
+  }
+
+  /* Overlay: override padding info */
+  .section-{{ section.id }}-padding .article-card--overlay .card__information {
+    padding: 0 !important;
   }
 
   /* Estratto: rimuovi margin-bottom */
@@ -186,11 +248,81 @@
       </div>
     {%- endif -%}
 
-    {%- comment -%} Griglia articoli {%- endcomment -%}
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% else %}blog-articles--grid{% endif %}">
+    {%- comment -%} Articoli {%- endcomment -%}
+    {%- liquid
+      assign blog_layout = section.settings.layout
+      assign enable_overlay = section.settings.enable_overlay
+      assign collage_cols = section.settings.columns_desktop | plus: 0
+      assign collage_cycle = collage_cols | plus: 1
+
+      case blog_layout
+        when 'grid'
+          assign layout_class = 'blog-articles--grid'
+        when 'collage'
+          assign layout_class = 'blog-articles--collage'
+        when 'list'
+          assign layout_class = 'blog-articles--list'
+        when 'editorial'
+          assign layout_class = 'blog-articles--editorial'
+        when 'mosaic'
+          assign layout_class = 'blog-articles--mosaic'
+        else
+          assign layout_class = 'blog-articles--grid'
+      endcase
+    -%}
+
+    <div class="blog-articles {{ layout_class }}">
       {%- for article in blog.articles -%}
+        {%- liquid
+          assign use_overlay = false
+          assign card_layout = 'vertical'
+          assign article_extra_class = ''
+          assign can_overlay = false
+          if enable_overlay and article.image and section.settings.show_image
+            assign can_overlay = true
+          endif
+
+          if blog_layout == 'editorial' and forloop.first
+            assign article_extra_class = ' blog-articles__article--hero'
+            if can_overlay
+              assign use_overlay = true
+            endif
+          endif
+
+          if blog_layout == 'list'
+            if can_overlay
+              assign use_overlay = true
+            else
+              assign card_layout = 'horizontal'
+              assign list_pos = section.settings.list_image_position
+              if list_pos == 'right'
+                assign article_extra_class = ' blog-articles__article--image-right'
+              elsif list_pos == 'alternate'
+                assign alt_mod = forloop.index0 | modulo: 2
+                if alt_mod == 1
+                  assign article_extra_class = ' blog-articles__article--image-right'
+                endif
+              endif
+            endif
+          endif
+
+          if blog_layout == 'collage'
+            assign collage_pos = forloop.index0 | modulo: collage_cycle
+            if collage_pos == 0
+              assign article_extra_class = ' blog-articles__article--full'
+              if can_overlay
+                assign use_overlay = true
+              endif
+            elsif forloop.last and collage_pos == 1
+              assign article_extra_class = ' blog-articles__article--full'
+              if can_overlay
+                assign use_overlay = true
+              endif
+            endif
+          endif
+        -%}
         <div
-          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          class="blog-articles__article article{{ article_extra_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
             data-cascade
             style="--animation-order: {{ forloop.index }};"
@@ -222,7 +354,9 @@
             button_size: section.settings.button_size,
             button_icon: section.settings.button_icon,
             button_icon_position: section.settings.button_icon_position,
-            button_align: section.settings.button_align
+            button_align: section.settings.button_align,
+            overlay: use_overlay,
+            card_layout: card_layout
           -%}
         </div>
       {%- endfor -%}
@@ -293,18 +427,9 @@
       "label": "Allineamento titolo",
       "default": "left",
       "options": [
-        {
-          "value": "left",
-          "label": "Sinistra"
-        },
-        {
-          "value": "center",
-          "label": "Centro"
-        },
-        {
-          "value": "right",
-          "label": "Destra"
-        }
+        { "value": "left", "label": "Sinistra" },
+        { "value": "center", "label": "Centro" },
+        { "value": "right", "label": "Destra" }
       ]
     },
     {
@@ -325,23 +450,20 @@
     },
     {
       "type": "header",
-      "content": "Layout"
+      "content": "Vista"
     },
     {
       "type": "select",
       "id": "layout",
+      "label": "Tipo di layout",
+      "default": "grid",
       "options": [
-        {
-          "value": "grid",
-          "label": "t:sections.main-blog.settings.layout.options__1.label"
-        },
-        {
-          "value": "collage",
-          "label": "t:sections.main-blog.settings.layout.options__2.label"
-        }
-      ],
-      "default": "collage",
-      "label": "t:sections.main-blog.settings.layout.label"
+        { "value": "grid", "label": "Griglia" },
+        { "value": "collage", "label": "Collage" },
+        { "value": "list", "label": "Lista" },
+        { "value": "editorial", "label": "Editoriale" },
+        { "value": "mosaic", "label": "Mosaico" }
+      ]
     },
     {
       "type": "select",
@@ -349,20 +471,11 @@
       "label": "Colonne desktop",
       "default": "3",
       "options": [
-        {
-          "value": "2",
-          "label": "2"
-        },
-        {
-          "value": "3",
-          "label": "3"
-        },
-        {
-          "value": "4",
-          "label": "4"
-        }
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
       ],
-      "info": "Utilizzato solo con il layout Griglia."
+      "info": "Utilizzato con i layout Griglia, Editoriale e Collage."
     },
     {
       "type": "select",
@@ -370,16 +483,83 @@
       "label": "Colonne mobile",
       "default": "1",
       "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
       ],
-      "info": "Utilizzato solo con il layout Griglia."
+      "info": "Utilizzato con i layout Griglia, Editoriale e Mosaico."
+    },
+    {
+      "type": "header",
+      "content": "Vista Lista"
+    },
+    {
+      "type": "select",
+      "id": "list_image_position",
+      "label": "Posizione immagine",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Sinistra" },
+        { "value": "right", "label": "Destra" },
+        { "value": "alternate", "label": "Alternata" }
+      ],
+      "info": "Utilizzato solo con il layout Lista (senza overlay)."
+    },
+    {
+      "type": "select",
+      "id": "list_image_ratio",
+      "label": "Proporzione immagine/info",
+      "default": "50_50",
+      "options": [
+        { "value": "30_70", "label": "30 / 70" },
+        { "value": "40_60", "label": "40 / 60" },
+        { "value": "50_50", "label": "50 / 50" },
+        { "value": "60_40", "label": "60 / 40" }
+      ],
+      "info": "Utilizzato solo con il layout Lista (senza overlay)."
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "default": false,
+      "label": "Abilita overlay",
+      "info": "Mostra le informazioni in sovrapposizione sull'immagine. Attivo solo su articoli a riga intera (Lista, hero Editoriale, card grandi Collage)."
+    },
+    {
+      "type": "color",
+      "id": "overlay_bg_color",
+      "label": "Colore sfondo overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_bg_opacity",
+      "label": "Opacita sfondo overlay",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Colore testo overlay",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "overlay_position",
+      "label": "Posizione contenuto overlay",
+      "default": "bottom",
+      "options": [
+        { "value": "top", "label": "Alto" },
+        { "value": "center", "label": "Centro" },
+        { "value": "bottom", "label": "Basso" }
+      ]
     },
     {
       "type": "header",
@@ -411,22 +591,10 @@
       "type": "select",
       "id": "image_height",
       "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.main-blog.settings.image_height.options__1.label"
-        },
-        {
-          "value": "small",
-          "label": "t:sections.main-blog.settings.image_height.options__2.label"
-        },
-        {
-          "value": "medium",
-          "label": "t:sections.main-blog.settings.image_height.options__3.label"
-        },
-        {
-          "value": "large",
-          "label": "t:sections.main-blog.settings.image_height.options__4.label"
-        }
+        { "value": "adapt", "label": "t:sections.main-blog.settings.image_height.options__1.label" },
+        { "value": "small", "label": "t:sections.main-blog.settings.image_height.options__2.label" },
+        { "value": "medium", "label": "t:sections.main-blog.settings.image_height.options__3.label" },
+        { "value": "large", "label": "t:sections.main-blog.settings.image_height.options__4.label" }
       ],
       "default": "medium",
       "label": "t:sections.main-blog.settings.image_height.label"
@@ -498,14 +666,8 @@
       "label": "Stile tag",
       "default": "pill",
       "options": [
-        {
-          "value": "pill",
-          "label": "Pill"
-        },
-        {
-          "value": "link",
-          "label": "Link"
-        }
+        { "value": "pill", "label": "Pill" },
+        { "value": "link", "label": "Link" }
       ],
       "info": "Scegli come visualizzare i tag: come etichette arrotondate (pill) o link semplici."
     },
