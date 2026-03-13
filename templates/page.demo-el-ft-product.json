@@ -34,7 +34,7 @@
         "heading_HDELaw": {
           "type": "heading",
           "settings": {
-            "heading": "BLOG",
+            "heading": "ELEMENTO FEATURED PRODUCT",
             "heading_size": "h1",
             "title_tag": "div",
             "title_custom_class": ""
@@ -43,7 +43,7 @@
         "text_kw8JyG": {
           "type": "text",
           "settings": {
-            "text": "<p>Questa è una pagina generica che include un widget <strong>MS Blog in Evidenza</strong>, creato appositamente per sopperire al fatto che Shopify <strong>non</strong> utilizza le <strong>categorie</strong> ma blog differenti ... in questo modo possiamo avere riuniti in un'unica pagina gli ultimi post di tutti i blog.<br/><br/>Il widget da varie possibilità tra cui <strong>impostare un unico blog </strong>da cui recuperare i post o si potrà fornire un <strong>menu</strong> in cui ci sono tutti i blogs che si vogliono includere.<br/><br/>E' stato aggiunto un menu che rappresenta le categorie Blog per avere un rapido accesso (Gestito dai menu e renderizzato con un widget ad hoc).</p>"
+            "text": ""
           }
         }
       },
@@ -111,6 +111,7 @@
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
+        "articles": [],
         "blog": "",
         "blogs_menu": "menu-categorie-blog",
         "post_limit": 50,
@@ -137,10 +138,19 @@
         "show_blog_name": true,
         "show_tags": true,
         "tags_style": "pill",
+        "card_show_button": true,
+        "card_button_label": "Leggi articolo",
+        "card_button_type": "link",
+        "card_button_style_secondary": false,
+        "card_button_size": "default",
+        "card_button_icon": "icon-arrow.svg",
+        "card_button_icon_position": "before",
+        "card_button_align": "right",
         "show_icons": true,
         "custom_icon_date": "",
         "custom_icon_reading": "",
         "custom_icon_author": "",
+        "info_layout": "horizontal",
         "card_info_padding_top": 16,
         "card_info_padding_right": 16,
         "card_info_padding_bottom": 16,
