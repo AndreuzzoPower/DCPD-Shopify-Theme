@@ -1,0 +1,367 @@
+{%- comment -%}
+  Section: MS Wishlist
+  Pagina wishlist che mostra i prodotti salvati dall'utente tramite localStorage.
+  I prodotti vengono caricati client-side dal custom element <wishlist-page>.
+{%- endcomment -%}
+
+{{ 'ms_wishlist.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign sw = section.settings.section_width | default: 'page_width'
+  if sw == 'default' or sw == 'contained'
+    assign sw = 'page_width'
+  elsif sw == 'full'
+    assign sw = 'full_width'
+  elsif sw == 'fluid'
+    assign sw = 'page_fluid'
+  endif
+
+  case sw
+    when 'narrow'
+      assign sw_class = 'page-width page-width--narrow'
+    when 'page_width'
+      assign sw_class = 'page-width'
+    when 'page_fluid'
+      assign sw_class = 'page-width page-width--fluid'
+    when 'full_width'
+      assign sw_class = ''
+  endcase
+
+  assign title_tag = section.settings.title_tag | default: 'h1'
+  assign title_classes = section.settings.heading_size | default: 'h1'
+  if section.settings.title_custom_class != blank
+    assign title_classes = title_classes | append: ' ' | append: section.settings.title_custom_class
+  endif
+-%}
+
+{%- render 'ms_mobile-padding', section: section -%}
+
+<div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="{{ sw_class }}">
+    <wishlist-page
+      data-label-singular="1 prodotto salvato"
+      data-label-plural="{count} prodotti salvati"
+      data-remove-label="Rimuovi dalla wishlist"
+      data-confirm-clear="Rimuovere tutti i prodotti dalla wishlist?"
+    >
+      {%- if section.settings.title != blank -%}
+        <{{ title_tag }} class="{{ title_classes }}">
+          {{- section.settings.title | escape -}}
+        </{{ title_tag }}>
+      {%- endif -%}
+
+      <div class="ms-wishlist-header" style="display:none;">
+        <span class="ms-wishlist-header__count" role="status" aria-live="polite"></span>
+        <button type="button" class="ms-wishlist-clear-btn">
+          {{ section.settings.clear_label | default: 'Svuota wishlist' }}
+        </button>
+      </div>
+
+      <div class="ms-wishlist-grid"></div>
+
+      <div class="ms-wishlist-empty">
+        <div class="ms-wishlist-empty__icon" aria-hidden="true">
+          {%- render 'ms_icon', icon: settings.ms_icon_heart -%}
+        </div>
+        <div class="ms-wishlist-empty__title h2">
+          {{ section.settings.empty_title | default: 'La tua wishlist e vuota' }}
+        </div>
+        <p class="ms-wishlist-empty__text">
+          {{ section.settings.empty_text | default: 'Sfoglia i nostri prodotti e salva i tuoi preferiti cliccando sul cuore.' }}
+        </p>
+        {%- if section.settings.empty_button_label != blank and section.settings.empty_button_link != blank -%}
+          <a
+            href="{{ section.settings.empty_button_link }}"
+            class="{%- render 'ms_button_classes', type: section.settings.empty_button_type, secondary: section.settings.empty_button_style_secondary, size: section.settings.empty_button_size -%}"
+          >
+            {%- render 'ms_button_icon', icon: section.settings.empty_button_icon, position: section.settings.empty_button_icon_position, slot: 'before' -%}
+            {{ section.settings.empty_button_label | escape }}
+            {%- render 'ms_button_icon', icon: section.settings.empty_button_icon, position: section.settings.empty_button_icon_position, slot: 'after' -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </wishlist-page>
+  </div>
+</div>
+
+{%- render 'ms_section-style', section: section -%}
+
+{% schema %}
+{
+  "name": "MS Wishlist",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Larghezza blocco",
+      "options": [
+        { "label": "Stretta (narrow)", "value": "narrow" },
+        { "label": "Larghezza pagina", "value": "page_width" },
+        { "label": "Larghezza fluida", "value": "page_fluid" },
+        { "label": "Piena larghezza", "value": "full_width" }
+      ],
+      "default": "page_width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Combinazione di colori",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Contenuto"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "I Miei Preferiti"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Tag titolo",
+      "options": [
+        { "label": "H1", "value": "h1" },
+        { "label": "H2", "value": "h2" },
+        { "label": "H3", "value": "h3" },
+        { "label": "H4", "value": "h4" },
+        { "label": "H5", "value": "h5" },
+        { "label": "H6", "value": "h6" },
+        { "label": "Paragrafo", "value": "p" },
+        { "label": "Div", "value": "div" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Dimensione titolo",
+      "options": [
+        { "label": "Piccola", "value": "h2" },
+        { "label": "Media", "value": "h1" },
+        { "label": "Grande", "value": "h0" },
+        { "label": "Extra grande", "value": "hxl" },
+        { "label": "Extra extra grande", "value": "hxxl" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "text",
+      "id": "title_custom_class",
+      "label": "Classe CSS personalizzata titolo",
+      "info": "Classe aggiuntiva (opzionale). Le classi esistenti vengono mantenute."
+    },
+    {
+      "type": "text",
+      "id": "clear_label",
+      "label": "Testo pulsante svuota",
+      "default": "Svuota wishlist"
+    },
+    {
+      "type": "header",
+      "content": "Stato vuoto"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Titolo wishlist vuota",
+      "default": "La tua wishlist e vuota"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "Testo wishlist vuota",
+      "default": "Sfoglia i nostri prodotti e salva i tuoi preferiti cliccando sul cuore."
+    },
+    {
+      "type": "text",
+      "id": "empty_button_label",
+      "label": "Testo pulsante CTA",
+      "default": "Scopri i prodotti"
+    },
+    {
+      "type": "url",
+      "id": "empty_button_link",
+      "label": "Link pulsante CTA"
+    },
+    {
+      "type": "select",
+      "id": "empty_button_size",
+      "label": "Dimensione pulsante",
+      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "jumbo", "label": "Jumbo" },
+        { "value": "extra_jumbo", "label": "Extra Jumbo" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "empty_button_style_secondary",
+      "label": "Stile contorno",
+      "default": false,
+      "info": "Se attivo, il pulsante ha bordo visibile e sfondo trasparente."
+    },
+    {
+      "type": "select",
+      "id": "empty_button_type",
+      "label": "Tipo pulsante",
+      "default": "button",
+      "options": [
+        { "value": "button", "label": "Pulsante" },
+        { "value": "pill", "label": "Pill (arrotondato)" },
+        { "value": "link", "label": "Solo link" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "empty_button_icon",
+      "label": "Icona pulsante",
+      "info": "File .svg = asset del tema, altrimenti classe della libreria icone (es. fa-solid fa-arrow-right). Vuoto = nessuna icona."
+    },
+    {
+      "type": "select",
+      "id": "empty_button_icon_position",
+      "label": "Posizione icona",
+      "default": "before",
+      "options": [
+        { "value": "before", "label": "Prima del testo" },
+        { "value": "after", "label": "Dopo il testo" }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section_padding",
+      "name": "Section Padding",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 50
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 80
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 40
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 60
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_padding_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Top", "unit": "px", "default": 30
+        },
+        {
+          "type": "range",
+          "id": "section_padding_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Padding Bottom", "unit": "px", "default": 50
+        }
+      ]
+    },
+    {
+      "type": "section_margin",
+      "name": "Section Margin",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Large/Desktop Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Tablet Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_md",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        },
+        { "type": "header", "content": "Mobile Device" },
+        {
+          "type": "range",
+          "id": "section_margin_top_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Top", "unit": "px", "default": 0
+        },
+        {
+          "type": "range",
+          "id": "section_margin_bottom_xs",
+          "min": 0, "max": 150, "step": 5,
+          "label": "Margin Bottom", "unit": "px", "default": 0
+        }
+      ]
+    },
+    {
+      "type": "section_background",
+      "name": "Section Background",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "section_bg_image",
+          "label": "BG Image"
+        },
+        {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "BG Color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MS Wishlist",
+      "category": "Prodotti & Collezioni",
+      "blocks": [
+        { "type": "section_padding" }
+      ]
+    }
+  ]
+}
+{% endschema %}

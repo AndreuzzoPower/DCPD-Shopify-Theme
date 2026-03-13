@@ -569,6 +569,9 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'ms_button-sizes.css' | asset_url | stylesheet_tag }}
+    {%- if settings.ms_wishlist_enabled -%}
+      {{ 'ms_wishlist.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
@@ -613,6 +616,9 @@
     {%- comment -%}MS DateTime — Variabile globale data/ora per temporizzazione{%- endcomment -%}
     {%- render 'ms_datetime' -%}
     <script src="{{ 'ms_schedule.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.ms_wishlist_enabled -%}
+      <script src="{{ 'ms_wishlist.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
 
     <script>
       if (Shopify.designMode) {

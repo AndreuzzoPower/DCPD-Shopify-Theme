@@ -295,6 +295,14 @@
         {%- endcase -%}
       {%- endfor -%}
 
+      {%- if settings.ms_wishlist_enabled and settings.ms_wishlist_show_counter -%}
+        <a href="{{ settings.ms_wishlist_page | default: '#' }}" class="header__icon header__icon--wishlist link focus-inset" aria-label="Wishlist">
+          {%- render 'ms_icon', icon: settings.ms_icon_heart -%}
+          <span class="visually-hidden">Wishlist</span>
+          <span class="ms-wishlist-count-bubble" data-count="0" role="status" aria-live="polite"></span>
+        </a>
+      {%- endif -%}
+
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
         {% if cart == empty %}
           {%- render 'ms_icon', icon: settings.ms_icon_cart_empty -%}

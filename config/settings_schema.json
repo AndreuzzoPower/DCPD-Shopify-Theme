@@ -625,9 +625,16 @@
       {
         "type": "text",
         "id": "ms_icon_heart",
-        "label": "Cuore",
+        "label": "Cuore (vuoto)",
         "default": "icon-heart.svg",
-        "info": "Preferiti, wishlist."
+        "info": "Preferiti, wishlist — stato non attivo."
+      },
+      {
+        "type": "text",
+        "id": "ms_icon_heart_filled",
+        "label": "Cuore (pieno)",
+        "default": "icon-heart-filled.svg",
+        "info": "Preferiti, wishlist — stato attivo (aggiunto ai preferiti)."
       },
       {
         "type": "text",
@@ -2114,6 +2121,53 @@
         "label": "Formato etichetta IVA",
         "default": "+ IVA: -amount-",
         "info": "Usa -amount- come segnaposto per l'importo calcolato."
+      }
+    ]
+  },
+  {
+    "name": "Wishlist",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Wishlist"
+      },
+      {
+        "type": "paragraph",
+        "content": "Sistema wishlist basato su localStorage. I preferiti vengono salvati nel browser dell'utente senza app esterne. I dati sono legati al dispositivo e vengono persi solo se l'utente cancella i dati di navigazione."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_wishlist_enabled",
+        "label": "Attiva wishlist",
+        "default": false,
+        "info": "Abilita il sistema wishlist su tutto il sito."
+      },
+      {
+        "type": "url",
+        "id": "ms_wishlist_page",
+        "label": "Link pagina wishlist",
+        "info": "Pagina dove vengono mostrati i prodotti salvati. Crea una pagina con template 'page.ms_wishlist'."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_wishlist_show_on_card",
+        "label": "Mostra nelle card prodotto",
+        "default": true,
+        "info": "Mostra il pulsante cuore sulle card prodotto nelle griglie e nei caroselli."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_wishlist_show_on_product",
+        "label": "Mostra nella pagina prodotto",
+        "default": true,
+        "info": "Mostra il pulsante cuore nella pagina dettaglio prodotto."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_wishlist_show_counter",
+        "label": "Mostra contatore nell'header",
+        "default": true,
+        "info": "Mostra un'icona cuore con contatore nell'header, accanto al carrello."
       }
     ]
   },

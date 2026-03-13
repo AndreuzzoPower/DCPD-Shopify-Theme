@@ -76,6 +76,24 @@
       >
         {%- if card_product.featured_media -%}
           <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+            {%- if settings.ms_wishlist_enabled and settings.ms_wishlist_show_on_card -%}
+              <wishlist-button
+                class="ms-wishlist-card no-js-hidden"
+                data-product-handle="{{ card_product.handle }}"
+                data-product-id="{{ card_product.id }}"
+                data-product-title="{{ card_product.title | escape }}"
+                data-product-image="{{ card_product.featured_media | image_url: width: 400 }}"
+                data-product-price="{{ card_product.price | money }}"
+                data-product-url="{{ card_product.url }}"
+                data-label-add="Aggiungi ai preferiti"
+                data-label-remove="Rimuovi dai preferiti"
+              >
+                <button type="button" class="ms-wishlist-btn" aria-pressed="false" aria-label="Aggiungi ai preferiti">
+                  <span class="ms-wishlist-icon--empty">{%- render 'ms_icon', icon: settings.ms_icon_heart -%}</span>
+                  <span class="ms-wishlist-icon--filled">{%- render 'ms_icon', icon: settings.ms_icon_heart_filled -%}</span>
+                </button>
+              </wishlist-button>
+            {%- endif -%}
             <div class="media media--transparent media--hover-effect">
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
               <img

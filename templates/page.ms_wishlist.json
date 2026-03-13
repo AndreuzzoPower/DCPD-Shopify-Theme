@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "main": {
+      "type": "ms_wishlist",
+      "settings": {
+        "section_width": "page_width",
+        "title": "I Miei Preferiti",
+        "title_tag": "h1",
+        "heading_size": "h1"
+      },
+      "blocks": {
+        "padding": {
+          "type": "section_padding",
+          "settings": {
+            "section_padding_top": 50,
+            "section_padding_bottom": 80,
+            "section_padding_top_md": 40,
+            "section_padding_bottom_md": 60,
+            "section_padding_top_xs": 30,
+            "section_padding_bottom_xs": 50
+          }
+        }
+      },
+      "block_order": ["padding"]
+    }
+  },
+  "order": ["main"]
+}
