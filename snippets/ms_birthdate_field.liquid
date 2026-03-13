@@ -1,6 +1,6 @@
 {%- comment -%}
-  Campo data di nascita riutilizzabile (carrello). Label su una riga, descrizione da settings, wrapper con bordo/padding/ombra da settings.
-  Parametri: context, required, value, name, id, form_id (opzionale), error_id (opzionale), has_error (opzionale).
+  Campo data di nascita: label sopra (no bordo), descrizione sotto, input con bordo opzionale sotto.
+  Il bordo/padding/ombra si applicano solo al wrapper dell'input quando "Mostra bordo" e attivo.
 {%- endcomment -%}
 {%- liquid
   assign birthdate_value = ''
@@ -13,7 +13,10 @@
   assign error_id = error_id | default: field_id | append: '-error'
   assign has_error = has_error | default: false
 
-  assign show_border = settings.ms_birthdate_show_border | default: true
+  assign show_border = settings.ms_birthdate_show_border
+  if show_border == nil
+    assign show_border = true
+  endif
   assign border_width = settings.ms_birthdate_border_width | default: 1
   assign border_color = settings.ms_birthdate_border_color | default: '#e0e0e0'
   assign border_radius = settings.ms_birthdate_border_radius | default: 6
@@ -22,34 +25,37 @@
   assign spacing_bottom = settings.ms_birthdate_spacing_bottom | default: 16
   assign shadow_val = settings.ms_birthdate_shadow | default: 'none'
 
-  assign wrapper_style = 'margin-top: ' | append: spacing_top | append: 'px; margin-bottom: ' | append: spacing_bottom | append: 'px; border-radius: ' | append: border_radius | append: 'px;'
-  if show_border and border_width > 0
-    assign wrapper_style = wrapper_style | append: ' border: ' | append: border_width | append: 'px solid ' | append: border_color | append: '; padding: ' | append: inner_padding | append: 'px;'
-  elsif show_border
-    assign wrapper_style = wrapper_style | append: ' padding: ' | append: inner_padding | append: 'px;'
+  assign outer_style = 'margin-top: ' | append: spacing_top | append: 'px; margin-bottom: ' | append: spacing_bottom | append: 'px;'
+  assign input_wrapper_style = ''
+  if show_border
+    assign input_wrapper_style = 'border-radius: ' | append: border_radius | append: 'px;'
+    if border_width > 0
+      assign input_wrapper_style = input_wrapper_style | append: ' border: ' | append: border_width | append: 'px solid ' | append: border_color | append: ';'
+    endif
+    assign input_wrapper_style = input_wrapper_style | append: ' padding: ' | append: inner_padding | append: 'px;'
+    case shadow_val
+      when 'light'
+        assign input_wrapper_style = input_wrapper_style | append: ' box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);'
+      when 'medium'
+        assign input_wrapper_style = input_wrapper_style | append: ' box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);'
+      when 'strong'
+        assign input_wrapper_style = input_wrapper_style | append: ' box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);'
+    endcase
   endif
-  case shadow_val
-    when 'light'
-      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);'
-    when 'medium'
-      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);'
-    when 'strong'
-      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);'
-  endcase
 -%}
-<div class="ms-birthdate-field__wrapper ms-birthdate-field" style="{{ wrapper_style }}">
-  <div class="field">
-    <label for="{{ field_id }}" class="ms-birthdate-field__label text-body">
-      {{ 'ms_birthdate.label' | t }}{% if is_required %} <span aria-hidden="true">*</span>{% endif %}
-    </label>
-    {%- if settings.ms_birthdate_description != blank -%}
-      <p class="ms-birthdate-field__description text-body">{{ settings.ms_birthdate_description | escape }}</p>
-    {%- endif -%}
+<div class="ms-birthdate-field" style="{{ outer_style }}">
+  <label for="{{ field_id }}" class="ms-birthdate-field__label text-body">
+    {{ 'ms_birthdate.label' | t }}{% if is_required %} <span aria-hidden="true">*</span>{% endif %}
+  </label>
+  {%- if settings.ms_birthdate_description != blank -%}
+    <p class="ms-birthdate-field__description text-body">{{ settings.ms_birthdate_description | escape }}</p>
+  {%- endif -%}
+  <div class="ms-birthdate-field__input-wrapper" style="{{ input_wrapper_style }}">
     <input
       type="date"
       id="{{ field_id }}"
       name="{{ field_name }}"
-      class="field__input"
+      class="ms-birthdate-field__input field__input"
       value="{{ birthdate_value }}"
       min="1900-01-01"
       max="{{ 'now' | date: '%Y-%m-%d' }}"
@@ -58,11 +64,11 @@
       {% if has_error %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
       {% if form_id != blank %}form="{{ form_id }}"{% endif %}
     >
-    {%- if has_error -%}
-      <span id="{{ error_id }}" class="form__message" role="alert">
-        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
-        {{ 'ms_birthdate.required_error' | t }}
-      </span>
-    {%- endif -%}
   </div>
+  {%- if has_error -%}
+    <span id="{{ error_id }}" class="form__message ms-birthdate-field__error" role="alert">
+      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+      {{ 'ms_birthdate.required_error' | t }}
+    </span>
+  {%- endif -%}
 </div>

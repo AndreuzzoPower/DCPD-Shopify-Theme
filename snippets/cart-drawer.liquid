@@ -661,7 +661,7 @@
               assign ms_birthdate_drawer_value = customer.metafields.custom.data_di_nascita.value | date: '%Y-%m-%d'
             endif
           -%}
-          <div class="cart-drawer__birthdate field" data-ms-birthdate-cart>
+          <div class="cart-drawer__birthdate" data-ms-birthdate-cart>
             {%- render 'ms_birthdate_field',
               context: 'cart',
               required: settings.ms_birthdate_required_cart,
