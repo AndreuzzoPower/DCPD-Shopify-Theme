@@ -16,12 +16,13 @@
   assign show_border = settings.ms_birthdate_show_border | default: true
   assign border_width = settings.ms_birthdate_border_width | default: 1
   assign border_color = settings.ms_birthdate_border_color | default: '#e0e0e0'
+  assign border_radius = settings.ms_birthdate_border_radius | default: 6
   assign inner_padding = settings.ms_birthdate_inner_padding | default: '10'
   assign spacing_top = settings.ms_birthdate_spacing_top | default: 16
   assign spacing_bottom = settings.ms_birthdate_spacing_bottom | default: 16
   assign shadow_val = settings.ms_birthdate_shadow | default: 'none'
 
-  assign wrapper_style = 'margin-top: ' | append: spacing_top | append: 'px; margin-bottom: ' | append: spacing_bottom | append: 'px;'
+  assign wrapper_style = 'margin-top: ' | append: spacing_top | append: 'px; margin-bottom: ' | append: spacing_bottom | append: 'px; border-radius: ' | append: border_radius | append: 'px;'
   if show_border and border_width > 0
     assign wrapper_style = wrapper_style | append: ' border: ' | append: border_width | append: 'px solid ' | append: border_color | append: '; padding: ' | append: inner_padding | append: 'px;'
   elsif show_border

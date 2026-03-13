@@ -2177,6 +2177,16 @@
         "info": "Imposta 0 per nessun bordo visibile (se il wrapper e attivo)."
       },
       {
+        "type": "range",
+        "id": "ms_birthdate_border_radius",
+        "label": "Angoli arrotondati",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 6
+      },
+      {
         "type": "select",
         "id": "ms_birthdate_inner_padding",
         "label": "Padding interno (con bordo)",
