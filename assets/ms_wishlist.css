@@ -125,8 +125,8 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 }
 
 .product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn {
-  width: 5rem;
-  height: auto;
+  width: 4.8rem;
+  height: 4.8rem;
   border-radius: var(--buttons-radius, 0);
   border: 1px solid rgba(var(--color-foreground), 0.15);
   background: transparent;
