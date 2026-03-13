@@ -70,7 +70,7 @@
               </div>
             </details>
           </header-menu>
-        {%- elsif link.url == '#mm' -%}
+        {%- elsif link.url contains '#mm' -%}
           <header-menu>
             <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu" data-menu-handle="{{ link.handle }}">
               <summary

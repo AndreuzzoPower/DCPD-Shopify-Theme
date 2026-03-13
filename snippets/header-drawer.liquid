@@ -126,7 +126,7 @@
                         </div>
                       </div>
                     </details>
-                  {%- elsif link.url == '#mm' -%}
+                  {%- elsif link.url contains '#mm' -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}" data-menu-handle="{{ link.handle }}">
                       <summary
                         id="HeaderDrawer-{{ link.handle }}"
