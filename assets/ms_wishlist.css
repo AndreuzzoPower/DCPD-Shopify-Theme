@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Pulsante Wishlist (card prodotto + pagina prodotto)
+   1. Pulsante Wishlist — Base
    -------------------------------------------------------------------------- */
 
 wishlist-button {
@@ -22,18 +22,10 @@ wishlist-button .ms-wishlist-btn {
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(var(--color-background), 0.85);
-  color: rgb(var(--color-foreground));
+  background: transparent;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.2s ease;
   -webkit-tap-highlight-color: transparent;
-  z-index: 2;
-  position: relative;
-}
-
-wishlist-button .ms-wishlist-btn:hover {
-  background: rgba(var(--color-background), 1);
-  transform: scale(1.1);
 }
 
 wishlist-button .ms-wishlist-btn:focus-visible {
@@ -45,34 +37,18 @@ wishlist-button .ms-wishlist-btn .svg-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  pointer-events: none;
 }
 
 wishlist-button .ms-wishlist-btn .svg-wrapper svg {
-  width: 2rem;
-  height: 2rem;
+  width: 2.2rem;
+  height: 2.2rem;
 }
 
-wishlist-button .ms-wishlist-btn .ms-wishlist-icon--empty {
-  display: flex;
-}
-
-wishlist-button .ms-wishlist-btn .ms-wishlist-icon--filled {
-  display: none;
-  color: #e53935;
-}
-
-wishlist-button .ms-wishlist-btn .ms-wishlist-icon--filled svg {
-  fill: #e53935;
-}
-
-wishlist-button.is-wishlisted .ms-wishlist-btn .ms-wishlist-icon--empty {
-  display: none;
-}
-
-wishlist-button.is-wishlisted .ms-wishlist-btn .ms-wishlist-icon--filled {
-  display: flex;
+wishlist-button .ms-wishlist-btn svg path {
+  transition: fill 0.25s ease, stroke 0.25s ease;
 }
 
 @keyframes ms-wishlist-pop {
@@ -87,36 +63,88 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 }
 
 /* --------------------------------------------------------------------------
-   2. Posizionamento sulla card prodotto
+   2. Pulsante Wishlist — Card prodotto
    -------------------------------------------------------------------------- */
-
-.card__media {
-  position: relative;
-}
 
 .ms-wishlist-card {
   position: absolute;
   top: 0.8rem;
   right: 0.8rem;
-  z-index: 3;
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.ms-wishlist-card .ms-wishlist-btn {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.ms-wishlist-card .ms-wishlist-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.ms-wishlist-card .ms-wishlist-btn svg path {
+  fill: #fff;
+  stroke: #333;
+  stroke-width: 1.2;
+}
+
+.ms-wishlist-card.is-wishlisted .ms-wishlist-btn svg path {
+  fill: #e53935;
+  stroke: #e53935;
+  stroke-width: 0.5;
 }
 
 /* --------------------------------------------------------------------------
-   3. Posizionamento sulla pagina prodotto
+   3. Pulsante Wishlist — Pagina prodotto (inline con add-to-cart)
    -------------------------------------------------------------------------- */
 
-.ms-wishlist-product {
-  display: inline-flex;
-  margin-left: 1rem;
-  vertical-align: middle;
+.product-form__buttons--has-wishlist {
+  display: flex !important;
+  gap: 1rem;
+  align-items: stretch;
 }
 
-.ms-wishlist-product .ms-wishlist-btn {
+.product-form__buttons--has-wishlist > .product-form__submit {
+  flex: 1 1 0;
+  width: auto !important;
+}
+
+.product-form__buttons--has-wishlist > wishlist-button {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn {
+  width: 4.8rem;
+  height: auto;
+  border-radius: var(--buttons-radius, 0);
+  border: 1px solid rgba(var(--color-foreground), 0.15);
   background: transparent;
 }
 
-.ms-wishlist-product .ms-wishlist-btn:hover {
+.product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn:hover {
   background: rgba(var(--color-foreground), 0.04);
+  transform: none;
+}
+
+.product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn svg path {
+  fill: transparent;
+  stroke: rgb(var(--color-foreground));
+  stroke-width: 1.2;
+}
+
+.product-form__buttons--has-wishlist > wishlist-button.is-wishlisted .ms-wishlist-btn svg path {
+  fill: #e53935;
+  stroke: #e53935;
+  stroke-width: 0.5;
+}
+
+.product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn .svg-wrapper svg {
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 /* --------------------------------------------------------------------------

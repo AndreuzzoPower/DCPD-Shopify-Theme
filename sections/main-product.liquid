@@ -527,25 +527,6 @@
                   show_pickup_availability: true
                 -%}
 
-                {%- if settings.ms_wishlist_enabled and settings.ms_wishlist_show_on_product -%}
-                  <wishlist-button
-                    class="ms-wishlist-product no-js-hidden"
-                    data-product-handle="{{ product.handle }}"
-                    data-product-id="{{ product.id }}"
-                    data-product-title="{{ product.title | escape }}"
-                    data-product-image="{{ product.featured_media | image_url: width: 400 }}"
-                    data-product-price="{{ product.price | money }}"
-                    data-product-url="{{ product.url }}"
-                    data-label-add="Aggiungi ai preferiti"
-                    data-label-remove="Rimuovi dai preferiti"
-                  >
-                    <button type="button" class="ms-wishlist-btn" aria-pressed="false" aria-label="Aggiungi ai preferiti">
-                      <span class="ms-wishlist-icon--empty">{%- render 'ms_icon', icon: settings.ms_icon_heart -%}</span>
-                      <span class="ms-wishlist-icon--filled">{%- render 'ms_icon', icon: settings.ms_icon_heart_filled -%}</span>
-                    </button>
-                  </wishlist-button>
-                {%- endif -%}
-
                 {%- if block.settings.show_info_request -%}
                   <modal-opener class="product-form__info-request" data-modal="#InfoRequestModal-{{ section.id }}">
                     <button

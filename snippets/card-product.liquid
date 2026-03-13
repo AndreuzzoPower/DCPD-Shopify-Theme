@@ -89,8 +89,7 @@
                 data-label-remove="Rimuovi dai preferiti"
               >
                 <button type="button" class="ms-wishlist-btn" aria-pressed="false" aria-label="Aggiungi ai preferiti">
-                  <span class="ms-wishlist-icon--empty">{%- render 'ms_icon', icon: settings.ms_icon_heart -%}</span>
-                  <span class="ms-wishlist-icon--filled">{%- render 'ms_icon', icon: settings.ms_icon_heart_filled -%}</span>
+                  {%- render 'ms_icon', icon: settings.ms_icon_heart_filled -%}
                 </button>
               </wishlist-button>
             {%- endif -%}

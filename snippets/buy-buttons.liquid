@@ -76,7 +76,7 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
-        <div class="product-form__buttons">
+        <div class="product-form__buttons{% if settings.ms_wishlist_enabled and settings.ms_wishlist_show_on_product %} product-form__buttons--has-wishlist{% endif %}">
           {%- liquid
             assign check_against_inventory = true
             if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
@@ -109,6 +109,23 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
+          {%- if settings.ms_wishlist_enabled and settings.ms_wishlist_show_on_product -%}
+            <wishlist-button
+              class="ms-wishlist-product no-js-hidden"
+              data-product-handle="{{ product.handle }}"
+              data-product-id="{{ product.id }}"
+              data-product-title="{{ product.title | escape }}"
+              data-product-image="{%- if product.featured_media -%}{{ product.featured_media | image_url: width: 400 }}{%- endif -%}"
+              data-product-price="{{ product.price | money }}"
+              data-product-url="{{ product.url }}"
+              data-label-add="Aggiungi ai preferiti"
+              data-label-remove="Rimuovi dai preferiti"
+            >
+              <button type="button" class="ms-wishlist-btn" aria-pressed="false" aria-label="Aggiungi ai preferiti">
+                {%- render 'ms_icon', icon: settings.ms_icon_heart_filled -%}
+              </button>
+            </wishlist-button>
+          {%- endif -%}
           {%- if show_dynamic_checkout -%}
             {{ form | payment_button }}
           {%- endif -%}
