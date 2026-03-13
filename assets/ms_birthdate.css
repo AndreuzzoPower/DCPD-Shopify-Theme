@@ -1,0 +1,31 @@
+/**
+ * Data di nascita: layout campo (label una riga, wrapper, descrizione).
+ * Variabili dinamiche (bordo, padding, ombra) vengono impostate inline dal Liquid.
+ */
+.ms-birthdate-field {
+  box-sizing: border-box;
+}
+
+.ms-birthdate-field__label {
+  display: block;
+  white-space: nowrap;
+  margin-bottom: 0.4rem;
+}
+
+.ms-birthdate-field__description {
+  margin-top: 0;
+  margin-bottom: 0.8rem;
+}
+
+.ms-birthdate-field__wrapper {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.ms-birthdate-field__wrapper .field__input {
+  width: 100%;
+}
+
+.ms-birthdate-field .form__message {
+  margin-top: 0.6rem;
+}

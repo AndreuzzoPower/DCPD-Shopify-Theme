@@ -1,7 +1,6 @@
 {%- comment -%}
-  Campo data di nascita riutilizzabile (registrazione, account, carrello).
-  Parametri: context, required, value, name, id, form_id (opzionale, per carrello), error_id (opzionale), has_error (opzionale).
-  value: stringa YYYY-MM-DD o oggetto date Liquid.
+  Campo data di nascita riutilizzabile (carrello). Label su una riga, descrizione da settings, wrapper con bordo/padding/ombra da settings.
+  Parametri: context, required, value, name, id, form_id (opzionale), error_id (opzionale), has_error (opzionale).
 {%- endcomment -%}
 {%- liquid
   assign birthdate_value = ''
@@ -13,28 +12,56 @@
   assign is_required = required | default: false
   assign error_id = error_id | default: field_id | append: '-error'
   assign has_error = has_error | default: false
+
+  assign show_border = settings.ms_birthdate_show_border | default: true
+  assign border_width = settings.ms_birthdate_border_width | default: 1
+  assign border_color = settings.ms_birthdate_border_color | default: '#e0e0e0'
+  assign inner_padding = settings.ms_birthdate_inner_padding | default: '10'
+  assign spacing_top = settings.ms_birthdate_spacing_top | default: 16
+  assign spacing_bottom = settings.ms_birthdate_spacing_bottom | default: 16
+  assign shadow_val = settings.ms_birthdate_shadow | default: 'none'
+
+  assign wrapper_style = 'margin-top: ' | append: spacing_top | append: 'px; margin-bottom: ' | append: spacing_bottom | append: 'px;'
+  if show_border and border_width > 0
+    assign wrapper_style = wrapper_style | append: ' border: ' | append: border_width | append: 'px solid ' | append: border_color | append: '; padding: ' | append: inner_padding | append: 'px;'
+  elsif show_border
+    assign wrapper_style = wrapper_style | append: ' padding: ' | append: inner_padding | append: 'px;'
+  endif
+  case shadow_val
+    when 'light'
+      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);'
+    when 'medium'
+      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);'
+    when 'strong'
+      assign wrapper_style = wrapper_style | append: ' box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);'
+  endcase
 -%}
-<div class="field">
-  <label for="{{ field_id }}" class="text-body">
-    {{ 'ms_birthdate.label' | t }}{% if is_required %} <span aria-hidden="true">*</span>{% endif %}
-  </label>
-  <input
-    type="date"
-    id="{{ field_id }}"
-    name="{{ field_name }}"
-    class="field__input"
-    value="{{ birthdate_value }}"
-    min="1900-01-01"
-    max="{{ 'now' | date: '%Y-%m-%d' }}"
-    autocomplete="bday"
-    {% if is_required %}aria-required="true"{% endif %}
-    {% if has_error %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
-    {% if form_id != blank %}form="{{ form_id }}"{% endif %}
-  >
-  {%- if has_error -%}
-    <span id="{{ error_id }}" class="form__message" role="alert">
-      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
-      {{ 'ms_birthdate.required_error' | t }}
-    </span>
-  {%- endif -%}
+<div class="ms-birthdate-field__wrapper ms-birthdate-field" style="{{ wrapper_style }}">
+  <div class="field">
+    <label for="{{ field_id }}" class="ms-birthdate-field__label text-body">
+      {{ 'ms_birthdate.label' | t }}{% if is_required %} <span aria-hidden="true">*</span>{% endif %}
+    </label>
+    {%- if settings.ms_birthdate_description != blank -%}
+      <p class="ms-birthdate-field__description text-body">{{ settings.ms_birthdate_description | escape }}</p>
+    {%- endif -%}
+    <input
+      type="date"
+      id="{{ field_id }}"
+      name="{{ field_name }}"
+      class="field__input"
+      value="{{ birthdate_value }}"
+      min="1900-01-01"
+      max="{{ 'now' | date: '%Y-%m-%d' }}"
+      autocomplete="bday"
+      {% if is_required %}aria-required="true"{% endif %}
+      {% if has_error %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
+      {% if form_id != blank %}form="{{ form_id }}"{% endif %}
+    >
+    {%- if has_error -%}
+      <span id="{{ error_id }}" class="form__message" role="alert">
+        {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+        {{ 'ms_birthdate.required_error' | t }}
+      </span>
+    {%- endif -%}
+  </div>
 </div>

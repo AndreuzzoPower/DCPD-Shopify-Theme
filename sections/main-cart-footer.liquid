@@ -165,6 +165,7 @@
               {%- render 'ms_invoice-request', checkout_id: 'checkout', form_id: 'cart' -%}
 
               {%- if settings.ms_birthdate_show_cart -%}
+                {{ 'ms_birthdate.css' | asset_url | stylesheet_tag }}
                 <script src="{{ 'ms_birthdate.js' | asset_url }}" defer></script>
                 {%- liquid
                   assign ms_birthdate_cart_value = cart.attributes['Data di nascita'] | default: ''

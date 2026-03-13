@@ -2141,6 +2141,83 @@
         "label": "Obbligatorio in carrello",
         "default": false,
         "info": "Impedisce il checkout senza data di nascita. Richiede 'Mostra in carrello' attivo."
+      },
+      {
+        "type": "header",
+        "content": "Layout campo"
+      },
+      {
+        "type": "text",
+        "id": "ms_birthdate_description",
+        "label": "Testo descrizione",
+        "info": "Breve testo sotto la label (opzionale). Lasciare vuoto per non mostrarlo."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_birthdate_show_border",
+        "label": "Mostra bordo sul wrapper",
+        "default": true,
+        "info": "Se attivo, il campo e racchiuso in un wrapper con bordo e padding interno."
+      },
+      {
+        "type": "color",
+        "id": "ms_birthdate_border_color",
+        "label": "Colore bordo",
+        "default": "#e0e0e0"
+      },
+      {
+        "type": "range",
+        "id": "ms_birthdate_border_width",
+        "label": "Spessore bordo",
+        "min": 0,
+        "max": 4,
+        "step": 1,
+        "unit": "px",
+        "default": 1,
+        "info": "Imposta 0 per nessun bordo visibile (se il wrapper e attivo)."
+      },
+      {
+        "type": "select",
+        "id": "ms_birthdate_inner_padding",
+        "label": "Padding interno (con bordo)",
+        "default": "10",
+        "options": [
+          { "value": "10", "label": "10 px" },
+          { "value": "15", "label": "15 px" }
+        ],
+        "info": "Applicato quando il bordo e attivo."
+      },
+      {
+        "type": "range",
+        "id": "ms_birthdate_spacing_top",
+        "label": "Spazio sopra",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "ms_birthdate_spacing_bottom",
+        "label": "Spazio sotto",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "ms_birthdate_shadow",
+        "label": "Ombra wrapper",
+        "default": "none",
+        "options": [
+          { "value": "none", "label": "Nessuna" },
+          { "value": "light", "label": "Leggera" },
+          { "value": "medium", "label": "Media" },
+          { "value": "strong", "label": "Forte" }
+        ]
       }
     ]
   }
