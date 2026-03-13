@@ -575,6 +575,23 @@
     "ms_multicolumn_Bh7pk7": {
       "type": "ms_multicolumn",
       "blocks": {
+        "column_tiMbra": {
+          "type": "column",
+          "settings": {
+            "image_alt": "",
+            "title": "DATA DI NASCITA",
+            "title_tag": "h3",
+            "title_custom_class": "",
+            "text": "<p>Possibilità di attivare la racolta della data di nascita da carrello. Verrà salvata nei dati dellì'ordine e trasferita tramite un Flow (necessario) direttamente in un metafield del cliente.</p>",
+            "link_label": "",
+            "link": "",
+            "link_button_style_secondary": false,
+            "link_button_type": "link",
+            "link_button_size": "default",
+            "link_button_icon": "",
+            "link_button_icon_position": "after"
+          }
+        },
         "column_PMRyFm": {
           "type": "column",
           "settings": {
@@ -719,6 +736,7 @@
         }
       },
       "block_order": [
+        "column_tiMbra",
         "column_PMRyFm",
         "column_zNqc7k",
         "column_cjkdfj",
