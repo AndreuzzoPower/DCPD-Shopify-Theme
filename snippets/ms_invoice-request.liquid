@@ -411,7 +411,8 @@
           this.checkoutBtn.dispatchEvent(new CustomEvent('ms:gate-changed'));
 
           if (!document.querySelector('ms-cart-terms')) {
-            var otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled');
+            var otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled') ||
+                                this.checkoutBtn.hasAttribute('data-ms-birthdate-invalid');
             this.checkoutBtn.disabled = isInvalid || otherDisabled;
 
             var ctasContainer = this.checkoutBtn.closest('.cart__ctas');

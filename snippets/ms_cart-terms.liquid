@@ -82,7 +82,8 @@
         syncState() {
           var accepted = this.checkbox.checked;
           var otherDisabled = this.checkoutBtn.hasAttribute('data-ms-other-disabled') ||
-                              this.checkoutBtn.hasAttribute('data-ms-invoice-invalid');
+                              this.checkoutBtn.hasAttribute('data-ms-invoice-invalid') ||
+                              this.checkoutBtn.hasAttribute('data-ms-birthdate-invalid');
           this.checkoutBtn.disabled = !accepted || otherDisabled;
 
           if (this.dynamicCheckout) {

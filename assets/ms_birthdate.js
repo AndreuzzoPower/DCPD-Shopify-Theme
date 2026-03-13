@@ -1,60 +1,33 @@
 /**
- * Data di nascita: registrazione (customer note BIRTHDATE:YYYY-MM-DD) e validazione.
- * Nessuna chiamata esterna; Flow legge la note e aggiorna il metafield.
+ * Data di nascita: validazione carrello.
+ * Segue il pattern dei gate sul bottone checkout (data-ms-birthdate-invalid + ms:gate-changed).
  */
 (function() {
   'use strict';
 
-  const BIRTHDATE_PREFIX = 'BIRTHDATE:';
+  function isAnyGateBlocking(btn) {
+    return btn.hasAttribute('data-ms-other-disabled') ||
+      btn.hasAttribute('data-ms-invoice-invalid') ||
+      btn.hasAttribute('data-ms-birthdate-invalid');
+  }
 
-  document.addEventListener('submit', function(e) {
-    var form = e.target;
-    if (form && form.nodeName === 'FORM') {
-      var dateInput = form.querySelector('input[data-ms-birthdate-required]');
-      if (dateInput && (dateInput.value || '').trim() === '') {
-        e.preventDefault();
-        dateInput.setAttribute('aria-invalid', 'true');
-        dateInput.focus();
-        if (dateInput.scrollIntoView) {
-          dateInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
+  function isTermsBlocking(btn) {
+    var termsEl = document.querySelector('ms-cart-terms[data-checkout-id="' + btn.id + '"]');
+    if (!termsEl) return false;
+    var cb = termsEl.querySelector('.ms-cart-terms__checkbox');
+    return cb && !cb.checked;
+  }
+
+  function resolveDisabled(btn) {
+    btn.disabled = isAnyGateBlocking(btn) || isTermsBlocking(btn);
+
+    var ctasContainer = btn.closest('.cart__ctas');
+    if (ctasContainer) {
+      var dynCheckout = ctasContainer.nextElementSibling;
+      if (dynCheckout && dynCheckout.classList.contains('cart__dynamic-checkout-buttons')) {
+        dynCheckout.hidden = btn.disabled;
       }
     }
-  }, true);
-
-  function initRegister(options) {
-    const form = document.getElementById(options.formId);
-    const dateInput = document.getElementById(options.dateInputId);
-    const noteInput = document.getElementById(options.noteInputId);
-    const errorContainer = document.getElementById(options.errorContainerId);
-    const required = options.required === true;
-
-    if (!form || !dateInput || !noteInput) return;
-
-    form.addEventListener('submit', function(e) {
-      const value = (dateInput.value || '').trim();
-
-      if (required && !value) {
-        e.preventDefault();
-        if (errorContainer) {
-          errorContainer.classList.remove('hidden');
-          dateInput.setAttribute('aria-invalid', 'true');
-          dateInput.setAttribute('aria-describedby', errorContainer.id);
-          dateInput.focus();
-        }
-        return;
-      }
-
-      if (errorContainer) {
-        errorContainer.classList.add('hidden');
-        dateInput.removeAttribute('aria-invalid');
-        dateInput.removeAttribute('aria-describedby');
-      }
-
-      if (value) {
-        noteInput.value = BIRTHDATE_PREFIX + value;
-      }
-    });
   }
 
   function initCart(options) {
@@ -62,55 +35,52 @@
     var dateInput = document.getElementById(options.dateInputId);
     if (!checkoutBtn || !dateInput || !options.required) return;
 
-    var form = checkoutBtn.form;
-    if (!form) return;
-
-    function getBirthdateValue() {
+    function getValue() {
       return (dateInput.value || '').trim();
     }
 
-    function otherReasonsDisabled() {
-      return checkoutBtn.hasAttribute('data-ms-other-disabled') ||
-        checkoutBtn.hasAttribute('data-ms-invoice-invalid') ||
-        checkoutBtn.hasAttribute('data-ms-terms-disabled');
-    }
-
-    function toggleCheckout() {
-      var val = getBirthdateValue();
-      if (val) {
-        checkoutBtn.removeAttribute('data-ms-birthdate-required');
-        checkoutBtn.disabled = otherReasonsDisabled();
+    function sync() {
+      if (getValue()) {
+        checkoutBtn.removeAttribute('data-ms-birthdate-invalid');
       } else {
-        checkoutBtn.setAttribute('data-ms-birthdate-required', '');
-        checkoutBtn.disabled = true;
+        checkoutBtn.setAttribute('data-ms-birthdate-invalid', '');
       }
+      checkoutBtn.dispatchEvent(new CustomEvent('ms:gate-changed'));
+      resolveDisabled(checkoutBtn);
     }
 
-    form.addEventListener('submit', function(e) {
-      if (getBirthdateValue() === '') {
-        e.preventDefault();
-        dateInput.setAttribute('aria-invalid', 'true');
-        dateInput.focus();
-        if (dateInput.scrollIntoView) {
-          dateInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }
-    });
-
-    dateInput.addEventListener('change', toggleCheckout);
-    dateInput.addEventListener('input', toggleCheckout);
+    dateInput.addEventListener('change', sync);
+    dateInput.addEventListener('input', sync);
     dateInput.addEventListener('blur', function() {
-      if (getBirthdateValue() === '') {
+      if (getValue() === '') {
         dateInput.setAttribute('aria-invalid', 'true');
       } else {
         dateInput.removeAttribute('aria-invalid');
       }
     });
-    toggleCheckout();
+
+    checkoutBtn.addEventListener('ms:gate-changed', function() {
+      resolveDisabled(checkoutBtn);
+    });
+
+    var form = checkoutBtn.form || document.getElementById(checkoutBtn.getAttribute('form'));
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        if (getValue() === '') {
+          e.preventDefault();
+          dateInput.setAttribute('aria-invalid', 'true');
+          dateInput.focus();
+          if (dateInput.scrollIntoView) {
+            dateInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      });
+    }
+
+    sync();
   }
 
   window.MSBirthdate = {
-    initRegister: initRegister,
     initCart: initCart
   };
 })();

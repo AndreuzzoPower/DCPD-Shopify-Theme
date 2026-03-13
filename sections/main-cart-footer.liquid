@@ -219,7 +219,7 @@
                     {%- if cart.attributes['Data di nascita'] == blank -%}
                       {%- unless customer and customer.metafields.custom.data_di_nascita.value != blank -%}
                         disabled
-                        data-ms-birthdate-required
+                        data-ms-birthdate-invalid
                       {%- endunless -%}
                     {%- endif -%}
                   {% endif %}
