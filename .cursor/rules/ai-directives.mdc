@@ -10,5 +10,6 @@ Prima di qualsiasi modifica, creazione o analisi di file nel progetto, DEVI:
 1. **Leggere il file `.ai-directives.md`** nella root del progetto
 2. **Rispettare tutte le direttive** contenute in quel file (standard accessibilità, convenzioni codice, naming, CSS, schema, icone, ecc.)
 3. **Seguire la checklist pre/durante/dopo modifica** descritta nella sezione 4 del file
+4. **Dopo OGNI modifica al codice: fare SEMPRE commit + push** su `origin main`. Non considerare il lavoro concluso senza push. (Escludere `.ai-directives.md` dal commit se non versionato. Se il push fallisce: stash → pull --rebase → push → stash pop.)
 
 Il file `.ai-directives.md` è la fonte di verità per tutte le convenzioni del progetto DCPD Shopify Theme.
