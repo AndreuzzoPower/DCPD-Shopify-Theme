@@ -1,0 +1,19 @@
+---
+description: Eseguire SEMPRE commit e push dopo ogni modifica al codice del tema
+alwaysApply: true
+---
+
+# Git: push obbligatorio dopo modifiche
+
+Dopo **ogni** modifica a file del progetto (tema Shopify, asset, snippet, section, config, ecc.) devi **sempre**:
+
+1. **Fare commit** dei file modificati (escludere `.ai-directives.md` se in .gitignore o non da versionare).
+2. **Fare push** su `origin main` (o sul branch corrente).
+
+Se il push fallisce per commit remoti:
+- fare `git stash` degli eventuali file non committati (es. `.ai-directives.md`),
+- `git pull --rebase origin main`,
+- `git push origin main`,
+- `git stash pop`.
+
+**Non considerare la modifica conclusa senza push.** L’utente si aspetta che il codice sia su remote dopo ogni intervento.

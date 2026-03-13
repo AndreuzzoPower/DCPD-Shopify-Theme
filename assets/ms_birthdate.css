@@ -1,10 +1,15 @@
 /**
- * Data di nascita: layout a blocco.
- * Label sopra (no bordo), descrizione sotto, input wrapper sotto (bordo/padding da settings).
+ * Data di nascita: wrapper unico (label, descrizione, input) con bordo stondato da settings.
+ * Input con bordo 1px come gli altri campi form del tema, padding di default del tema.
  */
 .ms-birthdate-field {
   box-sizing: border-box;
   display: block;
+  width: 100%;
+}
+
+.ms-birthdate-field__wrapper {
+  box-sizing: border-box;
   width: 100%;
 }
 
@@ -22,22 +27,18 @@
   font-size: 1rem;
 }
 
-.ms-birthdate-field__input-wrapper {
-  box-sizing: border-box;
+/* Input: stile come gli altri campi form del tema (bordo 1px, padding di default) */
+.ms-birthdate-field__wrapper .ms-birthdate-field__input,
+.ms-birthdate-field__wrapper .field__input {
   width: 100%;
+  border: 0.1rem solid transparent;
+  box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground), var(--inputs-border-opacity));
 }
 
-.ms-birthdate-field__input-wrapper .ms-birthdate-field__input,
-.ms-birthdate-field__input-wrapper .field__input {
-  width: 100%;
-  margin: 0;
-  border: none;
-  box-shadow: none;
-}
-
-.ms-birthdate-field__input-wrapper .ms-birthdate-field__input:focus,
-.ms-birthdate-field__input-wrapper .field__input:focus {
-  box-shadow: none;
+.ms-birthdate-field__wrapper .ms-birthdate-field__input:focus,
+.ms-birthdate-field__wrapper .field__input:focus {
+  box-shadow: 0 0 0 calc(0.1rem + var(--inputs-border-width)) rgba(var(--color-foreground));
+  outline: 0;
 }
 
 .ms-birthdate-field__error {
