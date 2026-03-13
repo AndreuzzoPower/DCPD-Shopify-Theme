@@ -412,7 +412,8 @@
       "title": "Account",
       "details": "Dettagli account",
       "view_addresses": "Visualizza indirizzi",
-      "return": "Ritorna ai dettagli dell'account"
+      "return": "Ritorna ai dettagli dell'account",
+      "save": "Salva"
     },
     "account_fallback": "Account",
     "activate_account": {
@@ -585,5 +586,10 @@
       "novembre": "Novembre",
       "dicembre": "Dicembre"
     }
+  },
+  "ms_birthdate": {
+    "label": "Data di nascita",
+    "required_error": "Inserire la data di nascita.",
+    "invalid_date": "Data non valida."
   }
 }

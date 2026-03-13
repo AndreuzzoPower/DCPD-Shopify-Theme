@@ -2116,5 +2116,32 @@
         "info": "Usa -amount- come segnaposto per l'importo calcolato."
       }
     ]
+  },
+  {
+    "name": "Data di nascita",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Data di nascita"
+      },
+      {
+        "type": "paragraph",
+        "content": "Raccolta della data di nascita nel metafield custom.data_di_nascita. Il dato viene inviato come attributo ordine (Data di nascita) e salvato sul cliente tramite un unico Flow: trigger Ordine creato, condizione attributo ordine presente, azione Aggiorna metafield cliente."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_birthdate_show_cart",
+        "label": "Mostra in carrello",
+        "default": false,
+        "info": "Mostra il campo data di nascita nella pagina carrello e nel drawer."
+      },
+      {
+        "type": "checkbox",
+        "id": "ms_birthdate_required_cart",
+        "label": "Obbligatorio in carrello",
+        "default": false,
+        "info": "Impedisce il checkout senza data di nascita. Richiede 'Mostra in carrello' attivo."
+      }
+    ]
   }
 ]

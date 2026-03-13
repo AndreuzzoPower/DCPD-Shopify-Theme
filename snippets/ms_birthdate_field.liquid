@@ -1,0 +1,40 @@
+{%- comment -%}
+  Campo data di nascita riutilizzabile (registrazione, account, carrello).
+  Parametri: context, required, value, name, id, form_id (opzionale, per carrello), error_id (opzionale), has_error (opzionale).
+  value: stringa YYYY-MM-DD o oggetto date Liquid.
+{%- endcomment -%}
+{%- liquid
+  assign birthdate_value = ''
+  if value != blank
+    assign birthdate_value = value | date: '%Y-%m-%d'
+  endif
+  assign field_id = id | default: 'BirthdateField'
+  assign field_name = name | default: 'birthdate'
+  assign is_required = required | default: false
+  assign error_id = error_id | default: field_id | append: '-error'
+  assign has_error = has_error | default: false
+-%}
+<div class="field">
+  <label for="{{ field_id }}" class="text-body">
+    {{ 'ms_birthdate.label' | t }}{% if is_required %} <span aria-hidden="true">*</span>{% endif %}
+  </label>
+  <input
+    type="date"
+    id="{{ field_id }}"
+    name="{{ field_name }}"
+    class="field__input"
+    value="{{ birthdate_value }}"
+    min="1900-01-01"
+    max="{{ 'now' | date: '%Y-%m-%d' }}"
+    autocomplete="bday"
+    {% if is_required %}aria-required="true"{% endif %}
+    {% if has_error %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
+    {% if form_id != blank %}form="{{ form_id }}"{% endif %}
+  >
+  {%- if has_error -%}
+    <span id="{{ error_id }}" class="form__message" role="alert">
+      {%- render 'ms_icon', icon: settings.ms_icon_error -%}
+      {{ 'ms_birthdate.required_error' | t }}
+    </span>
+  {%- endif -%}
+</div>

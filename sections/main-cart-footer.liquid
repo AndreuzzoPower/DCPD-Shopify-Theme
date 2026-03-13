@@ -164,6 +164,39 @@
               {%- render 'ms_cart-terms', checkout_id: 'checkout' -%}
               {%- render 'ms_invoice-request', checkout_id: 'checkout', form_id: 'cart' -%}
 
+              {%- if settings.ms_birthdate_show_cart -%}
+                <script src="{{ 'ms_birthdate.js' | asset_url }}" defer></script>
+                {%- liquid
+                  assign ms_birthdate_cart_value = cart.attributes['Data di nascita'] | default: ''
+                  if customer and customer.metafields.custom.data_di_nascita.value != blank and ms_birthdate_cart_value == ''
+                    assign ms_birthdate_cart_value = customer.metafields.custom.data_di_nascita.value | date: '%Y-%m-%d'
+                  endif
+                -%}
+                <div class="cart__birthdate field" data-ms-birthdate-cart>
+                  {%- render 'ms_birthdate_field',
+                    context: 'cart',
+                    required: settings.ms_birthdate_required_cart,
+                    value: ms_birthdate_cart_value,
+                    name: 'attributes[Data di nascita]',
+                    id: 'Cart-birthdate',
+                    form_id: 'cart'
+                  -%}
+                </div>
+                {%- if settings.ms_birthdate_required_cart -%}
+                  <script>
+                    if (window.MSBirthdate && window.MSBirthdate.initCart) {
+                      document.addEventListener('DOMContentLoaded', function() {
+                        window.MSBirthdate.initCart({
+                          checkoutButtonId: 'checkout',
+                          dateInputId: 'Cart-birthdate',
+                          required: true
+                        });
+                      });
+                    }
+                  </script>
+                {%- endif -%}
+              {%- endif -%}
+
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
                   type="submit"
@@ -180,6 +213,14 @@
                   {% if settings.ms_invoice_enabled and ms_invoice_checked %}
                     disabled
                     data-ms-invoice-invalid
+                  {% endif %}
+                  {% if settings.ms_birthdate_required_cart and settings.ms_birthdate_show_cart %}
+                    {%- if cart.attributes['Data di nascita'] == blank -%}
+                      {%- unless customer and customer.metafields.custom.data_di_nascita.value != blank -%}
+                        disabled
+                        data-ms-birthdate-required
+                      {%- endunless -%}
+                    {%- endif -%}
                   {% endif %}
                   form="cart"
                 >

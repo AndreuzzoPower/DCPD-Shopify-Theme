@@ -412,7 +412,8 @@
       "title": "Account",
       "details": "Account details",
       "view_addresses": "View addresses",
-      "return": "Return to Account details"
+      "return": "Return to Account details",
+      "save": "Save"
     },
     "account_fallback": "Account",
     "activate_account": {
@@ -948,5 +949,10 @@
         }
       }
     }
+  },
+  "ms_birthdate": {
+    "label": "Date of birth",
+    "required_error": "Please enter your date of birth.",
+    "invalid_date": "Invalid date."
   }
 }
