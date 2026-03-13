@@ -206,7 +206,7 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
   position: absolute;
   top: 0.8rem;
   right: 0.8rem;
-  z-index: 5;
+  z-index: 2;
   pointer-events: auto;
 }
 
