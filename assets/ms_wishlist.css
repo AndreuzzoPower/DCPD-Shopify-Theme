@@ -162,6 +162,10 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
   position: relative;
 }
 
+.header__icon--wishlist .icon {
+  fill: rgb(var(--color-foreground));
+}
+
 .ms-wishlist-count-bubble {
   position: absolute;
   top: 0.1rem;
