@@ -12,10 +12,6 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
-{%- if section.settings.image_shape == 'blob' -%}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-
 {%- unless section.settings.quick_add == 'none' -%}
   {{ 'quick-add.css' | asset_url | stylesheet_tag }}
 {%- endunless -%}
@@ -49,6 +45,56 @@
 
 {%- render 'ms_mobile-padding', section: section -%}
 
+{%- style -%}
+  {%- if section.settings.image_ratio == 'square' -%}
+    #section-{{ section.id }} .ms-wishlist-grid .card__inner,
+    #section-{{ section.id }} .ms-wishlist-grid .card {
+      --ratio-percent: 100%;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card__media .media {
+      aspect-ratio: 1 / 1;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card__media .media img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  {%- elsif section.settings.image_ratio == 'portrait' -%}
+    #section-{{ section.id }} .ms-wishlist-grid .card__inner,
+    #section-{{ section.id }} .ms-wishlist-grid .card {
+      --ratio-percent: 125%;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card__media .media {
+      aspect-ratio: 4 / 5;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card__media .media img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  {%- endif -%}
+
+  {%- if section.settings.equal_height -%}
+    #section-{{ section.id }} .ms-wishlist-grid {
+      align-items: stretch;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .grid__item > div {
+      height: 100%;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card-wrapper {
+      height: 100%;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    #section-{{ section.id }} .ms-wishlist-grid .card__content:last-child {
+      flex: 1;
+    }
+  {%- endif -%}
+{%- endstyle -%}
+
 <div id="section-{{ section.id }}" class="color-{{ section.settings.color_scheme }} gradient">
   <div class="{{ sw_class }}">
     <wishlist-page
@@ -59,7 +105,7 @@
       data-columns-desktop="{{ section.settings.columns_desktop }}"
       data-columns-mobile="{{ section.settings.columns_mobile }}"
       data-image-ratio="{{ section.settings.image_ratio }}"
-      data-image-shape="{{ section.settings.image_shape }}"
+      data-equal-height="{{ section.settings.equal_height }}"
       data-show-secondary-image="{{ section.settings.show_secondary_image }}"
       data-show-vendor="{{ section.settings.show_vendor }}"
       data-show-rating="{{ section.settings.show_rating }}"
@@ -182,20 +228,11 @@
       "label": "Proporzione immagine"
     },
     {
-      "type": "select",
-      "id": "image_shape",
-      "options": [
-        { "value": "default", "label": "Predefinita" },
-        { "value": "arch", "label": "Arco" },
-        { "value": "blob", "label": "Blob" },
-        { "value": "chevronleft", "label": "Chevron sinistro" },
-        { "value": "chevronright", "label": "Chevron destro" },
-        { "value": "diamond", "label": "Diamante" },
-        { "value": "parallelogram", "label": "Parallelogramma" },
-        { "value": "round", "label": "Rotondo" }
-      ],
-      "default": "default",
-      "label": "Forma immagine"
+      "type": "checkbox",
+      "id": "equal_height",
+      "default": false,
+      "label": "Altezza uguale per riga",
+      "info": "Se attivo, tutte le schede sulla stessa riga avranno la stessa altezza."
     },
     {
       "type": "checkbox",
