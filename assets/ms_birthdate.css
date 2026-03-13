@@ -31,17 +31,14 @@
 .ms-birthdate-field__wrapper .ms-birthdate-field__input,
 .ms-birthdate-field__wrapper .field__input {
   width: 100%;
+  padding: 1.5rem;
   margin: var(--inputs-border-width);
-  padding: 2.2rem 1.5rem 0.8rem 2rem;
   border: 0.1rem solid transparent;
   box-shadow: 0 0 0 var(--inputs-border-width) rgba(var(--color-foreground), var(--inputs-border-opacity));
 }
 
 .ms-birthdate-field__wrapper .ms-birthdate-field__input:focus,
-.ms-birthdate-field__wrapper .field__input:focus,
-.ms-birthdate-field__wrapper .ms-birthdate-field__input:not(:placeholder-shown),
-.ms-birthdate-field__wrapper .field__input:not(:placeholder-shown) {
-  padding: 2.2rem 1.5rem 0.8rem 2rem;
+.ms-birthdate-field__wrapper .field__input:focus {
   box-shadow: 0 0 0 calc(0.1rem + var(--inputs-border-width)) rgba(var(--color-foreground));
   outline: 0;
 }
