@@ -16,11 +16,11 @@
           "type": "section_padding",
           "settings": {
             "section_padding_top": 60,
-            "section_padding_bottom": 0,
+            "section_padding_bottom": 60,
             "section_padding_top_md": 50,
-            "section_padding_bottom_md": 0,
+            "section_padding_bottom_md": 50,
             "section_padding_top_xs": 30,
-            "section_padding_bottom_xs": 0
+            "section_padding_bottom_xs": 30
           }
         },
         "heading_KqgCwt": {
