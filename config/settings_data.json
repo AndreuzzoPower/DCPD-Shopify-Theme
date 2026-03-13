@@ -155,7 +155,7 @@
     "show_vendor": true,
     "show_cart_note": true,
     "ms_terms_enabled": true,
-    "ms_invoice_enabled": false,
+    "ms_invoice_enabled": true,
     "ms_invoice_default_checked": false,
     "cart_drawer_collection": "frontpage",
     "cart_color_scheme": "scheme-1",
