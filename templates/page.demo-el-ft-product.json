@@ -61,114 +61,81 @@
         "content_alignment": "center"
       }
     },
-    "ms_render_menu_3gr93w": {
-      "type": "ms_render_menu",
+    "ms_featured_product_3thkeR": {
+      "type": "ms_featured-product",
       "blocks": {
-        "section_padding_pa4eB4": {
-          "type": "section_padding",
+        "text_4t9CLW": {
+          "type": "text",
           "settings": {
-            "section_padding_top": 0,
-            "section_padding_bottom": 20,
-            "section_padding_top_md": 0,
-            "section_padding_bottom_md": 15,
-            "section_padding_top_xs": 0,
-            "section_padding_bottom_xs": 10
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_ULBD3A": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1",
+            "title_tag": "h2",
+            "title_custom_class": ""
+          }
+        },
+        "price_3VpR44": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_tabkgG": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_C9kPxL": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_bQVxrd": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_dFBmXm": {
+          "type": "share",
+          "settings": {
+            "share_label": "Condividi"
           }
         }
       },
       "block_order": [
-        "section_padding_pa4eB4"
+        "text_4t9CLW",
+        "title_ULBD3A",
+        "price_3VpR44",
+        "variant_picker_tabkgG",
+        "quantity_selector_C9kPxL",
+        "buy_buttons_bQVxrd",
+        "share_dFBmXm"
       ],
-      "name": "MS Render Menu",
-      "settings": {
-        "menu": "menu-categorie-blog",
-        "section_width": "page_width",
-        "mobile_full_width": false,
-        "alignment": "center",
-        "style": "pills",
-        "color_scheme": ""
-      }
-    },
-    "ms_featured_blog_xFQgWm": {
-      "type": "ms_featured-blog",
-      "blocks": {
-        "section_padding_LHWa3r": {
-          "type": "section_padding",
-          "settings": {
-            "section_padding_top": 35,
-            "section_padding_bottom": 35,
-            "section_padding_top_md": 25,
-            "section_padding_bottom_md": 25,
-            "section_padding_top_xs": 20,
-            "section_padding_bottom_xs": 20
-          }
-        }
-      },
-      "block_order": [
-        "section_padding_LHWa3r"
-      ],
-      "name": "MS Blog in evidenza",
+      "name": "MS Featured Product",
       "settings": {
         "section_width": "page_width",
         "mobile_full_width": false,
-        "articles": [],
-        "blog": "",
-        "blogs_menu": "menu-categorie-blog",
-        "post_limit": 50,
-        "columns_desktop": "3",
-        "enable_desktop_slider": false,
-        "enable_autoplay": true,
-        "autoplay_speed": 3,
-        "carousel_loop": "circular",
-        "carousel_peek_size": "medium",
-        "carousel_arrows_position": "below_center",
-        "carousel_arrows_overlay_dark": false,
-        "carousel_pagination_style": "counter",
-        "carousel_scroll_mode": "page",
-        "carousel_show_arrows": true,
-        "carousel_show_pagination": true,
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
-        "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
-        "show_author": false,
-        "show_reading": true,
-        "show_excerpt": true,
-        "show_blog_name": true,
-        "show_tags": true,
-        "tags_style": "pill",
-        "card_show_button": true,
-        "card_button_label": "Leggi articolo",
-        "card_button_type": "link",
-        "card_button_style_secondary": false,
-        "card_button_size": "default",
-        "card_button_icon": "icon-arrow.svg",
-        "card_button_icon_position": "before",
-        "card_button_align": "right",
-        "show_icons": true,
-        "custom_icon_date": "",
-        "custom_icon_reading": "",
-        "custom_icon_author": "",
-        "info_layout": "horizontal",
-        "card_info_padding_top": 16,
-        "card_info_padding_right": 16,
-        "card_info_padding_bottom": 16,
-        "card_info_padding_left": 16,
-        "show_view_all": true,
-        "button_size": "default",
-        "button_style_secondary": false,
-        "button_type": "pill",
-        "button_icon": "",
-        "button_icon_position": "before",
-        "color_scheme": ""
+        "color_scheme": "",
+        "product": "multi-variante-test",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false
       }
     }
   },
   "order": [
     "main",
     "rich_text_ezAqEK",
-    "ms_render_menu_3gr93w",
-    "ms_featured_blog_xFQgWm"
+    "ms_featured_product_3thkeR"
   ]
 }
