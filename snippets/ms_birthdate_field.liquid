@@ -54,7 +54,7 @@
       min="1900-01-01"
       max="{{ 'now' | date: '%Y-%m-%d' }}"
       autocomplete="bday"
-      {% if is_required %}aria-required="true"{% endif %}
+      {% if is_required %}aria-required="true" data-ms-birthdate-required{% endif %}
       {% if has_error %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}
       {% if form_id != blank %}form="{{ form_id }}"{% endif %}
     >

@@ -7,6 +7,21 @@
 
   const BIRTHDATE_PREFIX = 'BIRTHDATE:';
 
+  document.addEventListener('submit', function(e) {
+    var form = e.target;
+    if (form && form.nodeName === 'FORM') {
+      var dateInput = form.querySelector('input[data-ms-birthdate-required]');
+      if (dateInput && (dateInput.value || '').trim() === '') {
+        e.preventDefault();
+        dateInput.setAttribute('aria-invalid', 'true');
+        dateInput.focus();
+        if (dateInput.scrollIntoView) {
+          dateInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+  }, true);
+
   function initRegister(options) {
     const form = document.getElementById(options.formId);
     const dateInput = document.getElementById(options.dateInputId);
@@ -47,6 +62,13 @@
     var dateInput = document.getElementById(options.dateInputId);
     if (!checkoutBtn || !dateInput || !options.required) return;
 
+    var form = checkoutBtn.form;
+    if (!form) return;
+
+    function getBirthdateValue() {
+      return (dateInput.value || '').trim();
+    }
+
     function otherReasonsDisabled() {
       return checkoutBtn.hasAttribute('data-ms-other-disabled') ||
         checkoutBtn.hasAttribute('data-ms-invoice-invalid') ||
@@ -54,7 +76,7 @@
     }
 
     function toggleCheckout() {
-      var val = (dateInput.value || '').trim();
+      var val = getBirthdateValue();
       if (val) {
         checkoutBtn.removeAttribute('data-ms-birthdate-required');
         checkoutBtn.disabled = otherReasonsDisabled();
@@ -64,8 +86,26 @@
       }
     }
 
+    form.addEventListener('submit', function(e) {
+      if (getBirthdateValue() === '') {
+        e.preventDefault();
+        dateInput.setAttribute('aria-invalid', 'true');
+        dateInput.focus();
+        if (dateInput.scrollIntoView) {
+          dateInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    });
+
     dateInput.addEventListener('change', toggleCheckout);
     dateInput.addEventListener('input', toggleCheckout);
+    dateInput.addEventListener('blur', function() {
+      if (getBirthdateValue() === '') {
+        dateInput.setAttribute('aria-invalid', 'true');
+      } else {
+        dateInput.removeAttribute('aria-invalid');
+      }
+    });
     toggleCheckout();
   }
 
