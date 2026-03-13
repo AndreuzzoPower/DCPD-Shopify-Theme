@@ -168,9 +168,11 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 
 .ms-wishlist-count-bubble {
   position: absolute;
+  bottom: 8px;
+  right: 4px;
   background-color: rgb(var(--color-button));
   color: rgb(var(--color-button-text));
-  height: 1.7rem;
+  height: 1.7rem !important;
   width: 1.7rem;
   border-radius: 100%;
   display: flex;
