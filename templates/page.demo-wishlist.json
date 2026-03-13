@@ -9,11 +9,40 @@
  */
 {
   "sections": {
+    "ms_rich_text_Yy3Phf": {
+      "type": "ms_rich-text",
+      "blocks": {
+        "heading_KqgCwt": {
+          "type": "heading",
+          "settings": {
+            "heading": "I miei preferiti",
+            "heading_size": "h1",
+            "title_tag": "div",
+            "title_custom_class": ""
+          }
+        },
+        "text_fP6L9D": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Qui di seguito l'elenco dei tuoi desideri</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_KqgCwt",
+        "text_fP6L9D"
+      ],
+      "name": "MS Rich Text",
+      "settings": {
+        "section_width": "full_width",
+        "mobile_full_width": false,
+        "color_scheme": "",
+        "desktop_content_position": "center",
+        "content_alignment": "center"
+      }
+    },
     "main": {
       "type": "ms_wishlist",
-      "settings": {
-        "section_width": "page_width"
-      },
       "blocks": {
         "padding": {
           "type": "section_padding",
@@ -27,8 +56,27 @@
           }
         }
       },
-      "block_order": ["padding"]
+      "block_order": [
+        "padding"
+      ],
+      "settings": {
+        "section_width": "page_width",
+        "color_scheme": "",
+        "clear_label": "Svuota wishlist",
+        "empty_title": "La tua wishlist e vuota",
+        "empty_text": "Sfoglia i nostri prodotti e salva i tuoi preferiti cliccando sul cuore.",
+        "empty_button_label": "Scopri i prodotti",
+        "empty_button_link": "",
+        "empty_button_size": "default",
+        "empty_button_style_secondary": false,
+        "empty_button_type": "button",
+        "empty_button_icon": "",
+        "empty_button_icon_position": "before"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "ms_rich_text_Yy3Phf",
+    "main"
+  ]
 }
