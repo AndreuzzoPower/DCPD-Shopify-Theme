@@ -102,12 +102,14 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
 
 .product-form__buttons--has-wishlist {
   display: flex !important;
+  flex-wrap: wrap;
   gap: 1rem;
   align-items: stretch;
 }
 
 .product-form__buttons--has-wishlist > .product-form__submit {
   flex: 1 1 0;
+  min-width: 0;
   width: auto !important;
 }
 
@@ -117,8 +119,13 @@ wishlist-button.is-wishlisted .ms-wishlist-btn {
   align-items: stretch;
 }
 
+.product-form__buttons--has-wishlist > .shopify-payment-button {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
 .product-form__buttons--has-wishlist > wishlist-button .ms-wishlist-btn {
-  width: 4.8rem;
+  width: 5rem;
   height: auto;
   border-radius: var(--buttons-radius, 0);
   border: 1px solid rgba(var(--color-foreground), 0.15);
