@@ -47,27 +47,37 @@
 
 {%- style -%}
   {%- if section.settings.image_ratio == 'square' -%}
-    #section-{{ section.id }} .ms-wishlist-grid .card__inner,
-    #section-{{ section.id }} .ms-wishlist-grid .card {
-      --ratio-percent: 100%;
+    #section-{{ section.id }} .ms-wishlist-grid .card__inner.ratio,
+    #section-{{ section.id }} .ms-wishlist-grid .card.card--media {
+      --ratio-percent: 100% !important;
     }
     #section-{{ section.id }} .ms-wishlist-grid .card__media .media {
-      aspect-ratio: 1 / 1;
+      padding-bottom: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      overflow: hidden;
     }
     #section-{{ section.id }} .ms-wishlist-grid .card__media .media img {
+      position: absolute;
+      top: 0;
+      left: 0;
       object-fit: cover;
       width: 100%;
       height: 100%;
     }
   {%- elsif section.settings.image_ratio == 'portrait' -%}
-    #section-{{ section.id }} .ms-wishlist-grid .card__inner,
-    #section-{{ section.id }} .ms-wishlist-grid .card {
-      --ratio-percent: 125%;
+    #section-{{ section.id }} .ms-wishlist-grid .card__inner.ratio,
+    #section-{{ section.id }} .ms-wishlist-grid .card.card--media {
+      --ratio-percent: 125% !important;
     }
     #section-{{ section.id }} .ms-wishlist-grid .card__media .media {
-      aspect-ratio: 4 / 5;
+      padding-bottom: 0 !important;
+      aspect-ratio: 4 / 5 !important;
+      overflow: hidden;
     }
     #section-{{ section.id }} .ms-wishlist-grid .card__media .media img {
+      position: absolute;
+      top: 0;
+      left: 0;
       object-fit: cover;
       width: 100%;
       height: 100%;
