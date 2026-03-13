@@ -173,7 +173,7 @@
     "ms_show_iva": true,
     "ms_iva_prices_included": false,
     "ms_birthdate_show_cart": true,
-    "ms_birthdate_required_cart": true,
+    "ms_birthdate_required_cart": false,
     "ms_birthdate_description": "Lasciaci la tua data di nascita per ricevere sconti speciali per il tuo compleano.",
     "ms_birthdate_show_border": true,
     "ms_birthdate_border_width": 1,
