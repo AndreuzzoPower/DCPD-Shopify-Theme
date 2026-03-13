@@ -2,12 +2,28 @@
   Section: MS Wishlist
   Pagina wishlist che mostra i prodotti salvati dall'utente tramite localStorage.
   I prodotti vengono caricati client-side dal custom element <wishlist-page>.
+  Le card sono renderizzate server-side via alternate template (product.ms-wishlist-card)
+  per garantire parità visiva con le card della collection grid.
 {%- endcomment -%}
 
 {{ 'ms_wishlist.css' | asset_url | stylesheet_tag }}
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.image_shape == 'blob' -%}
+  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- liquid
   assign sw = section.settings.section_width | default: 'page_width'
@@ -43,8 +59,12 @@
       data-columns-desktop="{{ section.settings.columns_desktop }}"
       data-columns-mobile="{{ section.settings.columns_mobile }}"
       data-image-ratio="{{ section.settings.image_ratio }}"
+      data-image-shape="{{ section.settings.image_shape }}"
+      data-show-secondary-image="{{ section.settings.show_secondary_image }}"
       data-show-vendor="{{ section.settings.show_vendor }}"
-      data-show-price="true"
+      data-show-rating="{{ section.settings.show_rating }}"
+      data-show-min-order="{{ section.settings.show_min_order }}"
+      data-quick-add="{{ section.settings.quick_add }}"
       data-section-id="{{ section.id }}"
     >
       <div class="ms-wishlist-header" style="display:none;">
@@ -162,6 +182,28 @@
       "label": "Proporzione immagine"
     },
     {
+      "type": "select",
+      "id": "image_shape",
+      "options": [
+        { "value": "default", "label": "Predefinita" },
+        { "value": "arch", "label": "Arco" },
+        { "value": "blob", "label": "Blob" },
+        { "value": "chevronleft", "label": "Chevron sinistro" },
+        { "value": "chevronright", "label": "Chevron destro" },
+        { "value": "diamond", "label": "Diamante" },
+        { "value": "parallelogram", "label": "Parallelogramma" },
+        { "value": "round", "label": "Rotondo" }
+      ],
+      "default": "default",
+      "label": "Forma immagine"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": false,
+      "label": "Mostra immagine secondaria al hover"
+    },
+    {
       "type": "header",
       "content": "Scheda prodotto"
     },
@@ -170,6 +212,30 @@
       "id": "show_vendor",
       "default": false,
       "label": "Mostra brand/vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "Mostra valutazione",
+      "info": "Per mostrare una valutazione, aggiungi un'app per le recensioni dei prodotti."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_min_order",
+      "default": true,
+      "label": "Mostra quantita minima",
+      "info": "Se attivo, mostra il label della quantita minima d'ordine sulla scheda prodotto (dove impostato)."
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "default": "none",
+      "label": "Pulsante acquisto rapido",
+      "options": [
+        { "value": "none", "label": "Nessuno" },
+        { "value": "standard", "label": "Pulsante acquisto rapido" }
+      ]
     },
     {
       "type": "header",
@@ -263,7 +329,6 @@
       "type": "select",
       "id": "empty_button_size",
       "label": "Dimensione pulsante",
-      "info": "\"Predefinita\" usa il valore globale da Impostazioni tema.",
       "default": "default",
       "options": [
         { "value": "default", "label": "Predefinita" },

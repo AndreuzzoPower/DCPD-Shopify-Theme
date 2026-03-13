@@ -164,7 +164,7 @@ class WishlistPage extends HTMLElement {
   constructor() {
     super();
     this._wm = WishlistManager.getInstance();
-    this._productCache = {};
+    this._cardCache = {};
   }
 
   connectedCallback() {
@@ -220,19 +220,48 @@ class WishlistPage extends HTMLElement {
   }
 
   async _fetchAndRender(items, grid) {
-    const imageRatio = this.dataset.imageRatio || 'adapt';
-    const showVendor = this.dataset.showVendor === 'true';
     const removeLabel = this.dataset.removeLabel || 'Rimuovi dalla wishlist';
+    const showVendor = this.dataset.showVendor === 'true';
+    const showRating = this.dataset.showRating === 'true';
+    const showMinOrder = this.dataset.showMinOrder === 'true';
+    const quickAdd = this.dataset.quickAdd || 'none';
+    const showSecondaryImage = this.dataset.showSecondaryImage === 'true';
 
-    const fetches = items.map(item => this._getProduct(item.handle));
-    const products = await Promise.all(fetches);
+    const fetches = items.map(item => this._fetchCard(item.handle));
+    const cards = await Promise.all(fetches);
 
     grid.innerHTML = '';
-    products.forEach((product, i) => {
-      if (!product) return;
+    cards.forEach((cardHTML, i) => {
+      if (!cardHTML) return;
       const li = document.createElement('li');
       li.className = 'grid__item';
-      li.innerHTML = this._cardHTML(product, items[i], imageRatio, showVendor, removeLabel);
+
+      const wrapper = document.createElement('div');
+      wrapper.style.position = 'relative';
+      wrapper.innerHTML = cardHTML;
+
+      this._applySettings(wrapper, { showVendor, showRating, showMinOrder, quickAdd, showSecondaryImage });
+
+      const removeOverlay = document.createElement('div');
+      removeOverlay.className = 'ms-wishlist-card-item__remove';
+      removeOverlay.innerHTML = `
+        <button type="button" class="ms-wishlist-remove-btn" data-handle="${items[i].handle}" aria-label="${removeLabel}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      `;
+
+      const cardInner = wrapper.querySelector('.card__inner');
+      if (cardInner) {
+        cardInner.style.position = 'relative';
+        cardInner.appendChild(removeOverlay);
+      } else {
+        wrapper.appendChild(removeOverlay);
+      }
+
+      const existingWishlistBtn = wrapper.querySelector('wishlist-button');
+      if (existingWishlistBtn) existingWishlistBtn.remove();
+
+      li.appendChild(wrapper);
       grid.appendChild(li);
     });
 
@@ -245,81 +274,37 @@ class WishlistPage extends HTMLElement {
     });
   }
 
-  async _getProduct(handle) {
-    if (this._productCache[handle]) return this._productCache[handle];
+  _applySettings(wrapper, opts) {
+    if (!opts.showVendor) {
+      wrapper.querySelectorAll('.caption-with-letter-spacing').forEach(el => el.remove());
+    }
+    if (!opts.showRating) {
+      wrapper.querySelectorAll('.rating, .rating-text, .rating-count').forEach(el => el.remove());
+    }
+    if (!opts.showMinOrder) {
+      wrapper.querySelectorAll('.ms-min-order-label').forEach(el => el.remove());
+    }
+    if (opts.quickAdd === 'none') {
+      wrapper.querySelectorAll('.quick-add, .quick-add-bulk, quick-add-bulk').forEach(el => el.remove());
+    }
+    if (!opts.showSecondaryImage) {
+      const media = wrapper.querySelector('.media--hover-effect');
+      if (media) {
+        const imgs = media.querySelectorAll('img');
+        if (imgs.length > 1) imgs[1].remove();
+      }
+    }
+  }
+
+  async _fetchCard(handle) {
+    if (this._cardCache[handle]) return this._cardCache[handle];
     try {
-      const res = await fetch(`/products/${handle}.json`);
+      const res = await fetch(`/products/${handle}?view=ms-wishlist-card`);
       if (!res.ok) return null;
-      const data = await res.json();
-      this._productCache[handle] = data.product;
-      return data.product;
+      const html = await res.text();
+      this._cardCache[handle] = html.trim();
+      return this._cardCache[handle];
     } catch { return null; }
-  }
-
-  _cardHTML(product, item, imageRatio, showVendor, removeLabel) {
-    const url = item.url || `/products/${product.handle}`;
-    const img = product.images && product.images[0] ? product.images[0].src : '';
-    const imgSized = img ? img.replace(/(\.\w+)(\?|$)/, '_600x$1$2') : '';
-    const title = this._esc(product.title);
-    const vendor = showVendor && product.vendor ? this._esc(product.vendor) : '';
-    const price = product.variants && product.variants[0] ? product.variants[0].price : '';
-    const comparePrice = product.variants && product.variants[0] ? product.variants[0].compare_at_price : '';
-    const available = product.variants ? product.variants.some(v => v.available) : true;
-    const onSale = comparePrice && parseFloat(comparePrice) > parseFloat(price);
-
-    const aspectRatio = imageRatio === 'portrait' ? '2/3'
-      : imageRatio === 'square' ? '1/1' : 'auto';
-
-    const formatMoney = (cents) => {
-      if (!cents) return '';
-      const val = parseFloat(cents);
-      return new Intl.NumberFormat(Shopify.locale || 'it-IT', {
-        style: 'currency',
-        currency: Shopify.currency?.active || 'EUR'
-      }).format(val);
-    };
-
-    const imgUrl = img ? img.replace(/\?(.*)/,'?width=600&$1') : '';
-
-    return `
-      <div class="card-wrapper">
-        <div class="card card--standard card--media">
-          <div class="card__inner" style="position:relative;">
-            <div class="card__media" style="position:relative;overflow:hidden;">
-              <a href="${url}" style="display:block;aspect-ratio:${aspectRatio};">
-                ${imgUrl ? `<img src="${imgUrl}" alt="${title}" loading="lazy" width="600" style="width:100%;height:100%;object-fit:cover;display:block;">` : ''}
-              </a>
-            </div>
-            <div class="ms-wishlist-card-item__remove">
-              <button type="button" class="ms-wishlist-remove-btn" data-handle="${this._esc(product.handle)}" aria-label="${removeLabel}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="card__content">
-            <div class="card__information">
-              <div class="card__heading h5">
-                <a href="${url}" class="full-unstyled-link">${title}</a>
-              </div>
-              ${vendor ? `<span class="visually-hidden">Vendor:</span><div class="caption-with-letter-spacing light">${vendor}</div>` : ''}
-              <div class="price${onSale ? ' price--on-sale' : ''}${!available ? ' price--sold-out' : ''}">
-                <div class="price__container">
-                  ${onSale ? `<div class="price__sale"><span class="visually-hidden">Prezzo scontato</span><s class="price-item price-item--regular">${formatMoney(comparePrice)}</s>&nbsp;<span class="price-item price-item--sale">${formatMoney(price)}</span></div>` : `<div class="price__regular"><span class="price-item price-item--regular">${formatMoney(price)}</span></div>`}
-                </div>
-              </div>
-              ${!available ? '<span class="badge badge--bottom-left color-inverse">Esaurito</span>' : ''}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  _esc(str) {
-    if (!str) return '';
-    const d = document.createElement('div');
-    d.textContent = str;
-    return d.innerHTML;
   }
 }
 
